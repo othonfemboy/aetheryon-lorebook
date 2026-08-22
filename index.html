@@ -404,6 +404,7 @@
                 <hr style="border-color: #333; width: 100%; margin: 2px 0;">
                 <button onclick="abrirJokenpo(); toggleInteractionMenu();" style="background: #1a1a1a; color: #00ffcc; border: 1px solid #00ffcc; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🪨 Desafiar: Jokenpô Arcano</button>
                 <button onclick="abrirTicTacToe(); toggleInteractionMenu();" style="background: #1a1a1a; color: #ff00ff; border: 1px solid #ff00ff; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">❌ Desafiar: Jogo da Velha</button>
+                <button onclick="abrirCalices(); toggleInteractionMenu();" style="background: #1a1a1a; color: #ffaa00; border: 1px solid #ffaa00; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🍷 Desafiar: Cálices da Ilusão</button>
                 <button onclick="openMinigame('xadrez'); toggleInteractionMenu();" style="background: #1a1a1a; color: #d4af37; border: 1px solid #d4af37; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">♟️ Desafiar: Xadrez</button>             
                 <button onclick="openMinigame('damas'); toggleInteractionMenu();" style="background: #1a1a1a; color: #ff4500; border: 1px solid #ff4500; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🔴 Desafiar: Damas</button>
             </div>
@@ -2430,6 +2431,27 @@ Responda como o Oráculo de Aetheryon.
         </div>
     </div>
 
+            <!-- TELA DO MINIGAME CÁLICES DA ILUSÃO -->
+    <div id="calicesScreen" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 5000; justify-content: center; align-items: center; flex-direction: column; backdrop-filter: blur(5px); padding: 20px; box-sizing: border-box; text-align: center;">
+        
+        <span onclick="document.getElementById('calicesScreen').style.display='none'" style="position: absolute; top: 15px; right: 25px; color: #888; font-size: 40px; cursor: pointer; z-index: 5001;">&times;</span>
+
+        <h1 style="color: #ffaa00; font-family: 'Cinzel', serif; margin-bottom: 5px;">Cálices da Ilusão</h1>
+        <p id="calicesStatus" style="color: #ccc; margin-bottom: 25px; font-size: 16px;">Apenas um cálice contém a Luz. Os outros abrigam o Vazio. Escolha.</p>
+        <h2 id="calicesPlacar" style="color: #d4af37; margin-bottom: 30px; font-size: 2rem;">Acertos: 0 | Erros: 0</h2>
+        
+        <div style="display: flex; gap: 20px; margin-bottom: 40px; justify-content: center; flex-wrap: wrap;">
+            <button onclick="escolherCalice(1)" class="chess-btn-effect" style="font-size: 3rem; background: #111; border: 2px solid #ffaa00; border-radius: 10px; padding: 20px; cursor: pointer; transition: 0.3s; width: 100px; height: 100px;" id="calice1">🍷</button>
+            <button onclick="escolherCalice(2)" class="chess-btn-effect" style="font-size: 3rem; background: #111; border: 2px solid #ffaa00; border-radius: 10px; padding: 20px; cursor: pointer; transition: 0.3s; width: 100px; height: 100px;" id="calice2">🍷</button>
+            <button onclick="escolherCalice(3)" class="chess-btn-effect" style="font-size: 3rem; background: #111; border: 2px solid #ffaa00; border-radius: 10px; padding: 20px; cursor: pointer; transition: 0.3s; width: 100px; height: 100px;" id="calice3">🍷</button>
+        </div>
+        
+        <div style="display: flex; gap: 15px;">
+            <button onclick="reiniciarCalices()" style="padding: 10px 20px; background: #222; color: #fff; border: 1px solid #d4af37; border-radius: 5px; cursor: pointer; font-family: 'Cinzel', serif;">🔄 Misturar Novamente</button>
+            <button onclick="document.getElementById('calicesScreen').style.display='none'" style="padding: 10px 20px; background: transparent; color: #888; border: 1px dashed #555; border-radius: 5px; cursor: pointer;">Fugir</button>
+        </div>
+    </div>
+
             <!-- SCRIPT DO FIREBASE ATUALIZADO COM FIRESTORE -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
@@ -2712,10 +2734,10 @@ Responda como o Oráculo de Aetheryon.
                 if (placarJkp.player === 30 && !inventario.includes('garrafa_magica')) {
                     inventario.push('garrafa_magica');
                     localStorage.setItem('aetheryonInventario', JSON.stringify(inventario));
-                    fala = "O que é isso brilhando no chão? Você achou uma garrafa mágica inútil? Tsc... guarde seu lixo.";
+                    fala = "O que é isso brilhando no chão? Você achou uma garrafa mágica inútil? Que merda... guarde seu lixo.";
                     alert("✨ ITEM SECRETO OBTIDO: Garrafa Mágica Simples!\n\nFoi enviada para os seus pertences invisíveis.");
                 } else {
-                    const falasDerrota = ["Tsc... Sorte de principiante.", "Você trapaceou?", "Minha mente estava distraída. Eu deixei você ganhar."];
+                    const falasDerrota = ["Isso foi... Sorte de principiante.", "Você trapaceou?", "Minha mente estava distraída. Eu deixei você ganhar."];
                     fala = falasDerrota[Math.floor(Math.random() * falasDerrota.length)];
                 }
             } else {
@@ -2880,6 +2902,76 @@ Responda como o Oráculo de Aetheryon.
             oraculoStunned = false;
             document.getElementById('tttStatus').innerText = "Sua vez. Forme 3 selos de Luz (✨).";
             atualizarTabuleiroTTT();
+        }
+
+// ==========================================
+        // MINIGAME: CÁLICES DA ILUSÃO
+        // ==========================================
+        let placarCalices = { acertos: 0, erros: 0 };
+        let calicesAtivo = true;
+
+        function abrirCalices() {
+            document.getElementById('calicesScreen').style.display = 'flex';
+            reiniciarCalices();
+            if (typeof speakOracle === 'function') {
+                speakOracle(["Vamos ver se a sua intuição é tão afiada quanto a sua arrogância."]);
+            }
+        }
+
+        function escolherCalice(escolha) {
+            // Se o jogador já clicou e os cálices estão abertos, ignora o clique
+            if (!calicesAtivo) return; 
+            window.speechSynthesis.cancel();
+            
+            calicesAtivo = false; 
+            
+            // A Oráculo sorteia um número de 1 a 3 para esconder a Luz
+            const caliceCerto = Math.floor(Math.random() * 3) + 1;
+            
+            // Animação instantânea abrindo os 3 cálices
+            for (let i = 1; i <= 3; i++) {
+                let btn = document.getElementById('calice' + i);
+                if (i === caliceCerto) {
+                    btn.innerHTML = '✨'; // Achou a Luz
+                    btn.style.borderColor = '#00ffcc';
+                    btn.style.background = 'rgba(0, 255, 204, 0.2)';
+                } else {
+                    btn.innerHTML = '🌑'; // Achou o Vazio
+                    btn.style.borderColor = '#ff4444';
+                    btn.style.background = 'rgba(255, 68, 68, 0.2)';
+                }
+            }
+
+            // Verifica se o cálice que o jogador clicou é o certo
+            if (escolha === caliceCerto) {
+                placarCalices.acertos++;
+                document.getElementById('calicesStatus').innerText = "Você encontrou a Luz... que sorte irritante.";
+                if (typeof speakOracle === 'function') {
+                    speakOracle(["Isso foi... Pura sorte. Não ache que isso o torna especial."]);
+                }
+            } else {
+                placarCalices.erros++;
+                document.getElementById('calicesStatus').innerText = "Vazio. Sua intuição falhou.";
+                if (typeof speakOracle === 'function') {
+                    speakOracle(["Você escolheu o vazio. Assim como a sua própria existência."]);
+                }
+            }
+
+            // Atualiza o placar visual
+            document.getElementById('calicesPlacar').innerText = `Acertos: ${placarCalices.acertos} | Erros: ${placarCalices.erros}`;
+        }
+
+        function reiniciarCalices() {
+            calicesAtivo = true; // Permite clicar de novo
+            document.getElementById('calicesStatus').innerText = "Apenas um cálice contém a Luz. Os outros abrigam o Vazio. Escolha.";
+            
+            // Volta os botões pro visual padrão de Cálice 🍷
+            for (let i = 1; i <= 3; i++) {
+                let btn = document.getElementById('calice' + i);
+                btn.innerHTML = '🍷';
+                btn.style.borderColor = '#ffaa00';
+                btn.style.background = '#111';
+            }
         }
 
         // ==========================================
@@ -3325,7 +3417,7 @@ Responda como o Oráculo de Aetheryon.
                         moveLog.innerHTML += `<div style="padding: 5px 0; border-bottom: 1px solid #222; color: #ffd700;">✨ <b>PODER DIVINO:</b> Peça revivida em ${casaClicada}!</div>`;
                         moveLog.scrollTop = moveLog.scrollHeight;
                     }
-                    if (typeof speakOracle === 'function') speakOracle(["Trapaça luminosa?! Tsc... Minha vez."]);
+                    if (typeof speakOracle === 'function') speakOracle(["Trapaça luminosa?! Tá... Minha vez."]);
                     
                     updateStatus();
                     window.setTimeout(jogadaDaOraculo, 600);
