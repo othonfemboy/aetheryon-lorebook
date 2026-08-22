@@ -2090,7 +2090,7 @@ ${input}
 Responda como o Oráculo de Aetheryon.
 `;
 
-        // NOVO FETCH APONTANDO PARA A SUA PASTA /api/oraculo.js NO VERCEL
+        // NOVO FETCH APONTANDO PARA A SUA PASTA /api/oraculo NO VERCEL
         const response = await fetch('/api/oraculo', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -2098,6 +2098,11 @@ Responda como o Oráculo de Aetheryon.
                 contents: [{ parts: [{ text: prompt }] }]
             })
         });
+
+        // VERIFICAÇÃO BLINDADA: Se o Vercel não achar o arquivo, ele avisa bonitinho!
+        if (!response.ok) {
+            throw new Error(`Erro de conexão com o servidor (Status ${response.status}). O Vercel não encontrou o arquivo /api/oraculo.js!`);
+        }
 
         const data = await response.json();
 
