@@ -274,6 +274,29 @@
         }
         .item-btn:hover { background: #fff; transform: scale(1.05); }
 
+        /* ====== TEMA ECLIPSE (RECOMPENSA DOS CÁLICES) ====== */
+        body.eclipse-theme { background: radial-gradient(circle, #2a0000 0%, #050505 100%) !important; }
+        .eclipse-theme header { border-bottom: 1px solid #ff0000; box-shadow: 0 5px 15px rgba(255,0,0,0.3); }
+        .eclipse-theme .filter-btn.active { background: #ff0000; box-shadow: 0 0 15px #ff0000; border-color: #fff; }
+
+        /* ====== TEMA VENTO (RECOMPENSA OBLIVION) ====== */
+        body.vento-theme { background: linear-gradient(135deg, #0a1128 0%, #1a2a6c 100%) !important; }
+        .vento-theme header { border-bottom: 1px solid #00ffcc; box-shadow: 0 5px 15px rgba(0,255,204,0.3); }
+        .vento-theme .filter-btn.active { background: #00ffcc; color: #000; box-shadow: 0 0 15px #00ffcc; border-color: #fff; }
+        
+        /* Animação das folhas/poeira voando na tela */
+        .wind-leaf {
+            position: fixed; width: 12px; height: 12px;
+            background: #00ffcc; opacity: 0.5; border-radius: 50% 0 50% 0;
+            animation: blowWind linear infinite; pointer-events: none; z-index: 0;
+            box-shadow: 0 0 8px #00ffcc;
+        }
+        @keyframes blowWind { 
+            0% { transform: translate(-10vw, 100vh) rotate(0deg) scale(0.5); opacity: 0; }
+            10% { opacity: 0.8; }
+            100% { transform: translate(110vw, -10vh) rotate(720deg) scale(1.5); opacity: 0; } 
+        }
+
         /* ====== EFEITO DE SELEÇÃO DO XADREZ (CLIQUE NO CELULAR) ====== */
         .highlight-square { 
             box-shadow: inset 0 0 25px #00ffcc !important; 
@@ -330,7 +353,26 @@
     <div class="tabs-container">
         <div style="margin-bottom: 15px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
             <button id="voiceToggleBtn" class="tab-btn" onclick="toggleOracleVoice()" style="margin: 0; background-color: #4a0000; border-color: #ff4444;">🔊 Voz: ON</button>
-            <button id="musicToggleBtn" class="tab-btn" onclick="toggleMusic()" style="margin: 0; background-color: #111; border-color: #888;">🎵 Música: Padrão</button>
+            <select id="musicSelector" onchange="trocarMusicaListada()" class="tab-btn" style="margin: 0; background-color: #111; border-color: #888; color: #aaa; cursor: pointer; font-family: 'Cinzel', serif; font-weight: bold;">
+    <option value="heromusic.mp3">🎵 Música: Padrão</option>
+    <option value="wintermusic.mp3">❄️ Música: Inverno</option>
+    <option value="windmusic.mp3">🌪️ Música: Vento</option>
+</select>
+<div style="display: flex; align-items: center; gap: 5px; background: #111; padding: 0 15px; border: 2px solid #444; border-radius: 5px; height: 42px; margin: 0;">
+    <span style="color: #aaa; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🔉 VOL:</span>
+    <input type="range" min="0" max="1" step="0.01" value="0.3" oninput="updateMusicVolume(this.value)" style="width: 80px; cursor: pointer;">
+</div>
+
+<!-- SCRIPT EXCLUSIVO E BLINDADO PARA O VOLUME -->
+<script>
+    function updateMusicVolume(val) {
+        const audio = document.getElementById('bgMusic');
+        if (audio) {
+            audio.volume = parseFloat(val);
+        }
+    }
+</script>
+
             <button id="themeToggleBtn" class="tab-btn" onclick="toggleTheme()" style="margin: 0; display: none; background-color: #001133; border-color: #00ffff; color: #00ffff;">❄️ Tema: Inverno</button>
         </div>
         <button id="btnHeroes" class="tab-btn active" onclick="switchTab('heroes')">👤 Lendas de Aetheryon</button>
@@ -405,6 +447,7 @@
                 <button onclick="abrirJokenpo(); toggleInteractionMenu();" style="background: #1a1a1a; color: #00ffcc; border: 1px solid #00ffcc; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🪨 Desafiar: Jokenpô Arcano</button>
                 <button onclick="abrirTicTacToe(); toggleInteractionMenu();" style="background: #1a1a1a; color: #ff00ff; border: 1px solid #ff00ff; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">❌ Desafiar: Jogo da Velha</button>
                 <button onclick="abrirCalices(); toggleInteractionMenu();" style="background: #1a1a1a; color: #ffaa00; border: 1px solid #ffaa00; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🍷 Desafiar: Cálices da Ilusão</button>
+                <button onclick="abrirMemoria(); toggleInteractionMenu();" style="background: #1a1a1a; color: #ff69b4; border: 1px solid #ff69b4; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🧠 Desafiar: Mente Fraturada</button>
                 <button onclick="openMinigame('xadrez'); toggleInteractionMenu();" style="background: #1a1a1a; color: #d4af37; border: 1px solid #d4af37; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">♟️ Desafiar: Xadrez</button>             
                 <button onclick="openMinigame('damas'); toggleInteractionMenu();" style="background: #1a1a1a; color: #ff4500; border: 1px solid #ff4500; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🔴 Desafiar: Damas</button>
             </div>
@@ -2452,6 +2495,33 @@ Responda como o Oráculo de Aetheryon.
         </div>
     </div>
 
+             <!-- TELA JOGO DA MEMÓRIA -->
+    <div id="memoryScreen" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 5000; justify-content: center; align-items: center; flex-direction: column; backdrop-filter: blur(5px); padding: 20px; box-sizing: border-box;">
+        <span onclick="fecharMemoria()" style="position: absolute; top: 15px; right: 25px; color: #888; font-size: 40px; cursor: pointer; z-index: 5001;">&times;</span>
+
+        <h1 style="color: #ff69b4; font-family: 'Cinzel', serif; margin-bottom: 5px;">Mente Fraturada</h1>
+        <p id="memoryStatus" style="color: #ccc; margin-bottom: 10px; font-size: 16px;">Encontre os pares antes que a Oráculo invada sua mente.</p>
+        <h2 id="memoryTimer" style="color: #ff4500; font-family: monospace; font-size: 2.5rem; margin-bottom: 20px;">00:00</h2>
+
+        <!-- Dificuldades -->
+        <div id="memoryConfig" style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center;">
+            <button onclick="iniciarMemoria('facil')" style="padding: 10px 15px; background: #222; color: #fff; border: 2px solid #00ffcc; border-radius: 5px; cursor: pointer; font-weight: bold;">Fácil (60s)</button>
+            <button onclick="iniciarMemoria('hard')" style="padding: 10px 15px; background: #330000; color: #ff4444; border: 2px solid #ff4444; border-radius: 5px; cursor: pointer; font-weight: bold;">Fim da Linha (45s)</button>
+            <button onclick="iniciarMemoria('oblivion')" style="padding: 10px 15px; background: #16002a; color: #d8a7ff; border: 2px solid #8a2be2; border-radius: 5px; cursor: pointer; font-weight: bold; font-family: 'Cinzel', serif;">🌪️ OBLIVION</button>
+        </div>
+
+        <!-- Tabuleiro -->
+        <div id="memoryBoard" style="display: none; grid-template-columns: repeat(4, 70px); gap: 10px; perspective: 1000px; margin-bottom: 20px;">
+            <!-- Cartas entram via JS -->
+        </div>
+
+    </div>
+
+    <!-- TELA DE CONGELAMENTO DA ORÁCULO (Z-INDEX GIGANTE) -->
+    <div id="oracleFreezeScreen" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(138, 43, 226, 0.4); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(8px);">
+        <h1 style="color: #fff; font-family: 'Cinzel', serif; font-size: 4rem; text-shadow: 0 0 30px #8a2be2; animation: shake 0.5s infinite;">TEMPO PARADO!</h1>
+    </div>
+
             <!-- SCRIPT DO FIREBASE ATUALIZADO COM FIRESTORE -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
@@ -2518,13 +2588,12 @@ Responda como o Oráculo de Aetheryon.
 
         function applyTheme(theme) {
             const btnTheme = document.getElementById('themeToggleBtn');
+            document.body.classList.remove('winter-theme', 'eclipse-theme', 'vento-theme');
+            document.querySelectorAll('.snowflake, .wind-leaf').forEach(e => e.remove());
+
             if (theme === 'winter') {
                 document.body.classList.add('winter-theme');
-                if(btnTheme) {
-                    btnTheme.innerText = '❄️ Tema: Inverno';
-                    btnTheme.style.borderColor = '#00ffff';
-                    btnTheme.style.color = '#00ffff';
-                }
+                if(btnTheme) { btnTheme.innerText = '❄️ Tema: Inverno'; btnTheme.style.borderColor = '#00ffff'; btnTheme.style.color = '#00ffff'; }
                 if(document.querySelectorAll('.snowflake').length === 0) {
                     for(let i=0; i<30; i++) {
                         let snow = document.createElement('div');
@@ -2535,50 +2604,82 @@ Responda como o Oráculo de Aetheryon.
                         document.body.appendChild(snow);
                     }
                 }
-            } else {
-                document.body.classList.remove('winter-theme');
-                document.querySelectorAll('.snowflake').forEach(e => e.remove());
-                if(btnTheme) {
-                    btnTheme.innerText = '🌑 Tema: Original';
-                    btnTheme.style.borderColor = '#d4af37';
-                    btnTheme.style.color = '#d4af37';
+            } else if (theme === 'eclipse') {
+                document.body.classList.add('eclipse-theme');
+                if(btnTheme) { btnTheme.innerText = '🌑 Tema: Eclipse'; btnTheme.style.borderColor = '#ff0000'; btnTheme.style.color = '#ff0000'; }
+            } else if (theme === 'vento') {
+                document.body.classList.add('vento-theme');
+                if(btnTheme) { btnTheme.innerText = '🌪️ Tema: Vento'; btnTheme.style.borderColor = '#00ffcc'; btnTheme.style.color = '#00ffcc'; }
+                if(document.querySelectorAll('.wind-leaf').length === 0) {
+                    for(let i=0; i<20; i++) {
+                        let leaf = document.createElement('div');
+                        leaf.className = 'wind-leaf';
+                        leaf.style.left = Math.random() * 100 + 'vw';
+                        leaf.style.top = Math.random() * 100 + 'vh';
+                        leaf.style.animationDuration = (Math.random() * 2 + 1) + 's';
+                        leaf.style.animationDelay = Math.random() * 2 + 's';
+                        document.body.appendChild(leaf);
+                    }
                 }
+            } else {
+                if(btnTheme) { btnTheme.innerText = '🔮 Tema: Padrão'; btnTheme.style.borderColor = '#d4af37'; btnTheme.style.color = '#d4af37'; }
             }
-            if (playerRank === 'First One' && btnTheme) {
+            
+            if ((playerRank === 'First One' || inventario.includes('tema_eclipse') || inventario.includes('tema_vento')) && btnTheme) {
                 btnTheme.style.display = 'inline-block';
             }
         }
 
         function toggleTheme() {
-            currentTheme = currentTheme === 'winter' ? 'normal' : 'winter';
+            let temasPossiveis = ['normal'];
+            if (playerRank === 'First One') temasPossiveis.push('winter');
+            if (inventario.includes('tema_eclipse')) temasPossiveis.push('eclipse');
+            if (inventario.includes('tema_vento')) temasPossiveis.push('vento');
+
+            let indexAtual = temasPossiveis.indexOf(currentTheme);
+            let proxIndex = (indexAtual + 1) % temasPossiveis.length;
+            
+            currentTheme = temasPossiveis[proxIndex];
             localStorage.setItem('aetheryonTheme', currentTheme);
             applyTheme(currentTheme);
         }
 
-        function toggleMusic() {
+        function trocarMusicaListada() {
             const audio = document.getElementById('bgMusic');
+            const seletor = document.getElementById('musicSelector');
 
-            if (currentMusic === 'heromusic.mp3') {
-                currentMusic = 'wintermusic.mp3'; 
-                document.getElementById('musicToggleBtn').innerText = '🎵 Música: Inverno';
-            } else {
-                currentMusic = 'heromusic.mp3';
-                document.getElementById('musicToggleBtn').innerText = '🎵 Música: Padrão';
+        // ==========================================
+        // CONTROLE DE VOLUME DA MÚSICA (GLOBAL)
+        // ==========================================
+        window.updateMusicVolume = function(val) {
+            const audio = document.getElementById('bgMusic');
+            if (audio) {
+                audio.volume = parseFloat(val);
             }
-
-            localStorage.setItem('aetheryonMusic', currentMusic);
+        };
+            
+            // Pega o nome do arquivo que você escolheu na lista
+            currentMusic = seletor.value;
             audio.src = currentMusic;
-            audio.load(); 
-            audio.play().catch(e => { console.log("Aguardando interação..."); });
+            audio.load();
+            audio.play().catch(e => console.log("Aguardando interação do usuário..."));
+            
+            // Salva a preferência pra quando o usuário voltar no site
+            localStorage.setItem('aetheryonMusic', currentMusic);
         }
 
         applyTheme(currentTheme);
         document.addEventListener("DOMContentLoaded", () => {
             const audioTag = document.getElementById('bgMusic');
-            if(audioTag) audioTag.src = currentMusic;
-            if (currentMusic !== 'heromusic.mp3') {
-                const musicBtn = document.getElementById('musicToggleBtn');
-                if (musicBtn) musicBtn.innerText = '🎵 Música: Inverno';
+            if(audioTag) {
+                audioTag.src = currentMusic;
+                audioTag.volume = 0.3; // Define o volume padrão do áudio igual ao da barrinha
+            }
+            
+            // Avisa a lista visual qual foi a última música escolhida!
+            const seletor = document.getElementById('musicSelector');
+            if (seletor) {
+                seletor.value = currentMusic;
             }
         });
 
@@ -2945,6 +3046,14 @@ Responda como o Oráculo de Aetheryon.
             // Verifica se o cálice que o jogador clicou é o certo
             if (escolha === caliceCerto) {
                 placarCalices.acertos++;
+                // VERIFICA RECOMPENSA DE 20 ACERTOS
+                if (placarCalices.acertos === 20 && !inventario.includes('tema_eclipse')) {
+                    inventario.push('tema_eclipse');
+                    localStorage.setItem('aetheryonInventario', JSON.stringify(inventario));
+                    alert("✨ RECOMPENSA SECRETA OBTIDA!\n\nVocê atingiu 20 acertos e desbloqueou o 'Tema Eclipse'. Você já pode alternar para ele no topo do site!");
+                    if (typeof speakOracle === 'function') speakOracle(["Vinte acertos? Você está roubando as probabilidades! Pegue essa maldição do Eclipse e suma daqui!"]);
+                    applyTheme(currentTheme); // Atualiza o botão lá em cima
+                }
                 document.getElementById('calicesStatus').innerText = "Você encontrou a Luz... que sorte irritante.";
                 if (typeof speakOracle === 'function') {
                     speakOracle(["Isso foi... Pura sorte. Não ache que isso o torna especial."]);
@@ -2971,6 +3080,223 @@ Responda como o Oráculo de Aetheryon.
                 btn.innerHTML = '🍷';
                 btn.style.borderColor = '#ffaa00';
                 btn.style.background = '#111';
+            }
+        }
+
+                // ==========================================
+        // MINIGAME: MENTE FRATURADA (MEMÓRIA)
+        // ==========================================
+        const iconesMemoriaPadrao = ['🌪️', '✨', '❄️', '🌑', '🌌', '🩸', '🧵', '🍃'];
+        const iconesMemoriaOblivion = ['🌪️', '✨', '❄️', '🌑', '🌌', '🩸', '🧵', '🍃', '⚔️', '🛡️', '👑', '🔮']; // 12 pares (24 cartas) para o Oblivion!
+        
+        let cartas = [];
+        let primeiraCarta = null;
+        let segundaCarta = null;
+        let travaTabuleiro = false;
+        let paresEncontrados = 0;
+        let tempoRestante = 0;
+        let timerMemoria = null;
+        let dificuldadeAtual = '';
+        let errosMemoria = 0; // Contador de Erros pro Oblivion
+
+        function abrirMemoria() {
+            document.getElementById('memoryScreen').style.display = 'flex';
+            document.getElementById('memoryConfig').style.display = 'flex';
+            document.getElementById('memoryBoard').style.display = 'none';
+            document.getElementById('memoryTimer').innerText = "00:00";
+            document.getElementById('memoryStatus').innerText = "Escolha sua tortura.";
+            if (typeof speakOracle === 'function') speakOracle(["Sua memória falha até para lembrar onde deixou as chaves. Vamos ver aqui."]);
+        }
+
+        function fecharMemoria() {
+            document.getElementById('memoryScreen').style.display = 'none';
+            clearInterval(timerMemoria);
+            document.getElementById('oracleFreezeScreen').style.display = 'none';
+        }
+
+        function atualizarStatusMemoria() {
+            if (dificuldadeAtual === 'oblivion') {
+                document.getElementById('memoryStatus').innerText = `Encontre os pares! | Erros: ${errosMemoria}/12`;
+            } else {
+                document.getElementById('memoryStatus').innerText = "Encontre os pares!";
+            }
+        }
+
+        function iniciarMemoria(dificuldade) {
+            dificuldadeAtual = dificuldade;
+            errosMemoria = 0;
+            paresEncontrados = 0;
+            travaTabuleiro = false;
+            primeiraCarta = null;
+            segundaCarta = null;
+            
+            let arrayUsado = iconesMemoriaPadrao;
+            const board = document.getElementById('memoryBoard');
+
+            if (dificuldade === 'facil') {
+                tempoRestante = 60;
+                board.style.gridTemplateColumns = 'repeat(4, 70px)';
+            } else if (dificuldade === 'hard') {
+                tempoRestante = 45;
+                board.style.gridTemplateColumns = 'repeat(4, 70px)';
+            } else if (dificuldade === 'oblivion') {
+                tempoRestante = 120; // 2 Minutos
+                arrayUsado = iconesMemoriaOblivion; // 24 Cartas!
+                board.style.gridTemplateColumns = 'repeat(6, 70px)'; // Tabuleiro mais largo
+            }
+
+            document.getElementById('memoryConfig').style.display = 'none';
+            board.style.display = 'grid';
+            atualizarStatusMemoria();
+
+            // Dobra os ícones e embaralha
+            cartas = [...arrayUsado, ...arrayUsado];
+            cartas.sort(() => Math.random() - 0.5);
+
+            board.innerHTML = '';
+            cartas.forEach((icone) => {
+                board.innerHTML += `
+                    <div class="memory-card" data-icone="${icone}" onclick="virarCarta(this)" style="width: 70px; height: 90px; background: #222; border: 2px solid #8a2be2; border-radius: 8px; display: flex; justify-content: center; align-items: center; font-size: 2rem; cursor: pointer; transition: 0.3s; color: transparent;">
+                        ${icone}
+                    </div>
+                `;
+            });
+
+            atualizarTimerVisual();
+            clearInterval(timerMemoria);
+            timerMemoria = setInterval(tickMemoria, 1000);
+            
+            if (dificuldade === 'hard' && typeof speakOracle === 'function') {
+                speakOracle(["Fim da linha. Suas regras não funcionam na minha dimensão."]);
+            } else if (dificuldade === 'oblivion' && typeof speakOracle === 'function') {
+                speakOracle(["Oblivion... Você gosta mesmo de sofrer. Doze erros e a sua alma é minha."]);
+            }
+        }
+
+        function virarCarta(cartaDOM) {
+            if (travaTabuleiro) return;
+            if (cartaDOM.style.color !== 'transparent') return; // Se já tá virada, ignora
+
+            cartaDOM.style.background = '#ddd';
+            cartaDOM.style.color = '#000';
+
+            if (!primeiraCarta) {
+                primeiraCarta = cartaDOM;
+                return;
+            }
+
+            segundaCarta = cartaDOM;
+            travaTabuleiro = true;
+
+            verificarPar();
+        }
+
+        function verificarPar() {
+            let ehPar = primeiraCarta.dataset.icone === segundaCarta.dataset.icone;
+
+            if (ehPar) {
+                primeiraCarta.style.borderColor = '#00ffcc';
+                segundaCarta.style.borderColor = '#00ffcc';
+                paresEncontrados++;
+                resetarCartas();
+                
+                if (paresEncontrados === (cartas.length / 2)) {
+                    vitoriaMemoria();
+                }
+            } else {
+                errosMemoria++;
+                atualizarStatusMemoria();
+                
+                // DERROTA POR ERROS NO OBLIVION
+                if (dificuldadeAtual === 'oblivion' && errosMemoria >= 12) {
+                    derrotaMemoria("Quem mandou errar tanto, seu lixo?");
+                    return;
+                }
+                
+                setTimeout(() => {
+                    primeiraCarta.style.background = '#222';
+                    primeiraCarta.style.color = 'transparent';
+                    segundaCarta.style.background = '#222';
+                    segundaCarta.style.color = 'transparent';
+                    resetarCartas();
+                }, 1000);
+            }
+        }
+
+        function resetarCartas() {
+            primeiraCarta = null;
+            segundaCarta = null;
+            travaTabuleiro = false;
+        }
+
+        function tickMemoria() {
+            // Se a tela estiver congelada pela Oráculo, o tempo não conta
+            if (document.getElementById('oracleFreezeScreen').style.display === 'flex') return;
+
+            tempoRestante--;
+            atualizarTimerVisual();
+
+            // CONGELAMENTO NO HARD E NO OBLIVION
+            if (dificuldadeAtual === 'hard' && tempoRestante === 20) {
+                congelarTelaOraculo();
+            } else if (dificuldadeAtual === 'oblivion' && tempoRestante > 0 && tempoRestante % 30 === 0 && tempoRestante !== 120) {
+                congelarTelaOraculo(); // Congela a cada 30 segundos!
+            }
+
+            // BUG CORRIGIDO: Tempo Acabou
+            if (tempoRestante <= 0) {
+                derrotaMemoria("Sua memória é horrível, mortal. Quer tentar novamente?");
+            }
+        }
+
+        function atualizarTimerVisual() {
+            let min = Math.floor(tempoRestante / 60);
+            let sec = tempoRestante % 60;
+            document.getElementById('memoryTimer').innerText = `${min < 10 ? '0' : ''}${min}:${sec < 10 ? '0' : ''}${sec}`;
+        }
+
+        function congelarTelaOraculo() {
+            document.getElementById('oracleFreezeScreen').style.display = 'flex';
+            if (typeof speakOracle === 'function') speakOracle(["Ahaha! Tempo parado! Ajoelhe-se e espere eu permitir que você jogue."]);
+
+            setTimeout(() => {
+                document.getElementById('oracleFreezeScreen').style.display = 'none';
+            }, 5000);
+        }
+
+        function derrotaMemoria(mensagemFinal) {
+            clearInterval(timerMemoria);
+            travaTabuleiro = true; 
+            
+            // Bloqueio Absoluto: Remove o clique de todas as cartas
+            document.querySelectorAll('.memory-card').forEach(c => c.onclick = null); 
+            
+            document.getElementById('memoryStatus').innerText = mensagemFinal;
+            document.getElementById('memoryConfig').style.display = 'flex';
+            
+            if (typeof speakOracle === 'function') speakOracle([mensagemFinal]);
+        }
+
+        function vitoriaMemoria() {
+            clearInterval(timerMemoria);
+            travaTabuleiro = true;
+            document.querySelectorAll('.memory-card').forEach(c => c.onclick = null); 
+            
+            document.getElementById('memoryConfig').style.display = 'flex';
+            
+            // RECOMPENSA DO OBLIVION
+            if (dificuldadeAtual === 'oblivion' && !inventario.includes('tema_vento')) {
+                document.getElementById('memoryStatus').innerText = "Você domou o caos do Oblivion.";
+                inventario.push('tema_vento');
+                localStorage.setItem('aetheryonInventario', JSON.stringify(inventario));
+                
+                alert("🌪️ RECOMPENSA MÁXIMA OBTIDA!\n\nVocê sobreviveu ao Oblivion e desbloqueou o 'Tema Vento'. Altere no menu principal!");
+                applyTheme(currentTheme); 
+                
+                if (typeof speakOracle === 'function') speakOracle(["Impossível... Você sobreviveu ao Oblivion. Pegue o seu prêmio e desapareça da minha vista."]);
+            } else {
+                document.getElementById('memoryStatus').innerText = "Você montou sua mente novamente.";
+                if (typeof speakOracle === 'function') speakOracle(["Milagres acontecem. Você achou os pares. Sorte pura."]);
             }
         }
 
