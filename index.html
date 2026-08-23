@@ -283,6 +283,22 @@
         body.vento-theme { background: linear-gradient(135deg, #0a1128 0%, #1a2a6c 100%) !important; }
         .vento-theme header { border-bottom: 1px solid #00ffcc; box-shadow: 0 5px 15px rgba(0,255,204,0.3); }
         .vento-theme .filter-btn.active { background: #00ffcc; color: #000; box-shadow: 0 0 15px #00ffcc; border-color: #fff; }
+
+        /* ====== TEMA ÁGUA (RECOMPENSA FORCA) ====== */
+        body.agua-theme { background: linear-gradient(180deg, #001f3f 0%, #0074D9 100%) !important; }
+        .agua-theme header { border-bottom: 1px solid #7FDBFF; box-shadow: 0 5px 15px rgba(127,219,255,0.3); }
+        .agua-theme .filter-btn.active { background: #7FDBFF; color: #000; box-shadow: 0 0 15px #7FDBFF; border-color: #fff; }
+        
+        .bubble {
+            position: fixed; background: rgba(255, 255, 255, 0.2); border-radius: 50%;
+            animation: rise 5s infinite ease-in; pointer-events: none; z-index: 0;
+            box-shadow: 0 0 10px rgba(255,255,255,0.5) inset;
+        }
+        @keyframes rise { 
+            0% { bottom: -10px; transform: translateX(0) scale(0.5); opacity: 0;} 
+            50% { opacity: 1; transform: translateX(20px) scale(1); } 
+            100% { bottom: 110vh; transform: translateX(-20px) scale(0.5); opacity: 0; } 
+        }
         
         /* Animação das folhas/poeira voando na tela */
         .wind-leaf {
@@ -379,6 +395,7 @@
     <option value="heromusic.mp3">🎵 Música: Padrão</option>
     <option value="wintermusic.mp3">❄️ Música: Inverno</option>
     <option value="windmusic.mp3">🌪️ Música: Vento</option>
+    <option value="aguamusic.mp3">🌊 Música: Água</option>
 </select>
 <div style="display: flex; align-items: center; gap: 5px; background: #111; padding: 0 15px; border: 2px solid #444; border-radius: 5px; height: 42px; margin: 0;">
     <span style="color: #aaa; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🔉 VOL:</span>
@@ -470,6 +487,7 @@
                 <button onclick="abrirTicTacToe(); toggleInteractionMenu();" style="background: #1a1a1a; color: #ff00ff; border: 1px solid #ff00ff; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">❌ Desafiar: Jogo da Velha</button>
                 <button onclick="abrirCalices(); toggleInteractionMenu();" style="background: #1a1a1a; color: #ffaa00; border: 1px solid #ffaa00; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🍷 Desafiar: Cálices da Ilusão</button>
                 <button onclick="abrirMemoria(); toggleInteractionMenu();" style="background: #1a1a1a; color: #ff69b4; border: 1px solid #ff69b4; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🧠 Desafiar: Mente Fraturada</button>
+                <button onclick="abrirForca(); toggleInteractionMenu();" style="background: #1a1a1a; color: #7FDBFF; border: 1px solid #7FDBFF; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🪢 Desafiar: Forca Arcana</button>
                 <button onclick="openMinigame('xadrez'); toggleInteractionMenu();" style="background: #1a1a1a; color: #d4af37; border: 1px solid #d4af37; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">♟️ Desafiar: Xadrez</button>             
                 <button onclick="openMinigame('damas'); toggleInteractionMenu();" style="background: #1a1a1a; color: #ff4500; border: 1px solid #ff4500; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🔴 Desafiar: Damas</button>
             </div>
@@ -489,6 +507,7 @@
             // --- FAMÍLIA LANCEHEARTH E ALIADOS ---
             {
                 name: "Ashlan Lancehearth", title: "O Herdeiro do Vendaval", role: "dps", image: "ashlan.jpg",
+                model3dChar: "https://playcanv.as/b/0c8b6d1c",
                 avatar: "ashlan_face.jpg",
                 quote: "\"O vento não pede permissão para destruir... e nem eu.\"",
                 faction: "💎 Diamond City", elemento: "🌪️ Vento", 
@@ -1901,7 +1920,18 @@ const falasLocais = [
                 ? `<div style="margin-top: 15px; text-align: center; border-top: 1px dashed rgba(212, 175, 55, 0.3); padding-top: 15px;">
                        <img src="${hero.weaponImage}" alt="${hero.weapon}" style="max-width: 100%; max-height: 450px; border-radius: 8px; border: 1px solid rgba(212, 175, 55, 0.5); box-shadow: 0 4px 15px rgba(0,0,0,0.7); object-fit: contain;">
                    </div>`
-                : ''; 
+                : '';
+
+                 // ==========================================
+            // LÓGICA DOS BOTÕES 3D ADICIONADA AQUI!
+            // ==========================================
+            const btn3DChar = hero.model3dChar 
+                ? `<button onclick="window.abrirModelo3D('${hero.model3dChar}', 'char')" style="background: #1a1a1a; color: #00ffcc; border: 1px solid #00ffcc; padding: 10px; border-radius: 5px; font-family: 'Cinzel', serif; font-weight: bold; cursor: pointer; transition: 0.3s; width: 100%; margin-bottom: 10px; text-transform: uppercase;" onmouseover="this.style.background='#00ffcc'; this.style.color='#000'" onmouseout="this.style.background='#1a1a1a'; this.style.color='#00ffcc'">✨ Ver Modelo 3D Personagem</button>`
+                : `<button title="MODELO 3D CHEGARÁ EM BREVE..." style="background: #111; color: #444; border: 1px dashed #444; padding: 10px; border-radius: 5px; font-family: 'Cinzel', serif; font-weight: bold; cursor: not-allowed; width: 100%; margin-bottom: 10px; opacity: 0.7;">🔒 Ver Modelo 3D Personagem</button>`;
+
+            const btn3DWeapon = hero.model3dWeapon 
+                ? `<button onclick="window.abrirModelo3D('${hero.model3dWeapon}', 'weapon')" style="background: #1a1a1a; color: #ff4500; border: 1px solid #ff4500; padding: 10px; border-radius: 5px; font-family: 'Cinzel', serif; font-weight: bold; cursor: pointer; transition: 0.3s; width: 100%; margin-bottom: 20px; text-transform: uppercase;" onmouseover="this.style.background='#ff4500'; this.style.color='#fff'" onmouseout="this.style.background='#1a1a1a'; this.style.color='#ff4500'">⚔️ Ver Modelo 3D Arma</button>`
+                : `<button title="MODELO 3D CHEGARÁ EM BREVE..." style="background: #111; color: #444; border: 1px dashed #444; padding: 10px; border-radius: 5px; font-family: 'Cinzel', serif; font-weight: bold; cursor: not-allowed; width: 100%; margin-bottom: 20px; opacity: 0.7;">🔒 Ver Modelo 3D Arma</button>`; 
 
             document.getElementById('modalDetails').innerHTML = `
                 <div style="display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 15px; border-bottom: 1px solid #444; padding-bottom: 15px; flex-wrap: wrap;">
@@ -1947,6 +1977,9 @@ const falasLocais = [
                     <p style="margin:0; font-size:0.95rem; color:#ccc; text-align: justify; line-height: 1.5;">${hero.weaponDetails || 'Não possui detalhes de arma registrados.'}</p>
                     ${weaponImageHTML}
                 </div>
+
+                ${btn3DChar}
+                ${btn3DWeapon}
 
                 <p style="margin-bottom: 20px;"><strong>Lore Oficial:</strong><br><br> ${hero.description}</p>
                 
@@ -2536,7 +2569,6 @@ Responda como o Oráculo de Aetheryon.
         <div id="memoryBoard" style="display: none; grid-template-columns: repeat(4, 70px); gap: 10px; perspective: 1000px; margin-bottom: 20px;">
             <!-- Cartas entram via JS -->
         </div>
-
     </div>
 
     <!-- TELA DE CONGELAMENTO DA ORÁCULO (Z-INDEX GIGANTE) -->
@@ -2621,13 +2653,16 @@ Responda como o Oráculo de Aetheryon.
             { id: 'curioso', name: 'Explorador Curioso', desc: 'Abra a ficha de 3 personagens diferentes.', rank: 'Legend' },
             { id: 'cutucador', name: 'Insolência Extrema', desc: 'Irrite a Oráculo até ela quebrar a realidade.', rank: 'Demigod' },
             { id: 'god_slayer', name: 'O Fim da Eternidade', desc: 'Derrote a Oráculo no Xadrez na dificuldade Fim da Eternidade.', rank: 'Cosmic' },
-            { id: 'smart_cheater', name: 'O Primeiro a Trapacear', desc: 'Tente derrotar a Oráculo de alguma maneira...', rank: 'First One' }
+            { id: 'smart_cheater', name: 'O Primeiro a Trapacear', desc: 'Tente derrotar a Oráculo de alguma maneira...', rank: 'First One' },
+            { id: 'ladrao_prob', name: 'Ladrão de Probabilidades', desc: 'Vença a Oráculo nos Cálices da Ilusão 20 vezes.', premio: 'Tema Eclipse', corPremio: '#ffaa00' },
+            { id: 'domador_caos', name: 'Domador do Caos', desc: 'Vença o jogo Mente Fraturada no nível OBLIVION.', premio: 'Tema Vento', corPremio: '#00ffcc' },
+            { id: 'folego_eterno', name: 'Fôlego Eterno', desc: 'Sobreviva à Sentença de Morte na Forca Arcana.', premio: 'Tema Água', corPremio: '#7FDBFF' }
         ];
 
-        function applyTheme(theme) {
+        window.applyTheme = function(theme) {
             const btnTheme = document.getElementById('themeToggleBtn');
-            document.body.classList.remove('winter-theme', 'eclipse-theme', 'vento-theme');
-            document.querySelectorAll('.snowflake, .wind-leaf').forEach(e => e.remove());
+            document.body.classList.remove('winter-theme', 'eclipse-theme', 'vento-theme', 'agua-theme');
+            document.querySelectorAll('.snowflake, .wind-leaf, .bubble').forEach(e => e.remove());
 
             if (theme === 'winter') {
                 document.body.classList.add('winter-theme');
@@ -2659,59 +2694,103 @@ Responda como o Oráculo de Aetheryon.
                         document.body.appendChild(leaf);
                     }
                 }
+            } else if (theme === 'agua') {
+                document.body.classList.add('agua-theme');
+                if(btnTheme) { btnTheme.innerText = '🌊 Tema: Água'; btnTheme.style.borderColor = '#7FDBFF'; btnTheme.style.color = '#7FDBFF'; }
+                if(document.querySelectorAll('.bubble').length === 0) {
+                    for(let i=0; i<25; i++) {
+                        let bubble = document.createElement('div');
+                        bubble.className = 'bubble';
+                        let size = Math.random() * 20 + 5;
+                        bubble.style.width = size + 'px';
+                        bubble.style.height = size + 'px';
+                        bubble.style.left = Math.random() * 100 + 'vw';
+                        bubble.style.animationDuration = (Math.random() * 4 + 3) + 's';
+                        bubble.style.animationDelay = Math.random() * 2 + 's';
+                        document.body.appendChild(bubble);
+                    }
+                }
             } else {
                 if(btnTheme) { btnTheme.innerText = '🔮 Tema: Padrão'; btnTheme.style.borderColor = '#d4af37'; btnTheme.style.color = '#d4af37'; }
             }
             
-            if ((playerRank === 'First One' || inventario.includes('tema_eclipse') || inventario.includes('tema_vento')) && btnTheme) {
+            if ((playerRank === 'First One' || inventario.includes('tema_eclipse') || inventario.includes('tema_vento') || inventario.includes('tema_agua')) && btnTheme) {
                 btnTheme.style.display = 'inline-block';
             }
-        }
+        };
 
-        function toggleTheme() {
+        window.toggleTheme = function() {
             let temasPossiveis = ['normal'];
             if (playerRank === 'First One') temasPossiveis.push('winter');
             if (inventario.includes('tema_eclipse')) temasPossiveis.push('eclipse');
             if (inventario.includes('tema_vento')) temasPossiveis.push('vento');
+            if (inventario.includes('tema_agua')) temasPossiveis.push('agua');
 
             let indexAtual = temasPossiveis.indexOf(currentTheme);
             let proxIndex = (indexAtual + 1) % temasPossiveis.length;
             
             currentTheme = temasPossiveis[proxIndex];
             localStorage.setItem('aetheryonTheme', currentTheme);
-            applyTheme(currentTheme);
-        }
+            window.applyTheme(currentTheme);
+        };
 
-        function trocarMusicaListada() {
+        window.trocarMusicaListada = function() {
             const audio = document.getElementById('bgMusic');
             const seletor = document.getElementById('musicSelector');
-
-        // ==========================================
-        // CONTROLE DE VOLUME DA MÚSICA (GLOBAL)
-        // ==========================================
-        window.updateMusicVolume = function(val) {
-            const audio = document.getElementById('bgMusic');
-            if (audio) {
-                audio.volume = parseFloat(val);
+            if(audio && seletor) {
+                currentMusic = seletor.value;
+                audio.src = currentMusic;
+                audio.load();
+                audio.play().catch(e => console.log("Aguardando interação do usuário..."));
+                localStorage.setItem('aetheryonMusic', currentMusic);
             }
         };
-            
-            // Pega o nome do arquivo que você escolheu na lista
-            currentMusic = seletor.value;
-            audio.src = currentMusic;
-            audio.load();
-            audio.play().catch(e => console.log("Aguardando interação do usuário..."));
-            
-            // Salva a preferência pra quando o usuário voltar no site
-            localStorage.setItem('aetheryonMusic', currentMusic);
-        }
 
-        applyTheme(currentTheme);
+        window.abrirConquistas = function() {
+            document.getElementById('achievementsModal').style.display = 'flex';
+            document.getElementById('currentRankDisplay').innerText = playerRank;
+            
+            const lista = document.getElementById('achievementsList');
+            if(lista) lista.innerHTML = '';
+
+            conquistasDB.forEach(c => {
+                let obtida = false;
+                if (c.premio === 'Tema Eclipse') obtida = inventario.includes('tema_eclipse');
+                else if (c.premio === 'Tema Vento') obtida = inventario.includes('tema_vento');
+                else if (c.premio === 'Tema Água') obtida = inventario.includes('tema_agua');
+                else obtida = unlockedAchievements.includes(c.id);
+
+                const cor = obtida ? '#d4af37' : '#444';
+                const icone = obtida ? '✅' : '🔒';
+                
+                let tagDireita = '';
+                if (c.premio) {
+                    tagDireita = `<span style="font-size:11px; float:right; background:#222; color:${c.corPremio}; padding:2px 5px; border-radius:3px; border: 1px solid ${c.corPremio};">Prêmio: ${c.premio}</span>`;
+                } else {
+                    tagDireita = `<span style="font-size:11px; float:right; background:#222; padding:2px 5px; border-radius:3px; color: #fff;">Rank: ${c.rank}</span>`;
+                }
+                
+                if(lista) {
+                    lista.innerHTML += `
+                        <div style="border: 1px solid ${cor}; padding: 10px; margin-bottom: 12px; border-radius: 5px; background: rgba(0,0,0,0.5);">
+                            <div style="color: ${cor}; font-weight: bold; font-size: 16px;">${icone} ${c.name} ${tagDireita}</div>
+                            <div style="color: #aaa; font-size: 13px; margin-top: 5px;">${c.desc}</div>
+                        </div>
+                    `;
+                }
+            });
+        };
+
+                // ==========================================
+        // INICIALIZAÇÃO DO SITE (O MOTOR DE ARRANQUE)
+        // ==========================================
+        window.applyTheme(currentTheme);
+
         document.addEventListener("DOMContentLoaded", () => {
             const audioTag = document.getElementById('bgMusic');
             if(audioTag) {
                 audioTag.src = currentMusic;
-                audioTag.volume = 0.3; // Define o volume padrão do áudio igual ao da barrinha
+                audioTag.volume = 0.3; // Define o volume padrão
             }
             
             // Avisa a lista visual qual foi a última música escolhida!
@@ -2720,29 +2799,6 @@ Responda como o Oráculo de Aetheryon.
                 seletor.value = currentMusic;
             }
         });
-
-        function abrirConquistas() {
-            document.getElementById('achievementsModal').style.display = 'flex';
-            document.getElementById('currentRankDisplay').innerText = playerRank;
-            
-            const lista = document.getElementById('achievementsList');
-            if(lista) lista.innerHTML = '';
-
-            conquistasDB.forEach(c => {
-                const obtida = unlockedAchievements.includes(c.id);
-                const cor = obtida ? '#d4af37' : '#444';
-                const icone = obtida ? '✅' : '🔒';
-                
-                if(lista) {
-                    lista.innerHTML += `
-                        <div style="border: 1px solid ${cor}; padding: 10px; border-radius: 5px; background: rgba(0,0,0,0.5);">
-                            <div style="color: ${cor}; font-weight: bold; font-size: 16px;">${icone} ${c.name} <span style="font-size:11px; float:right; background:#222; padding:2px 5px; border-radius:3px;">Rank: ${c.rank}</span></div>
-                            <div style="color: #aaa; font-size: 13px; margin-top: 5px;">${c.desc}</div>
-                        </div>
-                    `;
-                }
-            });
-        }
 
         function desbloquearConquista(id) {
             if (!unlockedAchievements.includes(id)) {
@@ -2834,17 +2890,18 @@ Responda como o Oráculo de Aetheryon.
             location.reload(); 
         }
 
-        // ==========================================
+        
+// ==========================================
         // MINIGAME: JOKENPÔ ARCANO
         // ==========================================
         let placarJkp = { player: 0, oracle: 0 };
 
-        function abrirJokenpo() {
+        window.abrirJokenpo = function() {
             document.getElementById('jokenpoScreen').style.display = 'flex';
-            speakOracle(["Jokenpô Arcano? Um joguinho de criança para uma mente infantil. Vamos ver a sua sorte."]);
-        }
+            if (typeof speakOracle === 'function') speakOracle(["Jokenpô Arcano? Um joguinho de criança para uma mente infantil. Vamos ver a sua sorte."]);
+        };
 
-        function jogarJokenpo(escolhaPlayer) {
+        window.jogarJokenpo = function(escolhaPlayer) {
             window.speechSynthesis.cancel();
             
             const opcoes = ['pedra', 'pergaminho', 'lamina'];
@@ -2852,7 +2909,7 @@ Responda como o Oráculo de Aetheryon.
 
             if (placarJkp.player > placarJkp.oracle && Math.random() < 0.2) {
                 escolhaOraculo = (escolhaPlayer === 'pedra') ? 'pergaminho' : (escolhaPlayer === 'pergaminho') ? 'lamina' : 'pedra';
-                speakOracle(["Magia da Realidade! Eu reescrevo as regras desse jogo patético."]);
+                if (typeof speakOracle === 'function') speakOracle(["Magia da Realidade! Eu reescrevo as regras desse jogo patético."]);
             }
 
             let resultadoText = "";
@@ -2892,9 +2949,9 @@ Responda como o Oráculo de Aetheryon.
             document.getElementById('jkpStatus').innerText = `Você escolheu ${traducoes[escolhaPlayer]}. Eu joguei ${traducoes[escolhaOraculo]}. ${resultadoText}`;
 
             if (!document.getElementById('jkpStatus').innerText.includes("Magia da Realidade")) {
-                setTimeout(() => { speakOracle([fala]); }, 50);
+                setTimeout(() => { if (typeof speakOracle === 'function') speakOracle([fala]); }, 50);
             }
-        }
+        };
 
         // ==========================================
         // MINIGAME: JOGO DA VELHA (TIC TAC TOE ARCANO)
@@ -2903,17 +2960,17 @@ Responda como o Oráculo de Aetheryon.
         let tttAtivo = true;
         let oraculoStunned = false;
 
-        function abrirTicTacToe() {
+        window.abrirTicTacToe = function() {
             document.getElementById('tictactoeScreen').style.display = 'flex';
-            reiniciarTicTacToe();
+            window.reiniciarTicTacToe();
             
             if (inventario.includes('garrafa_magica')) {
                 document.getElementById('btnUsarGarrafa').style.display = 'inline-block';
             }
-            speakOracle(["Jogo da velha? Que primitivo. Eu prevejo todas as suas possibilidades de futuro."]);
-        }
+            if (typeof speakOracle === 'function') speakOracle(["Jogo da velha? Que primitivo. Eu prevejo todas as suas possibilidades de futuro."]);
+        };
 
-        function usarGarrafaMagica() {
+        window.usarGarrafaMagica = function() {
             oraculoStunned = true;
             inventario = inventario.filter(item => item !== 'garrafa_magica'); 
             localStorage.setItem('aetheryonInventario', JSON.stringify(inventario));
@@ -2922,23 +2979,23 @@ Responda como o Oráculo de Aetheryon.
             document.getElementById('tttStatus').innerText = "A Oráculo está atordoada! Jogue!";
             
             window.speechSynthesis.cancel();
-            speakOracle(["O quê?! O que é esse líquido?! Minha visão arcana... está turva! Eu não consigo calcular!"]);
-        }
+            if (typeof speakOracle === 'function') speakOracle(["O quê?! O que é esse líquido?! Minha visão arcana... está turva! Eu não consigo calcular!"]);
+        };
 
-        function jogarTicTacToe(index) {
+        window.jogarTicTacToe = function(index) {
             window.speechSynthesis.cancel();
             if (!tttAtivo || tttBoard[index] !== '') return;
 
             tttBoard[index] = 'X';
-            atualizarTabuleiroTTT();
+            window.atualizarTabuleiroTTT();
 
-            if (verificarVitoriaTTT('X')) {
+            if (window.verificarVitoriaTTT('X')) {
                 if (oraculoStunned) {
-                    desbloquearConquista('smart_cheater');
+                    if(typeof desbloquearConquista === 'function') desbloquearConquista('smart_cheater');
                     document.getElementById('tttStatus').innerText = "A Oráculo desmaiou. VOCÊ TRAPACEOU E VENCEU!";
                 } else {
                     document.getElementById('tttStatus').innerText = "Você Venceu?! IMPOSSÍVEL!";
-                    speakOracle(["Como você superou a matemática pura?!"]);
+                    if (typeof speakOracle === 'function') speakOracle(["Como você superou a matemática pura?!"]);
                 }
                 tttAtivo = false;
                 return;
@@ -2946,7 +3003,7 @@ Responda como o Oráculo de Aetheryon.
 
             if (!tttBoard.includes('')) {
                 document.getElementById('tttStatus').innerText = "Empate.";
-                speakOracle(["Empate. Como esperado de uma mente previsível."]);
+                if (typeof speakOracle === 'function') speakOracle(["Empate. Como esperado de uma mente previsível."]);
                 tttAtivo = false;
                 return;
             }
@@ -2955,17 +3012,17 @@ Responda como o Oráculo de Aetheryon.
                 document.getElementById('tttStatus').innerText = "A Oráculo ainda está atordoada! Pode jogar de novo!";
             } else {
                 document.getElementById('tttStatus').innerText = "A Oráculo está pensando...";
-                setTimeout(jogadaOraculoTTT, 300);
+                setTimeout(window.jogadaOraculoTTT, 300);
             }
-        }
+        };
 
-        function jogadaOraculoTTT() {
+        window.jogadaOraculoTTT = function() {
             let bestScore = -Infinity;
             let move;
             for (let i = 0; i < 9; i++) {
                 if (tttBoard[i] === '') {
                     tttBoard[i] = 'O'; 
-                    let score = minimaxTTT(tttBoard, 0, false);
+                    let score = window.minimaxTTT(tttBoard, 0, false);
                     tttBoard[i] = ''; 
                     if (score > bestScore) {
                         bestScore = score;
@@ -2974,24 +3031,24 @@ Responda como o Oráculo de Aetheryon.
                 }
             }
             tttBoard[move] = 'O'; 
-            atualizarTabuleiroTTT();
+            window.atualizarTabuleiroTTT();
 
-            if (verificarVitoriaTTT('O')) {
+            if (window.verificarVitoriaTTT('O')) {
                 document.getElementById('tttStatus').innerText = "A Oráculo Venceu!";
-                speakOracle(["Xeque-Mate. Oh, espera, jogo errado... Mas a sua derrota continua igual."]);
+                if (typeof speakOracle === 'function') speakOracle(["Xeque-Mate. Oh, espera, jogo errado... Mas a sua derrota continua igual."]);
                 tttAtivo = false;
             } else if (!tttBoard.includes('')) {
                 document.getElementById('tttStatus').innerText = "Empate.";
-                speakOracle(["Empate... Você até que sabe se defender."]);
+                if (typeof speakOracle === 'function') speakOracle(["Empate... Você até que sabe se defender."]);
                 tttAtivo = false;
             } else {
                 document.getElementById('tttStatus').innerText = "Sua vez. Tente sobreviver.";
             }
-        }
+        };
 
-        function minimaxTTT(board, depth, isMaximizing) {
-            if (verificarVitoriaTTT('O')) return 10 - depth;
-            if (verificarVitoriaTTT('X')) return -10 + depth;
+        window.minimaxTTT = function(board, depth, isMaximizing) {
+            if (window.verificarVitoriaTTT('O')) return 10 - depth;
+            if (window.verificarVitoriaTTT('X')) return -10 + depth;
             if (!board.includes('')) return 0;
 
             if (isMaximizing) {
@@ -2999,7 +3056,7 @@ Responda como o Oráculo de Aetheryon.
                 for (let i = 0; i < 9; i++) {
                     if (board[i] === '') {
                         board[i] = 'O';
-                        let score = minimaxTTT(board, depth + 1, false);
+                        let score = window.minimaxTTT(board, depth + 1, false);
                         board[i] = '';
                         bestScore = Math.max(score, bestScore);
                     }
@@ -3010,122 +3067,110 @@ Responda como o Oráculo de Aetheryon.
                 for (let i = 0; i < 9; i++) {
                     if (board[i] === '') {
                         board[i] = 'X';
-                        let score = minimaxTTT(board, depth + 1, true);
+                        let score = window.minimaxTTT(board, depth + 1, true);
                         board[i] = '';
                         bestScore = Math.min(score, bestScore);
                     }
                 }
                 return bestScore;
             }
-        }
+        };
 
-        function verificarVitoriaTTT(player) {
+        window.verificarVitoriaTTT = function(player) {
             const winCombos = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
             for (let i = 0; i < winCombos.length; i++) {
                 const [a, b, c] = winCombos[i];
                 if (tttBoard[a] === player && tttBoard[b] === player && tttBoard[c] === player) return true;
             }
             return false;
-        }
+        };
 
-        function atualizarTabuleiroTTT() {
+        window.atualizarTabuleiroTTT = function() {
             const cells = document.getElementsByClassName('ttt-cell');
             for (let i = 0; i < 9; i++) {
                 cells[i].innerText = tttBoard[i] === 'X' ? '✨' : tttBoard[i] === 'O' ? '🌑' : '';
             }
-        }
+        };
 
-        function reiniciarTicTacToe() {
+        window.reiniciarTicTacToe = function() {
             tttBoard = ['', '', '', '', '', '', '', '', ''];
             tttAtivo = true;
             oraculoStunned = false;
             document.getElementById('tttStatus').innerText = "Sua vez. Forme 3 selos de Luz (✨).";
-            atualizarTabuleiroTTT();
-        }
+            window.atualizarTabuleiroTTT();
+        };
 
-// ==========================================
+        // ==========================================
         // MINIGAME: CÁLICES DA ILUSÃO
         // ==========================================
         let placarCalices = { acertos: 0, erros: 0 };
         let calicesAtivo = true;
 
-        function abrirCalices() {
+        window.abrirCalices = function() {
             document.getElementById('calicesScreen').style.display = 'flex';
-            reiniciarCalices();
-            if (typeof speakOracle === 'function') {
-                speakOracle(["Vamos ver se a sua intuição é tão afiada quanto a sua arrogância."]);
-            }
-        }
+            window.reiniciarCalices();
+            if (typeof speakOracle === 'function') speakOracle(["Vamos ver se a sua intuição é tão afiada quanto a sua arrogância."]);
+        };
 
-        function escolherCalice(escolha) {
-            // Se o jogador já clicou e os cálices estão abertos, ignora o clique
+        window.escolherCalice = function(escolha) {
             if (!calicesAtivo) return; 
             window.speechSynthesis.cancel();
             
             calicesAtivo = false; 
-            
-            // A Oráculo sorteia um número de 1 a 3 para esconder a Luz
             const caliceCerto = Math.floor(Math.random() * 3) + 1;
             
-            // Animação instantânea abrindo os 3 cálices
             for (let i = 1; i <= 3; i++) {
                 let btn = document.getElementById('calice' + i);
                 if (i === caliceCerto) {
-                    btn.innerHTML = '✨'; // Achou a Luz
+                    btn.innerHTML = '✨'; 
                     btn.style.borderColor = '#00ffcc';
                     btn.style.background = 'rgba(0, 255, 204, 0.2)';
                 } else {
-                    btn.innerHTML = '🌑'; // Achou o Vazio
+                    btn.innerHTML = '🌑'; 
                     btn.style.borderColor = '#ff4444';
                     btn.style.background = 'rgba(255, 68, 68, 0.2)';
                 }
             }
 
-            // Verifica se o cálice que o jogador clicou é o certo
             if (escolha === caliceCerto) {
                 placarCalices.acertos++;
-                // VERIFICA RECOMPENSA DE 20 ACERTOS
                 if (placarCalices.acertos === 20 && !inventario.includes('tema_eclipse')) {
                     inventario.push('tema_eclipse');
                     localStorage.setItem('aetheryonInventario', JSON.stringify(inventario));
-                    mostrarRecompensa("Tema Eclipse Desbloqueado!", "Você roubou as probabilidades e atingiu 20 acertos na ilusão. Altere o tema no menu superior.", "🌑");
+                    if(typeof window.mostrarRecompensa === 'function') window.mostrarRecompensa("Tema Eclipse Desbloqueado!", "Você roubou as probabilidades e atingiu 20 acertos na ilusão. Altere o tema no menu superior.", "🌑");
                     if (typeof speakOracle === 'function') speakOracle(["Vinte acertos? Você está roubando as probabilidades! Pegue essa maldição do Eclipse e suma daqui!"]);
-                    applyTheme(currentTheme); // Atualiza o botão lá em cima
+                    if(typeof window.applyTheme === 'function') window.applyTheme(currentTheme); 
                 }
                 document.getElementById('calicesStatus').innerText = "Você encontrou a Luz... que sorte irritante.";
-                if (typeof speakOracle === 'function') {
-                    speakOracle(["Isso foi... Pura sorte. Não ache que isso o torna especial."]);
-                }
+                if (typeof speakOracle === 'function') speakOracle(["Isso foi... Pura sorte. Não ache que isso o torna especial."]);
             } else {
                 placarCalices.erros++;
                 document.getElementById('calicesStatus').innerText = "Vazio. Sua intuição falhou.";
-                if (typeof speakOracle === 'function') {
-                    speakOracle(["Você escolheu o vazio. Assim como a sua própria existência."]);
-                }
+                if (typeof speakOracle === 'function') speakOracle(["Você escolheu o vazio. Assim como a sua própria existência."]);
             }
 
-            // Atualiza o placar visual
             document.getElementById('calicesPlacar').innerText = `Acertos: ${placarCalices.acertos} | Erros: ${placarCalices.erros}`;
-        }
+        };
 
-        function reiniciarCalices() {
-            calicesAtivo = true; // Permite clicar de novo
+        window.reiniciarCalices = function() {
+            calicesAtivo = true; 
             document.getElementById('calicesStatus').innerText = "Apenas um cálice contém a Luz. Os outros abrigam o Vazio. Escolha.";
             
-            // Volta os botões pro visual padrão de Cálice 🍷
             for (let i = 1; i <= 3; i++) {
                 let btn = document.getElementById('calice' + i);
-                btn.innerHTML = '🍷';
-                btn.style.borderColor = '#ffaa00';
-                btn.style.background = '#111';
+                if(btn) {
+                    btn.innerHTML = '🍷';
+                    btn.style.borderColor = '#ffaa00';
+                    btn.style.background = '#111';
+                }
             }
-        }
+        };
 
-                // ==========================================
+        // ==========================================
         // MINIGAME: MENTE FRATURADA (MEMÓRIA)
         // ==========================================
         const iconesMemoriaPadrao = ['🌪️', '✨', '❄️', '🌑', '🌌', '🩸', '🧵', '🍃'];
-        const iconesMemoriaOblivion = ['🌪️', '✨', '❄️', '🌑', '🌌', '🩸', '🧵', '🍃', '⚔️', '🛡️', '👑', '🔮']; // 12 pares (24 cartas) para o Oblivion!
+        const iconesMemoriaOblivion = ['🌪️', '✨', '❄️', '🌑', '🌌', '🩸', '🧵', '🍃', '⚔️', '🛡️', '👑', '🔮']; 
         
         let cartas = [];
         let primeiraCarta = null;
@@ -3135,32 +3180,32 @@ Responda como o Oráculo de Aetheryon.
         let tempoRestante = 0;
         let timerMemoria = null;
         let dificuldadeAtual = '';
-        let errosMemoria = 0; // Contador de Erros pro Oblivion
+        let errosMemoria = 0; 
 
-        function abrirMemoria() {
+        window.abrirMemoria = function() {
             document.getElementById('memoryScreen').style.display = 'flex';
             document.getElementById('memoryConfig').style.display = 'flex';
             document.getElementById('memoryBoard').style.display = 'none';
             document.getElementById('memoryTimer').innerText = "00:00";
             document.getElementById('memoryStatus').innerText = "Escolha sua tortura.";
             if (typeof speakOracle === 'function') speakOracle(["Sua memória falha até para lembrar onde deixou as chaves. Vamos ver aqui."]);
-        }
+        };
 
-        function fecharMemoria() {
+        window.fecharMemoria = function() {
             document.getElementById('memoryScreen').style.display = 'none';
             clearInterval(timerMemoria);
             document.getElementById('oracleFreezeScreen').style.display = 'none';
-        }
+        };
 
-        function atualizarStatusMemoria() {
+        window.atualizarStatusMemoria = function() {
             if (dificuldadeAtual === 'oblivion') {
                 document.getElementById('memoryStatus').innerText = `Encontre os pares! | Erros: ${errosMemoria}/12`;
             } else {
                 document.getElementById('memoryStatus').innerText = "Encontre os pares!";
             }
-        }
+        };
 
-        function iniciarMemoria(dificuldade) {
+        window.iniciarMemoria = function(dificuldade) {
             dificuldadeAtual = dificuldade;
             errosMemoria = 0;
             paresEncontrados = 0;
@@ -3178,42 +3223,41 @@ Responda como o Oráculo de Aetheryon.
                 tempoRestante = 45;
                 board.style.gridTemplateColumns = 'repeat(4, 70px)';
             } else if (dificuldade === 'oblivion') {
-                tempoRestante = 120; // 2 Minutos
-                arrayUsado = iconesMemoriaOblivion; // 24 Cartas!
-                board.style.gridTemplateColumns = 'repeat(6, 70px)'; // Tabuleiro mais largo
+                tempoRestante = 120; 
+                arrayUsado = iconesMemoriaOblivion; 
+                board.style.gridTemplateColumns = 'repeat(6, 70px)'; 
             }
 
             document.getElementById('memoryConfig').style.display = 'none';
             board.style.display = 'grid';
-            atualizarStatusMemoria();
+            window.atualizarStatusMemoria();
 
-            // Dobra os ícones e embaralha
             cartas = [...arrayUsado, ...arrayUsado];
             cartas.sort(() => Math.random() - 0.5);
 
             board.innerHTML = '';
             cartas.forEach((icone) => {
                 board.innerHTML += `
-                    <div class="memory-card" data-icone="${icone}" onclick="virarCarta(this)" style="width: 70px; height: 90px; background: #222; border: 2px solid #8a2be2; border-radius: 8px; display: flex; justify-content: center; align-items: center; font-size: 2rem; cursor: pointer; transition: 0.3s; color: transparent;">
+                    <div class="memory-card" data-icone="${icone}" onclick="window.virarCarta(this)" style="width: 70px; height: 90px; background: #222; border: 2px solid #8a2be2; border-radius: 8px; display: flex; justify-content: center; align-items: center; font-size: 2rem; cursor: pointer; transition: 0.3s; color: transparent;">
                         ${icone}
                     </div>
                 `;
             });
 
-            atualizarTimerVisual();
+            window.atualizarTimerVisual();
             clearInterval(timerMemoria);
-            timerMemoria = setInterval(tickMemoria, 1000);
+            timerMemoria = setInterval(window.tickMemoria, 1000);
             
             if (dificuldade === 'hard' && typeof speakOracle === 'function') {
                 speakOracle(["Fim da linha. Suas regras não funcionam na minha dimensão."]);
             } else if (dificuldade === 'oblivion' && typeof speakOracle === 'function') {
                 speakOracle(["Oblivion... Você gosta mesmo de sofrer. Doze erros e a sua alma é minha."]);
             }
-        }
+        };
 
-        function virarCarta(cartaDOM) {
+        window.virarCarta = function(cartaDOM) {
             if (travaTabuleiro) return;
-            if (cartaDOM.style.color !== 'transparent') return; // Se já tá virada, ignora
+            if (cartaDOM.style.color !== 'transparent') return; 
 
             cartaDOM.style.background = '#ddd';
             cartaDOM.style.color = '#000';
@@ -3226,126 +3270,108 @@ Responda como o Oráculo de Aetheryon.
             segundaCarta = cartaDOM;
             travaTabuleiro = true;
 
-            verificarPar();
-        }
+            window.verificarPar();
+        };
 
-        function verificarPar() {
+        window.verificarPar = function() {
             let ehPar = primeiraCarta.dataset.icone === segundaCarta.dataset.icone;
 
             if (ehPar) {
                 primeiraCarta.style.borderColor = '#00ffcc';
                 segundaCarta.style.borderColor = '#00ffcc';
                 paresEncontrados++;
-                resetarCartas();
+                window.resetarCartas();
                 
                 if (paresEncontrados === (cartas.length / 2)) {
-                    vitoriaMemoria();
+                    window.vitoriaMemoria();
                 }
             } else {
                 errosMemoria++;
-                atualizarStatusMemoria();
+                window.atualizarStatusMemoria();
                 
-                // DERROTA POR ERROS NO OBLIVION
                 if (dificuldadeAtual === 'oblivion' && errosMemoria >= 12) {
-                    derrotaMemoria("Quem mandou errar tanto, seu lixo?");
+                    window.derrotaMemoria("Quem mandou errar tanto, seu lixo?");
                     return;
                 }
                 
                 setTimeout(() => {
-                    primeiraCarta.style.background = '#222';
-                    primeiraCarta.style.color = 'transparent';
-                    segundaCarta.style.background = '#222';
-                    segundaCarta.style.color = 'transparent';
-                    resetarCartas();
+                    if(primeiraCarta) { primeiraCarta.style.background = '#222'; primeiraCarta.style.color = 'transparent'; }
+                    if(segundaCarta) { segundaCarta.style.background = '#222'; segundaCarta.style.color = 'transparent'; }
+                    window.resetarCartas();
                 }, 1000);
             }
-        }
+        };
 
-        function resetarCartas() {
+        window.resetarCartas = function() {
             primeiraCarta = null;
             segundaCarta = null;
             travaTabuleiro = false;
-        }
+        };
 
-        function tickMemoria() {
-            // Se a tela estiver congelada pela Oráculo, o tempo não conta
+        window.tickMemoria = function() {
             if (document.getElementById('oracleFreezeScreen').style.display === 'flex') return;
 
             tempoRestante--;
-            atualizarTimerVisual();
+            window.atualizarTimerVisual();
 
-            // CONGELAMENTO NO HARD E NO OBLIVION
             if (dificuldadeAtual === 'hard' && tempoRestante === 20) {
-                congelarTelaOraculo();
+                window.congelarTelaOraculo();
             } else if (dificuldadeAtual === 'oblivion' && tempoRestante > 0 && tempoRestante % 30 === 0 && tempoRestante !== 120) {
-                congelarTelaOraculo(); // Congela a cada 30 segundos!
+                window.congelarTelaOraculo(); 
             }
 
-            // BUG CORRIGIDO: Tempo Acabou
             if (tempoRestante <= 0) {
-                derrotaMemoria("Sua memória é horrível, mortal. Quer tentar novamente?");
+                window.derrotaMemoria("Sua memória é horrível, mortal. Quer tentar novamente?");
             }
-        }
+        };
 
-        function atualizarTimerVisual() {
+        window.atualizarTimerVisual = function() {
             let min = Math.floor(tempoRestante / 60);
             let sec = tempoRestante % 60;
             document.getElementById('memoryTimer').innerText = `${min < 10 ? '0' : ''}${min}:${sec < 10 ? '0' : ''}${sec}`;
-        }
+        };
 
-        function congelarTelaOraculo() {
+        window.congelarTelaOraculo = function() {
             document.getElementById('oracleFreezeScreen').style.display = 'flex';
             if (typeof speakOracle === 'function') speakOracle(["Ahaha! Tempo parado! Ajoelhe-se e espere eu permitir que você jogue."]);
 
             setTimeout(() => {
                 document.getElementById('oracleFreezeScreen').style.display = 'none';
             }, 5000);
-        }
+        };
 
-        function derrotaMemoria(mensagemFinal) {
+        window.derrotaMemoria = function(mensagemFinal) {
             clearInterval(timerMemoria);
             travaTabuleiro = true; 
             
-            // Bloqueio Absoluto: Remove o clique de todas as cartas
             document.querySelectorAll('.memory-card').forEach(c => c.onclick = null); 
             
             document.getElementById('memoryStatus').innerText = mensagemFinal;
             document.getElementById('memoryConfig').style.display = 'flex';
             
             if (typeof speakOracle === 'function') speakOracle([mensagemFinal]);
-        }
+        };
 
-        function vitoriaMemoria() {
+        window.vitoriaMemoria = function() {
             clearInterval(timerMemoria);
             travaTabuleiro = true;
             document.querySelectorAll('.memory-card').forEach(c => c.onclick = null); 
             
             document.getElementById('memoryConfig').style.display = 'flex';
             
-            // RECOMPENSA DO OBLIVION
             if (dificuldadeAtual === 'oblivion' && !inventario.includes('tema_vento')) {
                 document.getElementById('memoryStatus').innerText = "Você domou o caos do Oblivion.";
                 inventario.push('tema_vento');
                 localStorage.setItem('aetheryonInventario', JSON.stringify(inventario));
                 
-                mostrarRecompensa("Tema Vento Desbloqueado!", "Você domou o caos do Oblivion e sobreviveu. O poder dos ventos agora é seu. Altere o tema no menu superior.", "🌪️");
-                applyTheme(currentTheme); 
+                if(typeof window.mostrarRecompensa === 'function') window.mostrarRecompensa("Tema Vento Desbloqueado!", "Você domou o caos do Oblivion e sobreviveu. O poder dos ventos agora é seu. Altere o tema no menu superior.", "🌪️");
+                if(typeof window.applyTheme === 'function') window.applyTheme(currentTheme); 
                 
                 if (typeof speakOracle === 'function') speakOracle(["Impossível... Você sobreviveu ao Oblivion. Pegue o seu prêmio e desapareça da minha vista."]);
             } else {
                 document.getElementById('memoryStatus').innerText = "Você montou sua mente novamente.";
                 if (typeof speakOracle === 'function') speakOracle(["Milagres acontecem. Você achou os pares. Sorte pura."]);
             }
-        }
-
-                // ==========================================
-        // SISTEMA DE RECOMPENSA ÉPICA (UI)
-        // ==========================================
-        window.mostrarRecompensa = function(titulo, descricao, icone) {
-            document.getElementById('rewardIcon').innerText = icone;
-            document.getElementById('rewardTitle').innerText = titulo;
-            document.getElementById('rewardDesc').innerText = descricao;
-            document.getElementById('rewardScreen').style.display = 'flex';
         };
 
         // ==========================================
@@ -3363,49 +3389,49 @@ Responda como o Oráculo de Aetheryon.
         let poderesUsados = 0;
         let isPlacingPiece = null;
 
-        function pedirConfirmacaoXadrez(dificuldade) {
+        window.pedirConfirmacaoXadrez = function(dificuldade) {
             dificuldadePendente = dificuldade;
             document.getElementById('chessConfirmBox').style.display = 'block';
             if (typeof speakOracle === 'function') speakOracle(["Tem certeza que deseja mudar as regras do jogo, mortal? O tabuleiro será resetado."]);
-        }
+        };
 
-        function cancelarMudancaXadrez() {
+        window.cancelarMudancaXadrez = function() {
             document.getElementById('chessConfirmBox').style.display = 'none';
-        }
+        };
 
-        function confirmarMudancaXadrez() {
+        window.confirmarMudancaXadrez = function() {
             document.getElementById('chessConfirmBox').style.display = 'none';
-            iniciarXadrez(dificuldadePendente);
+            window.iniciarXadrez(dificuldadePendente);
             
             if (typeof speakOracle === 'function') {
                 if(dificuldadePendente === 'trapaca') speakOracle(["Ah... você ativou as MINHAS regras. Prepare-se."]);
                 else if(dificuldadePendente === 'eternidade') speakOracle(["Fim da Eternidade... A morte não é o fim para as minhas peças."]);
                 else speakOracle(["Voltando ao modo para iniciantes. Que tédio."]);
             }
-        }
+        };
 
-        function openMinigame(tipo) {
+        window.openMinigame = function(tipo) {
             window.speechSynthesis.cancel(); 
             document.getElementById('minigameScreen').style.display = 'flex';
             
             if (tipo === 'xadrez') {
                 document.getElementById('gameTitle').innerText = "Oráculo: Xadrez";
-                iniciarXadrez('facil'); 
+                window.iniciarXadrez('facil'); 
                 setTimeout(() => { if (typeof speakOracle === 'function') speakOracle(["Ah... Xadrez. Um jogo sobre sacrificar peões... Eu adoro."]); }, 100); 
             } else if (tipo === 'damas') {
                 document.getElementById('gameTitle').innerText = "Oráculo: Damas";
                 document.getElementById('board').innerHTML = "<h3 style='color:white; padding: 50px; text-align: center;'>Damas em construção nas forjas de Aethelgard...</h3>";
                 setTimeout(() => { if (typeof speakOracle === 'function') speakOracle(["Damas? Sério? Um jogo de gente preguiçosa. Em breve eu monto isso pra você."]); }, 100);
             }
-        }
+        };
 
-        function closeMinigame() {
+        window.closeMinigame = function() {
             document.getElementById('minigameScreen').style.display = 'none';
             if (game) game.reset();
             if (typeof speakOracle === 'function') speakOracle(["Fugindo já? Era de se esperar."]);
-        }
+        };
 
-        function abrirMenuReviver() {
+        window.abrirMenuReviver = function() {
             if (poderesUsados >= 3) {
                 document.getElementById('gameStatus').innerText = "Sua mana esgotou. Você já usou a magia 3 vezes.";
                 return;
@@ -3425,28 +3451,27 @@ Responda como o Oráculo de Aetheryon.
                 let tipoMaiusculo = tipo.toUpperCase();
                 let imgUrl = `https://chessboardjs.com/img/chesspieces/wikipedia/w${tipoMaiusculo}.png`;
                 container.innerHTML += `
-                    <div onclick="prepararRessurreicao('${tipo}')" style="cursor:pointer; background:#222; padding:10px; border-radius:5px; border: 1px solid #d4af37; transition: 0.2s;" onmouseover="this.style.background='#333'" onmouseout="this.style.background='#222'">
+                    <div onclick="window.prepararRessurreicao('${tipo}')" style="cursor:pointer; background:#222; padding:10px; border-radius:5px; border: 1px solid #d4af37; transition: 0.2s;" onmouseover="this.style.background='#333'" onmouseout="this.style.background='#222'">
                         <img src="${imgUrl}" style="width:40px; height:40px;"><br>
                         <span style="color:#fff; font-size:12px; font-weight:bold;">${nomesPecas[tipo]}</span>
                     </div>
                 `;
             });
             document.getElementById('revivePieceModal').style.display = 'block';
-        }
+        };
 
-        function fecharMenuReviver() {
+        window.fecharMenuReviver = function() {
             document.getElementById('revivePieceModal').style.display = 'none';
-        }
+        };
 
-        function prepararRessurreicao(tipo) {
+        window.prepararRessurreicao = function(tipo) {
             isPlacingPiece = tipo;
-            fecharMenuReviver();
+            window.fecharMenuReviver();
             document.getElementById('gameStatus').innerText = `PODER ATIVADO: Toque em um quadrado VAZIO para reviver seu ${tipo.toUpperCase()}!`;
             if (typeof speakOracle === 'function') speakOracle(["Magia de ressurreição?! Você ousa copiar os meus truques?!"]);
-        }
+        };
 
-        function reviverPeao() {
-            // Se a Oráculo não tiver peões mortos, ela apenas avisa no Log
+        window.reviverPeao = function() {
             if (peoesPretosCapturados <= 0) {
                 const moveLog = document.getElementById('moveLog');
                 if (moveLog) {
@@ -3457,24 +3482,18 @@ Responda como o Oráculo de Aetheryon.
                     `;
                     moveLog.scrollTop = moveLog.scrollHeight;
                 }
-                return; // Sai da função
+                return; 
             }
 
             const casasRessurreicao = ['a7', 'b7', 'c7', 'd7', 'e7', 'f7', 'g7', 'h7'];
             const casasLivres = casasRessurreicao.filter(casa => game.get(casa) === null);
             
-            // Se a fileira inteira estiver ocupada, não tem onde reviver
             if (casasLivres.length === 0) return;
 
-            // Escolhe uma casa aleatória
             const casaEscolhida = casasLivres[Math.floor(Math.random() * casasLivres.length)];
-            
-            // Coloca a peça no sistema de forma limpa (sem o game.load)
             game.put({ type: 'p', color: 'b' }, casaEscolhida);
-            
-            peoesPretosCapturados--; // Retira um peão do cemitério
+            peoesPretosCapturados--; 
 
-            // Atualiza o Log de batalha
             const moveLog = document.getElementById('moveLog');
             if (moveLog) {
                 moveLog.innerHTML += `
@@ -3485,288 +3504,33 @@ Responda como o Oráculo de Aetheryon.
                 moveLog.scrollTop = moveLog.scrollHeight;
             }
 
-            // O SEGREDO: Usamos setTimeout para escrever na tela DEPOIS do updateStatus() limpar o painel
             setTimeout(() => {
                 document.getElementById('gameStatus').innerText = `☠️ A Eternidade reviveu um peão em ${casaEscolhida}!`;
                 if (typeof speakOracle === 'function') speakOracle(["A morte não é o fim para as minhas peças. Levante-se!"]);
             }, 100);
-        }
+        };
 
-        // AGORA SIM, DECLARANDO COMO FUNÇÃO NATIVA PARA NÃO DAR ERRO E O TABULEIRO APARECER!
-        function onDragStart(source, piece) {
-            if (typeof isPlacingPiece !== 'undefined' && isPlacingPiece !== null) return false; 
-            if (typeof removerHighlights === 'function') removerHighlights();
-            squareSelecionado = null;
-            if (game === null || game.game_over() || piece.search(/^b/) !== -1) return false;
-        }
+        let casaSelecionada = null; 
 
-        function onDrop(source, target) {
-            if (typeof removerHighlights === 'function') removerHighlights();
-            squareSelecionado = null;
-
-            if (source === target) return 'snapback'; 
-            
-            const pecaAlvo = game.get(target);
-            if (pecaAlvo && pecaAlvo.type === 'k' && pecaAlvo.color === 'b') {
-                let pseudoMoves = game.moves({ verbose: true, legal: false });
-                let canEatKing = pseudoMoves.some(m => m.from === source && m.to === target);
-                
-                if(canEatKing) {
-                    document.getElementById('gameStatus').innerText = "👑 O REI FOI DESTITUÍDO! VITÓRIA ABSOLUTA!";
-                    if (typeof speakOracle === 'function') speakOracle(["NÃOOO! Meu Rei foi destruído... isso é impossível!"]);
-
-                    if (typeof statsXadrez !== 'undefined' && typeof dificuldadeXadrez !== 'undefined') {
-                        statsXadrez[dificuldadeXadrez].w++;
-                        localStorage.setItem('aetheryonChessStats', JSON.stringify(statsXadrez));
-                        if (document.getElementById('diffWins')) {
-                            document.getElementById('diffWins').innerText = statsXadrez[dificuldadeXadrez].w;
-                        }
-                    }
-                    return 'snapback';
-                }
-            }
-
-            let move = game.move({ from: source, to: target, promotion: 'q' });
-            if (move === null) return 'snapback'; 
-
-            contadorJogadas++;
-            if (move.captured === 'p' && move.color === 'w') peoesPretosCapturados++;
-            if (move.captured && move.color === 'b') pecasPerdidasJogador.push(move.captured);
-
-            const moveLog = document.getElementById('moveLog');
-            if (moveLog) {
-                moveLog.innerHTML += `<div style="padding: 4px 0; border-bottom: 1px solid #222;"><span style="color: #fff;">Você moveu:</span> ${source} → ${target}</div>`;
-                moveLog.scrollTop = moveLog.scrollHeight;
-            }
-
-            updateStatus();
-            window.setTimeout(jogadaDaOraculo, 600);
-        }
-
-        function onSnapEnd() {
-            if (game && board) board.position(game.fen()); 
-        }
-
-        function iniciarXadrez(dificuldade) {
-            dificuldadeXadrez = dificuldade;
-            contadorJogadas = 0;
-            peoesPretosCapturados = 0;
-            
-            pecasPerdidasJogador = [];
-            poderesUsados = 0;
-            isPlacingPiece = null;
-            let btnPower = document.getElementById('btnPowerRevive');
-            if(btnPower) {
-                btnPower.innerText = "✨ USAR PODER: RESSURREIÇÃO (0/3)";
-                btnPower.disabled = false;
-                btnPower.style.display = (dificuldade === 'eternidade') ? 'inline-block' : 'none';
-            }
-
-            let diffLabels = { 'facil': 'Fácil', 'trapaca': 'VOU ROUBAR', 'eternidade': 'Fim da Eternidade' };
-            if(document.getElementById('currentDiffName')) {
-                document.getElementById('currentDiffName').innerText = diffLabels[dificuldade];
-                document.getElementById('diffWins').innerText = statsXadrez[dificuldade].w;
-                document.getElementById('diffLosses').innerText = statsXadrez[dificuldade].l;
-            }
-
-            game = new Chess();
-            const config = {
-                draggable: true,
-                position: 'start',
-                onDragStart: onDragStart,
-                onDrop: onDrop,
-                onSnapEnd: onSnapEnd,
-                pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png'
-            };
-            board = Chessboard('board', config);
-            
-            let statusEl = document.getElementById('gameStatus');
-            if(statusEl) {
-                statusEl.innerText = dificuldade === 'facil' 
-                    ? "Dificuldade: Fácil. Jogue com as brancas." 
-                    : "Dificuldade: INSANA. A Oráculo não joga pelas regras.";
-            }
-        }
-
-        function updateStatus() {
-            let statusEl = document.getElementById('gameStatus');
-            if (game.in_checkmate()) {
-                if (game.turn() === 'b') { 
-                    statusEl.innerText = "Você venceu... IMPOSSÍVEL!";
-                    if (typeof speakOracle === 'function') speakOracle(["O quê?! Você trapaceou! Isso não vai ficar assim!"]);
-                    
-                    statsXadrez[dificuldadeXadrez].w++;
-                    localStorage.setItem('aetheryonChessStats', JSON.stringify(statsXadrez));
-                    if(document.getElementById('diffWins')) document.getElementById('diffWins').innerText = statsXadrez[dificuldadeXadrez].w;
-
-                    if (dificuldadeXadrez === 'eternidade') desbloquearConquista('god_slayer');
-                } else { 
-                    statusEl.innerText = "XEQUE-MATE. Você foi obliterado.";
-                    if (typeof speakOracle === 'function') speakOracle(["Xeque-mate. Sua mente é tão patética quanto a sua raça."]);
-                    
-                    statsXadrez[dificuldadeXadrez].l++;
-                    localStorage.setItem('aetheryonChessStats', JSON.stringify(statsXadrez));
-                    if(document.getElementById('diffLosses')) document.getElementById('diffLosses').innerText = statsXadrez[dificuldadeXadrez].l;
-                }
-            } else if (game.in_check()) {
-                if (game.turn() === 'b') { 
-                    statusEl.innerText = "Você colocou a Oráculo em Xeque!";
-                    if (typeof speakOracle === 'function') speakOracle(["Ousado... Você acha que ameaçar o meu rei muda alguma coisa?"]);
-                } else {
-                    statusEl.innerText = "Xeque! A morte se aproxima.";
-                    if (typeof speakOracle === 'function') speakOracle(["Olhe o seu rei tremendo... Xeque."]);
-                }
-            } else {
-                statusEl.innerText = "O jogo continua...";
-            }
-        }
-
-        const pecasValores = { p: 10, n: 30, b: 30, r: 50, q: 90, k: 900 };
-
-        function avaliarTabuleiro(jogo) {
-            let valorTotal = 0;
-            const tabuleiro = jogo.board();
-            for (let i = 0; i < 8; i++) {
-                for (let j = 0; j < 8; j++) {
-                    if (tabuleiro[i][j]) {
-                        let peca = tabuleiro[i][j];
-                        let valor = pecasValores[peca.type];
-                        valorTotal += (peca.color === 'w') ? valor : -valor;
-                    }
-                }
-            }
-            return valorTotal;
-        }
-
-        function minimax(jogo, profundidade, alpha, beta, isMaximizingPlayer) {
-            if (profundidade === 0 || jogo.game_over()) return avaliarTabuleiro(jogo);
-            let movimentos = jogo.moves();
-            if (isMaximizingPlayer) {
-                let melhorValor = -9999;
-                for (let i = 0; i < movimentos.length; i++) {
-                    jogo.move(movimentos[i]);
-                    melhorValor = Math.max(melhorValor, minimax(jogo, profundidade - 1, alpha, beta, !isMaximizingPlayer));
-                    jogo.undo();
-                    alpha = Math.max(alpha, melhorValor);
-                    if (beta <= alpha) break;
-                }
-                return melhorValor;
-            } else {
-                let melhorValor = 9999;
-                for (let i = 0; i < movimentos.length; i++) {
-                    jogo.move(movimentos[i]);
-                    melhorValor = Math.min(melhorValor, minimax(jogo, profundidade - 1, alpha, beta, !isMaximizingPlayer));
-                    jogo.undo();
-                    beta = Math.min(beta, melhorValor);
-                    if (beta <= alpha) break;
-                }
-                return melhorValor;
-            }
-        }
-
-        function calcularMelhorJogada(jogo, profundidade) {
-            let movimentos = jogo.moves();
-            let melhorMovimento = null;
-            let melhorValor = 9999; 
-
-            for (let i = 0; i < movimentos.length; i++) {
-                jogo.move(movimentos[i]);
-                let valorTabuleiro = minimax(jogo, profundidade - 1, -10000, 10000, true);
-                jogo.undo();
-                
-                if (valorTabuleiro < melhorValor) {
-                    melhorValor = valorTabuleiro;
-                    melhorMovimento = movimentos[i];
-                }
-            }
-            return melhorMovimento || movimentos[Math.floor(Math.random() * movimentos.length)];
-        }
-
-        function jogadaDaOraculo() {
-            if (game.game_over()) return;
-
-            let movimentosPossiveis = game.moves();
-
-            if (dificuldadeXadrez === 'trapaca' && Math.random() < 0.2) { 
-                document.getElementById('gameStatus').innerText = "MAGIA DA REALIDADE: A Oráculo inverteu o tabuleiro!";
-                board.flip();
-                setTimeout(() => { if (typeof speakOracle === 'function') speakOracle(["As regras da realidade são minhas! Quem disse que esse jogo era justo?"]); }, 50);
-            }
-
-            let movimentoSorteado;
-            if (dificuldadeXadrez === 'facil') {
-                movimentoSorteado = movimentosPossiveis[Math.floor(Math.random() * movimentosPossiveis.length)];
-            } else {
-                let profundidade = (dificuldadeXadrez === 'eternidade') ? 3 : 2; 
-                movimentoSorteado = calcularMelhorJogada(game, profundidade);
-            }
-
-            const movimentoRealizado = game.move(movimentoSorteado);
-
-            if (movimentoRealizado) { 
-                if (movimentoRealizado.captured && movimentoRealizado.color === 'b') {
-                    pecasPerdidasJogador.push(movimentoRealizado.captured);
-                }       
-                
-                contadorJogadas++;
-                const moveLog = document.getElementById('moveLog');
-                if (moveLog) {
-                    moveLog.innerHTML += `
-                        <div style="padding: 4px 0; border-bottom: 1px solid #222;">
-                            <span style="color: #b06cff;">Oráculo moveu:</span> ${movimentoRealizado.from} → ${movimentoRealizado.to}
-                        </div>
-                    `;
-                    moveLog.scrollTop = moveLog.scrollHeight;
-                }
-            }
-
-            board.position(game.fen());
-            
-            // Aqui o jogo verifica o xeque-mate e escreve "O jogo continua..."
-            updateStatus(); 
-
-            // =======================================================
-            // GATILHO DA RESSURREIÇÃO (Sempre DEPOIS do updateStatus)
-            // =======================================================
-            // Obs: contadorJogadas conta 1 vez pra você e 1 vez pra ela. 
-            // Logo, "20" aqui significa reviver a cada 10 rodadas completas.
-            if (dificuldadeXadrez === 'eternidade' && contadorJogadas > 0 && contadorJogadas % 10 === 0) {
-                reviverPeao();
-                board.position(game.fen(), false); // Atualiza o visual para mostrar o novo peão
-            }  
-        }
-
-        // ==========================================
-        // SISTEMA DE MOVIMENTO: ARRASTAR E CLICAR
-        // ==========================================
-        
-        let casaSelecionada = null; // Guarda a casa que você clicou primeiro (Ex: 'e2')
-
-        // Função para remover o brilho verde das peças
-        function removerHighlights() {
+        window.removerHighlights = function() {
             $('#board .square-55d63').removeClass('highlight-square');
-        }
+        };
 
-        // 1. SISTEMA DE CLIQUE (NOVA IMPLEMENTAÇÃO LÓGICA E LIMPA)
         $('#board').on('click', '.square-55d63', function() {
-            // Se o jogo acabou ou for o turno da Oráculo, ignora o clique
             if (game === null || game.game_over() || game.turn() === 'b') return;
 
-            // Pega o nome da casa clicada (ex: 'a2', 'e4')
             let casaClicada = $(this).attr('data-square');
             if (!casaClicada) return;
 
             let pecaNaCasa = game.get(casaClicada);
             let quadradoDOM = $('#board .square-' + casaClicada);
 
-            // A) MODO RESSURREIÇÃO (O poder mágico está ativo)
             if (typeof isPlacingPiece !== 'undefined' && isPlacingPiece !== null) {
                 if (pecaNaCasa === null) {
                     if (casaClicada[1] !== '1' && casaClicada[1] !== '2') {
                         document.getElementById('gameStatus').innerText = "Regra Divina: Só reviva nas suas duas fileiras iniciais!";
                         return;
                     }
-                    // Coloca a peça no tabuleiro
                     game.put({ type: isPlacingPiece, color: 'w' }, casaClicada);
                     let fenParts = game.fen().split(' ');
                     fenParts[1] = 'b';
@@ -3793,95 +3557,81 @@ Responda como o Oráculo de Aetheryon.
                     }
                     if (typeof speakOracle === 'function') speakOracle(["Trapaça luminosa?! Tá... Minha vez."]);
                     
-                    updateStatus();
-                    window.setTimeout(jogadaDaOraculo, 600);
+                    window.updateStatusXadrez();
+                    window.setTimeout(window.jogadaDaOraculo, 600);
                 } else {
                     document.getElementById('gameStatus').innerText = "Toque em uma casa VAZIA para reviver a peça!";
                 }
                 return;
             }
 
-            // B) JOGO NORMAL - PRIMEIRO CLIQUE (Selecionar a peça)
             if (casaSelecionada === null) {
-                // Só seleciona se houver uma peça sua (branca - 'w')
                 if (pecaNaCasa && pecaNaCasa.color === 'w') {
                     casaSelecionada = casaClicada;
-                    quadradoDOM.addClass('highlight-square'); // Brilha a casa
+                    quadradoDOM.addClass('highlight-square'); 
                 }
             } 
-            // C) JOGO NORMAL - SEGUNDO CLIQUE (Mover a peça)
             else {
-                // Tenta fazer o movimento na biblioteca do xadrez
                 let move = game.move({
                     from: casaSelecionada,
                     to: casaClicada,
-                    promotion: 'q' // Sempre promove peão pra rainha pra facilitar
+                    promotion: 'q' 
                 });
 
-                removerHighlights(); // Tira o brilho de tudo
+                window.removerHighlights(); 
 
-                // Se o movimento for INVÁLIDO (Ex: tentou mover pra longe demais)
                 if (move === null) {
-                    // Se você clicou em OUTRA peça sua, muda a seleção para ela
                     if (pecaNaCasa && pecaNaCasa.color === 'w') {
                         casaSelecionada = casaClicada;
                         quadradoDOM.addClass('highlight-square');
                     } else {
-                        // Se clicou no nada ou no inimigo de forma errada, cancela a seleção
                         casaSelecionada = null; 
                     }
                 } 
-                // Se o movimento for VÁLIDO
                 else {
                     casaSelecionada = null;
-                    board.position(game.fen()); // Atualiza o visual do tabuleiro
-                    processarPosMovimento(move); // Processa capturas e passa a vez
+                    board.position(game.fen()); 
+                    window.processarPosMovimento(move); 
                 }
             }
         });
 
-        // 2. SISTEMA DE ARRASTAR (MANTIDO E SIMPLIFICADO)
-        function onDragStart(source, piece) {
-            // Bloqueia o arrasto se for a vez do bot, se o jogo acabou ou se estiver usando poder
+        window.onDragStartXadrez = function(source, piece) {
             if (typeof isPlacingPiece !== 'undefined' && isPlacingPiece !== null) return false; 
             if (game === null || game.game_over() || piece.search(/^b/) !== -1) return false;
             
-            removerHighlights();
-            casaSelecionada = null; // Cancela qualquer clique pendente
-        }
+            window.removerHighlights();
+            casaSelecionada = null; 
+        };
 
-        function onDrop(source, target) {
-            removerHighlights();
+        window.onDropXadrez = function(source, target) {
+            window.removerHighlights();
             casaSelecionada = null;
             if (source === target) return 'snapback'; 
 
-            // Hack para capturar o Rei (Mecânica especial do seu jogo)
             const pecaAlvo = game.get(target);
             if (pecaAlvo && pecaAlvo.type === 'k' && pecaAlvo.color === 'b') {
                 let pseudoMoves = game.moves({ verbose: true, legal: false });
                 let canEatKing = pseudoMoves.some(m => m.from === source && m.to === target);
                 if(canEatKing) {
-                    vitoriaPorMorteDoRei();
+                    window.vitoriaPorMorteDoRei();
                     return 'snapback';
                 }
             }
 
-            // Tenta o movimento real
             let move = game.move({ from: source, to: target, promotion: 'q' });
-            if (move === null) return 'snapback'; // Se inválido, a peça volta
+            if (move === null) return 'snapback'; 
             
-            processarPosMovimento(move); // Processa capturas e passa a vez
-        }
+            window.processarPosMovimento(move); 
+        };
 
-        function onSnapEnd() {
+        window.onSnapEndXadrez = function() {
             if (game) board.position(game.fen()); 
-        }
+        };
 
-        // 3. FUNÇÕES AUXILIARES DE MOVIMENTO (Evita repetir código)
-        function processarPosMovimento(move) {
+        window.processarPosMovimento = function(move) {
             contadorJogadas++;
             
-            // Lógica de peças capturadas
             if (move.captured === 'p' && move.color === 'w') {
                 if (typeof peoesPretosCapturados !== 'undefined') peoesPretosCapturados++;
             }
@@ -3889,18 +3639,200 @@ Responda como o Oráculo de Aetheryon.
                 if (typeof pecasPerdidasJogador !== 'undefined') pecasPerdidasJogador.push(move.captured);
             }
 
-            // Histórico (Log de Batalha)
             const moveLog = document.getElementById('moveLog');
             if (moveLog) {
                 moveLog.innerHTML += `<div style="padding: 4px 0; border-bottom: 1px solid #222;"><span style="color: #fff;">Você moveu:</span> ${move.from} → ${move.to}</div>`;
                 moveLog.scrollTop = moveLog.scrollHeight;
             }
 
-            updateStatus();
-            window.setTimeout(jogadaDaOraculo, 600); // Passa a vez para a Oráculo
-        }
+            window.updateStatusXadrez();
+            window.setTimeout(window.jogadaDaOraculo, 600); 
+        };
 
-        function vitoriaPorMorteDoRei() {
+        window.iniciarXadrez = function(dificuldade) {
+            dificuldadeXadrez = dificuldade;
+            contadorJogadas = 0;
+            peoesPretosCapturados = 0;
+            
+            pecasPerdidasJogador = [];
+            poderesUsados = 0;
+            isPlacingPiece = null;
+            let btnPower = document.getElementById('btnPowerRevive');
+            if(btnPower) {
+                btnPower.innerText = "✨ USAR PODER: RESSURREIÇÃO (0/3)";
+                btnPower.disabled = false;
+                btnPower.style.display = (dificuldade === 'eternidade') ? 'inline-block' : 'none';
+            }
+
+            let diffLabels = { 'facil': 'Fácil', 'trapaca': 'VOU ROUBAR', 'eternidade': 'Fim da Eternidade' };
+            if(document.getElementById('currentDiffName')) {
+                document.getElementById('currentDiffName').innerText = diffLabels[dificuldade];
+                document.getElementById('diffWins').innerText = statsXadrez[dificuldade].w;
+                document.getElementById('diffLosses').innerText = statsXadrez[dificuldade].l;
+            }
+
+            game = new Chess();
+            const config = {
+                draggable: true,
+                position: 'start',
+                onDragStart: window.onDragStartXadrez,
+                onDrop: window.onDropXadrez,
+                onSnapEnd: window.onSnapEndXadrez,
+                pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png'
+            };
+            board = Chessboard('board', config);
+            
+            let statusEl = document.getElementById('gameStatus');
+            if(statusEl) {
+                statusEl.innerText = dificuldade === 'facil' 
+                    ? "Dificuldade: Fácil. Jogue com as brancas." 
+                    : "Dificuldade: INSANA. A Oráculo não joga pelas regras.";
+            }
+        };
+
+        window.updateStatusXadrez = function() {
+            let statusEl = document.getElementById('gameStatus');
+            if (game.in_checkmate()) {
+                if (game.turn() === 'b') { 
+                    statusEl.innerText = "Você venceu... IMPOSSÍVEL!";
+                    if (typeof speakOracle === 'function') speakOracle(["O quê?! Você trapaceou! Isso não vai ficar assim!"]);
+                    
+                    statsXadrez[dificuldadeXadrez].w++;
+                    localStorage.setItem('aetheryonChessStats', JSON.stringify(statsXadrez));
+                    if(document.getElementById('diffWins')) document.getElementById('diffWins').innerText = statsXadrez[dificuldadeXadrez].w;
+
+                    if (dificuldadeXadrez === 'eternidade' && typeof desbloquearConquista === 'function') desbloquearConquista('god_slayer');
+                } else { 
+                    statusEl.innerText = "XEQUE-MATE. Você foi obliterado.";
+                    if (typeof speakOracle === 'function') speakOracle(["Xeque-mate. Sua mente é tão patética quanto a sua raça."]);
+                    
+                    statsXadrez[dificuldadeXadrez].l++;
+                    localStorage.setItem('aetheryonChessStats', JSON.stringify(statsXadrez));
+                    if(document.getElementById('diffLosses')) document.getElementById('diffLosses').innerText = statsXadrez[dificuldadeXadrez].l;
+                }
+            } else if (game.in_check()) {
+                if (game.turn() === 'b') { 
+                    statusEl.innerText = "Você colocou a Oráculo em Xeque!";
+                    if (typeof speakOracle === 'function') speakOracle(["Ousado... Você acha que ameaçar o meu rei muda alguma coisa?"]);
+                } else {
+                    statusEl.innerText = "Xeque! A morte se aproxima.";
+                    if (typeof speakOracle === 'function') speakOracle(["Olhe o seu rei tremendo... Xeque."]);
+                }
+            } else {
+                statusEl.innerText = "O jogo continua...";
+            }
+        };
+
+        const pecasValores = { p: 10, n: 30, b: 30, r: 50, q: 90, k: 900 };
+
+        window.avaliarTabuleiro = function(jogo) {
+            let valorTotal = 0;
+            const tabuleiro = jogo.board();
+            for (let i = 0; i < 8; i++) {
+                for (let j = 0; j < 8; j++) {
+                    if (tabuleiro[i][j]) {
+                        let peca = tabuleiro[i][j];
+                        let valor = pecasValores[peca.type];
+                        valorTotal += (peca.color === 'w') ? valor : -valor;
+                    }
+                }
+            }
+            return valorTotal;
+        };
+
+        window.minimax = function(jogo, profundidade, alpha, beta, isMaximizingPlayer) {
+            if (profundidade === 0 || jogo.game_over()) return window.avaliarTabuleiro(jogo);
+            let movimentos = jogo.moves();
+            if (isMaximizingPlayer) {
+                let melhorValor = -9999;
+                for (let i = 0; i < movimentos.length; i++) {
+                    jogo.move(movimentos[i]);
+                    melhorValor = Math.max(melhorValor, window.minimax(jogo, profundidade - 1, alpha, beta, !isMaximizingPlayer));
+                    jogo.undo();
+                    alpha = Math.max(alpha, melhorValor);
+                    if (beta <= alpha) break;
+                }
+                return melhorValor;
+            } else {
+                let melhorValor = 9999;
+                for (let i = 0; i < movimentos.length; i++) {
+                    jogo.move(movimentos[i]);
+                    melhorValor = Math.min(melhorValor, window.minimax(jogo, profundidade - 1, alpha, beta, !isMaximizingPlayer));
+                    jogo.undo();
+                    beta = Math.min(beta, melhorValor);
+                    if (beta <= alpha) break;
+                }
+                return melhorValor;
+            }
+        };
+
+        window.calcularMelhorJogada = function(jogo, profundidade) {
+            let movimentos = jogo.moves();
+            let melhorMovimento = null;
+            let melhorValor = 9999; 
+
+            for (let i = 0; i < movimentos.length; i++) {
+                jogo.move(movimentos[i]);
+                let valorTabuleiro = window.minimax(jogo, profundidade - 1, -10000, 10000, true);
+                jogo.undo();
+                
+                if (valorTabuleiro < melhorValor) {
+                    melhorValor = valorTabuleiro;
+                    melhorMovimento = movimentos[i];
+                }
+            }
+            return melhorMovimento || movimentos[Math.floor(Math.random() * movimentos.length)];
+        };
+
+        window.jogadaDaOraculo = function() {
+            if (game.game_over()) return;
+
+            let movimentosPossiveis = game.moves();
+
+            if (dificuldadeXadrez === 'trapaca' && Math.random() < 0.2) { 
+                document.getElementById('gameStatus').innerText = "MAGIA DA REALIDADE: A Oráculo inverteu o tabuleiro!";
+                board.flip();
+                setTimeout(() => { if (typeof speakOracle === 'function') speakOracle(["As regras da realidade são minhas! Quem disse que esse jogo era justo?"]); }, 50);
+            }
+
+            let movimentoSorteado;
+            if (dificuldadeXadrez === 'facil') {
+                movimentoSorteado = movimentosPossiveis[Math.floor(Math.random() * movimentosPossiveis.length)];
+            } else {
+                let profundidade = (dificuldadeXadrez === 'eternidade') ? 3 : 2; 
+                movimentoSorteado = window.calcularMelhorJogada(game, profundidade);
+            }
+
+            const movimentoRealizado = game.move(movimentoSorteado);
+
+            if (movimentoRealizado) { 
+                if (movimentoRealizado.captured && movimentoRealizado.color === 'b') {
+                    pecasPerdidasJogador.push(movimentoRealizado.captured);
+                }       
+                
+                contadorJogadas++;
+                const moveLog = document.getElementById('moveLog');
+                if (moveLog) {
+                    moveLog.innerHTML += `
+                        <div style="padding: 4px 0; border-bottom: 1px solid #222;">
+                            <span style="color: #b06cff;">Oráculo moveu:</span> ${movimentoRealizado.from} → ${movimentoRealizado.to}
+                        </div>
+                    `;
+                    moveLog.scrollTop = moveLog.scrollHeight;
+                }
+            }
+
+            board.position(game.fen());
+            
+            window.updateStatusXadrez(); 
+
+            if (dificuldadeXadrez === 'eternidade' && contadorJogadas > 0 && contadorJogadas % 10 === 0) {
+                window.reviverPeao();
+                board.position(game.fen(), false); 
+            }  
+        };
+
+        window.vitoriaPorMorteDoRei = function() {
             document.getElementById('gameStatus').innerText = "👑 O REI FOI DESTITUÍDO! VITÓRIA ABSOLUTA!";
             if (typeof speakOracle === 'function') speakOracle(["NÃOOO! Meu Rei foi destruído... isso é impossível!"]);
 
@@ -3909,8 +3841,216 @@ Responda como o Oráculo de Aetheryon.
                 localStorage.setItem('aetheryonChessStats', JSON.stringify(statsXadrez));
                 if (document.getElementById('diffWins')) document.getElementById('diffWins').innerText = statsXadrez[dificuldadeXadrez].w;
             }
+        };
+    </script>
+
+    <!-- ========================================== -->
+    <!-- TELA E MOTOR DA FORCA (NOVA E BLINDADA)    -->
+    <!-- ========================================== -->
+    <div id="telaForcaAbsoluta" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 99999; justify-content: center; align-items: center; flex-direction: column; backdrop-filter: blur(10px); padding: 20px; box-sizing: border-box; text-align: center;">
+        <span onclick="window.fecharForca()" style="position: absolute; top: 15px; right: 25px; color: #888; font-size: 40px; cursor: pointer; z-index: 100000;">&times;</span>
+
+        <h1 style="color: #7FDBFF; font-family: 'Cinzel', serif; margin-bottom: 5px;">Forca Arcana</h1>
+        <p id="statusForcaAbsoluto" style="color: #ccc; margin-bottom: 10px; font-size: 16px;">Adivinhe a palavra ou perca o fôlego.</p>
+        <h2 id="timerForcaAbsoluto" style="color: #ff4500; font-family: monospace; font-size: 2.5rem; margin-bottom: 10px; display: none;">00:00</h2>
+        <h3 id="errosForcaAbsoluto" style="color: #ff4444; font-size: 18px; margin-bottom: 20px;">Vidas: 6</h3>
+
+        <div id="configForcaAbsoluto" style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center;">
+            <button onclick="window.iniciarForca('normal')" style="padding: 10px 15px; background: #222; color: #fff; border: 2px solid #aaa; border-radius: 5px; cursor: pointer; font-weight: bold;">Normal</button>
+            <button onclick="window.iniciarForca('morte')" style="padding: 10px 15px; background: #1a0000; color: #ff4444; border: 2px solid #ff4444; border-radius: 5px; cursor: pointer; font-weight: bold; font-family: 'Cinzel', serif;">Sentença de Morte (Tempo)</button>
+        </div>
+
+        <div id="visorForcaAbsoluto" style="font-size: 2.5rem; color: #fff; letter-spacing: 15px; margin-bottom: 30px; font-family: monospace; font-weight: bold;"></div>
+        
+        <div id="tecladoForcaAbsoluto" style="display: none; flex-wrap: wrap; justify-content: center; max-width: 500px; gap: 8px;"></div>
+    </div>
+
+    <script>
+        window.bancoPalavras = ["AETHERYON", "ORACULO", "VENDAVAL", "ECLIPSE", "MAGIA DA LUZ", "VANGUARDA", "CONHECIMENTO", "ESQUECIMENTO", "HERDEIRO", "TAVERNA", "RELIQUIA", "VENENO", "PRINCIPE", "MAGIA DE CURA", "MAGIA DE FOGO", "FEITICO ARCANO"];
+        window.palavraForca = "";
+        window.letrasDescobertas = [];
+        window.vidasForca = 8;
+        window.errosConsecutivosTempo = 0;
+        window.tempoForca = 0;
+        window.timerForca = null;
+        window.dificuldadeForca = '';
+
+        window.abrirForca = function() {
+            document.getElementById('telaForcaAbsoluta').style.display = 'flex';
+            document.getElementById('configForcaAbsoluto').style.display = 'flex';
+            document.getElementById('tecladoForcaAbsoluto').style.display = 'none';
+            document.getElementById('timerForcaAbsoluto').style.display = 'none';
+            document.getElementById('visorForcaAbsoluto').innerText = "";
+            document.getElementById('statusForcaAbsoluto').innerText = "Adivinhe a palavra ou perca o fôlego.";
+            document.getElementById('errosForcaAbsoluto').innerText = "";
+            if (typeof speakOracle === 'function') speakOracle(["Escolha seu destino. Será que você sabe soletrar?"]);
+        };
+
+        window.fecharForca = function() {
+            document.getElementById('telaForcaAbsoluta').style.display = 'none';
+            clearInterval(window.timerForca); // Isso aqui MATA o relógio na hora!
+            window.speechSynthesis.cancel(); // Cala a boca da Oráculo se ela estiver falando
+        };
+
+        window.iniciarForca = function(dificuldade) {
+            window.dificuldadeForca = dificuldade;
+            window.vidasForca = 8;
+            window.errosConsecutivosTempo = 0;
+            window.letrasDescobertas = [];
+            
+            window.palavraForca = window.bancoPalavras[Math.floor(Math.random() * window.bancoPalavras.length)];
+            
+            document.getElementById('configForcaAbsoluto').style.display = 'none';
+            document.getElementById('tecladoForcaAbsoluto').style.display = 'flex';
+            document.getElementById('statusForcaAbsoluto').innerText = "Que os jogos comecem.";
+            document.getElementById('errosForcaAbsoluto').innerText = `Vidas restantes: ${window.vidasForca}`;
+
+            window.gerarTecladoForca();
+            window.atualizarVisorForca();
+
+            if (dificuldade === 'morte') {
+                window.tempoForca = 90;
+                document.getElementById('timerForcaAbsoluto').style.display = 'block';
+                window.atualizarTimerForca();
+                clearInterval(window.timerForca);
+                window.timerForca = setInterval(window.tickForca, 1000);
+                if (typeof speakOracle === 'function') speakOracle(["Sentença de Morte declarada. Três erros e eu avanço o relógio!"]);
+            }
+        };
+
+        window.gerarTecladoForca = function() {
+            const alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+            const tecladoDiv = document.getElementById('tecladoForcaAbsoluto');
+            tecladoDiv.innerHTML = "";
+            
+            alfabeto.forEach(letra => {
+                tecladoDiv.innerHTML += `<button id="tecla-${letra}" onclick="window.chutarLetra('${letra}')" style="padding: 10px 15px; font-size: 18px; font-weight: bold; background: #222; color: #fff; border: 1px solid #555; border-radius: 5px; cursor: pointer; width: 45px;">${letra}</button>`;
+            });
+        };
+
+        window.atualizarVisorForca = function() {
+            let textoDisplay = "";
+            for (let i = 0; i < window.palavraForca.length; i++) {
+                if (window.palavraForca[i] === " ") {
+                    textoDisplay += " "; // Pula e revela o espaço automaticamente!
+                } else if (window.letrasDescobertas.includes(window.palavraForca[i])) {
+                    textoDisplay += window.palavraForca[i];
+                } else {
+                    textoDisplay += "_";
+                }
+            }
+            
+            // Coloca os espaços bonitinhos na tela
+            document.getElementById('visorForcaAbsoluto').innerHTML = textoDisplay.replace(/ /g, "&nbsp;&nbsp;&nbsp;");
+            
+            if (!textoDisplay.includes("_")) {
+                window.vitoriaForca();
+            }
+        };
+
+        window.chutarLetra = function(letra) {
+            let btn = document.getElementById(`tecla-${letra}`);
+            if(!btn) return;
+            btn.disabled = true;
+
+            if (window.palavraForca.includes(letra)) {
+                btn.style.background = "#00aa00";
+                window.letrasDescobertas.push(letra);
+                window.atualizarVisorForca();
+            } else {
+                btn.style.background = "#aa0000";
+                window.vidasForca--;
+                document.getElementById('errosForcaAbsoluto').innerText = `Vidas restantes: ${window.vidasForca}`;
+                
+                if (window.dificuldadeForca === 'morte') {
+                    window.errosConsecutivosTempo++;
+                    if (window.errosConsecutivosTempo >= 3) {
+                        window.tempoForca -= 10;
+                        window.errosConsecutivosTempo = 0;
+                        document.getElementById('timerForcaAbsoluto').style.color = "#ff0000";
+                        setTimeout(() => document.getElementById('timerForcaAbsoluto').style.color = "#ff4500", 500);
+                        if (typeof speakOracle === 'function') speakOracle(["Tempo reduzido! A morte se aproxima mais rápido."]);
+                    }
+                }
+
+                if (window.vidasForca <= 0) {
+                    window.derrotaForca("Enforcado. A palavra era: " + window.palavraForca);
+                }
+            }
+        };
+
+        window.tickForca = function() {
+            window.tempoForca--;
+            window.atualizarTimerForca();
+            if (window.tempoForca <= 0) {
+                window.derrotaForca("Tempo esgotado. A palavra era: " + window.palavraForca);
+            }
+        };
+
+        window.atualizarTimerForca = function() {
+            let min = Math.floor(window.tempoForca / 60);
+            let sec = window.tempoForca % 60;
+            document.getElementById('timerForcaAbsoluto').innerText = `${min < 10 ? '0' : ''}${min}:${sec < 10 ? '0' : ''}${sec}`;
+        };
+
+        window.derrotaForca = function(msg) {
+            clearInterval(window.timerForca);
+            document.getElementById('tecladoForcaAbsoluto').style.display = 'none';
+            document.getElementById('statusForcaAbsoluto').innerText = msg;
+            document.getElementById('configForcaAbsoluto').style.display = 'flex';
+            if (typeof speakOracle === 'function') speakOracle(["Você perdeu. Como esperado da sua espécie insignificante."]);
+        };
+
+        window.vitoriaForca = function() {
+            clearInterval(window.timerForca);
+            document.getElementById('tecladoForcaAbsoluto').style.display = 'none';
+            document.getElementById('configForcaAbsoluto').style.display = 'flex';
+            
+            if (window.dificuldadeForca === 'morte' && !inventario.includes('tema_agua')) {
+                inventario.push('tema_agua');
+                localStorage.setItem('aetheryonInventario', JSON.stringify(inventario));
+                if(typeof window.mostrarRecompensa === 'function') {
+                    window.mostrarRecompensa("Tema Água Desbloqueado!", "Você sobreviveu à Sentença de Morte. A fúria dos oceanos agora responde a você.", "🌊");
+                }
+                if(typeof window.applyTheme === 'function') window.applyTheme(currentTheme); 
+                if (typeof speakOracle === 'function') speakOracle(["Você... escapou da forca. Pegue essa magia de água e saia da minha vista!"]);
+            } else {
+                document.getElementById('statusForcaAbsoluto').innerText = "Você adivinhou a palavra.";
+                if (typeof speakOracle === 'function') speakOracle(["Hmph. Pura sorte. Quero ver fazer isso de novo."]);
+            }
+        };
+    </script>
+
+      <!-- ========================================== -->
+<!-- VISUALIZADOR 3D INTEGRADO NO SITE          -->
+<!-- ========================================== -->
+<div id="model3dViewer" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 99999; justify-content: center; align-items: center; flex-direction: column; backdrop-filter: blur(10px);">
+    <!-- O botão X esconde a tela e desliga o modelo pra não pesar a memória -->
+    <span onclick="document.getElementById('model3dViewer').style.display='none'; document.getElementById('iframe3d').src='';" style="position: absolute; top: 15px; right: 25px; color: #888; font-size: 40px; cursor: pointer; z-index: 100000;">&times;</span>
+    
+    <h2 id="title3d" style="color: #00ffcc; font-family: 'Cinzel', serif; margin-bottom: 15px; text-transform: uppercase;">Modelo 3D</h2>
+    
+    <div id="borda3d" style="width: 90%; max-width: 1000px; height: 75vh; background: #000; border: 2px solid #00ffcc; border-radius: 10px; box-shadow: 0 0 30px rgba(0, 255, 204, 0.3); overflow: hidden;">
+        <iframe id="iframe3d" title="Modelo 3D" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" style="width: 100%; height: 100%;"></iframe>
+    </div>
+</div>
+
+<script>
+    window.abrirModelo3D = function(url, tipo) {
+        // Muda a cor e o título dependendo se é personagem ou arma
+        document.getElementById('title3d').innerText = tipo === 'char' ? "Personagem 3D" : "Arsenal 3D";
+        document.getElementById('title3d').style.color = tipo === 'char' ? "#00ffcc" : "#ff4500";
+        document.getElementById('borda3d').style.borderColor = tipo === 'char' ? "#00ffcc" : "#ff4500";
+        
+        // Truque mágico: se for link do sketchfab, ele transforma em embed e já bota pra girar sozinho (autostart)
+        let embedUrl = url;
+        if (url.includes('sketchfab.com') && !url.includes('/embed')) {
+            embedUrl = url + '/embed?autostart=1&preload=1'; 
         }
-   
+        
+        document.getElementById('iframe3d').src = embedUrl;
+        document.getElementById('model3dViewer').style.display = 'flex';
+    };
 </script>
 
 </body>
