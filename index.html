@@ -324,6 +324,28 @@
             cursor: not-allowed; border-color: #333;
         }
 
+        /* ====== AJUSTES MOBILE (NÃO AFETA O DESKTOP) ====== */
+        @media (max-width: 768px) {
+            /* Força o Oblivion a ter 4 colunas em vez de 6, e diminui um pouquinho a carta para caber */
+            #memoryBoard {
+                grid-template-columns: repeat(4, 65px) !important;
+                gap: 8px !important;
+                justify-content: center;
+            }
+            .memory-card {
+                width: 65px !important;
+                height: 85px !important;
+                font-size: 1.5rem !important;
+            }
+            
+            /* Diminui de leve o tamanho dos botões do topo para a "Barra de Tema" e Volume caberem perfeitos quando você desbloquear no celular */
+            .tab-btn {
+                font-size: 11px !important;
+                padding: 8px 10px !important;
+                margin: 5px 2px !important;
+            }
+        }
+
     </style>
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -2522,6 +2544,22 @@ Responda como o Oráculo de Aetheryon.
         <h1 style="color: #fff; font-family: 'Cinzel', serif; font-size: 4rem; text-shadow: 0 0 30px #8a2be2; animation: shake 0.5s infinite;">TEMPO PARADO!</h1>
     </div>
 
+    <!-- TELA DE RECOMPENSA ÉPICA -->
+    <div id="rewardScreen" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; backdrop-filter: blur(10px);">
+        <div style="background: linear-gradient(180deg, #1a1a1a 0%, #000 100%); border: 2px solid #d4af37; border-radius: 15px; padding: 40px; text-align: center; max-width: 400px; box-shadow: 0 0 30px rgba(212, 175, 55, 0.5); animation: zoomInReward 0.5s ease-out; margin: 20px;">
+            <div id="rewardIcon" style="font-size: 5rem; margin-bottom: 20px; animation: floatReward 2s infinite ease-in-out;">🏆</div>
+            <h1 id="rewardTitle" style="color: #d4af37; font-family: 'Cinzel', serif; font-size: 24px; margin-bottom: 15px; text-transform: uppercase;">Item Obtido!</h1>
+            <p id="rewardDesc" style="color: #ccc; font-size: 16px; margin-bottom: 30px; line-height: 1.5;"></p>
+            <button onclick="document.getElementById('rewardScreen').style.display='none'" style="background: #d4af37; color: #000; border: none; padding: 12px 30px; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer; font-family: 'Cinzel', serif; transition: 0.3s; box-shadow: 0 0 10px #d4af37;">COLETAR RECOMPENSA</button>
+        </div>
+    </div>
+
+    <!-- ANIMAÇÕES EXCLUSIVAS DA TELA DE RECOMPENSA -->
+    <style>
+        @keyframes zoomInReward { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes floatReward { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    </style>
+
             <!-- SCRIPT DO FIREBASE ATUALIZADO COM FIRESTORE -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
@@ -3050,7 +3088,7 @@ Responda como o Oráculo de Aetheryon.
                 if (placarCalices.acertos === 20 && !inventario.includes('tema_eclipse')) {
                     inventario.push('tema_eclipse');
                     localStorage.setItem('aetheryonInventario', JSON.stringify(inventario));
-                    alert("✨ RECOMPENSA SECRETA OBTIDA!\n\nVocê atingiu 20 acertos e desbloqueou o 'Tema Eclipse'. Você já pode alternar para ele no topo do site!");
+                    mostrarRecompensa("Tema Eclipse Desbloqueado!", "Você roubou as probabilidades e atingiu 20 acertos na ilusão. Altere o tema no menu superior.", "🌑");
                     if (typeof speakOracle === 'function') speakOracle(["Vinte acertos? Você está roubando as probabilidades! Pegue essa maldição do Eclipse e suma daqui!"]);
                     applyTheme(currentTheme); // Atualiza o botão lá em cima
                 }
@@ -3290,7 +3328,7 @@ Responda como o Oráculo de Aetheryon.
                 inventario.push('tema_vento');
                 localStorage.setItem('aetheryonInventario', JSON.stringify(inventario));
                 
-                alert("🌪️ RECOMPENSA MÁXIMA OBTIDA!\n\nVocê sobreviveu ao Oblivion e desbloqueou o 'Tema Vento'. Altere no menu principal!");
+                mostrarRecompensa("Tema Vento Desbloqueado!", "Você domou o caos do Oblivion e sobreviveu. O poder dos ventos agora é seu. Altere o tema no menu superior.", "🌪️");
                 applyTheme(currentTheme); 
                 
                 if (typeof speakOracle === 'function') speakOracle(["Impossível... Você sobreviveu ao Oblivion. Pegue o seu prêmio e desapareça da minha vista."]);
@@ -3299,6 +3337,16 @@ Responda como o Oráculo de Aetheryon.
                 if (typeof speakOracle === 'function') speakOracle(["Milagres acontecem. Você achou os pares. Sorte pura."]);
             }
         }
+
+                // ==========================================
+        // SISTEMA DE RECOMPENSA ÉPICA (UI)
+        // ==========================================
+        window.mostrarRecompensa = function(titulo, descricao, icone) {
+            document.getElementById('rewardIcon').innerText = icone;
+            document.getElementById('rewardTitle').innerText = titulo;
+            document.getElementById('rewardDesc').innerText = descricao;
+            document.getElementById('rewardScreen').style.display = 'flex';
+        };
 
         // ==========================================
         // SISTEMA DE XADREZ, STATS E PODERES
