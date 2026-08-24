@@ -313,6 +313,17 @@
             100% { transform: translate(110vw, -10vh) rotate(720deg) scale(1.5); opacity: 0; } 
         }
 
+        /* ====== TEMA LUZ (RECOMPENSA DEVORAÇÃO CAÓTICA) ====== */
+        body.luz-theme { background: radial-gradient(circle, #fdfbfb 0%, #e0e6ed 100%) !important; color: #111; }
+        .luz-theme header { background: linear-gradient(180deg, #fff 0%, #fdfbfb 100%); border-bottom: 2px solid #ffd700; box-shadow: 0 5px 25px rgba(255,215,0,0.3); }
+        .luz-theme h1 { color: #d4af37; text-shadow: 0 0 15px rgba(212,175,55,0.5), 1px 1px 0px #000; }
+        .luz-theme .card { background: #fff; border: 1px solid #ccc; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .luz-theme .card-info { background: #fafafa; }
+        .luz-theme .card-info h2 { color: #222; text-shadow: none; }
+        .luz-theme .stat-box { background: #fff; border-color: #ddd; color: #111; }
+        .luz-theme .tabs-container .tab-btn { background: #fff; color: #333; border-color: #ccc; }
+        .luz-theme .tabs-container .tab-btn.active { background: #d4af37; color: #fff; border-color: #b8860b; }
+
         /* ====== EFEITO DE SELEÇÃO DO XADREZ (CLIQUE NO CELULAR) ====== */
         .highlight-square { 
             box-shadow: inset 0 0 25px #00ffcc !important; 
@@ -398,6 +409,7 @@
     <option value="wintermusic.mp3">❄️ Música: Inverno</option>
     <option value="windmusic.mp3">🌪️ Música: Vento</option>
     <option value="aguamusic.mp3">🌊 Música: Água</option>
+    <option value="batalha_final.mp3">⚔️ Música: Batalha Épica</option>
 </select>
 <div style="display: flex; align-items: center; gap: 5px; background: #111; padding: 0 15px; border: 2px solid #444; border-radius: 5px; height: 42px; margin: 0;">
     <span style="color: #aaa; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🔉 VOL:</span>
@@ -490,6 +502,7 @@
                 <button onclick="abrirCalices(); toggleInteractionMenu();" style="background: #1a1a1a; color: #ffaa00; border: 1px solid #ffaa00; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🍷 Desafiar: Cálices da Ilusão</button>
                 <button onclick="abrirMemoria(); toggleInteractionMenu();" style="background: #1a1a1a; color: #ff69b4; border: 1px solid #ff69b4; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🧠 Desafiar: Mente Fraturada</button>
                 <button onclick="abrirForca(); toggleInteractionMenu();" style="background: #1a1a1a; color: #7FDBFF; border: 1px solid #7FDBFF; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🪢 Desafiar: Forca Arcana</button>
+                <button onclick="abrirSnake(); toggleInteractionMenu();" style="background: #1a1a1a; color: #32cd32; border: 1px solid #32cd32; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🐍 Desafiar: Fome do Éter</button>
                 <button onclick="openMinigame('xadrez'); toggleInteractionMenu();" style="background: #1a1a1a; color: #d4af37; border: 1px solid #d4af37; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">♟️ Desafiar: Xadrez</button>             
                 <button onclick="openMinigame('damas'); toggleInteractionMenu();" style="background: #1a1a1a; color: #ff4500; border: 1px solid #ff4500; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🔴 Desafiar: Damas</button>
             </div>
@@ -665,6 +678,8 @@
             {
                 name: "Gayka", title: "A Guardiã-Chefe", role: "dps", image: "gayka.jpg",
                 avatar: "gayka_face.jpg",
+                model3dChar: "gaykamodel.glb",
+                model3dWeapon: "gaykaweaponmodel.glb",
                 quote: "\"Alvo biométrico travado. Você já está morto e nem sabe.\"",
                 faction: "⚙️ Aethelgard", elemento: "⚙️ Magi-Tech", 
                 stats: { forca: 40, magia: 15, agilidade: 100, physDef: 10, magDef: 10 },
@@ -698,7 +713,7 @@
                 race: "Centauro", weapon: "Lança Sagrada e Escudo dos Titãs",
                 weaponDetails: "Um escudo torre moldado em madeira-férrea impenetrável e cravejado com rochas antigas, combinado a uma lança pesada usada quase exclusivamente para perfuração em investidas brutais.",
                 description: "A nobre e selvagem guerreira de primeira linha e protetora feroz da sua tribo Centauro em Naturelands. A irmã mais velha de Lilia é o oposto do pacifismo. Ostentando uma massa muscular invejável, um corpo equino majestoso e um grito de guerra estrondoso, Sylphy é a muralha viva das florestas.<br><br>Quando saqueadores de Zenathor ou mercadores ambiciosos tentam invadir a mata sagrada, ela é o primeiro tremor que eles sentem. As suas táticas de combate consistem em levantar o Escudo dos Titãs, tomar fôlego e galopar a noventa quilômetros por hora em direção às fileiras inimigas, atropelando, estilhaçando blindagens pesadas e enviando homens voando pelos ares numa única investida destrutiva.<br><br>Protetora, leal e taticamente paranoica (usando 'táticas defensivas' como desculpa para tentar ficar perto de Ashlan). Ela desenvolveu uma paixão platônica gigante, cômica e desesperada pelo garoto que a salvou, sendo completamente alheia (ou em negação) às preferências andróginas dele.<br><br> Jurando nunca mais ser impotente, Sylphy treinou incansavelmente para se tornar um objeto inamovível. Ela atua como o 'Tank' do acampamento, absorvendo danos devastadores com seu escudo de torre e servindo como a mais leal e formidável montaria de guerra para Ashlan.",
-                extraImages: ["sylphy_art1.png"],
+                extraImages: ["sylphy_art1.png", "sylphy_art2.png"],
                 secret: "Por baixo do seu elmo orgulhoso e da raiva impiedosa na lança, há uma montanha de culpa apodrecendo o seu coração. Ela era a sentinela encarregada de fazer a vigília noturna no exato dia em que sua irmã Lilia foi capturada pela Dra. Mercer. Assombrada pelo choro e pela deformação da irmã, Sylphy treina em segredo até suas pernas equinas sangrarem, jurando marchar sozinha contra Diamond City no futuro e esmagar a cabeça da alquimista como vingança."
             },
             // --- MERCENÁRIOS, COBAIAS E RENEGADOS ---
@@ -755,14 +770,19 @@
             {
                 name: "Byakuya 白夜", title: "A Monge de Ferro", role: "dps", image: "byakuya.png",
                 avatar: "byakuya_face.png",
+                model3dChar: "gaykamodel.glb",
                 quote: "\"Se ajoelhe, verme. Ser pisado por mim é uma Bênção Espiritual.\"",
+                voicelines: [
+                    { nome: "Introdução", arquivo: "voicelines/byakuya_intro.mp3" },
+                    { nome: "Entre as minha coxas", arquivo: "voicelines/byakuya_coxas.mp3" }  
+                ],
                 faction: "🏔️ Pico dos Suspiros", elemento: "🌪️ Físico / Vento Oculto", 
                 stats: { forca: 100, magia: 40, agilidade: 90, inteligencia: 70, carisma: 20, physDef: 80, magDef: 30 },
                 race: "Elfa Mantra", weapon: "Artes Marciais do Vácuo / Lotus Swoon",
                 weaponDetails: "A mestria suprema do impacto físico alinhada à quebra das barreiras do som. Ela não precisa de metais vulcânicos; os seus calcanhares, cotovelos e punhos perfuram o ar estilhaçando a barreira sônica, afundando armaduras numa brutalidade silenciosa, e claro, sua MARAVILHOSA BUNDA.",
                 weaponImage: "byakuya_weapon.png",
                 description: "A colossal, arrogante e impiedosa 'Big Mommy' das montanhas de gelo, Byakuya é conhecida como 'Noite Branca' devido ao seu cabelo bicolor. Toda a sua família foi massacrada na Grande Guerra. Antes da tragédia, ela passou por um treinamento corporal rigoroso com seu pai. Determinada a recriar seu próprio legado longe da política da capital, ela marchou para o norte, ergueu sua própria cidadezinha fortaleza e fundou um estilo marcial único em Aetheryon.<br><br>Golpe Especial: Lotus Swoon (Desmaio de Lótus): Técnica finalizada onde ela utiliza a força explosiva dos músculos da sua bunda diretamente contra a cara do inimigo. A mistura de trauma craniano maciço com a injeção sensorial de sedução faz com que a vítima apague (ou morra) no ato, caindo inconsciente sempre com um sorriso de pura felicidade e êxtase no rosto.<br><br>O Santuário da Noite Branca (O Templo Principal): Tornou-se um monumento dedicado à adoração da perfeição física de Byakuya. Os monges e monges fêmeas desenvolveram uma submissão fanática por ela. Ser pisado por Byakuya é considerado uma 'Bênção de Alinhamento Espiritual'. Os discípulos frequentemente rastejam para beijar ou lamber seus pés descalços pelos corredores, algo que ela aceita com um sorriso arrogante e ousado. As sessões de sparring no templo são ferozmente disputadas pelos discípulos apenas para ter o privilégio de serem nocauteados por ela.",
-                extraImages: ["byakuya_domination.jpg", "byakuya_step.gif", "byakuya_art1.png", "byakuya_lyssa.png", "byakuya_ashlan.png"],
+                extraImages: ["byakuya_domination.jpg", "byakuya_step.gif", "byakuya_art1.png", "byakuya_lyssa.png", "byakuya_ashlan.png", "byakuya_front.png"],
                 secret: "O seu templo de artes marciais é mais do que um exército letal; é o pináculo da humilhação em formato de religião. Byakuya frequentemente imobiliza discípulos machos gigantes, usando-os de banco ou degrau como punição."
             },
             // --- AGENTES, PATRULHEIROS E SERVIÇAIS ---
@@ -1961,6 +1981,14 @@ const falasLocais = [
                 </div>
 
                 <div class="hero-quote" style="border-left: 3px solid #ff4500; padding-left: 10px; text-align: left; margin-bottom: 15px;">${hero.quote}</div>
+
+                <!-- ================= SISTEMA DE VOICELINES AQUI ================= -->
+                <div style="display: flex; gap: 10px; justify-content: center; align-items: center; margin-bottom: 15px; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 8px; border: 1px dashed #444;">
+                    <select id="voiceSelect" style="display: none; background: #111; color: #fff; border: 1px solid #555; border-radius: 5px; padding: 8px; font-family: 'Cinzel', serif; outline: none; cursor: pointer;"></select>
+                    <button id="btnPlayVoice" onclick="window.toggleVoiceline()" style="background: #222; color: #555; border: 1px solid #333; border-radius: 5px; padding: 8px 20px; font-family: 'Cinzel', serif; font-weight: bold; cursor: not-allowed; transition: 0.3s;">▶️ Tocar Voz</button>
+                    <audio id="audioVoiceline" src=""></audio>
+                </div>
+                <!-- ============================================================== -->
                 
                 <div style="text-align: center; margin-bottom: 15px;">
                     <span class="class-icon">${roleText}</span>
@@ -1997,9 +2025,68 @@ const falasLocais = [
             
             document.getElementById('heroModal').style.display = 'flex';
             window.carregarVotosDoHeroi(hero.name);
+            
+            // ================= LÓGICA DAS VOICELINES QUE FICA ATIVA =================
+            const voiceSelect = document.getElementById('voiceSelect');
+            const btnPlayVoice = document.getElementById('btnPlayVoice');
+            const audioVoice = document.getElementById('audioVoiceline');
+
+            audioVoice.pause();
+            audioVoice.currentTime = 0;
+            btnPlayVoice.innerHTML = "▶️ Tocar Voz";
+
+            if (hero.voicelines && hero.voicelines.length > 0) {
+                btnPlayVoice.style.background = "#4a0000";
+                btnPlayVoice.style.color = "#fff";
+                btnPlayVoice.style.borderColor = "#ff4444";
+                btnPlayVoice.style.cursor = "pointer";
+                btnPlayVoice.disabled = false;
+
+                voiceSelect.innerHTML = "";
+                hero.voicelines.forEach(vl => {
+                    voiceSelect.innerHTML += `<option value="${vl.arquivo}">${vl.nome}</option>`;
+                });
+
+                voiceSelect.style.display = hero.voicelines.length > 1 ? "block" : "none";
+                audioVoice.src = hero.voicelines[0].arquivo;
+                
+                voiceSelect.onchange = function() {
+                    audioVoice.src = this.value;
+                    audioVoice.pause();
+                    btnPlayVoice.innerHTML = "▶️ Tocar Voz";
+                };
+            } else {
+                btnPlayVoice.style.background = "#222";
+                btnPlayVoice.style.color = "#555";
+                btnPlayVoice.style.borderColor = "#333";
+                btnPlayVoice.style.cursor = "not-allowed";
+                btnPlayVoice.disabled = true;
+                voiceSelect.style.display = "none";
+            }
         }
 
         function closeModal() { document.getElementById('heroModal').style.display = 'none'; }
+        window.toggleVoiceline = function() {
+            const audioVoice = document.getElementById('audioVoiceline');
+            const btnPlayVoice = document.getElementById('btnPlayVoice');
+
+            if (audioVoice.paused) {
+                audioVoice.play();
+                btnPlayVoice.innerHTML = "⏸️ Pausar Voz";
+            } else {
+                audioVoice.pause();
+                btnPlayVoice.innerHTML = "▶️ Tocar Voz";
+            }
+        };
+
+        // Quando o áudio acabar sozinho, o botão volta ao normal
+        document.addEventListener('play', function(e){
+            if(e.target.id === 'audioVoiceline'){
+                e.target.onended = function(){
+                    document.getElementById('btnPlayVoice').innerHTML = "▶️ Tocar Voz";
+                };
+            }
+        }, true);
         function openImageViewer(src) { document.getElementById('viewerImage').src = src; document.getElementById('imageViewer').style.display = 'flex'; }
         function closeImageViewer() { document.getElementById('imageViewer').style.display = 'none'; document.getElementById('viewerImage').src = ''; }
 
@@ -2350,6 +2437,61 @@ Responda como o Oráculo de Aetheryon.
 
     </style>
 
+<!-- BOTÃO FLUTUANTE DE REGRAS E DIFICULDADES (DIREITA) -->
+    <div onclick="abrirInfoDificuldades()" style="position: fixed; top: 120px; right: 30px; z-index: 2000; cursor: pointer; text-align: center; transition: transform 0.2s;">
+        <div style="width: 60px; height: 60px; background: #111; border: 2px solid #00ffcc; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; box-shadow: 0 0 15px rgba(0, 255, 204, 0.5);">📖</div>
+        <span style="display: block; background: #111; border: 1px solid #00ffcc; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 11px; margin-top: -10px; font-weight: bold; position: relative; z-index: 10;">Regras</span>
+    </div>
+
+    <!-- TELA DE INFORMAÇÕES DE DIFICULDADE -->
+    <div id="infoDificuldadeModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 6000; justify-content: center; align-items: center; backdrop-filter: blur(5px); padding: 20px; box-sizing: border-box;">
+        <div style="background: #111; border: 2px solid #00ffcc; width: 100%; max-width: 650px; max-height: 85vh; overflow-y: auto; border-radius: 10px; padding: 30px; text-align: left; position: relative; box-shadow: 0 0 30px rgba(0, 255, 204, 0.3);">
+            <span onclick="document.getElementById('infoDificuldadeModal').style.display='none'" style="position: absolute; top: 10px; right: 20px; font-size: 35px; color: #888; cursor: pointer; transition: 0.3s;">&times;</span>
+            <h2 style="color: #00ffcc; font-family: 'Cinzel', serif; margin-top: 0; text-align: center; text-shadow: 0 0 10px rgba(0,255,204,0.5); font-size: 2rem;">📖 Os Jogos Mortais de Aetheryon</h2>
+            <p style="text-align: center; color: #888; margin-bottom: 25px; font-style: italic;">Leia atentamente antes de apostar sua alma com a Oráculo.</p>
+
+            <!-- XADREZ -->
+            <h3 style="color: #d4af37; border-bottom: 1px solid #333; padding-bottom: 5px; font-family: 'Cinzel', serif;">♟️ Xadrez Arcano</h3>
+            <ul style="color: #ccc; font-size: 14.5px; line-height: 1.6; margin-bottom: 20px; padding-left: 20px;">
+                <li><strong style="color: #fff;">Normal:</strong> Jogo Clássico sem alterações. A Oráculo testará sua mente sem trapacear.</li>
+                <li><strong style="color: #ff4444;">Vou Roubar:</strong> A Oráculo não joga conforme as regras. Ela leva isso a sério e vai te trollar <span style="color:#ff4444; font-weight:bold;">girando o tabuleiro</span> durante a partida para te confundir.</li>
+                <li><strong style="color: #d8a7ff;">Fim da Eternidade:</strong> A dificuldade extrema. A Oráculo joga com inteligência máxima e magia: ela <span style="color:#d8a7ff; font-weight:bold;">reviverá seus peões caídos</span> a cada 10 rodadas. Como ela está se sentindo "generosa", concederá a você o botão "Ressurreição" para <span style="color:#00ffcc;">reviver três de suas próprias peças perdidas</span> ao longo do jogo. Tente não entrar em pânico.</li>
+            </ul>
+
+            <!-- FORCA -->
+            <h3 style="color: #7FDBFF; border-bottom: 1px solid #333; padding-bottom: 5px; font-family: 'Cinzel', serif;">🪢 Forca Arcana</h3>
+            <ul style="color: #ccc; font-size: 14.5px; line-height: 1.6; margin-bottom: 20px; padding-left: 20px;">
+                <li><strong style="color: #fff;">Regra Básica:</strong> Adivinhe a palavra misteriosa chutando as letras. Se errar 8 vezes, você perde.</li>
+                <li><strong style="color: #ff4444;">Sentença de Morte:</strong> Você luta contra o relógio (90s). Se errar 6 letras consecutivas, a Oráculo vai rir da sua cara e <span style="color:#ff4444; font-weight:bold;">roubar 10 segundos</span> da sua vida!</li>
+            </ul>
+
+            <!-- MEMORIA -->
+            <h3 style="color: #ff69b4; border-bottom: 1px solid #333; padding-bottom: 5px; font-family: 'Cinzel', serif;">🧠 Mente Fraturada</h3>
+            <ul style="color: #ccc; font-size: 14.5px; line-height: 1.6; margin-bottom: 20px; padding-left: 20px;">
+                <li><strong style="color: #fff;">Fácil (60s):</strong> Encontre 8 pares antes que o tempo esgote.</li>
+                <li><strong style="color: #ff4444;">Fim da Linha (45s):</strong> Menos tempo, e aos 20 segundos a Oráculo vai invadir a sua mente e <span style="color:#ff4444; font-weight:bold;">paralisar a tela por 5 segundos</span>.</li>
+                <li><strong style="color: #d8a7ff;">Oblivion (120s):</strong> O tabuleiro expande para 12 pares. A tela vai congelar a cada 30 segundos, e se você acumular <span style="color:#d8a7ff; font-weight:bold;">12 erros no total</span>, o jogo encerra instantaneamente!</li>
+            </ul>
+
+            <!-- COBRINHA -->
+            <h3 style="color: #32cd32; border-bottom: 1px solid #333; padding-bottom: 5px; font-family: 'Cinzel', serif;">🐍 Fome do Éter (Cobrinha)</h3>
+            <ul style="color: #ccc; font-size: 14.5px; line-height: 1.6; margin-bottom: 20px; padding-left: 20px;">
+                <li><strong style="color: #fff;">Regra Básica:</strong> Coma o éter (verde) para crescer. Não bata nas bordas. Use as setas ou clique no controle da tela.</li>
+                <li><strong style="color: #ff00ff;">Devoração Caótica:</strong> O jogo fica mais rápido e a Oráculo invoca <span style="color:#ff00ff; font-weight:bold;">armadilhas roxas (X)</span>. Se você pisar nelas, sua cobra encolhe e você fica <span style="color:#ff00ff; font-weight:bold;">atordoado/paralisado por 3 segundos</span>. Chegue a 20 de energia para vencer!</li>
+            </ul>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button onclick="document.getElementById('infoDificuldadeModal').style.display='none'" style="padding: 10px 30px; background: #00ffcc; color: #000; border: none; font-family: 'Cinzel', serif; font-weight: bold; cursor: pointer; border-radius: 5px; font-size: 1.1rem; box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);">Entendido</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        window.abrirInfoDificuldades = function() {
+            document.getElementById('infoDificuldadeModal').style.display = 'flex';
+        };
+    </script>
+
 <!-- BOTÃO FLUTUANTE DA POPULARIDADE (ESQUERDA) -->
     <div onclick="abrirRankingPopularidade()" style="position: fixed; bottom: 120px; left: 30px; z-index: 2000; cursor: pointer; text-align: center; transition: transform 0.2s;">
         <div style="width: 60px; height: 60px; background: #111; border: 2px solid #ff69b4; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; box-shadow: 0 0 15px rgba(255, 105, 180, 0.5);">💖</div>
@@ -2579,10 +2721,87 @@ Responda como o Oráculo de Aetheryon.
         </div>
     </div>
 
+            <!-- TELA DO JOGO DA COBRINHA (A FOME DO ÉTER) -->
+    <div id="snakeScreen" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 5000; justify-content: center; align-items: center; flex-direction: column; backdrop-filter: blur(5px); padding: 20px; box-sizing: border-box;">
+        <span onclick="fecharSnake()" style="position: absolute; top: 15px; right: 25px; color: #888; font-size: 40px; cursor: pointer; z-index: 5001;">&times;</span>
+
+        <h1 style="color: #32cd32; font-family: 'Cinzel', serif; margin-bottom: 5px;">A Fome do Éter</h1>
+        <p id="snakeStatus" style="color: #ccc; margin-bottom: 10px; font-size: 16px;">Coma a energia (verde). Não bata nas paredes ou em si mesmo.</p>
+        <h2 id="snakeScore" style="color: #d4af37; margin-bottom: 20px; font-size: 2rem;">Energia: 0</h2>
+
+        <div id="snakeConfig" style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center;">
+            <button onclick="iniciarSnake('normal')" style="padding: 10px 15px; background: #222; color: #fff; border: 2px solid #32cd32; border-radius: 5px; cursor: pointer; font-weight: bold;">Normal</button>
+            <button onclick="iniciarSnake('caos')" style="padding: 10px 15px; background: #16002a; color: #ff00ff; border: 2px solid #ff00ff; border-radius: 5px; cursor: pointer; font-weight: bold; font-family: 'Cinzel', serif;">🌑 Devoração Caótica</button>
+        </div>
+
+        <canvas id="snakeCanvas" width="400" height="400" style="background: #0b0b0b; border: 4px solid #32cd32; box-shadow: 0 0 20px rgba(50, 205, 50, 0.4); border-radius: 8px; display: none; margin-bottom: 15px;"></canvas>
+        
+        <!-- CONTROLES MOBILE (D-PAD) -->
+        <div id="snakeMobileControls" style="display: none; grid-template-columns: 60px 60px 60px; grid-template-rows: 60px 60px; gap: 10px;">
+            <div style="grid-column: 2; grid-row: 1;">
+                <button onclick="mudarDirecaoSnakeMobile('CIMA')" style="width:100%; height:100%; font-size: 24px; background:#222; border:2px solid #32cd32; color:#fff; border-radius:10px; cursor: pointer;">⬆️</button>
+            </div>
+            <div style="grid-column: 1; grid-row: 2;">
+                <button onclick="mudarDirecaoSnakeMobile('ESQUERDA')" style="width:100%; height:100%; font-size: 24px; background:#222; border:2px solid #32cd32; color:#fff; border-radius:10px; cursor: pointer;">⬅️</button>
+            </div>
+            <div style="grid-column: 2; grid-row: 2;">
+                <button onclick="mudarDirecaoSnakeMobile('BAIXO')" style="width:100%; height:100%; font-size: 24px; background:#222; border:2px solid #32cd32; color:#fff; border-radius:10px; cursor: pointer;">⬇️</button>
+            </div>
+            <div style="grid-column: 3; grid-row: 2;">
+                <button onclick="mudarDirecaoSnakeMobile('DIREITA')" style="width:100%; height:100%; font-size: 24px; background:#222; border:2px solid #32cd32; color:#fff; border-radius:10px; cursor: pointer;">➡️</button>
+            </div>
+        </div>
+
     <!-- TELA DE CONGELAMENTO DA ORÁCULO (Z-INDEX GIGANTE) -->
     <div id="oracleFreezeScreen" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(138, 43, 226, 0.4); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(8px);">
         <h1 style="color: #fff; font-family: 'Cinzel', serif; font-size: 4rem; text-shadow: 0 0 30px #8a2be2; animation: shake 0.5s infinite;">TEMPO PARADO!</h1>
     </div>
+
+    <!-- POP-UP DOURADO DE CONQUISTA DESBLOQUEADA (ESTILO XBOX/PS) -->
+    <div id="achievementPopup" style="display: none; position: fixed; top: 30px; right: -400px; width: 320px; background: linear-gradient(135deg, #111 0%, #000 100%); border: 2px solid #ffd700; border-radius: 10px; box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); padding: 15px; z-index: 10000; align-items: center; gap: 15px; transition: right 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+        <div style="font-size: 45px; text-shadow: 0 0 15px #ffd700; animation: floatReward 2s infinite ease-in-out;">🏆</div>
+        <div style="text-align: left;">
+            <h4 style="margin: 0; color: #ffd700; font-family: 'Cinzel', serif; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Conquista Desbloqueada</h4>
+            <h3 id="popupAchName" style="margin: 5px 0 0; color: #fff; font-size: 18px; text-shadow: 0 0 5px #fff;">Nome da Conquista</h3>
+        </div>
+    </div>
+
+    <script>
+        // O motor que faz a janelinha deslizar pra dentro e pra fora
+        window.mostrarPopupConquista = function(nomeConquista) {
+            const popup = document.getElementById('achievementPopup');
+            document.getElementById('popupAchName').innerText = nomeConquista;
+            
+            popup.style.display = 'flex';
+            // Puxa pra tela
+            setTimeout(() => { popup.style.right = '30px'; }, 50); 
+            
+            // Esconde depois de 4 segundos
+            setTimeout(() => {
+                popup.style.right = '-400px'; 
+                setTimeout(() => { popup.style.display = 'none'; }, 500);
+            }, 4000);
+        };
+
+        // O motor que abre a tela ÉPICA de recompensa para os Temas e Itens!
+        window.mostrarRecompensa = function(titulo, descricao, icone) {
+            let tela = document.getElementById('rewardScreen');
+            if (tela) {
+                // Arranca a tela do fundo e joga ela pro topo absoluto (resolve o bug da duplicação)
+                document.body.appendChild(tela);
+                // Coloca um z-index infinito pra passar por cima da Forca e dos outros jogos
+                tela.style.zIndex = "9999999"; 
+                
+                document.getElementById('rewardTitle').innerText = titulo;
+                document.getElementById('rewardDesc').innerText = descricao;
+                document.getElementById('rewardIcon').innerText = icone || '🏆';
+                tela.style.display = 'flex';
+            } else {
+                console.error("A tela de recompensa não foi encontrada no HTML!");
+            }
+        };
+ 
+    </script>
 
     <!-- TELA DE RECOMPENSA ÉPICA -->
     <div id="rewardScreen" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; backdrop-filter: blur(10px);">
@@ -2649,7 +2868,12 @@ Responda como o Oráculo de Aetheryon.
         // TEMA, MÚSICA, CONQUISTAS, RANKS E INVENTÁRIO
         // ==========================================
         const niveisRank = ['Mortal', 'Legend', 'Demigod', 'God', 'Cosmic', 'First One'];
-        let playerRank = localStorage.getItem('aetheryonRank') || 'Mortal';
+        let playerRank = localStorage.getItem('aetheryonRank');
+
+if (!niveisRank.includes(playerRank)) {
+    playerRank = 'Mortal';
+    localStorage.setItem('aetheryonRank', playerRank);
+}
         let unlockedAchievements = JSON.parse(localStorage.getItem('aetheryonConquistas')) || [];
         let inventario = JSON.parse(localStorage.getItem('aetheryonInventario')) || []; 
         let heroisAbertos = 0;
@@ -2665,11 +2889,12 @@ Responda como o Oráculo de Aetheryon.
             { id: 'ladrao_prob', name: 'Ladrão de Probabilidades', desc: 'Vença a Oráculo nos Cálices da Ilusão 20 vezes.', premio: 'Tema Eclipse', corPremio: '#ffaa00' },
             { id: 'domador_caos', name: 'Domador do Caos', desc: 'Vença o jogo Mente Fraturada no nível OBLIVION.', premio: 'Tema Vento', corPremio: '#00ffcc' },
             { id: 'folego_eterno', name: 'Fôlego Eterno', desc: 'Sobreviva à Sentença de Morte na Forca Arcana.', premio: 'Tema Água', corPremio: '#7FDBFF' }
+            ,{ id: 'devorador_luz', name: 'O Fim da Fome', desc: 'Alcance 20 de energia na Cobrinha (Devoração Caótica).', premio: 'Tema Luz', corPremio: '#ffffff' }
         ];
 
         window.applyTheme = function(theme) {
             const btnTheme = document.getElementById('themeToggleBtn');
-            document.body.classList.remove('winter-theme', 'eclipse-theme', 'vento-theme', 'agua-theme');
+            document.body.classList.remove('winter-theme', 'eclipse-theme', 'vento-theme', 'agua-theme', 'luz-theme');
             document.querySelectorAll('.snowflake, .wind-leaf, .bubble').forEach(e => e.remove());
 
             if (theme === 'winter') {
@@ -2718,11 +2943,14 @@ Responda como o Oráculo de Aetheryon.
                         document.body.appendChild(bubble);
                     }
                 }
+            } else if (theme === 'luz') {
+                document.body.classList.add('luz-theme');
+                if(btnTheme) { btnTheme.innerText = '☀️ Tema: Luz'; btnTheme.style.borderColor = '#d4af37'; btnTheme.style.color = '#d4af37'; }
             } else {
                 if(btnTheme) { btnTheme.innerText = '🔮 Tema: Padrão'; btnTheme.style.borderColor = '#d4af37'; btnTheme.style.color = '#d4af37'; }
             }
-            
-            if ((playerRank === 'First One' || inventario.includes('tema_eclipse') || inventario.includes('tema_vento') || inventario.includes('tema_agua')) && btnTheme) {
+
+            if ((playerRank === 'First One' || inventario.includes('tema_eclipse') || inventario.includes('tema_vento') || inventario.includes('tema_agua') || inventario.includes('tema_luz')) && btnTheme) {
                 btnTheme.style.display = 'inline-block';
             }
         };
@@ -2733,6 +2961,7 @@ Responda como o Oráculo de Aetheryon.
             if (inventario.includes('tema_eclipse')) temasPossiveis.push('eclipse');
             if (inventario.includes('tema_vento')) temasPossiveis.push('vento');
             if (inventario.includes('tema_agua')) temasPossiveis.push('agua');
+            if (inventario.includes('tema_luz')) temasPossiveis.push('luz');
 
             let indexAtual = temasPossiveis.indexOf(currentTheme);
             let proxIndex = (indexAtual + 1) % temasPossiveis.length;
@@ -2815,9 +3044,27 @@ Responda como o Oráculo de Aetheryon.
                 
                 const conquista = conquistasDB.find(c => c.id === id);
                 if (conquista) {
-                    playerRank = conquista.rank;
-                    localStorage.setItem('aetheryonRank', playerRank);
-                    mostrarTelaRankUp(playerRank);
+                    // 1. Solta a janela dourada na tela (para QUALQUER conquista!)
+                    if(typeof window.mostrarPopupConquista === 'function') {
+                        window.mostrarPopupConquista(conquista.name);
+                    }
+                    
+                    // 2. Só abre a tela épica de Rank Up se a conquista REALMENTE der um rank novo!
+                    if (conquista.rank) {
+                        const indiceAtual = niveisRank.indexOf(playerRank);
+                        const indiceNovo = niveisRank.indexOf(conquista.rank);
+                        const indiceMaximo = niveisRank.indexOf('First One');
+
+                        if (
+                            playerRank !== 'First One' &&
+                            indiceNovo > indiceAtual &&
+                            indiceNovo <= indiceMaximo
+                        ) {
+                            playerRank = conquista.rank;
+                            localStorage.setItem('aetheryonRank', playerRank);
+                            mostrarTelaRankUp(playerRank);
+                        }
+                    }
                 }
             }
         }
@@ -3381,6 +3628,248 @@ Responda como o Oráculo de Aetheryon.
                 if (typeof speakOracle === 'function') speakOracle(["Milagres acontecem. Você achou os pares. Sorte pura."]);
             }
         };
+
+          // ==========================================
+        // MINIGAME: A FOME DO ÉTER (SNAKE GAME)
+        // ==========================================
+        let snake = [];
+        let food = {x: 0, y: 0};
+        let traps = [];
+        let dx = 20, dy = 0;
+        let scoreSnake = 0;
+        let snakeTimer;
+        let diffSnake = '';
+        let isStunned = false;
+
+        window.abrirSnake = function() {
+            document.getElementById('snakeScreen').style.display = 'flex';
+            document.getElementById('snakeConfig').style.display = 'flex';
+            document.getElementById('snakeCanvas').style.display = 'none';
+            document.getElementById('snakeScore').innerText = "Energia: 0";
+            if (typeof speakOracle === 'function') speakOracle(["Mais um parasita querendo devorar o éter? Vamos ver se você rasteja bem."]);
+        };
+
+        window.fecharSnake = function() {
+            document.getElementById('snakeScreen').style.display = 'none';
+            clearInterval(snakeTimer);
+        };
+
+        window.iniciarSnake = function(dificuldade) {
+            diffSnake = dificuldade;
+            document.getElementById('snakeConfig').style.display = 'none';
+            const canvas = document.getElementById('snakeCanvas');
+            canvas.style.display = 'block';
+            
+            if (diffSnake === 'caos') {
+                canvas.style.borderColor = '#ff00ff';
+                canvas.style.boxShadow = '0 0 20px rgba(255, 0, 255, 0.4)';
+                document.getElementById('snakeStatus').innerText = "Devoração Caótica: Desvie das armadilhas da Oráculo! Chegue a 20 pontos.";
+                if (typeof speakOracle === 'function') speakOracle(["Ahaha! Você escolheu o caos! Vou adorar ver você implorar por misericórdia."]);
+            } else {
+                canvas.style.borderColor = '#32cd32';
+                canvas.style.boxShadow = '0 0 20px rgba(50, 205, 50, 0.4)';
+                document.getElementById('snakeStatus').innerText = "Modo Normal: Apenas coma e cresça.";
+            }
+
+            snake = [{x: 200, y: 200}, {x: 180, y: 200}, {x: 160, y: 200}];
+            dx = 20; dy = 0;
+            scoreSnake = 0;
+            traps = [];
+            isStunned = false;
+            trapHits = 0;
+            document.getElementById('snakeScore').innerText = "Energia: 0";
+            
+            gerarComidaSnake();
+            if (diffSnake === 'caos') gerarArmadilhas(5);
+
+            document.addEventListener("keydown", mudarDirecaoSnake);
+            clearInterval(snakeTimer);
+            let vel = diffSnake === 'caos' ? 100 : 150;
+            snakeTimer = setInterval(tickSnake, vel);
+        };
+
+        function gerarComidaSnake() {
+            let conflito = true;
+            while(conflito) {
+                food.x = Math.floor(Math.random() * 20) * 20;
+                food.y = Math.floor(Math.random() * 20) * 20;
+                
+                // Checa se a comida caiu num buraco roxo ou em cima do próprio rabo
+                let naArmadilha = traps.some(t => t.x === food.x && t.y === food.y);
+                let naCobra = snake.some(s => s.x === food.x && s.y === food.y);
+                
+                if(!naArmadilha && !naCobra) {
+                    conflito = false; // Lugar limpo! Pode botar a comida.
+                }
+            }
+        }
+
+        function gerarArmadilhas(qtd) {
+            traps = [];
+            for(let i=0; i<qtd; i++) {
+                let tx, ty;
+                let conflito = true;
+                while(conflito) {
+                    tx = Math.floor(Math.random() * 20) * 20;
+                    ty = Math.floor(Math.random() * 20) * 20;
+                    
+                    // Checa se a armadilha nasceu em cima da cobra
+                    let naCobra = snake.some(s => s.x === tx && s.y === ty);
+                    if(!naCobra) {
+                        traps.push({x: tx, y: ty});
+                        conflito = false;
+                    }
+                }
+            }
+        }
+
+        let jaMudeiDirecaoNesteTick =-false; // Trava para evitar o bug de apertar rápido demais
+
+        function mudarDirecaoSnake(event) {
+            if (isStunned || jaMudeiDirecaoNesteTick) return; // Se já mudou neste tick, ignora até o próximo
+            
+            const key = event.keyCode;
+            const keyChar = event.key.toLowerCase();
+            const subindo = dy === -20;
+            const descendo = dy === 20;
+            const direita = dx === 20;
+            const esquerda = dx === -20;
+
+            if ((key === 37 || keyChar === 'a') && !direita) { dx = -20; dy = 0; jaMudeiDirecaoNesteTick = true; }
+            if ((key === 38 || keyChar === 'w') && !descendo) { dx = 0; dy = -20; jaMudeiDirecaoNesteTick = true; }
+            if ((key === 39 || keyChar === 'd') && !esquerda) { dx = 20; dy = 0; jaMudeiDirecaoNesteTick = true; }
+            if ((key === 40 || keyChar === 's') && !subindo) { dx = 0; dy = 20; jaMudeiDirecaoNesteTick = true; }
+        }
+
+        window.mudarDirecaoSnakeMobile = function(dir) {
+            if (isStunned) return;
+            const subindo = dy === -20;
+            const descendo = dy === 20;
+            const direita = dx === 20;
+            const esquerda = dx === -20;
+
+            if (dir === 'ESQUERDA' && !direita) { dx = -20; dy = 0; }
+            if (dir === 'CIMA' && !descendo) { dx = 0; dy = -20; }
+            if (dir === 'DIREITA' && !esquerda) { dx = 20; dy = 0; }
+            if (dir === 'BAIXO' && !subindo) { dx = 0; dy = 20; }
+        };
+
+        function tickSnake() {
+            if (isStunned) return;
+            jaMudeiDirecaoNesteTick = false; // Libera o teclado para o novo tick
+
+            const cabeca = {x: snake[0].x + dx, y: snake[0].y + dy};
+            snake.unshift(cabeca);
+
+            // 1. Bateu na parede?
+            if (cabeca.x < 0 || cabeca.x >= 400 || cabeca.y < 0 || cabeca.y >= 400) {
+                return gameOverSnake("Game Over. Você bateu na parede!");
+            }
+
+            // 2. Bateu no próprio rabo/corpo?
+            if (colisaoCobra(cabeca)) {
+                return gameOverSnake("Game Over. Você mordeu a si mesmo!");
+            }
+
+            // 3. Bateu na armadilha? (Modo Caos)
+            if (diffSnake === 'caos' && traps.some(t => t.x === cabeca.x && t.y === cabeca.y)) {
+                trapHits++;
+                snake.pop(); // tira o rabo pra não crescer
+                
+                if (trapHits >= 5) {
+                    return gameOverSnake("Game Over. Você pisou em 5 armadilhas!");
+                } else {
+                    aplicarStunOraculo();
+                    document.getElementById('snakeStatus').innerText = `Armadilhas pisadas: ${trapHits}/5. Cuidado!`;
+                }
+            } 
+            // 4. Comeu a comida?
+            else if (cabeca.x === food.x && cabeca.y === food.y) {
+                scoreSnake++;
+                document.getElementById('snakeScore').innerText = `Energia: ${scoreSnake}`;
+                
+                if (diffSnake === 'caos') gerarArmadilhas(5);
+                gerarComidaSnake();
+                
+                if (diffSnake === 'caos' && scoreSnake >= 20) {
+                    return vitoriaCaosSnake();
+                }
+            } else {
+                snake.pop();
+            }
+
+            desenharSnake();
+        }
+
+        function colisaoCobra(cabeca) {
+            for (let i = 1; i < snake.length; i++) {
+                if (cabeca.x === snake[i].x && cabeca.y === snake[i].y) return true;
+            }
+            return false;
+        }
+
+        function aplicarStunOraculo() {
+            isStunned = true;
+            if (typeof speakOracle === 'function') speakOracle(["Patético! Caiu na minha armadilha! Fique parado aí e reflita sobre sua burrice."]);
+            document.getElementById('snakeCanvas').style.borderColor = '#ff0000';
+            
+            setTimeout(() => {
+                isStunned = false;
+                document.getElementById('snakeCanvas').style.borderColor = '#ff00ff';
+                if (typeof speakOracle === 'function') speakOracle(["Pode voltar a rastejar, verme."]);
+            }, 3000);
+        }
+
+        function desenharSnake() {
+            const canvas = document.getElementById('snakeCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#0b0b0b';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Desenha Armadilhas
+            ctx.fillStyle = '#ff00ff';
+            traps.forEach(t => ctx.fillRect(t.x, t.y, 20, 20));
+
+            // Desenha Comida
+            ctx.fillStyle = '#32cd32';
+            ctx.fillRect(food.x, food.y, 20, 20);
+
+            // Desenha Cobra (Fica vermelha se tomar stun)
+            ctx.fillStyle = isStunned ? '#ff0000' : '#00ffcc';
+            snake.forEach(parte => {
+                ctx.fillRect(parte.x, parte.y, 19, 19);
+            });
+        }
+
+        function gameOverSnake(msgCustomizada) {
+            clearInterval(snakeTimer);
+            document.getElementById('snakeConfig').style.display = 'flex';
+            document.getElementById('snakeStatus').innerText = msgCustomizada || "Game Over. Você bateu na parede.";
+            
+            if (msgCustomizada && msgCustomizada.includes("5 armadilhas")) {
+                if (typeof speakOracle === 'function') speakOracle(["Cinco armadilhas! Você é tão previsível que me dá sono. A sua alma é minha!"]);
+            } else {
+                if (typeof speakOracle === 'function') speakOracle(["Se matou sozinho. É tão deprimente que eu nem preciso fazer nada."]);
+            }
+        }
+
+        function vitoriaCaosSnake() {
+            clearInterval(snakeTimer);
+            document.getElementById('snakeConfig').style.display = 'flex';
+            document.getElementById('snakeStatus').innerText = "VOCÊ VENCEU O CAOS!";
+            
+            if (!inventario.includes('tema_luz')) {
+                inventario.push('tema_luz');
+                if(typeof desbloquearConquista === 'function') desbloquearConquista('devorador_luz');
+                localStorage.setItem('aetheryonInventario', JSON.stringify(inventario));
+                if(typeof window.mostrarRecompensa === 'function') {
+                    window.mostrarRecompensa("Tema Luz Desbloqueado!", "Você devorou o próprio caos e converteu as trevas em pura luz divina. O Tema Luz (Branco) agora é seu.", "☀️");
+                }
+                if (typeof speakOracle === 'function') speakOracle(["O quê?! Você comeu a minha energia caótica e... a purificou?! Pegue esse tema de luz nojento e suma!"]);
+            } else {
+                if (typeof speakOracle === 'function') speakOracle(["Você venceu de novo. Quer um troféu ou um biscoito?"]);
+            }
+        }
 
         // ==========================================
         // SISTEMA DE XADREZ, STATS E PODERES
@@ -4109,6 +4598,21 @@ Responda como o Oráculo de Aetheryon.
         document.getElementById('borda3d').innerHTML = ''; // Destrói o motor pra não bugar o próximo
         document.getElementById('menuAnimacoes').style.display = 'none';
     };
+</script>
+
+         <!-- MÁGICA QUE DESENGOLA OS MINIGAMES -->
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const corpo = document.body;
+        const forca = document.getElementById('telaForcaAbsoluta');
+        const cobra = document.getElementById('snakeScreen');
+        const regras = document.getElementById('infoDificuldadeModal');
+
+        // Isso aqui arranca os jogos de dentro um do outro e joga na raiz do site!
+        if (forca) corpo.appendChild(forca);
+        if (cobra) corpo.appendChild(cobra);
+        if (regras) corpo.appendChild(regras);
+    });
 </script>
 
 </body>
