@@ -3652,6 +3652,7 @@ if (!niveisRank.includes(playerRank)) {
         window.fecharSnake = function() {
             document.getElementById('snakeScreen').style.display = 'none';
             clearInterval(snakeTimer);
+            document.getElementById('snakeMobileControls').style.display = 'none';
         };
 
         window.iniciarSnake = function(dificuldade) {
@@ -3659,6 +3660,12 @@ if (!niveisRank.includes(playerRank)) {
             document.getElementById('snakeConfig').style.display = 'none';
             const canvas = document.getElementById('snakeCanvas');
             canvas.style.display = 'block';
+
+            // LIGA O CONTROLE DE CELULAR
+            if (window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                document.getElementById('snakeMobileControls').style.display = 'grid';
+                document.getElementById('snakeMobileControls').style.justifyContent = 'center';
+            }
             
             if (diffSnake === 'caos') {
                 canvas.style.borderColor = '#ff00ff';
@@ -3843,6 +3850,7 @@ if (!niveisRank.includes(playerRank)) {
 
         function gameOverSnake(msgCustomizada) {
             clearInterval(snakeTimer);
+            document.getElementById('snakeMobileControls').style.display = 'none'; // <--- O CONTROLE SOME AQUI
             document.getElementById('snakeConfig').style.display = 'flex';
             document.getElementById('snakeStatus').innerText = msgCustomizada || "Game Over. Você bateu na parede.";
             
@@ -3855,6 +3863,7 @@ if (!niveisRank.includes(playerRank)) {
 
         function vitoriaCaosSnake() {
             clearInterval(snakeTimer);
+            document.getElementById('snakeMobileControls').style.display = 'none'; // <--- O CONTROLE SOME AQUI TAMBÉM
             document.getElementById('snakeConfig').style.display = 'flex';
             document.getElementById('snakeStatus').innerText = "VOCÊ VENCEU O CAOS!";
             
@@ -4548,50 +4557,56 @@ if (!niveisRank.includes(playerRank)) {
 
 <script>
     window.abrirModelo3D = function(url, tipo) {
-        document.getElementById('title3d').innerText = tipo === 'char' ? "Personagem 3D" : "Arsenal 3D";
-        document.getElementById('title3d').style.color = tipo === 'char' ? "#00ffcc" : "#ff4500";
-        document.getElementById('borda3d').style.borderColor = tipo === 'char' ? "#00ffcc" : "#ff4500";
-        
-        document.getElementById('borda3d').innerHTML = `
-            <model-viewer id="oMotor"
-                src="${url}" 
-                camera-controls 
-                auto-rotate 
-                autoplay 
-                shadow-intensity="1" 
-                style="width: 100%; height: 100%; background-color: #000;">
-            </model-viewer>
-        `;
-        
-        document.getElementById('model3dViewer').style.display = 'flex';
-        
-        const menuAnim = document.getElementById('menuAnimacoes');
-        menuAnim.style.display = 'none'; // Esconde até carregar o modelo
-        menuAnim.innerHTML = '<option value="">Animações...</option>'; // Limpa a lista velha
-
-        // Quando o modelo terminar de carregar na tela...
-        const viewer = document.getElementById('oMotor');
-        viewer.addEventListener('load', () => {
-            const animacoesDiferentes = viewer.availableAnimations;
+            let tela3D = document.getElementById('model3dViewer');
+            let borda3D = document.getElementById('borda3d');
             
-            // Se ele achar mais de uma animação (ex: T-Pose, Idle, Walking)
-            if (animacoesDiferentes && animacoesDiferentes.length > 0) {
-                menuAnim.style.display = 'block'; // Mostra a caixinha
-                menuAnim.innerHTML = ''; // Limpa de novo
+            if (tela3D) {
+                // Arranca a tela do fundo e joga ela pro topo absoluto (resolve o bug da duplicação de novo!)
+                document.body.appendChild(tela3D);
+                tela3D.style.zIndex = "9999999"; 
                 
-                // Cria uma opção na lista para cada animação que ele achou!
-                animacoesDiferentes.forEach(anim => {
-                    menuAnim.innerHTML += `<option value="${anim}">${anim}</option>`;
-                });
+                document.getElementById('title3d').innerText = tipo === 'char' ? "Personagem 3D" : "Arsenal 3D";
+                document.getElementById('title3d').style.color = tipo === 'char' ? "#00ffcc" : "#ff4500";
+                borda3D.style.borderColor = tipo === 'char' ? "#00ffcc" : "#ff4500";
+                
+                borda3D.innerHTML = `
+                    <model-viewer id="oMotor"
+                        src="${url}" 
+                        camera-controls 
+                        auto-rotate 
+                        autoplay 
+                        shadow-intensity="1" 
+                        style="width: 100%; height: 100%; background-color: #000;">
+                    </model-viewer>
+                `;
+                
+                tela3D.style.display = 'flex';
+                
+                const menuAnim = document.getElementById('menuAnimacoes');
+                if(menuAnim) {
+                    menuAnim.style.display = 'none';
+                    menuAnim.innerHTML = '<option value="">Animações...</option>'; 
+                }
 
-                // Se o jogador mudar a opção na lista, troca a animação na hora!
-                menuAnim.addEventListener('change', (event) => {
-                    viewer.animationName = event.target.value;
-                    viewer.play();
-                });
+                const viewer = document.getElementById('oMotor');
+                if(viewer) {
+                    viewer.addEventListener('load', () => {
+                        const animacoesDiferentes = viewer.availableAnimations;
+                        if (animacoesDiferentes && animacoesDiferentes.length > 0 && menuAnim) {
+                            menuAnim.style.display = 'block';
+                            menuAnim.innerHTML = ''; 
+                            animacoesDiferentes.forEach(anim => {
+                                menuAnim.innerHTML += `<option value="${anim}">${anim}</option>`;
+                            });
+                            menuAnim.addEventListener('change', (event) => {
+                                viewer.animationName = event.target.value;
+                                viewer.play();
+                            });
+                        }
+                    });
+                }
             }
-        });
-    };
+        };
 
     window.fecharModelo3D = function() {
         document.getElementById('model3dViewer').style.display = 'none';
