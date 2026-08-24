@@ -536,6 +536,7 @@
             },
             {
                 name: "Scarlett Lancehearth", title: "A Rainha do Gelo Absoluto", role: "dps", image: "scarlett.png",
+                model3dChar: "scarlettmodel.glb",
                 avatar: "scarlett_face.png",
                 quote: "\"O frio não teme ninguém. Ele apenas silencia.\"",
                 faction: "💎 Diamond City", elemento: "❄️ Gelo / Cryo", 
@@ -4029,26 +4030,35 @@ Responda como o Oráculo de Aetheryon.
 <!-- ========================================== -->
 <div id="model3dViewer" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 99999; justify-content: center; align-items: center; flex-direction: column; backdrop-filter: blur(10px);">
     
-    <!-- O botão X agora chama a função que destrói o modelo corretamente -->
     <span onclick="window.fecharModelo3D()" style="position: absolute; top: 15px; right: 25px; color: #888; font-size: 40px; cursor: pointer; z-index: 100000;">&times;</span>
     
     <h2 id="title3d" style="color: #00ffcc; font-family: 'Cinzel', serif; margin-bottom: 15px; text-transform: uppercase;">Modelo 3D</h2>
     
-    <div id="borda3d" style="width: 90%; max-width: 1000px; height: 75vh; background: #000; border: 2px solid #00ffcc; border-radius: 10px; box-shadow: 0 0 30px rgba(0, 255, 204, 0.3); overflow: hidden;">
+    <div id="borda3d" style="position: relative; width: 90%; max-width: 1000px; height: 75vh; background: #000; border: 2px solid #00ffcc; border-radius: 10px; box-shadow: 0 0 30px rgba(0, 255, 204, 0.3); overflow: hidden;">
         <!-- O motor do Google será ejetado AQUI dentro pelo JavaScript -->
+    </div>
+
+    <!-- UI FLUTUANTE (INSTRUÇÕES E BOTÃO DE ANIMAÇÃO) -->
+    <div style="position: absolute; bottom: 5vh; display: flex; flex-direction: column; align-items: center; gap: 15px; z-index: 100001; pointer-events: none;">
+        
+        <div style="background: rgba(0, 0, 0, 0.8); color: #fff; padding: 8px 20px; border-radius: 20px; font-size: 14px; border: 1px solid #555; text-shadow: 0 2px 4px rgba(0,0,0,0.8);">
+            🖱️ <b>Arraste</b> para girar | 🔍 <b>Role</b> para zoom
+        </div>
+
+        <button id="btnMudarAnimacao" style="pointer-events: auto; display: none; background: #1a1a1a; color: #ff00ff; border: 1px solid #ff00ff; padding: 10px 25px; border-radius: 5px; font-family: 'Cinzel', serif; font-weight: bold; cursor: pointer; transition: 0.3s; text-transform: uppercase;" onmouseover="this.style.background='#ff00ff'; this.style.color='#000'" onmouseout="this.style.background='#1a1a1a'; this.style.color='#ff00ff'">
+            Trocar Animação 🎬
+        </button>
     </div>
 </div>
 
 <script>
     window.abrirModelo3D = function(url, tipo) {
-        // Muda as cores dependendo se é personagem (Ciano) ou arma (Laranja)
         document.getElementById('title3d').innerText = tipo === 'char' ? "Personagem 3D" : "Arsenal 3D";
         document.getElementById('title3d').style.color = tipo === 'char' ? "#00ffcc" : "#ff4500";
         document.getElementById('borda3d').style.borderColor = tipo === 'char' ? "#00ffcc" : "#ff4500";
         
-        // TRUQUE MÁGICO: Injeta um motor 100% NOVO toda vez que você clica!
         document.getElementById('borda3d').innerHTML = `
-            <model-viewer 
+            <model-viewer id="oMotor"
                 src="${url}" 
                 camera-controls 
                 auto-rotate 
@@ -4059,12 +4069,32 @@ Responda como o Oráculo de Aetheryon.
         `;
         
         document.getElementById('model3dViewer').style.display = 'flex';
+        document.getElementById('btnMudarAnimacao').style.display = 'none'; // Esconde o botão até carregar
+
+        // Pega as animações do arquivo GLB depois que ele carrega na tela
+        const viewer = document.getElementById('oMotor');
+        viewer.addEventListener('load', () => {
+            const anims = viewer.availableAnimations;
+            if (anims && anims.length > 1) {
+                const btn = document.getElementById('btnMudarAnimacao');
+                btn.style.display = 'block';
+                let animIndex = 0;
+                
+                // Se clicar no botão, vai pra próxima animação!
+                btn.onclick = () => {
+                    animIndex = (animIndex + 1) % anims.length;
+                    viewer.animationName = anims[animIndex];
+                    viewer.play();
+                };
+            }
+        });
     };
 
     window.fecharModelo3D = function() {
         document.getElementById('model3dViewer').style.display = 'none';
-        // DESTRÓI o motor ao fechar. Limpa a RAM do celular e impede que o "fantasma" fique travado!
         document.getElementById('borda3d').innerHTML = '';
+        document.getElementById('btnMudarAnimacao').style.display = 'none';
+        document.getElementById('btnMudarAnimacao').onclick = null;
     };
 </script>
 
