@@ -4042,16 +4042,18 @@ Responda como o Oráculo de Aetheryon.
         <!-- O motor do Google será ejetado AQUI dentro pelo JavaScript -->
     </div>
 
-    <!-- UI FLUTUANTE (INSTRUÇÕES E BOTÃO DE ANIMAÇÃO) -->
+    <!-- UI FLUTUANTE (INSTRUÇÕES E MENU DE ANIMAÇÕES) -->
     <div style="position: absolute; bottom: 5vh; display: flex; flex-direction: column; align-items: center; gap: 15px; z-index: 100001; pointer-events: none;">
         
         <div style="background: rgba(0, 0, 0, 0.8); color: #fff; padding: 8px 20px; border-radius: 20px; font-size: 14px; border: 1px solid #555; text-shadow: 0 2px 4px rgba(0,0,0,0.8);">
             🖱️ <b>Arraste</b> para girar | 🔍 <b>Role</b> para zoom
         </div>
 
-        <button id="btnMudarAnimacao" style="pointer-events: auto; display: none; background: #1a1a1a; color: #ff00ff; border: 1px solid #ff00ff; padding: 10px 25px; border-radius: 5px; font-family: 'Cinzel', serif; font-weight: bold; cursor: pointer; transition: 0.3s; text-transform: uppercase;" onmouseover="this.style.background='#ff00ff'; this.style.color='#000'" onmouseout="this.style.background='#1a1a1a'; this.style.color='#ff00ff'">
-            Trocar Animação 🎬
-        </button>
+        <!-- O MENU DROPDOWN QUE VAI LISTAR AS ANIMAÇÕES -->
+        <select id="menuAnimacoes" style="pointer-events: auto; display: none; background: #1a1a1a; color: #ff00ff; border: 1px solid #ff00ff; padding: 10px 20px; border-radius: 5px; font-family: 'Cinzel', serif; font-weight: bold; cursor: pointer; text-transform: uppercase; outline: none;">
+            <option value="">Animações Padrão</option>
+        </select>
+
     </div>
 </div>
 
@@ -4073,32 +4075,39 @@ Responda como o Oráculo de Aetheryon.
         `;
         
         document.getElementById('model3dViewer').style.display = 'flex';
-        document.getElementById('btnMudarAnimacao').style.display = 'none'; // Esconde o botão até carregar
+        
+        const menuAnim = document.getElementById('menuAnimacoes');
+        menuAnim.style.display = 'none'; // Esconde até carregar o modelo
+        menuAnim.innerHTML = '<option value="">Animações...</option>'; // Limpa a lista velha
 
-        // Pega as animações do arquivo GLB depois que ele carrega na tela
+        // Quando o modelo terminar de carregar na tela...
         const viewer = document.getElementById('oMotor');
         viewer.addEventListener('load', () => {
-            const anims = viewer.availableAnimations;
-            if (anims && anims.length > 1) {
-                const btn = document.getElementById('btnMudarAnimacao');
-                btn.style.display = 'block';
-                let animIndex = 0;
+            const animacoesDiferentes = viewer.availableAnimations;
+            
+            // Se ele achar mais de uma animação (ex: T-Pose, Idle, Walking)
+            if (animacoesDiferentes && animacoesDiferentes.length > 0) {
+                menuAnim.style.display = 'block'; // Mostra a caixinha
+                menuAnim.innerHTML = ''; // Limpa de novo
                 
-                // Se clicar no botão, vai pra próxima animação!
-                btn.onclick = () => {
-                    animIndex = (animIndex + 1) % anims.length;
-                    viewer.animationName = anims[animIndex];
+                // Cria uma opção na lista para cada animação que ele achou!
+                animacoesDiferentes.forEach(anim => {
+                    menuAnim.innerHTML += `<option value="${anim}">${anim}</option>`;
+                });
+
+                // Se o jogador mudar a opção na lista, troca a animação na hora!
+                menuAnim.addEventListener('change', (event) => {
+                    viewer.animationName = event.target.value;
                     viewer.play();
-                };
+                });
             }
         });
     };
 
     window.fecharModelo3D = function() {
         document.getElementById('model3dViewer').style.display = 'none';
-        document.getElementById('borda3d').innerHTML = '';
-        document.getElementById('btnMudarAnimacao').style.display = 'none';
-        document.getElementById('btnMudarAnimacao').onclick = null;
+        document.getElementById('borda3d').innerHTML = ''; // Destrói o motor pra não bugar o próximo
+        document.getElementById('menuAnimacoes').style.display = 'none';
     };
 </script>
 
