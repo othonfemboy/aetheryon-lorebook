@@ -371,6 +371,8 @@
     <!-- TRADUTOR DE TOUCH PARA CELULAR -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
 
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+
 </head>
 <body>
 
@@ -507,7 +509,7 @@
             // --- FAMÍLIA LANCEHEARTH E ALIADOS ---
             {
                 name: "Ashlan Lancehearth", title: "O Herdeiro do Vendaval", role: "dps", image: "ashlan.jpg",
-                model3dChar: "https://playcanv.as/b/0c8b6d1c",
+                model3dChar: "ashlanmodel.glb",
                 avatar: "ashlan_face.jpg",
                 quote: "\"O vento não pede permissão para destruir... e nem eu.\"",
                 faction: "💎 Diamond City", elemento: "🌪️ Vento", 
@@ -548,6 +550,7 @@
             {
                 name: "Ashton Lancehearth", title: "O Príncipe da Escuridão", role: "dps", image: "ashton.png",
                 avatar: "ashton_face.jpg",
+                model3dChar: "ashtonmodel.glb",
                 quote: "\"Vocês temem as sombras. Eu as chamo de casa.\"",
                 faction: "💎 Diamond City", elemento: "🌑 Sombra", 
                 stats: { forca: 95, magia: 70, agilidade: 30, inteligencia: 70, carisma: 30, physDef: 60, magDef: 30 },
@@ -4021,34 +4024,40 @@ Responda como o Oráculo de Aetheryon.
         };
     </script>
 
-      <!-- ========================================== -->
-<!-- VISUALIZADOR 3D INTEGRADO NO SITE          -->
+     <!-- ========================================== -->
+<!-- VISUALIZADOR 3D DO GOOGLE (MODEL-VIEWER)   -->
 <!-- ========================================== -->
 <div id="model3dViewer" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 99999; justify-content: center; align-items: center; flex-direction: column; backdrop-filter: blur(10px);">
-    <!-- O botão X esconde a tela e desliga o modelo pra não pesar a memória -->
-    <span onclick="document.getElementById('model3dViewer').style.display='none'; document.getElementById('iframe3d').src='';" style="position: absolute; top: 15px; right: 25px; color: #888; font-size: 40px; cursor: pointer; z-index: 100000;">&times;</span>
+    
+    <!-- O botão X esconde a tela e "desliga" o modelo pra não gastar RAM do celular -->
+    <span onclick="document.getElementById('model3dViewer').style.display='none'; document.getElementById('meuModelo3D').src='';" style="position: absolute; top: 15px; right: 25px; color: #888; font-size: 40px; cursor: pointer; z-index: 100000;">&times;</span>
     
     <h2 id="title3d" style="color: #00ffcc; font-family: 'Cinzel', serif; margin-bottom: 15px; text-transform: uppercase;">Modelo 3D</h2>
     
     <div id="borda3d" style="width: 90%; max-width: 1000px; height: 75vh; background: #000; border: 2px solid #00ffcc; border-radius: 10px; box-shadow: 0 0 30px rgba(0, 255, 204, 0.3); overflow: hidden;">
-        <iframe id="iframe3d" title="Modelo 3D" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" style="width: 100%; height: 100%;"></iframe>
+        
+        <!-- O MOTOR 3D DO GOOGLE (Ele já toca animação sozinho por causa do "autoplay") -->
+        <model-viewer id="meuModelo3D" 
+            src="" 
+            camera-controls 
+            auto-rotate 
+            autoplay 
+            shadow-intensity="1" 
+            style="width: 100%; height: 100%; background-color: #000;">
+        </model-viewer>
+
     </div>
 </div>
 
 <script>
     window.abrirModelo3D = function(url, tipo) {
-        // Muda a cor e o título dependendo se é personagem ou arma
+        // Muda as cores dependendo se é personagem (Ciano) ou arma (Laranja)
         document.getElementById('title3d').innerText = tipo === 'char' ? "Personagem 3D" : "Arsenal 3D";
         document.getElementById('title3d').style.color = tipo === 'char' ? "#00ffcc" : "#ff4500";
         document.getElementById('borda3d').style.borderColor = tipo === 'char' ? "#00ffcc" : "#ff4500";
         
-        // Truque mágico: se for link do sketchfab, ele transforma em embed e já bota pra girar sozinho (autostart)
-        let embedUrl = url;
-        if (url.includes('sketchfab.com') && !url.includes('/embed')) {
-            embedUrl = url + '/embed?autostart=1&preload=1'; 
-        }
-        
-        document.getElementById('iframe3d').src = embedUrl;
+        // Joga o arquivo GLB direto pro Google ler
+        document.getElementById('meuModelo3D').src = url;
         document.getElementById('model3dViewer').style.display = 'flex';
     };
 </script>
