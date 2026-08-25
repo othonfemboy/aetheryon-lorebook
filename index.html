@@ -410,6 +410,7 @@
     <option value="windmusic.mp3">🌪️ Música: Vento</option>
     <option value="aguamusic.mp3">🌊 Música: Água</option>
     <option value="batalha_final.mp3">⚔️ Música: Batalha Épica</option>
+    <option value="lightofdusk.mp3">🌅 Música: Light of Dusk</option>
 </select>
 <div style="display: flex; align-items: center; gap: 5px; background: #111; padding: 0 15px; border: 2px solid #444; border-radius: 5px; height: 42px; margin: 0;">
     <span style="color: #aaa; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🔉 VOL:</span>
@@ -623,6 +624,7 @@
                 stats: { forca: 70, magia: 0, agilidade: 90, physDef: 15, magDef: 0 },
                 race: "Elfa Mantra", weapon: "Bloody Machete",
                 weaponDetails: "Um facão rústico, pesado e enferrujado nas laterais, mas mantido perpetuamente afiado no gume. Uma ferramenta primitiva feita unicamente para o desmembramento cirúrgico.",
+                weaponImage: "lyssa_weapon.png",
                 description: "Uma psicopata clinicamente incurável que encontrou o paraíso no meio do caos de Aetheryon. Infância nas Naturelands: Os pais de Lyssa estão vivos e moram pacificamente nas Naturelands. Quando criança, Lyssa demonstrou um comportamento sádico extremo, chegando a empurrar outra criança de um penhasco. Horrorizados, seus pais a amarraram e a jogaram no vasto oceano a leste. Eles acham até hoje que ela morreu afogada, mas Lyssa desamarrou-se, sobreviveu às correntes e nadou de volta, tornando-se uma ameaça absoluta.<br><br>A Clínica da Grande Guerra: Durante a Grande Guerra, ela construiu uma clínica médica nos arredores de Diamond City fingindo ajudar os feridos. Suas primeiras vítimas foram duas irmãs doentes com febre alta. Lyssa levou a primeira irmã para uma sala e decepou todos os seus membros antes que ela pudesse gritar. Notando o silêncio, a outra irmã investigou, viu a cena grotesca e correu. Ela só sobreviveu porque encontrou guardas de elite em patrulha por perto. Graças ao caos da guerra, a clínica operou por muito tempo sem ser notada, acumulando cerca de 30 vítimas mutiladas.<br><br>A Chegada a Zenathor: Após os Agentes Especiais de Diamond City (D.C.S.A.) descobrirem os crimes e pulverizarem a clínica com magia, Lyssa vagou pelo mundo. Ela entrou em Zenathor coberta de sangue seco, ainda vestindo sua máscara e jaleco branco. Impressionada com a psicopatia da elfa, Karyna Blackfield a acolheu como sua criada fiel.",
                 extraImages: ["lyssa_walk.gif", "lyssa_art1.png"],
                 secret: "Lyssa possui um complexo doentio de perfeição estética. Ela não mata as suas vítimas apenas por sadismo; ela corta pernas, braços e olhos que ela considera belos para costurar em si mesma ou tentar forjar um parceiro biológico artificial perfeito nos porões escuros do castelo de Zenathor."
@@ -775,7 +777,13 @@
                 quote: "\"Se ajoelhe, verme. Ser pisado por mim é uma Bênção Espiritual.\"",
                 voicelines: [
                     { nome: "Introdução", arquivo: "voicelines/byakuya_intro.mp3" },
-                    { nome: "Entre as minha coxas", arquivo: "voicelines/byakuya_coxas.mp3" }  
+                    { nome: "Entre as minha coxas", arquivo: "voicelines/byakuya_coxas.mp3" },
+                    { nome: "Lamber meus pés", arquivo: "voicelines/byakuya_lamberpes.mp3" },
+                    { nome: "Os monges sabem", arquivo: "voicelines/byakuya_mongeseguir.mp3" },
+                    { nome: "Qualquer homem", arquivo: "voicelines/byakuya_homembichinha.mp3" },
+                    { nome: "Putinha", arquivo: "voicelines/byakuya_putinha.mp3" },
+                    { nome: "Tentar a sorte", arquivo: "voicelines/byakuya_tentarsorte.mp3" },
+                    { nome: "Viadinho do Ashlan", arquivo: "voicelines/byakuya_viadinhoashlan.mp3" }  
                 ],
                 faction: "🏔️ Pico dos Suspiros", elemento: "🌪️ Físico / Vento Oculto", 
                 stats: { forca: 100, magia: 40, agilidade: 90, inteligencia: 70, carisma: 20, physDef: 80, magDef: 30 },
@@ -839,6 +847,7 @@
              {
                 name: "Lysandre", title: "O Guardião Selvagem", role: "support", image: "lysandre.jpg",
                 avatar: "lysandre_face.jpg",
+                model3dChar: "lysandremodel.glb",
                 quote: "\"Relaxa, deixa que eu curo isso... Mas, se tocarem nos meus amigos, minhas garras vão rasgar vocês em pedaços!\"",
                 faction: "🍃 Naturelands", elemento: "🍃 Magia da Natureza / Garras Mágicas", 
                 stats: { forca: 10, magia: 85, agilidade: 100, inteligencia: 60, carisma: 95, physDef: 6, magDef: 70 },
@@ -884,7 +893,7 @@
             weaponDetails: "Em sua forma desperta, Kat abandona os grimórios e puxa espadas letais de empunhadura preta, retalhando com acrobacias tridimensionais que desafiam a gravidade.",
             weaponImage: "katarina_weapon.png",
             description: "A ex-prodígio da Academia de Magia, Katarina carrega a genética dos Felari de forma sutil: não tem orelhas ou rabo de gato visíveis, mas todo o instinto letal e os trejeitos estão presentes em seu sangue.<br><br>O seu grande destaque é a sua dupla personalidade física e mágica. Na sua Forma Base, ela aparenta ser baixinha, usa moda gótica, age de forma elitista, fria, arrogante e foca em magia à distância. Porém, ao liberar seu poder verdadeiro, ela ativa a sua Forma Desperta: ganha altura adulta, desenvolve o corpo, fica extremamente alegre, caótica e provocadora, abandonando as magias para rasgar inimigos corpo a corpo sorrindo.<br><br>A Dinâmica com Aelith Nocturne (A Kryptonita do Príncipe): Aelith é o guerreiro mais forte de Mournfall e um pacifista de coração, mas sofre de um 'gap-moe' terrível, sendo completamente indefeso romanticamente. Na forma Loli, Kat o trata com frieza e arrogância, o que o faz apenas suspirar e tolerar a atitude dela. Porém, quando assume a Forma Adulta, ela se torna o maior pesadelo de Aelith. Sendo uma garota forte, dominante e extrovertida, Kat o encurrala, provocando-o fisicamente até que o coração do Esgrimista das Sombras bata tão rápido que ele entra em pânico, sem saber o que fazer consigo mesmo.<br><br>A Dinâmica com Caelith Nocturne (O Terror do Sacerdote): Caelith já é incrivelmente tímido por natureza, corando intensamente quando falam com ele. Como Kat conviveu no ambiente acadêmico/mágico, ela sabe exatamente como desarmá-lo. Na forma Loli, suas patadas o intimidam. Na forma Adulta, sua extroversão e a mania felina de 'se esfregar' causam um colapso no Príncipe mais novo, fazendo com que ele abrace seu grimório acorrentado contra o peito como um escudo e enterre o rosto vermelho nas páginas.<br><br>O Rei Astolfo (O Aval do Soberano): Astolfo, sendo o Supremo Estrategista de Mournfall, observa as interações caóticas de Kat com seus filhos com uma postura calma e silenciosa. Apesar das provocaçõesconstantes dela, o Rei reconhece a eficácia letal da transição entre a magia sombria e o combate de espadas de Kat, enxergando nela uma guerreira de elite perfeitamente moldada pelo ambiente da cidade.",
-            extraImages: ["katarina_art1.png", "katarina_art2.png"],
+            extraImages: ["katarina_art1.png", "katarina_art2.png", "katarina_aelith.png", "katarina_caelith.png"],
             secret: "Por causa de seus instintos Felari ocultos, a 'Senhorita Ravencroft' desmorona completamente quando alguém em quem confia faz carinho nela."
             },
             {
@@ -1090,9 +1099,45 @@
     race: "Humana (Mutação Alquímica de Infância)",
     weapon: "Lança Dupla 'Vindicadora'",
     weaponDetails: "Uma lança bifurcada forjada em aço leve temperado e cristais condutores de éter cinético. Kiyomi utiliza sua agilidade acrobática e centro de gravidade adaptado para girar a lâmina dupla em leque, desferindo investidas perfurantes velozes com alto torque em média distância.",
+    weaponImage: "kiyomi_weapon.png",
     description: "A infância de Kiyomi foi abruptamente interrompida nos arredores de Diamond City quando ela caiu em uma emboscada e foi arrastada para os complexos subterrâneos da renegada Dra. Rosalind Mercer.<br><br>No laboratório clandestino da cientista, a garota foi submetida a experimentos invasivos de bioalquimia cirúrgica voltados a transgredir as fronteiras biológicas, tendo sua estrutura corporal profundamente alterada para abrigar dois órgãos masculinos plenamente funcionais. Contudo, ao ser resgatada e libertada daquele pesadelo ainda jovem, Kiyomi trilhou um caminho oposto ao desespero que consumiu outras cobaias.<br><br>Crescendo com essa condição desde pequena, ela recusou o papel de vítima e converteu sua anatomia única em força motriz. Através de um treinamento físico rigoroso, Kiyomi aprendeu a dominar seu centro de equilíbrio corporal com perfeição, transformando a redistribuição de massa em pura aceleração cinética, esquivas laterais milimétricas e acrobacias letais de flanco com sua lança bifurcada.<br><br>Hoje, consagrada como uma exploradora destemida e radiante, Kiyomi lidera a linha de frente da guilda desbravando os confins inexplorados de Aetheryon. Sua presença imponente combina letalidade cirúrgica em combate e um espírito indomável que celebra a própria liberdade.",
-    extraImages: ["kiyomi_art1.jpg", "kiyomi_art2.png", "kiyomi_art3.png", "kiyomi_bathroom.jpg", "kiyomi_child.jpg"],
+    extraImages: ["kiyomi_art1.jpg", "kiyomi_art2.png", "kiyomi_art3.png", "kiyomi_bathroom.jpg", "kiyomi_child.jpg", "kiyomi_art5.png"],
     secret: "Por conviver com sua estrutura física desde a infância, Kiyomi encara o próprio corpo com absoluta naturalidade e leveza, embora suas expedições rendam momentos cômicos clássicos: novatos da guilda que a espiam desprevenidamente urinando em pé atrás de arbustos entram em pânico e choque total com o fluxo duplo perfeito ('Pera aí... ela tem DOIS?!'), enquanto ela apenas ri da situação.<br><br>Para eliminar incômodos e atritos em marchas exaustivas pelos ermos, Kiyomi desenvolveu maestria em alfaiataria, desenhando e costurando suas próprias calças, shorts e trajes sob medida. Além disso, é fascinada por provar doces artesanais em cada povoado que visita e nunca recusa um desafio amigável de corrida. Como ela tinha vergonha por causa da sua anatomia diferenciada antes, às vezes ela gosta de andar pelos lugares sem vestir nada na parte debaixo, mostrando para todos que não tem vergonha de quem ela é."
+        },
+        {
+    name: "Clarissa",
+    title: "A Matriarca dos Prados",
+    role: "dps",
+    image: "clarissa.png",
+    avatar: "clarissa_face.png",
+    quote: "\"Nossos machos deram suas vidas para que nós pudéssemos existir. Agora, cada gota de força e vida no meu corpo pertence ao futuro do meu povo!\"",
+    faction: "🌿 Naturelands",
+    elemento: "🌾 Éter Terrestre / Dança da Espada",
+    stats: { forca: 50, magia: 40, agilidade: 84, inteligencia: 50, carisma: 100, physDef: 45, magDef: 35 },
+    race: "Cowari (Matriarca / Líder da Raça)",
+    weapon: "Espada de Pastagem 'Alvorada Bovina'",
+    weaponDetails: "Uma espada curta de lâmina larga forjada em liga leve de éter terrestre com empunhadura dourada cerimonial. Clarissa combina cortes rápidos de esgrima com a força muscular natural de sua linhagem, desferindo golpes de alto impacto capazes de quebrar formações invasoras.",
+    weaponImage: "clarissa_weapon.png",
+    description: "Após a tragédia da Grande Guerra que dizimou todos os machos da raça Cowari na linha de contenção, Clarissa — então uma jovem guerreira destemida — deu um passo à frente para liderar as órfãs e sobreviventes em meio ao luto e ao desespero.<br><br>Ela foi a primeira voluntária a apoiar o plano médico de emergência da Dra. Thalia Mercer, coordenando a reestruturação física de sua sociedade e estabelecendo a vila de Bovinia nas pastagens mais ricas de Naturelands. Sob sua liderança carismática e inabalável, o povo Cowari não apenas escapou da extinção biológica, mas prosperou como uma potência autônoma, comercializando leite de alto valor nutricional com Diamond City e reinos vizinhos.<br><br>Sempre ostentando um sorriso radiante e tranças louras impecáveis, Clarissa une a graciosidade de uma líder acolhedora com a fúria protetora de uma leoa: quem ousa marchar contra as fazendas e nascentes sagradas de seu povo encontra uma comandante implacável na ponta da lâmina.",
+    extraImages: ["clarissa_art1.jpg", "clarissa_art2.jpg", "clarissa_art3.jpg"],
+    secret: "Como Matriarca e símbolo máximo da fertilidade restaurada de sua raça, Clarissa carrega a maior taxa de produção de leite da comunidade. Para manter o foco nas reuniões do conselho de Naturelands sem entrar em febre hormonal por acúmulo de fluido, suas conselheiras mais próximas cuidam de sua extração rotineira antes de cada audiência pública."
+        },
+        {
+    name: "Dra. Thalia Mercer",
+    title: "A Curandeira dos Bosques",
+    role: "support",
+    image: "thalia.png",
+    avatar: "thalia_face.png",
+    quote: "\"Minha irmã usou a ciência para quebrar almas e alimentar devaneios vis. Eu uso o mesmo conhecimento para que nenhuma vida seja apagada de Aetheryon.\"",
+    faction: "🌿 Naturelands",
+    elemento: "🍃 Botânica Curativa & Alquimia Vital",
+    stats: { forca: 32, magia: 78, agilidade: 70, inteligencia: 98, carisma: 86, physDef: 52, magDef: 80 },
+    race: "Humana",
+    weapon: "Bisturi de Cristal Esmeralda & Ampolas Vivas",
+    weaponDetails: "Um conjunto de lâminas cirúrgicas purificadas com essência de éter vegetal combinadas a frascos de vidro temperado. Em combate, Thalia quebra catalisadores botânicos no solo que liberam névoas de regeneração celular acelerada, estancam hemorragias massivas e aumentam a resistência física e mágica de toda a vanguarda.",
+    description: "Irmã biológica mais nova da infame Dra. Rosalind Mercer, Thalia sempre compartilhou da mesma genialidade acadêmica e domínio sobre a bio-química, mas seguiu um caminho moral completamente oposto.<br><br>Enquanto Rosalind transformava seu laboratório subterrâneo em Diamond City em um antro de mutilações e devaneios hedonistas, Thalia abandonou a corte e se refugiou no coração verdejante de Naturelands, dedicando seu intelecto ao estudo de ervas medicinais, raízes antigas e feitiços botânicos de restauração celular.<br><br>Durante o ápice da Grande Guerra, ao testemunhar o massacre devastador dos machos Cowari e o desespero de uma raça inteira à beira do esquecimento, Thalia tomou uma decisão drástica: infiltrou-se no complexo clandestino da irmã e surrupiou os dossiês secretos de modificação gonadal. Isolada em seu santuário florestal, ela expurgou os componentes cruéis da fórmula original de Rosalind e reprogramou o composto com extratos vitais de seiva de Naturelands. A aplicação bem-sucedida do tratamento nas fêmeas Cowari salvou a espécie da aniquilação e consolidou Thalia como uma das figuras mais reverenciadas de todo o santuário selvagem.<br><br>Hoje, atua como médica-chefe e conselheira biológica entre as vilas periféricas, mantendo uma rede de distribuição de antídotos que protege os povos das feras venenosas e dos miasmas corrompidos de Diamond City e Zenathor.",
+    extraImages: ["thalia_clinic.png", "thalia_herbs.jpg"],
+    secret: "Apesar do ódio visceral pelos métodos de Rosalind, Thalia guarda um sentimento de culpa por ter recorrido às anotações da irmã para salvar as Cowari. Ela mantém um frasco com o composto seminal lactógeno de elite Cowari sempre consigo, consumindo doses diárias que garantem imunidade total contra os venenos hormonais e gases paralisantes desenvolvidos por sua irmã."
         },   
         ];
 
@@ -1136,7 +1181,7 @@
                 faction: "🌿 Coração de Aetheryon", elemento: "Feras e Botânica Carnívora",
                 race: "Habitantes: Elfos, Centauros, Caprimas", weapon: "Arcos Florestais & Garras",
                 weaponDetails: "As defesas dependem de enxames de feras domadas, esporos que dissolvem mentes e emboscadas na copa das árvores.",
-                description: "Situada no centro verdejante de Aetheryon. Naturelands é uma explosão vasta de vida vibrante, bioluminescência e perigo. Apesar dos rios de água cristalina e da aparência de paraíso místico, a fauna e flora são absurdamente cruéis e repletas de predadores botânicos bizarros.",
+                description: "Situada no centro verdejante de Aetheryon. Naturelands é uma explosão vasta de vida vibrante, bioluminescência e perigo. Apesar dos rios de água cristalina e da aparência de paraíso místico, a fauna e flora são absurdamente cruéis e repletas de predadores botânicos bizarros.<br><br>Naturelands é um reino vasto de harmonia ecológica e vigor mágico. A imponente Capital Central, erguida nas raízes de árvores colossais que tocam as nuvens, abriga os grandes conselhos druídicos e médicos. Ao redor da capital, em um anel concêntrico de vales e bosques, repousam os vilarejos soberanos: Bloomhaven (o refúgio tranquilo dos Caprima), Felari (aldeia suspensa nas copas dos caçadores ágeis) e Bovinia (as pastagens ricas e nascentes onde as Cowari prosperam). Apesar de sua beleza paradisíaca e águas cintilantes, a mata profunda é implacável contra qualquer ameaça de Diamond City ou Zenathor.",
                 extraImages: ["naturelands_symbol.jpeg"],
                 secret: "A parte mais profunda da floresta oculta 'O Olho da Fonte Luminescente', cujas concentrações absurdas de mana forçam mutações espontâneas na anatomia das criaturas."
             },
@@ -1261,6 +1306,16 @@
                 extraImages: ["felari_macho.png", "felari_femea.png"],
                 secret: "Os Felari nutrem duas grandes rivalidades: uma inimizade genética mortal contra os homens-cobra (Kagehebi) de Kagejima, e um ódio político ferrenho contra a tirania da Rainha Karyna em Zenathor — um Felari capturado prefere estripar-se a aceitar uma coleira de escravo. Apesar de serem assassinos perfeitos nas sombras, a raça inteira partilha de uma fraqueza humilhante: possuem terminações nervosas hipersensíveis na base das suas caudas e atrás das orelhas. Uma carícia bem executada nessas zonas desliga instantaneamente o instinto assassino de qualquer guerreiro Felari, reduzindo-os a um estado de submissão, carência e 'dengo' incontrolável. Além disso, sofrem de um vício biológico inato pelo 'néctar' magicamente doce produzido pela raça Caprima."
             },
+            {
+    name: "Cowari",
+    title: "As Matriarcas das Pastagens",
+    image: "cowari_male.png",
+    faction: "🌿 Naturelands / Vila dos Prados",
+    elemento: "Vitalidade Terrestre / Vigor Mamífero",
+    description: "Uma nobre e robusta raça therianthrope bovina nativa dos prados férteis de Naturelands. Reconhecidas por sua força muscular, silhuetas curvilíneas generosas, chifres curvados e temperamento afetuoso, as Cowari formam a espinha dorsal da agricultura e sustentabilidade do reino. Durante a Grande Guerra, todos os machos da espécie se sacrificaram na linha de frente para repelir invasores e permitir a fuga dos infantes, levando a linhagem à beira da extinção biológica total.<br><br>A sobrevivência do povo foi garantida pela intervenção da Dra. Thalia Mercer, que adaptou uma bio-cirurgia alquímica integrando genitália funcional masculina (pênis e testículos) à anatomia feminina original. Seus testículos sintetizam uma emulsão densa que une leite altamente nutritivo e material genético fértil, permitindo a fecundação natural entre fêmeas sem suprimir o sistema reprodutivo feminino clássico.<br><br>O leite gerado pelas Cowari — colhido tanto pelas glândulas mamárias quanto por estimulação peniana — possui altíssimo valor medicinal, sabor puro e representa a mercadoria de maior demanda comercial exportada de Naturelands para os mercados de Diamond City e Mournfall.",
+    extraImages: ["cowari_male.png", "clarissa.png"],
+    secret: "Devido à produção contínua e volumosa de leite em ambas as extremidades do corpo, o metabolismo das Cowari exige uma ingestão hídrica duas vezes superior à de qualquer outra raça em Aetheryon. Em suas vilas, todas as cabanas são construídas diretamente sobre canais de água pura e nascentes cristalinas. Quando passam longos períodos sem a extração regular do leite (seja mamário ou seminal), seus corpos entram em uma condição febril de calor e hipersensibilidade que só se dissipa após alívio completo nos tanques rituais da comunidade."
+        },
         ];
 
         // ==========================================
