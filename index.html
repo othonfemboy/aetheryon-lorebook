@@ -2651,6 +2651,13 @@ Responda como o Oráculo de Aetheryon.
         <span style="display: block; background: #111; border: 1px solid #d4af37; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 11px; margin-top: -10px; font-weight: bold; position: relative; z-index: 10;">Ranks</span>
     </div>
 
+<!-- BOTÃO FLUTUANTE DE PROMOÇÕES -->
+    <div id="hudPromo" onclick="abrirPromoScreen()" style="position: fixed; top: 200px; left: 30px; z-index: 2000; cursor: pointer; text-align: center; transition: 0.2s;">
+        <div style="width: 60px; height: 60px; background: #111; border: 2px solid #ff00ff; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; box-shadow: 0 0 15px rgba(255, 0, 255, 0.5); animation: pulsePromo 2s infinite;">🎁</div>
+        <span style="display: block; background: #ff00ff; border: 1px solid #fff; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 11px; margin-top: -10px; font-weight: bold; position: relative; z-index: 10;">PROMOÇÃO!</span>
+    </div>
+    <style>@keyframes pulsePromo { 0% {box-shadow: 0 0 10px rgba(255,0,255,0.4);} 50% {box-shadow: 0 0 25px rgba(255,0,255,1);} 100% {box-shadow: 0 0 10px rgba(255,0,255,0.4);} }</style>
+
     <!-- TELA DE CONQUISTAS -->
     <div id="achievementsModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 6000; justify-content: center; align-items: center; backdrop-filter: blur(5px);">
         <div style="background: #111; border: 2px solid #d4af37; width: 90%; max-width: 500px; border-radius: 10px; padding: 30px; text-align: center; position: relative; box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);">
@@ -5403,25 +5410,135 @@ if (!niveisRank.includes(playerRank)) {
         </div>
     </div>
 
-    <!-- MÁGICA QUE DESENGOLA OS MINIGAMES -->
+    <div id="hudPromo" onclick="abrirPromoScreen()" style="position: fixed; top: 200px; left: 30px; z-index: 2000; cursor: pointer; text-align: center; transition: 0.2s;">
+        <div style="width: 60px; height: 60px; background: #111; border: 2px solid #ff00ff; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; box-shadow: 0 0 15px rgba(255, 0, 255, 0.5); animation: pulsePromo 2s infinite;">🎁</div>
+        <span style="display: block; background: #ff00ff; border: 1px solid #fff; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 11px; margin-top: -10px; font-weight: bold; position: relative; z-index: 10;">PROMOÇÃO!</span>
+    </div>
+    <style>@keyframes pulsePromo { 0% {box-shadow: 0 0 10px rgba(255,0,255,0.4);} 50% {box-shadow: 0 0 25px rgba(255,0,255,1);} 100% {box-shadow: 0 0 10px rgba(255,0,255,0.4);} }</style>
 
-         <!-- MÁGICA QUE DESENGOLA OS MINIGAMES -->
-<script>
-    window.addEventListener('DOMContentLoaded', () => {
-        const corpo = document.body;
-        const divsParaRaiz = [
-            'telaForcaAbsoluta', 'snakeScreen', 'infoDificuldadeModal', 
-            'catchScreen', 'lapisScreen', 'oracleWarningScreen', 
-            'simonScreen', 'canvasBorracha', 'btnLixeiraUniversos',
-            'gameInfoModal'
+    <div id="promoScreen" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.95); z-index:6000; justify-content:center; align-items:center; flex-direction:column; backdrop-filter:blur(5px); padding:20px; box-sizing:border-box;">
+        <span onclick="document.getElementById('promoScreen').style.display='none'" style="position: absolute; top: 15px; right: 25px; color: #888; font-size: 40px; cursor: pointer; z-index: 6001;">&times;</span>
+        <h1 style="color: #ff00ff; font-family: 'Cinzel', serif; margin-bottom: 5px; text-shadow: 0 0 15px #ff00ff; text-align:center;">🎁 Sorteio Steam</h1>
+        <p style="color: #ccc; margin-bottom: 15px; text-align: center; max-width: 400px; line-height: 1.4;">Neste menu você poderá participar de sorteios promocionais de jogos exclusivos do Senran Kagura e Neptunia para Steam. Navegue pelas ofertas com as setas!</p>
+        
+        <div style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; max-width: 500px;">
+            <button onclick="mudarSlidePromo(-1)" style="background: none; border: none; color: #ff00ff; font-size: 35px; cursor: pointer; transition: 0.2s;">&#10094;</button>
+            <div id="promoCardContainer" style="background: #111; border: 2px solid #555; border-radius: 10px; padding: 20px; width: 100%; max-height: 75vh; overflow-y: auto; text-align: center; box-shadow: 0 0 20px rgba(255,0,255,0.2); box-sizing: border-box;"></div>
+            <button onclick="mudarSlidePromo(1)" style="background: none; border: none; color: #ff00ff; font-size: 35px; cursor: pointer; transition: 0.2s;">&#10095;</button>
+        </div>
+    </div>
+
+    <!-- 3. MOTOR JAVASCRIPT DA PROMOÇÃO -->
+    <script>
+        // AQUI VOCÊ EDITA OS JOGOS!
+        const promoGames = [
+            {
+                titulo: "Senran Kagura: Peach Beach Splash",
+                capa: "pbscover.jpg", 
+                videoType: "iframe", 
+                videoSrc: "https://www.youtube.com/embed/5SmFHPGJieg?si=Xy23O91075mDO18e", 
+                desc: "As ninjas estão prontas para a batalha de água nesse jogo de tiro em terceira pessoa! Suporte para controles de XBOX, contém partidas online para jogar com amigos. Participe para ganhar uma chave oficial na Steam.",
+                ativo: false
+            },
+            {
+                titulo: "Senran Kagura: Estival Versus",
+                capa: "estivalversuscover.jpg",
+                videoType: "iframe", 
+                videoSrc: "https://www.youtube.com/embed/2vVhf_TgoEE?si=uIRJ7aadu-P2kHsE",
+                desc: "O jogo épico das garotas ninjas gostosas. Selecione a sua personagem e entre no campo de batalha. Contém partidas online para jogar com amigos. Suporte para controles de XBOX apenas, .",
+                ativo: false 
+            }
         ];
 
-        divsParaRaiz.forEach(id => {
-            let el = document.getElementById(id);
-            if (el) corpo.appendChild(el);
+        let promoAtual = 0;
+
+        window.abrirPromoScreen = function() {
+            document.getElementById('promoScreen').style.display = 'flex';
+            renderPromoSlide(0); 
+        };
+
+        window.mudarSlidePromo = function(dir) {
+            promoAtual += dir;
+            if (promoAtual < 0) promoAtual = promoGames.length - 1;
+            if (promoAtual >= promoGames.length) promoAtual = 0;
+            renderPromoSlide(promoAtual);
+        };
+
+        function renderPromoSlide(index) {
+            const container = document.getElementById('promoCardContainer');
+            if(!container) return;
+            
+            const jogo = promoGames[index];
+            
+            let videoHTML = "";
+            if (jogo.videoType === "iframe") {
+                videoHTML = `<iframe width="100%" height="200" src="${jogo.videoSrc}" frameborder="0" allowfullscreen style="border-radius: 5px; border: 1px solid #444; margin-bottom: 10px;"></iframe>`;
+            } else {
+                videoHTML = `<video width="100%" height="200" controls style="border-radius: 5px; border: 1px solid #444; margin-bottom: 10px;"><source src="${jogo.videoSrc}" type="video/mp4"></video>`;
+            }
+
+            // FORMULÁRIO COM ENVIO DE E-MAIL E TRAVA DE IDADE
+            let botaoFormHTML = jogo.ativo ? `
+                    <div style="background: #1a1a1a; border: 1px solid #ff00ff; border-radius: 8px; padding: 15px; text-align: left; margin-top: 10px;">
+                        <h3 style="color: #ff00ff; margin-top: 0; font-family: 'Cinzel', serif; font-size: 16px; text-align: center;">Preencha para Participar</h3>
+                        
+                        <form action="https://formsubmit.co/SEU_EMAIL_AQUI@gmail.com" method="POST">
+                            
+                            <input type="hidden" name="_subject" value="Novo Participante Sorteio: ${jogo.titulo}">
+                            <input type="hidden" name="_captcha" value="false">
+                            <input type="hidden" name="Jogo Desejado" value="${jogo.titulo}">
+
+                            <input type="text" name="Nome" required placeholder="Nome Completo" style="width: 100%; padding: 10px; margin-bottom: 10px; background: #222; border: 1px solid #444; color: #fff; border-radius: 4px; box-sizing:border-box;">
+                            
+                            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                                <input type="number" name="Idade" required placeholder="Idade" style="width: 30%; padding: 10px; background: #222; border: 1px solid #444; color: #fff; border-radius: 4px; box-sizing:border-box;">
+                                <input type="text" name="WhatsApp" required placeholder="WhatsApp" style="width: 70%; padding: 10px; background: #222; border: 1px solid #444; color: #fff; border-radius: 4px; box-sizing:border-box;">
+                            </div>
+                            
+                            <input type="email" name="Email" required placeholder="E-mail" style="width: 100%; padding: 10px; margin-bottom: 15px; background: #222; border: 1px solid #444; color: #fff; border-radius: 4px; box-sizing:border-box;">
+                            
+                            <label style="color: #aaa; font-size: 11px; display: flex; gap: 10px; align-items: flex-start; margin-bottom: 15px; cursor: pointer; line-height: 1.4;">
+                                <input type="checkbox" required onchange="let btn = this.form.querySelector('button'); btn.disabled = !this.checked; btn.style.opacity = this.checked ? '1' : '0.4';" style="margin-top: 2px;"> 
+                                Confirmo que sou maior de 18 anos e possuo conta válida na Steam para resgatar esse prêmio.
+                            </label>
+                            
+                            <button type="submit" disabled style="width: 100%; padding: 12px; background: #ff00ff; color: #fff; border: none; border-radius: 5px; font-weight: bold; font-family: 'Cinzel', serif; cursor: pointer; text-transform: uppercase; box-shadow: 0 0 10px #ff00ff; opacity: 0.4; transition: 0.3s;">
+                                Participar do Sorteio
+                            </button>
+                        </form>
+                    </div>
+                ` : `
+                    <button style="width: 100%; padding: 15px; background: #333; color: #666; border: 1px solid #444; border-radius: 5px; font-weight: bold; font-family: 'Cinzel', serif; cursor: not-allowed; text-transform: uppercase; margin-top: 10px;" disabled>
+                        Sorteio Fechado no Momento
+                    </button>
+                `;
+
+            container.innerHTML = `
+                <img src="${jogo.capa}" style="width: 100%; max-height: 180px; border-radius: 5px; margin-bottom: 15px; border: 1px solid #333; object-fit: cover;">
+                <h2 style="color: #fff; font-size: 22px; margin: 0 0 5px 0; font-family: 'Cinzel', serif;">${jogo.titulo}</h2>
+                <p style="color: #aaa; font-size: 14px; margin-bottom: 15px; line-height: 1.4;">${jogo.desc}</p>
+                ${videoHTML}
+                ${botaoFormHTML}
+            `;
+        }
+    </script>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const corpo = document.body;
+            const divsParaRaiz = [
+                'telaForcaAbsoluta', 'snakeScreen', 'infoDificuldadeModal', 
+                'catchScreen', 'lapisScreen', 'oracleWarningScreen', 
+                'simonScreen', 'canvasBorracha', 'btnLixeiraUniversos',
+                'gameInfoModal', 'promoScreen'
+            ];
+
+            divsParaRaiz.forEach(id => {
+                let el = document.getElementById(id);
+                if (el) corpo.appendChild(el);
+            });
         });
-    });
-</script>
+    </script>
 
 </body>
 </html>
