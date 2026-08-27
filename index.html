@@ -413,6 +413,9 @@
     <option value="lightofdusk.mp3">🌅 Música: Light of Dusk</option>
     <option value="dandadan.mp3">⛩️ Música: Dan da Dan</option>
     <option value="requiem.mp3">☣️ Música: Re Requiem</option>
+    <option value="wasteland.mp3">🏜️ Música: Wasteland</option>
+    <option value="iwilltry.mp3">🎈 Música: Terrifier</option>
+    <option value="bossfight.mp3">🗡️ Música: Boss Fight</option>
 </select>
 <div style="display: flex; align-items: center; gap: 5px; background: #111; padding: 0 15px; border: 2px solid #444; border-radius: 5px; height: 42px; margin: 0;">
     <span style="color: #aaa; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🔉 VOL:</span>
@@ -509,6 +512,7 @@
                 <button onclick="abrirSnake(); toggleInteractionMenu();" style="background: #1a1a1a; color: #32cd32; border: 1px solid #32cd32; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🐍 Desafiar: Fome do Éter</button>
                 <button onclick="abrirCatchGame(); toggleInteractionMenu();" style="background: #1a1a1a; color: #a855f7; border: 1px solid #a855f7; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🎒 Desafiar: Chuva da Morte</button>
                 <button onclick="abrirSimon(); toggleInteractionMenu();" style="background: #1a1a1a; color: #ffeb3b; border: 1px solid #ffeb3b; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🔮 Desafiar: Ecos da Memória</button>
+                <button onclick="abrirCardGame(); toggleInteractionMenu();" style="background: #1a1a1a; color: #ffcc00; border: 1px solid #ffcc00; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif; box-shadow: 0 0 10px rgba(255,204,0,0.5);">🃏 Aetheryon Battlegrounds</button>
                 <button onclick="ativarBorracha(); toggleInteractionMenu();" style="background: #1a1a1a; color: #fff; border: 1px dashed #fff; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🧽 Usar Borracha Mágica</button>
                 <button onclick="abrirLapisSecreto(); toggleInteractionMenu();" style="background: #1a1a1a; color: #a855f7; border: 1px dashed #a855f7; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">✏️ Usar Lápis Secreto</button>
                 <button onclick="openMinigame('xadrez'); toggleInteractionMenu();" style="background: #1a1a1a; color: #d4af37; border: 1px solid #d4af37; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">♟️ Desafiar: Xadrez</button>             
@@ -1166,8 +1170,27 @@
     weapon: "Bisturi de Cristal Esmeralda & Ampolas Vivas",
     weaponDetails: "Um conjunto de lâminas cirúrgicas purificadas com essência de éter vegetal combinadas a frascos de vidro temperado. Em combate, Thalia quebra catalisadores botânicos no solo que liberam névoas de regeneração celular acelerada, estancam hemorragias massivas e aumentam a resistência física e mágica de toda a vanguarda.",
     description: "Irmã biológica mais nova da infame Dra. Rosalind Mercer, Thalia sempre compartilhou da mesma genialidade acadêmica e domínio sobre a bio-química, mas seguiu um caminho moral completamente oposto.<br><br>Enquanto Rosalind transformava seu laboratório subterrâneo em Diamond City em um antro de mutilações e devaneios hedonistas, Thalia abandonou a corte e se refugiou no coração verdejante de Naturelands, dedicando seu intelecto ao estudo de ervas medicinais, raízes antigas e feitiços botânicos de restauração celular.<br><br>Durante o ápice da Grande Guerra, ao testemunhar o massacre devastador dos machos Cowari e o desespero de uma raça inteira à beira do esquecimento, Thalia tomou uma decisão drástica: infiltrou-se no complexo clandestino da irmã e surrupiou os dossiês secretos de modificação gonadal. Isolada em seu santuário florestal, ela expurgou os componentes cruéis da fórmula original de Rosalind e reprogramou o composto com extratos vitais de seiva de Naturelands. A aplicação bem-sucedida do tratamento nas fêmeas Cowari salvou a espécie da aniquilação e consolidou Thalia como uma das figuras mais reverenciadas de todo o santuário selvagem.<br><br>Hoje, atua como médica-chefe e conselheira biológica entre as vilas periféricas, mantendo uma rede de distribuição de antídotos que protege os povos das feras venenosas e dos miasmas corrompidos de Diamond City e Zenathor.",
-    extraImages: ["thalia_clinic.png", "thalia_herbs.jpg"],
+    extraImages: ["thalia_art1.png", "thalia_herbs.jpg"],
     secret: "Apesar do ódio visceral pelos métodos de Rosalind, Thalia guarda um sentimento de culpa por ter recorrido às anotações da irmã para salvar as Cowari. Ela mantém um frasco com o composto seminal lactógeno de elite Cowari sempre consigo, consumindo doses diárias que garantem imunidade total contra os venenos hormonais e gases paralisantes desenvolvidos por sua irmã."
+        },
+        {
+    name: "Mimi", 
+    title: "A Tentação Foxeri", 
+    role: "tank", 
+    image: "mimi.png",
+    avatar: "mimi_face.png",
+    model3dChar: "mimimodel.glb",
+    quote: "\"Pode vir com tudo... Eu e a Sora adoramos sentir a sua força se chocando contra nós.\"",
+    faction: "🍃 Naturelands", 
+    elemento: "🍃 Natureza / 🛡️ Espiritual", 
+    stats: { forca: 35, magia: 85, agilidade: 75, inteligencia: 50, carisma: 100, physDef: 90, magDef: 85 },
+    race: "Foxeri (Humana-Raposa)", 
+    weapon: "Serpente Espiritual 'Sora'",
+    weaponDetails: "Uma serpente de pura energia arcana e bio-luminescente que desliza provocantemente pelo corpo de Mimi. Sora projeta barreiras de força translúcidas. Todo dano recebido é absorvido e convertido em um pulso de atração e força física devastadora para os contra-ataques de Mimi.",
+    weaponImage: "mimi_weapon.png",
+    description: "Curvilínea, debochada e dona de um charme selvagem irresistível, Mimi é a prova de que a linha entre a proteção e a sedução em Naturelands é extremamente tênue. Suas orelhas e cauda de raposa felpudas se movem ao ritmo de sua atitude provocante, usando o próprio corpo como a principal atração no campo de batalha.<br><br>Vestindo trajes mínimos de couro orgânico e folhagens mágicas ajustadas que deixam pouco para a imaginação, Mimi atrai a atenção de todos os inimigos. Sua parceira espiritual, a serpente Sora, se enrosca em suas curvas antes de disparar para criar escudos defensivos. Quanto mais os inimigos tentam subjugá-la ou atacar seus aliados, mais energia kinetic-mágica Mimi acumula, transformando a frustração dos oponentes em uma carga explosiva de dano corporal.",
+    extraImages: ["mimi_art1.png", "mimi_art2.png", "mimi_art3.png"],
+    secret: "Mimi usa sua aparência extremamente sensual e seu olhar provocativo como uma arma psicológica deliberada: ela adora ver a guarda dos inimigos cair antes de esmagá-los com a energia acumulada por Sora. Seu prazer no combate vem da dominação sensorial e do controle do campo de batalha."
         },   
         ];
 
@@ -1345,6 +1368,16 @@
     description: "Uma nobre e robusta raça therianthrope bovina nativa dos prados férteis de Naturelands. Reconhecidas por sua força muscular, silhuetas curvilíneas generosas, chifres curvados e temperamento afetuoso, as Cowari formam a espinha dorsal da agricultura e sustentabilidade do reino. Durante a Grande Guerra, todos os machos da espécie se sacrificaram na linha de frente para repelir invasores e permitir a fuga dos infantes, levando a linhagem à beira da extinção biológica total.<br><br>A sobrevivência do povo foi garantida pela intervenção da Dra. Thalia Mercer, que adaptou uma bio-cirurgia alquímica integrando genitália funcional masculina (pênis e testículos) à anatomia feminina original. Seus testículos sintetizam uma emulsão densa que une leite altamente nutritivo e material genético fértil, permitindo a fecundação natural entre fêmeas sem suprimir o sistema reprodutivo feminino clássico.<br><br>O leite gerado pelas Cowari — colhido tanto pelas glândulas mamárias quanto por estimulação peniana — possui altíssimo valor medicinal, sabor puro e representa a mercadoria de maior demanda comercial exportada de Naturelands para os mercados de Diamond City e Mournfall.",
     extraImages: ["cowari_male.png", "clarissa.png"],
     secret: "Devido à produção contínua e volumosa de leite em ambas as extremidades do corpo, o metabolismo das Cowari exige uma ingestão hídrica duas vezes superior à de qualquer outra raça em Aetheryon. Em suas vilas, todas as cabanas são construídas diretamente sobre canais de água pura e nascentes cristalinas. Quando passam longos períodos sem a extração regular do leite (seja mamário ou seminal), seus corpos entram em uma condição febril de calor e hipersensibilidade que só se dissipa após alívio completo nos tanques rituais da comunidade."
+        },
+            {
+    name: "Foxeri",
+    title: "Os Espíritos da Mata",
+    image: "foxeri_female.png",
+    faction: "🍃 Naturelands",
+    elemento: "🍃 Natureza / 🦊 Instinto Selvagem",
+    description: "Uma raça fascinante e perigosamente sedutora de híbridos de humanos com raposas das profundezas de Naturelands. Fisicamente, destacam-se por suas orelhas de raposa expressivas, caudas felpudas e um magnetismo pessoal devastador.<br><br>Biologicamente, os Foxeri possuem sentidos aguçados, velocidade impressionante e uma conexão íntima com a energia elemental das florestas. Um dos traços mais marcantes da espécie é a sua estética fluida: enquanto as fêmeas ostentam curvas marcantes e uma aura provocante, os machos Foxeri são mundialmente famosos por sua elegância andrógina e traços delicados, com uma beleza bem feminina e graciosa. Na cultura Foxeri, a sedução, o charme e o jogo sensorial não são tabus, mas sim formas puras de arte, comunicação e domínio.",
+    extraImages: ["foxeri_female.png", "foxeri_male.png"],
+    secret: "Por trás da fachada vaidosa, elegante e sedutora, os Foxeri carregam a 'Sinfonia Frenética'. Quando um Foxeri é submetido a dor extrema ou estresse emocional crítico, sua compostura se desfaz e o instinto predador ancestral assume o controle absoluto, transformando-o em uma fera desgovernada que ataca qualquer um no campo de batalha."
         },
         ];
 
@@ -5523,6 +5556,514 @@ if (!niveisRank.includes(playerRank)) {
         }
     </script>
 
+   <div id="cardGameMenuScreen" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle, #2a0a3a 0%, #050011 100%); z-index: 7000; flex-direction: column; justify-content: center; align-items: center; overflow: hidden; font-family: 'Cinzel', serif;">
+        
+        <span onclick="document.getElementById('cardGameMenuScreen').style.display='none'" style="position: absolute; top: 15px; right: 25px; color: #888; font-size: 40px; cursor: pointer; z-index: 7005; transition: 0.3s;">&times;</span>
+
+        <h1 style="color: #ffcc00; font-size: 4rem; text-shadow: 0 0 20px #ffcc00, 0 0 40px #ffaa00; margin-bottom: 10px; text-align: center;">Aetheryon</h1>
+        <h2 style="color: #fff; font-size: 2rem; letter-spacing: 5px; margin-top: 0; margin-bottom: 40px; text-shadow: 0 0 10px #fff;">Battlegrounds</h2>
+
+        <div style="background: rgba(0,0,0,0.8); border: 2px solid #8a2be2; border-radius: 15px; padding: 40px; width: 90%; max-width: 400px; box-shadow: 0 0 30px rgba(138, 43, 226, 0.4);">
+            
+            <button class="cg-menu-btn destaque" onclick="iniciarDueloOraculo()">⚔️ Desafiar Oráculo</button>
+            
+            <button class="cg-menu-btn" disabled>
+                🏰 Dungeons<br>
+                <span style="font-size: 10px; font-family: 'Arial', sans-serif; color: #888; display: block; margin-top: 5px;">Os Arquitetos de Aetheryon estão trabalhando nisso...</span>
+            </button>
+            
+            <button class="cg-menu-btn" disabled>
+                🐉 Raids de Elite<br>
+                <span style="font-size: 10px; font-family: 'Arial', sans-serif; color: #888; display: block; margin-top: 5px;">Os Arquitetos de Aetheryon estão trabalhando nisso...</span>
+            </button>
+
+            <button class="cg-menu-btn" onclick="alert('Opções de Tela (Mobile/Desktop) em breve!')">⚙️ Opções</button>
+            
+            <button class="cg-menu-btn" style="border-color: #ff4444; color: #ff4444;" onclick="document.getElementById('cardGameMenuScreen').style.display='none'" onmouseover="this.style.background='#ff4444'; this.style.color='#fff';" onmouseout="this.style.background='#1a1a1a'; this.style.color='#ff4444';">🏃 Abandonar Salão</button>
+        </div>
+    </div>
+
+   <!-- ========================================== -->
+    <!-- TELA DO AETHERYON CARD GAME                -->
+    <!-- ========================================== -->
+    <div id="cardGameScreen" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle, #1a1a2e 0%, #050505 100%); z-index: 7000; flex-direction: column; justify-content: space-between; overflow: hidden; font-family: 'Cinzel', serif; transition: box-shadow 0.3s;">
+        
+        <span onclick="document.getElementById('cardGameScreen').style.display='none'; document.getElementById('cardGameMenuScreen').style.display='flex';" style="position: absolute; top: 15px; right: 25px; color: #fff; font-size: 40px; cursor: pointer; z-index: 7005; text-shadow: 0 0 10px #ff0000;">&times;</span>
+
+        <button id="btnPassarTurno" onclick="passarTurno()" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); padding: 15px 20px; background: #333; color: #ffcc00; border: 2px solid #ffcc00; font-family: 'Cinzel', serif; font-weight: bold; font-size: 16px; border-radius: 8px; cursor: pointer; z-index: 7005; box-shadow: 0 0 15px rgba(255, 204, 0, 0.5); transition: 0.3s;">
+            PASSAR TURNO
+        </button>
+
+        <div id="oracleAvatar" onclick="atacarBoss()" style="position: absolute; top: 10%; right: 5%; z-index: 9999; transition: all 0.5s; cursor: crosshair;">
+            <img src="oraculo.gif" onerror="this.src='https://via.placeholder.com/150/8a2be2/ffffff?text=Oraculo'" style="height: 150px; border-radius: 50%; filter: drop-shadow(0 0 15px #8a2be2); animation: flutuar 3s infinite ease-in-out;">
+            <div id="oracleFala" style="position: absolute; right: 120px; top: 20px; background: #fff; color: #000; padding: 10px; border-radius: 10px; border: 2px solid #8a2be2; font-size: 12px; font-weight: bold; width: 150px; display: none;">
+                Sério que você vai jogar isso?
+            </div>
+        </div>
+
+        <div style="z-index: 7002; height: 35%; display: flex; flex-direction: column; align-items: center; border-bottom: 2px dashed rgba(138, 43, 226, 0.5);">
+            <div style="color: #ff4444; margin-top: 10px; font-size: 20px; text-shadow: 0 0 10px #ff4444;">Vida Inimiga: <span id="bossHP">30</span></div>
+            <div id="campoInimigo" style="display: flex; gap: 15px; margin-top: 20px; width: 80%; height: 120px; justify-content: center; align-items: center; background: rgba(255,0,0,0.1); border-radius: 10px;"></div>
+        </div>
+
+        <div style="z-index: 7002; height: 35%; display: flex; flex-direction: column; align-items: center; border-bottom: 2px solid rgba(0, 255, 204, 0.5);">
+            <div id="campoJogador" style="display: flex; gap: 15px; margin-top: 20px; width: 80%; height: 120px; justify-content: center; align-items: center; background: rgba(0,255,204,0.1); border-radius: 10px;"></div>
+            <div style="color: #00ffcc; margin-top: auto; margin-bottom: 10px; font-size: 20px; text-shadow: 0 0 10px #00ffcc;">Sua Vida: <span id="playerHP">30</span> | Mana: <span id="playerMana">10/10</span></div>
+        </div>
+
+        <div style="z-index: 7002; height: 30%; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: flex-end; padding-bottom: -20px;">
+            <div id="maoJogador" style="display: flex; gap: -20px; perspective: 1000px;"></div>
+        </div>
+    </div>
+
+    <script>
+        const bancoDeCartas = {
+            'ashley_lv1': { id: 'ashley_lv1', nome: 'Ashley, a Luz Guia', custoMana: 2, ataque: 2, vidaMax: 10, efeito: 'No início do turno, cura 5 de HP do jogador.', imagem: 'ashley_art1.jpg', borda: '#00ffcc', tipo: 'Normal' },
+            'karyna_lv1': { id: 'karyna_lv1', nome: 'Karyna, Corte Sombrio', custoMana: 3, ataque: 5, vidaMax: 6, efeito: 'Grito de Guerra: Anula curas inimigas.', imagem: 'karyna_card1.png', borda: '#ff0000', tipo: 'Épica' },
+            'eryn_astral': { id: 'eryn_astral', nome: 'Eryn, o Guardião Astral', custoMana: 8, ataque: 8, vidaMax: 15, efeito: 'Provocar. Não pode ser alvo de magias.', imagem: 'eryn_card1.png', borda: '#ffcc00', tipo: 'Lendária' },
+            // A NOVA CARTA: LILIA!
+            'lilia_lv1': { id: 'lilia_lv1', nome: 'Lilia, a Druida', custoMana: 5, ataque: 2, vidaMax: 6, efeito: 'Grito de Guerra: Restaura toda a Mana. Cura aliados em +3 e concede Escudo Natural (+1).', imagem: 'lilia_card1.png', borda: '#32cd32', tipo: 'Rara' }
+        };
+
+        // Mana máxima subiu para 15!
+        let manaTurnoMax = 1; 
+        let manaAtual = 1;
+        let cartaSelecionada = null;
+        let bossVidaAtual = 30;
+        let playerVidaAtual = 30; 
+
+        function atualizarUI() {
+            document.getElementById('playerMana').innerText = `${manaAtual}/${manaTurnoMax}`;
+            document.getElementById('playerHP').innerText = playerVidaAtual; 
+        }
+
+        window.mostrarFloatingText = function(elementoRef, texto, tipo) {
+            if (!elementoRef) return;
+            const rect = elementoRef.getBoundingClientRect();
+            const flutuante = document.createElement('div');
+            flutuante.innerText = texto;
+            flutuante.className = 'floating-text ' + tipo;
+            flutuante.style.left = (rect.left + rect.width / 2) + 'px';
+            flutuante.style.top = (rect.top + rect.height / 2) + 'px';
+            document.body.appendChild(flutuante);
+            setTimeout(() => { flutuante.remove(); }, 1000);
+        };
+
+        window.abrirCardGame = function() {
+            // Agora o botão do site abre o MENU LOBBY, e não a mesa direto!
+            document.getElementById('cardGameMenuScreen').style.display = 'flex';
+            if (typeof speakOracle === 'function') speakOracle(["Bem-vindo ao meu tabuleiro. Escolha como quer ser humilhado."]);
+        };
+
+        window.iniciarDueloOraculo = function() {
+            document.getElementById('cardGameMenuScreen').style.display = 'none';
+            document.getElementById('cardGameScreen').style.display = 'flex';
+            
+            // Só dá as cartas iniciais se a mão estiver vazia (depois vamos fazer o Reset)
+            if(document.getElementById('maoJogador').innerHTML === '') {
+                comprarCarta('ashley_lv1');
+                comprarCarta('karyna_lv1');
+                comprarCarta('eryn_astral');
+                comprarCarta('lilia_lv1');
+            }
+        };
+
+        window.comprarCarta = function(idDaCarta) {
+            const carta = bancoDeCartas[idDaCarta];
+            if (!carta) return;
+            const mao = document.getElementById('maoJogador');
+            
+            const uniqueId = 'mao_' + Math.random().toString(36).substr(2, 9);
+            
+            // Adicionado o ícone de Escudo e a Tooltip!
+            const cartaHTML = `
+                <div id="${uniqueId}" class="carta-tcg" data-idcarta="${carta.id}" data-ataque="${carta.ataque}" data-vida="${carta.vidaMax}" data-escudo="0" onclick="jogarCarta('${uniqueId}')" style="border-color: ${carta.borda}; box-shadow: 0 0 15px ${carta.borda}88;">
+                    <div class="carta-tooltip">Status: Normal</div>
+                    <div class="carta-custo">${carta.custoMana}</div>
+                    <div class="escudo-icon">🛡️1</div>
+                    <div class="carta-img-box"><img src="${carta.imagem}" alt="${carta.nome}" onerror="this.src='https://via.placeholder.com/150x120/1a1a1a/ffffff?text=FOTO+AQUI'"></div>
+                    <div class="carta-nome" style="color: ${carta.borda};">${carta.nome}</div>
+                    <div class="carta-efeito">${carta.efeito}</div>
+                    <div class="carta-status">
+                        <span class="carta-ataque">⚔️ <span class="val-atk">${carta.ataque}</span></span>
+                        <span class="carta-vida">❤️ <span class="val-hp">${carta.vidaMax}</span></span>
+                    </div>
+                </div>
+            `;
+            mao.innerHTML += cartaHTML;
+            atualizarUI();
+        };
+
+        window.jogarCarta = function(idElemento) {
+            const elementoCarta = document.getElementById(idElemento);
+            if(!elementoCarta) return;
+
+            const carta = bancoDeCartas[elementoCarta.dataset.idcarta];
+
+            if (manaAtual < carta.custoMana) {
+                elementoCarta.style.animation = 'tremerErro 0.3s';
+                setTimeout(() => elementoCarta.style.animation = '', 300);
+                return;
+            }
+            manaAtual -= carta.custoMana;
+            atualizarUI();
+
+            const campo = document.getElementById('campoJogador');
+            elementoCarta.setAttribute("onclick", `selecionarParaAtaque('${idElemento}')`);
+            elementoCarta.style.marginLeft = '0px'; 
+            elementoCarta.style.transform = 'scale(0.9)'; 
+            elementoCarta.style.cursor = 'crosshair'; 
+            elementoCarta.classList.add('carta-na-mesa');
+            campo.appendChild(elementoCarta);
+
+            // ===============================================
+            // GRITOS DE GUERRA (Efeitos ativados ao jogar a carta)
+            // ===============================================
+            if (carta.id === 'lilia_lv1') {
+                // 1. Restaura a Mana para o máximo do turno
+                manaAtual = manaTurnoMax;
+                atualizarUI();
+
+                // 2. Cura e Protege todos os aliados na mesa
+                let aliadosNaMesa = document.querySelectorAll('#campoJogador .carta-tcg');
+                aliadosNaMesa.forEach(aliado => {
+                    // Cura
+                    let vidaMaxAliado = bancoDeCartas[aliado.dataset.idcarta].vidaMax;
+                    let novaVida = parseInt(aliado.dataset.vida) + 3;
+                    if(novaVida > vidaMaxAliado) novaVida = vidaMaxAliado;
+                    aliado.dataset.vida = novaVida;
+                    aliado.querySelector('.val-hp').innerText = novaVida;
+                    mostrarFloatingText(aliado, "+3", 'cura');
+
+                    // Escudo Natural (+1)
+                    let escudoAtual = parseInt(aliado.dataset.escudo) || 0;
+                    aliado.dataset.escudo = escudoAtual + 1;
+                    aliado.classList.add('escudo-natureza');
+                    
+                    let iconeEscudo = aliado.querySelector('.escudo-icon');
+                    iconeEscudo.style.display = 'flex';
+                    iconeEscudo.innerText = '🛡️' + aliado.dataset.escudo;
+
+                    // Atualiza a Tooltip
+                    aliado.querySelector('.carta-tooltip').innerText = "Buff: Raízes (+1 Escudo)";
+                });
+
+                // Cura você também!
+                playerVidaAtual += 3;
+                if(playerVidaAtual > 30) playerVidaAtual = 30;
+                atualizarUI();
+                mostrarFloatingText(document.getElementById('playerHP').parentElement, "+3", 'cura');
+            }
+        };
+
+        window.selecionarParaAtaque = function(idElemento) {
+            const elemento = document.getElementById(idElemento);
+            if(!elemento || elemento.classList.contains('carta-exausta')) return;
+            
+            if(cartaSelecionada) {
+                cartaSelecionada.style.boxShadow = cartaSelecionada.classList.contains('escudo-natureza') 
+                    ? '0 0 25px #32cd32, inset 0 0 15px #32cd32' 
+                    : '0 0 15px ' + bancoDeCartas[cartaSelecionada.dataset.idcarta].borda + '88';
+            }
+            cartaSelecionada = elemento;
+            elemento.style.boxShadow = '0 0 40px #ffffff, 0 0 15px #ffcc00';
+        };
+
+        function exaurirCarta(carta) {
+            carta.classList.add('carta-exausta');
+            // Se tiver escudo, mantém a borda verde, senão tira o brilho
+            carta.style.boxShadow = carta.classList.contains('escudo-natureza') ? '0 0 25px #32cd32, inset 0 0 15px #32cd32' : 'none';
+            cartaSelecionada = null;
+        }
+
+        // SISTEMA DE SOFRER DANO (ABSORVE ESCUDO PRIMEIRO)
+        function aplicarDanoNaCarta(elementoCarta, danoRecebido) {
+            let escudo = parseInt(elementoCarta.dataset.escudo) || 0;
+            let vida = parseInt(elementoCarta.dataset.vida);
+
+            if (escudo > 0) {
+                let danoAbsorvido = Math.min(escudo, danoRecebido);
+                escudo -= danoAbsorvido;
+                danoRecebido -= danoAbsorvido;
+                
+                elementoCarta.dataset.escudo = escudo;
+                let iconeEscudo = elementoCarta.querySelector('.escudo-icon');
+                
+                if (escudo <= 0) {
+                    elementoCarta.classList.remove('escudo-natureza');
+                    iconeEscudo.style.display = 'none';
+                    elementoCarta.querySelector('.carta-tooltip').innerText = "Status: Normal";
+                } else {
+                    iconeEscudo.innerText = '🛡️' + escudo;
+                }
+            }
+
+            // O dano que sobrou vai pra vida
+            vida -= danoRecebido;
+            elementoCarta.dataset.vida = vida;
+            elementoCarta.querySelector('.val-hp').innerText = vida;
+
+            elementoCarta.style.animation = 'tremerErro 0.3s';
+            setTimeout(() => elementoCarta.style.animation = '', 300);
+
+            return vida;
+        }
+
+        window.atacarBoss = function() {
+            if(!cartaSelecionada) return; 
+
+            let atk = parseInt(cartaSelecionada.dataset.ataque);
+            cartaSelecionada.style.animation = 'animacaoAtaque 0.4s ease-in-out';
+            
+            bossVidaAtual -= atk;
+            if(bossVidaAtual < 0) bossVidaAtual = 0;
+            document.getElementById('bossHP').innerText = bossVidaAtual;
+
+            mostrarFloatingText(document.getElementById('oracleAvatar'), `-${atk}`, 'dano');
+
+            let avatarOracle = document.getElementById('oracleAvatar').querySelector('img');
+            avatarOracle.style.filter = 'drop-shadow(0 0 30px #ff0000) sepia(1) hue-rotate(-50deg) saturate(5)';
+            setTimeout(() => avatarOracle.style.filter = 'drop-shadow(0 0 15px #8a2be2)', 400);
+
+            exaurirCarta(cartaSelecionada);
+
+            if(bossVidaAtual === 0) {
+                setTimeout(() => alert('VITÓRIA ÉPICA! A Oráculo foi silenciada!'), 600);
+            }
+        };
+
+        window.oraculoInvocarLacaio = function() {
+            const campoInimigo = document.getElementById('campoInimigo');
+            if(campoInimigo.children.length >= 4) return; 
+
+            const uniqueId = 'lacaio_' + Math.random().toString(36).substr(2, 9);
+            const lacaioHTML = `
+                <div id="${uniqueId}" class="carta-tcg carta-inimiga" onclick="atacarLacaioInimigo('${uniqueId}')" data-ataque="2" data-vida="2" data-escudo="0" style="border-color: #8a2be2; box-shadow: 0 0 15px #8a2be288; transform: scale(0.9); margin-left: 0; cursor: crosshair;">
+                    <div class="carta-custo" style="background:#8a2be2;">1</div>
+                    <div class="escudo-icon">🛡️0</div>
+                    <div class="carta-img-box"><img src="https://via.placeholder.com/150x120/111/8a2be2?text=Sombra"></div>
+                    <div class="carta-nome" style="color: #8a2be2;">Sombra Menor</div>
+                    <div class="carta-efeito">Lacaio da Oráculo.</div>
+                    <div class="carta-status">
+                        <span class="carta-ataque">⚔️ <span class="val-atk">2</span></span>
+                        <span class="carta-vida">❤️ <span class="val-hp">2</span></span>
+                    </div>
+                </div>
+            `;
+            campoInimigo.innerHTML += lacaioHTML;
+        };
+
+        window.atacarLacaioInimigo = function(idLacaio) {
+            if(!cartaSelecionada) return; 
+
+            const lacaioAlvo = document.getElementById(idLacaio);
+            if(!lacaioAlvo) return;
+
+            let atkAtacante = parseInt(cartaSelecionada.dataset.ataque);
+            let atkDefensor = parseInt(lacaioAlvo.dataset.ataque);
+
+            cartaSelecionada.style.animation = 'animacaoAtaque 0.4s ease-in-out';
+
+            mostrarFloatingText(lacaioAlvo, `-${atkAtacante}`, 'dano');
+            mostrarFloatingText(cartaSelecionada, `-${atkDefensor}`, 'dano');
+
+            // Troca de dano usando a função nova que calcula o escudo!
+            let vidaInimigoRestante = aplicarDanoNaCarta(lacaioAlvo, atkAtacante);
+            let vidaMinhaRestante = aplicarDanoNaCarta(cartaSelecionada, atkDefensor);
+
+            if(vidaInimigoRestante <= 0) setTimeout(() => lacaioAlvo.remove(), 400);
+            
+            if(vidaMinhaRestante <= 0) {
+                setTimeout(() => cartaSelecionada.remove(), 400);
+                cartaSelecionada = null;
+            } else {
+                exaurirCarta(cartaSelecionada);
+            }
+        };
+
+        window.passarTurno = function() {
+            if(cartaSelecionada) {
+                exaurirCarta(cartaSelecionada);
+            }
+
+            let lacaiosInimigos = document.querySelectorAll('#campoInimigo .carta-tcg');
+            let tempoAtaque = 0;
+            let playerHPDom = document.getElementById('playerHP').parentElement;
+
+            lacaiosInimigos.forEach((lacaio, index) => {
+                tempoAtaque += 600;
+                setTimeout(() => {
+                    lacaio.style.animation = 'animacaoAtaqueInimigo 0.5s ease-in-out';
+                    let atk = parseInt(lacaio.dataset.ataque);
+                    playerVidaAtual -= atk;
+                    if (playerVidaAtual < 0) playerVidaAtual = 0;
+                    atualizarUI();
+
+                    mostrarFloatingText(playerHPDom, `-${atk}`, 'dano');
+
+                    let telaGame = document.getElementById('cardGameScreen');
+                    telaGame.style.boxShadow = 'inset 0 0 100px rgba(255,0,0,0.5)';
+                    setTimeout(() => telaGame.style.boxShadow = 'none', 200);
+
+                    if(playerVidaAtual === 0) {
+                        setTimeout(() => alert('VOCÊ FOI DE VASCO! A Oráculo esmagou você.'), 600);
+                    }
+                }, tempoAtaque);
+            });
+
+            setTimeout(() => {
+                oraculoInvocarLacaio();
+
+                let cartasNaMesa = document.querySelectorAll('#campoJogador .carta-tcg');
+                cartasNaMesa.forEach(carta => {
+                    carta.classList.remove('carta-exausta');
+                    
+                    if(carta.dataset.idcarta === 'ashley_lv1') {
+                        playerVidaAtual += 5;
+                        if(playerVidaAtual > 30) playerVidaAtual = 30;
+                        atualizarUI();
+                        
+                        mostrarFloatingText(playerHPDom, "+5", 'cura');
+                        
+                        let corOriginal = carta.style.borderColor;
+                        carta.style.boxShadow = '0 0 40px #00ff00, inset 0 0 20px #00ff00';
+                        setTimeout(() => {
+                            if(!carta.classList.contains('escudo-natureza')) {
+                                carta.style.boxShadow = 'none';
+                            } else {
+                                carta.style.boxShadow = '0 0 25px #32cd32, inset 0 0 15px #32cd32';
+                            }
+                        }, 800);
+                    }
+                });
+                
+                // SISTEMA DE MANA ACUMULANDO ATÉ 15
+                if(manaTurnoMax < 15) manaTurnoMax++;
+                manaAtual = manaTurnoMax;
+                atualizarUI();
+                
+                const cartasParaSortear = ['ashley_lv1', 'karyna_lv1', 'eryn_astral', 'lilia_lv1'];
+                const cartaPuxada = cartasParaSortear[Math.floor(Math.random() * cartasParaSortear.length)];
+                comprarCarta(cartaPuxada);
+
+            }, Math.max(tempoAtaque + 500, 500));
+        };
+    </script>
+
+    <style>
+        .carta-tcg {
+            width: 140px; height: 200px; background: #111; border: 3px solid; border-radius: 8px;
+            position: relative; display: flex; flex-direction: column; align-items: center;
+            font-family: 'Arial', sans-serif; transition: 0.2s; cursor: pointer; margin-left: -20px;
+        }
+        .carta-tcg:hover { transform: translateY(-20px) scale(1.1); z-index: 100; }
+        
+        .carta-custo {
+            position: absolute; top: -10px; left: -10px; background: #0088ff; color: #fff;
+            width: 30px; height: 30px; border-radius: 50%; display: flex; justify-content: center;
+            align-items: center; font-weight: bold; font-size: 16px; border: 2px solid #fff;
+            box-shadow: 0 0 5px #000; z-index: 2;
+        }
+        .carta-img-box { width: 100%; height: 45%; overflow: hidden; border-bottom: 2px solid #333; border-radius: 5px 5px 0 0; }
+        .carta-img-box img { width: 100%; height: 100%; object-fit: cover; }
+        .carta-nome { font-size: 11px; font-weight: bold; text-align: center; margin-top: 5px; width: 90%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; }
+        .carta-efeito { font-size: 9px; color: #ccc; text-align: center; padding: 5px; flex-grow: 1; }
+        .carta-status { width: 100%; display: flex; justify-content: space-between; background: #000; padding: 5px; box-sizing: border-box; border-radius: 0 0 5px 5px; font-weight: bold; font-size: 14px; }
+        
+        .carta-ataque { color: #ffaa00; }
+        .carta-vida { color: #ff4444; }
+
+        @keyframes tremerErro {
+            0% { transform: translateX(0); border-color: #ff0000; }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
+
+        .carta-na-mesa:hover {
+            transform: scale(0.95) !important;
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.5) !important;
+            z-index: 1;
+        }
+
+        @keyframes flutuar { 0% {transform: translateY(0px);} 50% {transform: translateY(-15px);} 100% {transform: translateY(0px);} }
+
+        @keyframes animacaoAtaque {
+            0% { transform: scale(0.95) translateY(0); }
+            50% { transform: scale(1.05) translateY(-100px); z-index: 999; } 
+            100% { transform: scale(0.95) translateY(0); }
+        }
+        
+        .carta-exausta {
+            filter: grayscale(0.8) brightness(0.5);
+            cursor: not-allowed !important;
+        }
+
+        /* Efeito de RPG: Números pulando na tela */
+        .floating-text {
+            position: fixed;
+            font-weight: bold;
+            font-size: 35px;
+            pointer-events: none;
+            z-index: 10000;
+            animation: floatUp 1s ease-out forwards;
+            transform: translate(-50%, -50%);
+            font-family: 'Cinzel', serif;
+            text-shadow: 0 0 10px #000, 0 0 20px #000;
+        }
+        .floating-text.dano { color: #ff4444; }
+        .floating-text.cura { color: #00ff00; }
+
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -150%) scale(1.5); }
+        }
+
+        /* O pulo de ataque da Oráculo */
+        @keyframes animacaoAtaqueInimigo { 0% { transform: scale(1) translateY(0); } 50% { transform: scale(1.2) translate(-50px, 100px); z-index: 9999;} 100% { transform: scale(1) translateY(0); } }
+        
+        /* Efeito de hover no botão de passar turno */
+        #btnPassarTurno:hover { background: #ffcc00 !important; color: #000 !important; transform: translateY(-50%) scale(1.05) !important; }
+
+        /* Ícone de Escudo no canto da carta */
+        .escudo-icon {
+            position: absolute; top: -10px; right: -10px; background: #32cd32; color: #fff;
+            width: 30px; height: 30px; border-radius: 50%; display: none; justify-content: center;
+            align-items: center; font-weight: bold; font-size: 14px; border: 2px solid #fff;
+            box-shadow: 0 0 10px #32cd32; z-index: 5;
+        }
+
+        /* Efeito de Raízes da Natureza (Buff da Lilia) */
+        .escudo-natureza {
+            box-shadow: 0 0 25px #32cd32, inset 0 0 15px #32cd32 !important;
+            border-color: #32cd32 !important;
+        }
+
+        /* Tooltip de Status quando passa o mouse (Tamanho aumentado!) */
+        .carta-tooltip {
+            display: none; position: absolute; bottom: 105%; left: 50%; transform: translateX(-50%);
+            background: rgba(0,0,0,0.95); color: #fff; padding: 8px; border: 2px solid #00ffcc;
+            border-radius: 6px; font-size: 13px; font-weight: bold; width: 160px; text-align: center; z-index: 200; pointer-events: none;
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+        }
+        .carta-tcg:hover .carta-tooltip { display: block; }
+
+        /* Estilos do Menu Principal do Card Game */
+        .cg-menu-btn {
+            width: 100%; padding: 15px; margin-bottom: 15px; font-family: 'Cinzel', serif; font-weight: bold;
+            font-size: 18px; color: #fff; background: #1a1a1a; border: 2px solid #444; border-radius: 8px;
+            cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 2px;
+        }
+        .cg-menu-btn:hover:not(:disabled) {
+            transform: scale(1.05); background: #333;
+        }
+        .cg-menu-btn.destaque { border-color: #ffcc00; color: #ffcc00; box-shadow: 0 0 15px rgba(255, 204, 0, 0.3); }
+        .cg-menu-btn.destaque:hover { background: #ffcc00; color: #000; box-shadow: 0 0 25px rgba(255, 204, 0, 0.8); }
+        .cg-menu-btn:disabled { color: #666; border-color: #333; cursor: not-allowed; opacity: 0.7; }
+    </style>
+
+    <!-- MÁGICA QUE DESENGOLA OS MINIGAMES -->
     <script>
         window.addEventListener('DOMContentLoaded', () => {
             const corpo = document.body;
@@ -5530,7 +6071,8 @@ if (!niveisRank.includes(playerRank)) {
                 'telaForcaAbsoluta', 'snakeScreen', 'infoDificuldadeModal', 
                 'catchScreen', 'lapisScreen', 'oracleWarningScreen', 
                 'simonScreen', 'canvasBorracha', 'btnLixeiraUniversos',
-                'gameInfoModal', 'promoScreen'
+                'gameInfoModal', 'promoScreen', 'cardGameScreen',
+                'cardGameMenuScreen'
             ];
 
             divsParaRaiz.forEach(id => {
