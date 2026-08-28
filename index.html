@@ -516,6 +516,7 @@
                 <button onclick="ativarBorracha(); toggleInteractionMenu();" style="background: #1a1a1a; color: #fff; border: 1px dashed #fff; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🧽 Usar Borracha Mágica</button>
                 <button onclick="abrirLapisSecreto(); toggleInteractionMenu();" style="background: #1a1a1a; color: #a855f7; border: 1px dashed #a855f7; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">✏️ Usar Lápis Secreto</button>
                 <button onclick="window.usarCanetaMagica(); toggleInteractionMenu();" style="background: #1a1a1a; color: #ffcc00; border: 1px dashed #ffcc00; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🖌️ Usar Caneta Mágica</button>
+                <button onclick="window.iniciarStickgirlFight(); toggleInteractionMenu();" style="background: #1a1a1a; color: #ff4444; border: 1px dashed #ff4444; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">⚔️ Stickgirl Fight</button>
                 <button onclick="openMinigame('xadrez'); toggleInteractionMenu();" style="background: #1a1a1a; color: #d4af37; border: 1px solid #d4af37; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">♟️ Desafiar: Xadrez</button>             
                 <button onclick="openMinigame('damas'); toggleInteractionMenu();" style="background: #1a1a1a; color: #ff4500; border: 1px solid #ff4500; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🔴 Desafiar: Damas</button>
             </div>
@@ -5570,11 +5571,83 @@ if (!niveisRank.includes(playerRank)) {
         <h1 style="color: #ffcc00; font-size: 4rem; text-shadow: 0 0 20px #ffcc00, 0 0 40px #ffaa00; margin-bottom: 10px; text-align: center;">Aetheryon</h1>
         <h2 style="color: #fff; font-size: 2rem; letter-spacing: 5px; margin-top: 0; margin-bottom: 40px; text-shadow: 0 0 10px #fff;">Battlegrounds</h2>
 
-        <div style="background: rgba(0,0,0,0.8); border: 2px solid #8a2be2; border-radius: 15px; padding: 40px; width: 90%; max-width: 400px; box-shadow: 0 0 30px rgba(138, 43, 226, 0.4);">
+       <div style="background: rgba(0,0,0,0.8); border: 2px solid #8a2be2; border-radius: 15px; padding: 40px; width: 90%; max-width: 400px; box-shadow: 0 0 30px rgba(138, 43, 226, 0.4);">
+            <div style="display: flex; justify-content: space-between; color: #fff; font-family: 'Cinzel', serif; font-size: 14px; margin-bottom: 15px; border-bottom: 1px solid #8a2be2; padding-bottom: 5px;">
+                <span>⚡ Power: <span id="lobbyPowerLevel" style="color: #ffcc00; font-weight: bold;">0</span></span>
+                <span>💎 <span id="lobbyAetheryonite" style="color: #ff69b4; font-weight: bold;">0</span></span>
+                <span>🔑 <span id="lobbyChaves" style="color: #ffd700; font-weight: bold;">0</span></span>
+            </div>
             <button class="cg-menu-btn destaque" onclick="window.iniciarDueloOraculo()">⚔️ Desafiar Oráculo</button>
+            <button class="cg-menu-btn" style="border-color: #ff4500; color: #ff4500;" onclick="window.abrirDungeons()">🏰 Dungeons (Rin)</button>
+            <button class="cg-menu-btn" style="border-color: #ffd700; color: #ffd700;" onclick="window.abrirAprimorarCartas()">⚒️ Aprimorar Cartas</button>
+            <button class="cg-menu-btn" style="border-color: #00bfff; color: #00bfff; animation: pulsarAmor 2s infinite;" onclick="window.abrirBauMagico()">🎁 Abrir Baú Mágico</button>
             <button class="cg-menu-btn" style="border-color: #00ffcc; color: #00ffcc;" onclick="window.abrirCentralDeDecks()">📚 Central de Decks</button>
-            <button class="cg-menu-btn" disabled>🏰 Dungeons<br><span style="font-size: 10px; font-family: 'Arial', sans-serif; color: #888; display: block; margin-top: 5px;">Os Arquitetos estão trabalhando nisso...</span></button>
             <button class="cg-menu-btn" style="border-color: #ff4444; color: #ff4444;" onclick="window.fecharTudoDoCardGame()">🏃 Abandonar Salão</button>
+        </div>
+    </div>
+
+    <!-- TELA DE DUNGEONS -->
+    <div id="dungeonScreen" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10,0,0,0.95); z-index: 7010; flex-direction: column; align-items: center; justify-content: center; font-family: 'Cinzel', serif; padding: 20px; box-sizing: border-box;">
+        <span onclick="window.retornarAoLobby()" style="position: absolute; top: 20px; right: 30px; color: #ff4444; font-size: 50px; cursor: pointer;">&times;</span>
+        <h1 style="color: #ff4500; text-shadow: 0 0 20px #ff4500; font-size: 3rem; margin-bottom: 10px;">Portões do Abismo</h1>
+        <p style="color: #ccc; margin-bottom: 40px;">Enfrente os chefes de Aetheryon. Escolha a dificuldade.</p>
+
+        <!-- BOSS 1: RIN -->
+        <div style="background: #111; border: 2px solid #a855f7; border-radius: 10px; padding: 20px; display: flex; align-items: center; gap: 20px; max-width: 600px; width: 100%; margin-bottom: 20px; box-shadow: 0 0 20px rgba(168,85,247,0.3);">
+            <img src="rin.png" onerror="this.src='https://via.placeholder.com/100/111/a855f7?text=Rin'" style="width: 100px; height: 100px; border-radius: 50%; border: 2px solid #a855f7; object-fit: cover;">
+            <div style="flex-grow: 1;">
+                <h2 style="color: #a855f7; margin: 0 0 5px 0;">Rin, Implosão Umbral</h2>
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <button onclick="window.iniciarDungeonRin('normal')" style="padding: 8px 15px; background: #222; color: #fff; border: 1px solid #aaa; cursor: pointer; border-radius: 5px;">Normal (400 HP)</button>
+                    <button onclick="window.iniciarDungeonRin('heroic')" style="padding: 8px 15px; background: #222; color: #ffaa00; border: 1px solid #ffaa00; cursor: pointer; border-radius: 5px;">Heroic (600 HP)</button>
+                    <button onclick="window.iniciarDungeonRin('chaotic')" style="padding: 8px 15px; background: #222; color: #ff4444; border: 1px solid #ff4444; cursor: pointer; border-radius: 5px;">Chaotic (1000 HP)</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOSSES BLOQUEADOS -->
+        <div style="background: #0a0a0a; border: 2px dashed #333; border-radius: 10px; padding: 20px; display: flex; align-items: center; gap: 20px; max-width: 600px; width: 100%; opacity: 0.5;">
+            <div style="width: 100px; height: 100px; border-radius: 50%; border: 2px solid #333; display: flex; justify-content: center; align-items: center; font-size: 40px;">🔒</div>
+            <div>
+                <h2 style="color: #666; margin: 0;">Chefe Desconhecido</h2>
+                <p style="color: #444; margin: 5px 0 0 0;">Os construtores de Aethelgard ainda estão escavando...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- TELA DE APRIMORAR CARTAS (FORJA) -->
+    <div id="upgradeScreen" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5,5,5,0.98); z-index: 7010; flex-direction: column; align-items: center; font-family: 'Cinzel', serif; padding: 20px; box-sizing: border-box;">
+        <span onclick="window.retornarAoLobby()" style="position: absolute; top: 20px; right: 30px; color: #ff4444; font-size: 50px; cursor: pointer;">&times;</span>
+        <h1 style="color: #ffd700; text-shadow: 0 0 20px #ffd700; font-size: 2.5rem; margin-bottom: 5px;">Forja de Lendas</h1>
+        <p style="color: #ccc; margin-bottom: 20px;">Cada nível aumenta +1 Vida, +1 Ataque e aprimora o Efeito.</p>
+
+        <!-- CARROSSEL DE CARTAS DO JOGADOR -->
+        <div id="upgradeListaCartas" style="display: flex; gap: 15px; overflow-x: auto; width: 90%; max-width: 800px; padding: 20px 0; border-top: 1px solid #333; border-bottom: 1px solid #333; margin-bottom: 30px;">
+            <!-- Cartas entram aqui via JS -->
+        </div>
+
+        <!-- ENCAIXE E RESULTADO DO UPGRADE -->
+        <div style="display: flex; gap: 40px; align-items: center; justify-content: center; flex-wrap: wrap;">
+            <div id="upgradeSlot" style="width: 160px; height: 230px; border: 3px dashed #ffd700; border-radius: 10px; display: flex; justify-content: center; align-items: center; color: #ffd700; background: rgba(255, 215, 0, 0.05);">
+                Selecione uma Carta
+            </div>
+
+            <div id="upgradePainel" style="display: none; background: #111; border: 2px solid #555; padding: 20px; border-radius: 10px; width: 300px; text-align: center;">
+                <h2 id="upNome" style="color: #fff; font-size: 18px; margin-top: 0;">Nome</h2>
+                <div style="font-size: 24px; font-weight: bold; margin-bottom: 15px;">
+                    <span style="color: #888;">LV <span id="upLvVelho">1</span></span> 
+                    <span style="color: #00ffcc;">➔ LV <span id="upLvNovo">2</span></span>
+                </div>
+                <div style="display: flex; justify-content: space-around; margin-bottom: 15px; font-size: 18px; font-weight: bold;">
+                    <div>⚔️ <span style="color:#ffaa00" id="upAtkVelho">2</span> <span style="color:#00ffcc">➔ <span id="upAtkNovo">3</span></span></div>
+                    <div>❤️ <span style="color:#ff4444" id="upHpVelho">10</span> <span style="color:#00ffcc">➔ <span id="upHpNovo">11</span></span></div>
+                </div>
+                <div style="font-family: 'Roboto', sans-serif; font-size: 12px; color: #ccc; margin-bottom: 20px; padding: 10px; background: #000; border-radius: 5px;">
+                    <s id="upEfeitoVelho" style="color:#666; display:block; margin-bottom:5px;">Efeito Nível 1</s>
+                    <strong style="color:#ffd700; display:block;" id="upEfeitoNovo">Efeito Nível 2</strong>
+                </div>
+                <button onclick="window.confirmarUpgrade()" style="width: 100%; padding: 12px; background: #ffd700; color: #000; font-family: 'Cinzel', serif; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; box-shadow: 0 0 15px #ffd700;">Aprimorar Carta!</button>
+            </div>
         </div>
     </div>
 
@@ -5703,7 +5776,9 @@ if (!niveisRank.includes(playerRank)) {
             // NOSSO GATINHO NOVO AQUI!
             'faelan_lv1': { id: 'faelan_lv1', nome: 'Faelan, Vendaval Felino', custoMana: 3, ataque: 3, vidaMax: 5, efeito: 'Seus ataques ENVENENAM o alvo (-2 Vida/turno).', imagem: 'card_faelan1.png', borda: '#00ff00', tipo: 'Épica', provocar: false },
             'genevieve_lv1': { id: 'genevieve_lv1', nome: 'Genevieve, Transe Áureo', custoMana: 6, ataque: 3, vidaMax: 7, efeito: 'Charme: Seduze uma carta alvo (CD: 8).', imagem: 'card_genevieve1.png', borda: '#ffd700', tipo: 'Lendária', provocar: false },
-            'voryss_lv1': { id: 'voryss_lv1', nome: 'Voryss, Devoradora', custoMana: 8, ataque: 5, vidaMax: 10, efeito: 'Morte Inst.: Devora o alvo na próx. rodada (CD: 20).', imagem: 'card_voryss1.png', borda: '#4b0082', tipo: 'Lendária', provocar: false }
+            'voryss_lv1': { id: 'voryss_lv1', nome: 'Voryss, Devoradora', custoMana: 8, ataque: 5, vidaMax: 10, efeito: 'Morte Inst.: Devora o alvo na próx. rodada (CD: 20).', imagem: 'card_voryss1.png', borda: '#4b0082', tipo: 'Lendária', provocar: false },
+            'elara_lv1': { id: 'elara_lv1', nome: 'Elara, Mestre das Feras', custoMana: 4, ataque: 5, vidaMax: 5, efeito: 'Feras: Seus ataques causam SANGRAMENTO (-3 Vida/turno).', imagem: 'elara.png', borda: '#228b22', tipo: 'Épica', provocar: false },
+            'darius_lv1': { id: 'darius_lv1', nome: 'Darius, A Muralha', custoMana: 6, ataque: 2, vidaMax: 18, efeito: 'Provocar. Defesa absoluta e impenetrável.', imagem: 'darius.png', borda: '#8b4513', tipo: 'Lendária', provocar: true }
         };
 
         window.manaTurnoMax = 1; window.manaAtual = 1; window.cartaSelecionada = null;
@@ -5712,11 +5787,55 @@ if (!niveisRank.includes(playerRank)) {
         window.cdGenevieve = 0; // Cooldown de 8 rodadas
         window.cdVoryss = 0;    // Cooldown de 20 rodadas
         window.playerSangramento = 0; // O jogador sangrando 
-        window.bossEnvenenado = false; // Adicionamos o rastreador de veneno na Oráculo!
+        window.bossEnvenenado = false; window.playerSangramento = 0; // Adicionamos o rastreador de veneno na Oráculo!
+
+        // 👇 A ECONOMIA E O INVENTÁRIO ENTRAM AQUI! 👇
+        window.aetheryonite = parseInt(localStorage.getItem('aetheryonAetheryonite')) || 0;
+        window.chavesMagicas = parseInt(localStorage.getItem('aetheryonChaves')) || 0;
+        window.cartasDesbloqueadas = JSON.parse(localStorage.getItem('aetheryonCartasUnlocked')) || ['ashley_lv1', 'karyna_lv1', 'eryn_astral', 'lilia_lv1', 'valerya_lv1', 'ashton_lv1', 'scarlett_lv1', 'lysandre_lv1', 'ashlan_lv1', 'faelan_lv1', 'genevieve_lv1', 'voryss_lv1'];
+
+        // SISTEMA DE PROGRESSÃO E DUNGEON
+        window.modoJogoAtual = 'oraculo'; // ou 'dungeon_rin'
+        window.cartasPlayerLevel = JSON.parse(localStorage.getItem('aetheryonCardsLevels')) || {
+            ashley_lv1: 1, karyna_lv1: 1, eryn_astral: 1, lilia_lv1: 1, 
+            valerya_lv1: 1, ashton_lv1: 1, scarlett_lv1: 1, lysandre_lv1: 1, 
+            ashlan_lv1: 1, faelan_lv1: 1, genevieve_lv1: 1, voryss_lv1: 1,
+            elara_lv1: 1, darius_lv1: 1
+        };
+        window.cartaSendoAprimorada = null;
+
+        // FUNÇÃO QUE CALCULA O TEXTO DINÂMICO DOS EFEITOS
+        window.obterEfeitoLevel = function(id, level) {
+            if (id === 'ashley_lv1') return `Cura ${4 + level} de HP do jogador por turno.`;
+            if (id === 'ashlan_lv1') return `GaleForce: O alvo ganha ${40 + (level * 10)}% de chance de errar.`;
+            if (id === 'faelan_lv1') return `Seus ataques ENVENENAM o alvo (-${1 + level} Vida/turno).`;
+            if (id === 'genevieve_lv1') return `Charme: Seduze alvo. CD cai para: ${9 - level} turnos.`;
+            if (id === 'voryss_lv1') return `Morte Instântanea. CD cai para: ${21 - level} turnos.`;
+            if (id === 'elara_lv1') return `Feras: Seus ataques causam SANGRAMENTO (-${2 + level} Vida/turno).`;
+            // Se a carta não tiver escalonamento numérico no texto, mostra o texto padrão:
+            return window.bancoDeCartas[id].efeito; 
+        };
+
+        window.mostrarAvisoEstilizado = function(titulo, mensagem, cor, comOraculo = false) {
+            let overlay = document.createElement('div');
+            overlay.style.cssText = "position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.9); z-index:99999999; display:flex; justify-content:center; align-items:center; backdrop-filter:blur(5px); animation: fadeIn 0.3s;";
+            
+            let imgHtml = comOraculo ? `<img src="oraculo.gif" onerror="this.src='https://via.placeholder.com/100/4b0082/fff?text=Oraculo'" style="width: 100px; height: 100px; border-radius: 50%; box-shadow: 0 0 30px #8a2be2; margin-bottom: 20px; border: 2px solid #8a2be2;">` : '';
+            
+            overlay.innerHTML = `
+                <div style="background:#111; border: 2px solid ${cor}; border-radius: 10px; padding: 40px; max-width: 500px; text-align: center; box-shadow: 0 0 40px ${cor}66; position: relative;">
+                    ${imgHtml}
+                    <h1 style="color:${cor}; font-family:'Cinzel', serif; margin-top:0; font-size: 2rem; text-shadow: 0 0 10px ${cor};">${titulo}</h1>
+                    <p style="color:#ccc; font-size:18px; line-height: 1.6;">${mensagem}</p>
+                    <button onclick="this.parentElement.parentElement.remove()" style="margin-top: 30px; padding: 12px 30px; background:${cor}; color:#000; font-weight:bold; font-family:'Cinzel', serif; font-size: 16px; border:none; cursor:pointer; border-radius:5px; box-shadow: 0 0 15px ${cor};">Entendido</button>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        };
 
         // 3. GERENCIADOR DE TELAS E MENUS
         window.fecharTudoDoCardGame = function() {
-            ['cardGameMenuScreen', 'cardGameScreen', 'deckCenterScreen', 'endGameScreen', 'tutorialCardGame'].forEach(id => {
+            ['cardGameMenuScreen', 'cardGameScreen', 'deckCenterScreen', 'endGameScreen', 'tutorialCardGame', 'upgradeScreen', 'dungeonScreen'].forEach(id => {
                 let el = document.getElementById(id);
                 if(el) el.style.display = 'none';
             });
@@ -5731,6 +5850,109 @@ if (!niveisRank.includes(playerRank)) {
                 menuLobby.style.display = 'flex';
                 if (typeof speakOracle === 'function') speakOracle(["Bem-vindo ao meu tabuleiro. Escolha como quer ser humilhado."]);
             }
+        };
+
+        window.atualizarPowerLobby = function() {
+            let totalPower = 0;
+            Object.values(window.cartasPlayerLevel).forEach(lv => { totalPower += (lv * 10); });
+            let painel = document.getElementById('lobbyPowerLevel');
+            if (painel) painel.innerText = totalPower;
+        };
+
+        window.abrirDungeons = function() {
+            window.fecharTudoDoCardGame();
+            let ds = document.getElementById('dungeonScreen');
+            document.body.appendChild(ds); ds.style.zIndex = "9999999"; ds.style.display = 'flex';
+        };
+
+        window.abrirAprimorarCartas = function() {
+            window.fecharTudoDoCardGame();
+            let up = document.getElementById('upgradeScreen');
+            document.body.appendChild(up); up.style.zIndex = "9999999"; up.style.display = 'flex';
+            
+            let lista = document.getElementById('upgradeListaCartas'); lista.innerHTML = '';
+            Object.keys(window.bancoDeCartas).forEach(id => {
+                let carta = window.bancoDeCartas[id];
+                let level = window.cartasPlayerLevel[id] || 1;
+                let atk = carta.ataque + (level - 1); let hp = carta.vidaMax + (level - 1);
+                
+                lista.innerHTML += `
+                    <div style="flex-shrink: 0; width: 130px; border: 2px solid ${carta.borda}; border-radius: 8px; background: #111; cursor: pointer; text-align: center; overflow: hidden; position: relative;" onclick="window.selecionarParaUpgrade('${id}')">
+                        <div style="background: ${carta.borda}; color: #000; font-weight: bold; font-size: 12px; padding: 3px;">LV ${level}</div>
+                        <img src="${carta.imagem}" style="width: 100%; height: 70px; object-fit: cover; object-position: top; border-bottom: 1px solid #333;">
+                        <div style="font-size: 10px; color: ${carta.borda}; padding: 5px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${carta.nome}</div>
+                        <div style="font-size: 12px; font-weight: bold; padding-bottom: 5px;">⚔️<span style="color:#ffaa00">${atk}</span> ❤️<span style="color:#ff4444">${hp}</span></div>
+                    </div>`;
+            });
+        };
+
+        window.selecionarParaUpgrade = function(id) {
+            window.cartaSendoAprimorada = id;
+            let carta = window.bancoDeCartas[id];
+            let level = window.cartasPlayerLevel[id] || 1;
+            let custo = { 1: 10, 2: 20, 3: 30, 4: 50 }; // Custo em Aetheryonite
+
+            let enc = document.getElementById('upgradeSlot');
+            enc.innerHTML = `<img src="${carta.imagem}" onerror="this.src='https://via.placeholder.com/150/111/fff?text=Lenda'" style="width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 8px; filter: brightness(0.8);">`;
+            enc.style.borderColor = carta.borda;
+
+            let painel = document.getElementById('upgradePainel');
+            if (level >= 5) {
+                painel.style.display = 'none';
+                enc.innerHTML += '<div style="position:absolute; background: rgba(0,0,0,0.8); color:#ffd700; width:100%; text-align:center; padding: 10px 0; font-weight:bold;">MÁXIMO ALCANÇADO</div>';
+                return;
+            }
+
+            painel.style.display = 'block';
+            document.getElementById('upNome').innerText = carta.nome; document.getElementById('upNome').style.color = carta.borda;
+            document.getElementById('upLvVelho').innerText = level; document.getElementById('upLvNovo').innerText = level + 1;
+            document.getElementById('upAtkVelho').innerText = carta.ataque + (level - 1); document.getElementById('upAtkNovo').innerText = carta.ataque + level;
+            document.getElementById('upHpVelho').innerText = carta.vidaMax + (level - 1); document.getElementById('upHpNovo').innerText = carta.vidaMax + level;
+            document.getElementById('upEfeitoVelho').innerText = window.obterEfeitoLevel(id, level); document.getElementById('upEfeitoNovo').innerText = window.obterEfeitoLevel(id, level + 1);
+            
+            let btn = document.getElementById('btnConfirmarUpgrade');
+            if(!btn) {
+                btn = document.createElement('button'); btn.id = 'btnConfirmarUpgrade';
+                btn.style.cssText = "width: 100%; padding: 12px; font-family: 'Cinzel', serif; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 15px;";
+                painel.appendChild(btn);
+            }
+            if (window.aetheryonite >= custo[level]) {
+                btn.innerText = `Aprimorar (-${custo[level]} 💎)`; btn.style.background = "#ffd700"; btn.style.color = "#000"; btn.style.boxShadow = "0 0 15px #ffd700";
+                btn.onclick = () => window.confirmarUpgrade(id, custo[level]);
+            } else {
+                btn.innerText = `Falta Aetheryonite (${custo[level]} 💎)`; btn.style.background = "#333"; btn.style.color = "#ff4444"; btn.style.boxShadow = "none";
+                // A TELA TOP PRA QUANDO FALTA CRISTAL:
+                btn.onclick = () => window.mostrarAvisoEstilizado("Cristais Insuficientes", `Você precisa de <b>${custo[level]} Aetheryonite</b> para aprimorar esta lenda.<br>Derrote Chefes nas Dungeons para farmar mais!`, "#ff4444");
+            }
+        };
+
+        window.confirmarUpgrade = function() {
+            let id = window.cartaSendoAprimorada; // Pega a carta salva na memória!
+            if (!id) return;
+            
+            let level = window.cartasPlayerLevel[id] || 1;
+            let custoLevel = { 1: 10, 2: 20, 3: 30, 4: 50 };
+            let custo = custoLevel[level];
+
+            if (window.aetheryonite < custo) return; // Segurança extra
+
+            window.aetheryonite -= custo;
+            window.cartasPlayerLevel[id]++;
+            localStorage.setItem('aetheryonAetheryonite', window.aetheryonite);
+            localStorage.setItem('aetheryonCardsLevels', JSON.stringify(window.cartasPlayerLevel));
+            window.atualizarPowerLobby();
+            
+            // A TELA TOP DE SUCESSO:
+            window.mostrarAvisoEstilizado(
+                "FORJA CONCLUÍDA!", 
+                `<span style="color:#00ffcc; font-size: 22px;">A Lenda <b>${window.bancoDeCartas[id].nome}</b> alcançou o <b>Nível ${window.cartasPlayerLevel[id]}</b>!</span><br><br>Seu Power Level aumentou. O mundo de Aetheryon sente o seu poder!`, 
+                "#ffd700"
+            );
+
+            window.abrirAprimorarCartas();
+            document.getElementById('upgradePainel').style.display = 'none';
+            document.getElementById('upgradeSlot').innerHTML = 'Selecione uma Carta';
+            document.getElementById('upgradeSlot').style.borderColor = '#ffd700';
         };
 
         window.iniciarDueloOraculo = function() {
@@ -5793,39 +6015,68 @@ if (!niveisRank.includes(playerRank)) {
 
         window.mostrarEndGame = function(resultado, msgOpcional = null) {
             window.fecharTudoDoCardGame();
-            let endScreen = document.getElementById('endGameScreen');
-            let titulo = document.getElementById('endGameTitle');
-            let texto = document.getElementById('endGameText');
+            
+            let titulo = "";
+            let texto = "";
+            let cor = "";
 
             if(resultado === 'vitoria') {
-                if(titulo) { titulo.innerText = "VITÓRIA ÉPICA"; titulo.style.color = "#ffcc00"; titulo.style.textShadow = "0 0 30px #ffcc00, 0 0 60px #ffaa00"; }
+                titulo = "VITÓRIA ÉPICA"; 
+                cor = "#ffcc00";
                 
-                if (typeof inventario !== 'undefined' && !inventario.includes('caneta_magica')) {
-                    inventario.push('caneta_magica');
-                    localStorage.setItem('aetheryonInventario', JSON.stringify(inventario));
-                    if(typeof desbloquearConquista === 'function') desbloquearConquista('oraculo_cards');
-                    setTimeout(() => {
-                        if(typeof window.mostrarRecompensa === 'function') window.mostrarRecompensa("Caneta Mágica Obtida!", "Você silenciou a Oráculo no tabuleiro e ganhou o direito de invocar a Garota de Tinta. Acesse-a no Menu de Interações!", "🖌️");
-                    }, 500);
+                let recompensasTexto = "";
+
+                if (window.modoJogoAtual === 'oraculo') {
+                    window.aetheryonite += 100;
+                    recompensasTexto = "<span style='color:#ff69b4; font-size: 24px; font-weight:bold;'>💎 +100 Aetheryonite!</span><br>";
+                    if (!inventario.includes('caneta_magica')) {
+                        inventario.push('caneta_magica'); localStorage.setItem('aetheryonInventario', JSON.stringify(inventario));
+                        if(typeof desbloquearConquista === 'function') desbloquearConquista('oraculo_cards');
+                        recompensasTexto += "<br><span style='color:#00ffcc;'>Você obteve a Caneta Mágica (Menu de Interações)!</span>";
+                    }
+                } else if (window.modoJogoAtual === 'dungeon_rin') {
+                    if (window.dificuldadeAtual === 'normal' || window.dificuldadeAtual === 'heroic') {
+                        window.chavesMagicas += 1;
+                        recompensasTexto = "<span style='color:#ffd700; font-size: 24px; font-weight:bold;'>🔑 +1 Chave Mágica!</span><br><span style='color:#ccc;'>Use-a para abrir Baús no Lobby.</span><br>";
+                        if(typeof desbloquearConquista === 'function') desbloquearConquista('rin_normal');
+                    } else if (window.dificuldadeAtual === 'chaotic') {
+                        if (!inventario.includes('stickgirl_fight')) {
+                            inventario.push('stickgirl_fight');
+                            if(typeof desbloquearConquista === 'function') desbloquearConquista('rin_chaotic');
+                            recompensasTexto = "<span style='color:#ff4444; font-size: 24px; font-weight:bold;'>⚔️ RECOMPENSA CAÓTICA!</span><br><span style='color:#fff;'>Você desbloqueou o mini-game <b>Stickgirl Fight</b> (Acesse no Menu de Interações)!</span><br>";
+                        } else {
+                            window.aetheryonite += 300; 
+                            recompensasTexto = "<span style='color:#ff69b4; font-size: 24px; font-weight:bold;'>💎 +300 Aetheryonite!</span><br>";
+                        }
+                    }
                 }
                 
-                if(texto) texto.innerHTML = "A Oráculo foi silenciada.<br><br><span style='color:#00ffcc; font-weight:bold;'>Nova Conquista: O Silêncio da Soberana!</span><br><span style='font-size: 16px;'>(A Caneta Mágica está no seu Menu de Interações)</span>";
+                localStorage.setItem('aetheryonAetheryonite', window.aetheryonite);
+                localStorage.setItem('aetheryonChaves', window.chavesMagicas);
+                texto = recompensasTexto;
+                
+                // Dispara a tela foda de vitória
+                window.mostrarAvisoEstilizado(titulo, texto, cor);
+
             } else {
-                if(titulo) { titulo.innerText = "DERROTA"; titulo.style.color = "#ff4444"; titulo.style.textShadow = "0 0 30px #ff0000, 0 0 60px #aa0000"; }
-                if(texto) texto.innerText = msgOpcional || "Seu deck foi pulverizado. Estude mais a lore de Aetheryon.";
-            }
-            if(endScreen) {
-                document.body.appendChild(endScreen);
-                endScreen.style.zIndex = "9999999";
-                endScreen.style.display = 'flex';
+                titulo = "DERROTA"; 
+                cor = "#ff4444";
+                texto = msgOpcional || "Você foi obliterado. O Chefe não teve piedade.<br>Melhore suas cartas na Forja e tente novamente.";
+                // Dispara a tela foda de derrota COM A FOTO DA ORÁCULO RINDO (true)
+                window.mostrarAvisoEstilizado(titulo, texto, cor, true); 
             }
             
-            let cJ = document.getElementById('campoJogador'); if(cJ) cJ.innerHTML = '';
-            let cI = document.getElementById('campoInimigo'); if(cI) cI.innerHTML = '';
-            let mJ = document.getElementById('maoJogador'); if(mJ) mJ.innerHTML = '';
+            // Limpa a sujeira do tabuleiro pra próxima rodada
+            document.getElementById('campoJogador').innerHTML = ''; document.getElementById('campoInimigo').innerHTML = ''; document.getElementById('maoJogador').innerHTML = '';
             let log = document.getElementById('logConteudo'); if(log) log.innerHTML = ''; 
-            window.bossVidaAtual = 200; window.playerVidaAtual = 80; window.playerEscudo = 0; window.bossEscudo = 0; window.bossEnvenenado = false;
+            
+            // Reseta vidas e status (Cura o sangramento do boss e o veneno pra próxima luta!)
+            window.bossVidaAtual = 200; window.playerVidaAtual = 80; window.playerEscudo = 0; window.bossEscudo = 0; 
+            window.bossEnvenenado = false; window.bossSangrando = 0; window.playerSangramento = 0; 
+            window.cdGenevieve = 0; window.cdVoryss = 0;
             window.manaTurnoMax = 1; window.manaAtual = 1; window.cartaSelecionada = null;
+            
+            setTimeout(() => window.atualizarPowerLobby(), 500); 
         };
 
         // 4. MOTOR DA MESA (CORE JAVASCRIPT DA PARTIDA)
@@ -5865,17 +6116,24 @@ if (!niveisRank.includes(playerRank)) {
         window.comprarCarta = function(idDaCarta) {
             const carta = window.bancoDeCartas[idDaCarta]; if (!carta) return;
             const mao = document.getElementById('maoJogador'); if(!mao) return;
-            if (mao.children.length >= 10) { window.mostrarFloatingText(document.getElementById('playerHP').parentElement, "Mão Cheia!", 'dano', 120); return; }
+            if (mao.children.length >= 8) { window.mostrarFloatingText(document.getElementById('playerHP').parentElement, "Mão Cheia!", 'dano', 120); return; }
+
+            // LÓGICA DO LEVEL!
+            let level = window.cartasPlayerLevel[idDaCarta] || 1;
+            let atkReal = carta.ataque + (level - 1);
+            let hpReal = carta.vidaMax + (level - 1);
+            let efeitoReal = window.obterEfeitoLevel(idDaCarta, level);
 
             const uniqueId = 'mao_' + Math.random().toString(36).substr(2, 9);
             const cartaHTML = `
-                <div id="${uniqueId}" class="carta-tcg" data-idcarta="${carta.id}" data-nome="${carta.nome}" data-ataque="${carta.ataque}" data-vida="${carta.vidaMax}" data-escudo="0" data-provocar="${carta.provocar}" data-status="normal" data-turnos-cc="0" onclick="window.jogarCarta('${uniqueId}')" style="border-color: ${carta.borda}; box-shadow: 0 0 15px ${carta.borda}88;">
+                <div id="${uniqueId}" class="carta-tcg" data-idcarta="${carta.id}" data-nome="${carta.nome}" data-ataque="${atkReal}" data-vida="${hpReal}" data-level="${level}" data-escudo="0" data-provocar="${carta.provocar}" data-status="normal" data-turnos-cc="0" onclick="window.jogarCarta('${uniqueId}')" style="border-color: ${carta.borda}; box-shadow: 0 0 15px ${carta.borda}88;">
                     <div class="carta-tooltip" style="border-color: ${carta.borda}; color: ${carta.borda}; text-shadow: 0 0 5px #000; z-index: 999999;">Status: Normal</div>
                     <div class="carta-custo">${carta.custoMana}</div><div class="escudo-icon">🛡️0</div>
-                    <div class="carta-img-box"><img src="${carta.imagem}" onerror="this.src='https://via.placeholder.com/150x120/1a1a1a/ffffff?text=FOTO+AQUI'"></div>
+                    <div style="position:absolute; top:-5px; right: 25px; background:${carta.borda}; color:#000; font-weight:bold; font-size:10px; padding: 2px 4px; border-radius:3px;">Lv ${level}</div>
+                    <div class="carta-img-box"><img src="${carta.imagem}" onerror="this.src='https://via.placeholder.com/150x120/1a1a1a/ffffff?text=Lenda'" style="object-position: top;"></div>
                     <div class="carta-nome" style="color: ${carta.borda};">${carta.nome}</div>
-                    <div class="carta-efeito">${carta.efeito}</div>
-                    <div class="carta-status"><span class="carta-ataque">⚔️ <span class="val-atk">${carta.ataque}</span></span><span class="carta-vida">❤️ <span class="val-hp">${carta.vidaMax}</span></span></div>
+                    <div class="carta-efeito">${efeitoReal}</div>
+                    <div class="carta-status"><span class="carta-ataque">⚔️ <span class="val-atk">${atkReal}</span></span><span class="carta-vida">❤️ <span class="val-hp">${hpReal}</span></span></div>
                 </div>`;
             mao.innerHTML += cartaHTML; window.atualizarUI(); 
         };
@@ -5980,19 +6238,57 @@ if (!niveisRank.includes(playerRank)) {
                 window.registrarLog(`A Oráculo foi ENVENENADA por Faelan! Perderá 2 HP por turno.`, '#00ff00');
             }
 
+            if (window.cartaSelecionada.dataset.idcarta === 'elara_lv1') {
+                let lvl = parseInt(window.cartaSelecionada.dataset.level) || 1;
+                window.bossSangrando = (window.bossSangrando || 0) + (2 + lvl); window.atualizarUI();
+                window.registrarLog(`As feras de Elara causaram hemorragia no Chefe!`, '#8b0000');
+            }
+
             window.exaurirCarta(window.cartaSelecionada);
             if(window.bossVidaAtual === 0) { setTimeout(() => window.mostrarEndGame('vitoria'), 800); }
         };
 
-        window.oraculoInvocarLacaio = function() {
-            const campoInimigo = document.getElementById('campoInimigo'); if(!campoInimigo || campoInimigo.children.length >= 7) return; 
-            const lacaios = [
+            window.iniciarDungeonRin = function(dificuldade) {
+            window.modoJogoAtual = 'dungeon_rin';
+            window.dificuldadeAtual = dificuldade; // Salva a dificuldade pra dar os prêmios no final!
+            window.fecharTudoDoCardGame();
+            
+            let hps = { 'normal': 400, 'heroic': 600, 'chaotic': 1000 };
+            window.bossVidaAtual = hps[dificuldade];
+            
+            let mesaJogo = document.getElementById('cardGameScreen');
+            if(mesaJogo) { document.body.appendChild(mesaJogo); mesaJogo.style.zIndex = "9999999"; mesaJogo.style.display = 'flex'; }
+            
+            document.getElementById('oracleAvatar').innerHTML = `<img src="rin.png" onerror="this.src='https://via.placeholder.com/150/a855f7/ffffff?text=Rin'" style="height: 150px; border-radius: 50%; filter: drop-shadow(0 0 20px #a855f7); animation: flutuar 3s infinite ease-in-out;">`;
+            
+            window.registrarLog(`Você desafiou RIN na dificuldade ${dificuldade.toUpperCase()}!`, "#a855f7");
+            
+            for(let i=0; i<4; i++) {
+                window.comprarCarta(window.cartasDesbloqueadas[Math.floor(Math.random() * window.cartasDesbloqueadas.length)]);
+            }
+        };
+
+        window.bossInvocarLacaio = function() {
+            const campoInimigo = document.getElementById('campoInimigo'); if(!campoInimigo || campoInimigo.children.length >= 7) return;
+ 
+            let lacaios = [];
+            if (window.modoJogoAtual === 'oraculo') {
+                lacaios = [
                 { id: 'demonio_vento', nome: 'Demônio do Vento', atk: 2, hp: 15, img: 'card_demoniodovento.png', prov: 'false' },
                 { id: 'sombra_elite', nome: 'Sombra Elite', atk: 3, hp: 15, img: 'card_sombradeelite.png', prov: 'false' },
                 { id: 'besta_vazio', nome: 'Besta do Vazio', atk: 5, hp: 10, img: 'card_bestadovazio.png', prov: 'false' },
                 { id: 'oraculo_shield', nome: 'Bastião Sombrio', atk: 1, hp: 12, img: 'https://via.placeholder.com/150x120/111/4b0082?text=Escudo', prov: 'true' },
                 { id: 'assassino_vazio', nome: 'Assassino do Vazio', atk: 8, hp: 9, img: 'card_assassinadovazio.png', prov: 'false' }
             ];
+         } else if (window.modoJogoAtual === 'dungeon_rin') {
+                lacaios = [
+                    { id: 'punho_umbral', nome: 'Punho Umbral', atk: 5, hp: 5, img: 'https://via.placeholder.com/150/111/a855f7?text=Punho', prov: 'false' },
+                    { id: 'sombra_esmagadora', nome: 'Sombra Esmagadora', atk: 8, hp: 4, img: 'https://via.placeholder.com/150/111/ff4444?text=Sombra', prov: 'false' },
+                    { id: 'vestido_enganoso', nome: 'Vestido Enganoso', atk: 2, hp: 10, img: 'https://via.placeholder.com/150/111/ff69b4?text=Vestido', prov: 'true' },
+                    { id: 'implosao_interna', nome: 'Implosão Interna', atk: 4, hp: 6, img: 'https://via.placeholder.com/150/111/4400aa?text=Implosao', prov: 'false' }
+                ];
+            }
+
             const lacaio = lacaios[Math.floor(Math.random() * lacaios.length)];
             const uniqueId = 'lacaio_' + Math.random().toString(36).substr(2, 9);
             
@@ -6085,6 +6381,16 @@ if (!niveisRank.includes(playerRank)) {
                 window.registrarLog(`A Fome de Voryss está recarregando (${window.cdVoryss} turnos).`, '#aaa');
             }
 
+            // 6. Elara (Sangramento)
+            if (window.cartaSelecionada.dataset.idcarta === 'elara_lv1') {
+                let lvl = parseInt(window.cartaSelecionada.dataset.level) || 1;
+                let danoSangue = 2 + lvl;
+                lacaioAlvo.dataset.status = 'sangrando'; lacaioAlvo.classList.add('sangrando');
+                lacaioAlvo.dataset.danoSangue = danoSangue; // Salva o dano do nível dela na ferida
+                lacaioAlvo.querySelector('.carta-tooltip').innerText = `Debuff: Sangrando (-${danoSangue} Vida/turno).`;
+                window.registrarLog(`As feras de <b>Elara</b> rasgaram ${lacaioAlvo.dataset.nome}! SANGRAMENTO APLICADO!`, '#8b0000');
+            }
+
             // === AGORA SIM, APLICAMOS O DANO E CHECAMOS QUEM MORREU ===
             let vidaInimigoRestante = window.aplicarDanoNaCarta(lacaioAlvo, atkAtacante); 
             let vidaMinhaRestante = window.aplicarDanoNaCarta(window.cartaSelecionada, atkDefensor);
@@ -6149,6 +6455,15 @@ if (!niveisRank.includes(playerRank)) {
                             setTimeout(() => lacaio.remove(), 400);
                             return; // Ele morre de veneno e não ataca!
                         }
+                    }
+
+                    // PROCESSAR SANGRAMENTO DA ELARA
+                    if (statusInimigo === 'sangrando') {
+                        let hitSangue = parseInt(lacaio.dataset.danoSangue) || 3;
+                        window.mostrarFloatingText(lacaio, `-${hitSangue} Sangue`, 'dano');
+                        window.registrarLog(`${lacaio.dataset.nome} sofreu ${hitSangue} de dano por SANGRAMENTO!`, '#8b0000');
+                        let vidaRestante = window.aplicarDanoNaCarta(lacaio, hitSangue);
+                        if (vidaRestante <= 0) { setTimeout(() => lacaio.remove(), 400); return; }
                     }
 
                     // PROCESSAR CC (Gelo / Medo)
@@ -6223,13 +6538,21 @@ if (!niveisRank.includes(playerRank)) {
             });
 
             setTimeout(() => {
-                if (window.playerVidaAtual > 0) window.oraculoInvocarLacaio();
+                if (window.playerVidaAtual > 0) window.bossInvocarLacaio();
                 
                 // ORÁCULO TOMA DANO DE VENENO
                 if (window.bossEnvenenado) {
                     window.bossVidaAtual -= 2; if(window.bossVidaAtual < 0) window.bossVidaAtual = 0; window.atualizarUI();
                     window.mostrarFloatingText(document.getElementById('oracleAvatar'), "-2 Veneno", 'dano', -120);
                     window.registrarLog(`A Oráculo sofreu 2 de dano por VENENO!`, '#00ff00');
+                    if(window.bossVidaAtual === 0) { setTimeout(() => window.mostrarEndGame('vitoria'), 600); return; }
+                }
+
+                // ORÁCULO/RIN TOMA DANO DE SANGRAMENTO DA ELARA
+                if (window.bossSangrando > 0) {
+                    window.bossVidaAtual -= window.bossSangrando; if(window.bossVidaAtual < 0) window.bossVidaAtual = 0; window.atualizarUI();
+                    window.mostrarFloatingText(document.getElementById('oracleAvatar'), `-${window.bossSangrando} Sangue`, 'dano', -120);
+                    window.registrarLog(`O Chefe sofreu ${window.bossSangrando} de dano por SANGRAMENTO!`, '#8b0000');
                     if(window.bossVidaAtual === 0) { setTimeout(() => window.mostrarEndGame('vitoria'), 600); return; }
                 }
 
@@ -6266,8 +6589,13 @@ if (!niveisRank.includes(playerRank)) {
                     }
                     if(carta.dataset.idcarta === 'lilia_lv1') temLilia = true;
                     if(carta.dataset.idcarta === 'ashley_lv1') {
-                        window.playerVidaAtual = Math.min(30, window.playerVidaAtual + 5); window.atualizarUI();
-                        window.mostrarFloatingText(playerHPDom, "+5", 'cura', 120); window.registrarLog("Ashley curou você em +5 HP.", '#00ffcc');
+                        window.playerVidaAtual += 5; // A CURA REAL ACONTECE AQUI!
+                        if(window.playerVidaAtual > 80) window.playerVidaAtual = 80; // Trava no seu HP Máximo
+                        
+                        window.atualizarUI(); // Atualiza a barra de vida na hora
+                        
+                        window.mostrarFloatingText(playerHPDom, "+5", 'cura', 120); 
+                        window.registrarLog("Ashley curou você em +5 HP.", '#00ffcc');
                     }
                 });
 
@@ -6279,88 +6607,498 @@ if (!niveisRank.includes(playerRank)) {
                         aliado.dataset.escudo = (parseInt(aliado.dataset.escudo) || 0) + 1;
                         aliado.classList.add('escudo-natureza'); 
                         let iconeEscudo = aliado.querySelector('.escudo-icon'); iconeEscudo.style.display = 'flex'; iconeEscudo.innerText = '🛡️' + aliado.dataset.escudo;
+                        aliado.querySelector('.carta-tooltip').innerText = `Buff: Raízes (+${aliado.dataset.escudo} Escudo)`;
                         window.mostrarFloatingText(aliado, "+1 Vida/Escudo", 'cura');
                     });
                 }
                 
                 window.manaTurnoMax = Math.min(15, window.manaTurnoMax + 1); window.manaAtual = window.manaTurnoMax; window.atualizarUI();
-                const cartasParaSortear = ['ashley_lv1', 'karyna_lv1', 'eryn_astral', 'lilia_lv1', 'valerya_lv1', 'ashton_lv1', 'scarlett_lv1', 'lysandre_lv1', 'ashlan_lv1', 'faelan_lv1'];
+                const cartasParaSortear = window.cartasDesbloqueadas;
                 window.comprarCarta(cartasParaSortear[Math.floor(Math.random() * cartasParaSortear.length)]);
             }, Math.max(tempoAtaque + 500, 500));
         };
 
-        // 5. A CANETA MÁGICA (STICK GIRL)
+        // 5. A CANETA MÁGICA (STICK GIRL - VERSÃO FÍSICA E TROLL)
         window.usarCanetaMagica = function() {
             if (typeof inventario !== 'undefined' && !inventario.includes('caneta_magica')) {
                 if (typeof window.mostrarAvisoOraculo === 'function') {
-                    window.mostrarAvisoOraculo("Sério? Querendo usar o que não é seu? Vença-me no meu tabuleiro de cartas antes de ousar invocar a garota de tinta, seu verme.", "Você é patético! Vença-me nas cartas primeiro!");
+                    window.mostrarAvisoOraculo("Sério? Querendo usar o que não é seu? Vença-me no meu tabuleiro de cartas antes de ousar invocar a garota de tinta.", "Você é patético! Vença-me nas cartas primeiro!");
                 } else {
                     alert("Você precisa derrotar a Oráculo nas Cartas primeiro!");
                 }
                 return;
             }
-            window.invocarCanetaMagica();
-        };
+            if(document.getElementById('stickGirl')) { alert("Ela já está na tela!"); return; }
 
-        window.invocarCanetaMagica = function() {
-            if(document.getElementById('stickGirl')) { alert("A garota de tinta já está na tela!"); return; }
-
-            let girl = document.createElement('div');
-            girl.id = "stickGirl"; girl.style.position = "fixed"; girl.style.bottom = "10px"; girl.style.left = "50%";
-            girl.style.width = "60px"; girl.style.height = "100px"; girl.style.zIndex = "99999999";
-            girl.style.cursor = "grab"; girl.style.transition = "transform 0.3s";
+            // Tela de Desenho (Ligar os Pontos)
+            let telaDesenho = document.createElement('div');
+            telaDesenho.id = 'stickSpawnScreen';
+            telaDesenho.style.cssText = 'position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.95); z-index:9999999; display:flex; justify-content:center; align-items:center; flex-direction:column; backdrop-filter:blur(5px);';
             
-            girl.style.backgroundImage = `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 100"><circle cx="30" cy="20" r="12" stroke="white" stroke-width="2" fill="black"/><path d="M20,10 Q10,30 20,50" stroke="white" stroke-width="2" fill="none"/><path d="M40,10 Q50,30 40,50" stroke="white" stroke-width="2" fill="none"/><line x1="30" y1="32" x2="30" y2="60" stroke="white" stroke-width="3"/><path d="M30,35 L10,50 M30,35 L50,50" stroke="white" stroke-width="3"/><path d="M30,60 L20,90 M30,60 L40,90" stroke="white" stroke-width="3"/></svg>')`;
-            girl.style.backgroundSize = "contain"; girl.style.backgroundRepeat = "no-repeat"; document.body.appendChild(girl);
+            telaDesenho.innerHTML = `
+                <h1 style="color: #ffcc00; font-family: 'Cinzel', serif; margin-bottom: 5px; text-shadow: 0 0 15px #ffcc00;">A Arte da Criação</h1>
+                <p style="color: #ccc; margin-bottom: 20px;">Ligue os pontos para desenhar a Garota de Tinta.</p>
+                <canvas id="stickCanvas" width="300" height="350" style="background: #0b0b0b; border: 2px dashed #ffcc00; border-radius: 10px; box-shadow: 0 0 30px rgba(255,204,0,0.3); touch-action: none; cursor: crosshair;"></canvas>
+            `;
+            document.body.appendChild(telaDesenho);
 
-            function falar(texto, cor) {
-                let txt = document.createElement('div'); txt.innerText = texto;
-                txt.style.position = "fixed"; txt.style.left = (parseInt(girl.style.left) - 20) + "px"; 
-                txt.style.top = (parseInt(girl.style.top || window.innerHeight - 100) - 30) + "px";
-                txt.style.color = cor || "#ffcc00"; txt.style.fontFamily = "Arial"; 
-                txt.style.fontWeight = "bold"; txt.style.zIndex = "99999999";
-                txt.style.textShadow = "1px 1px 2px #000";
-                document.body.appendChild(txt); 
-                setTimeout(() => txt.remove(), 1200);
+            const canvas = document.getElementById('stickCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            const pts = [{x: 150, y: 50}, {x: 150, y: 120}, {x: 80, y: 180}, {x: 220, y: 180}, {x: 150, y: 250}];
+            let ptAtual = 0;
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.strokeStyle = '#ffcc00'; ctx.lineWidth = 5; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+                ctx.beginPath();
+                if(ptAtual > 0) { ctx.moveTo(pts[0].x, pts[0].y); ctx.lineTo(pts[1].x, pts[1].y); }
+                if(ptAtual > 1) { ctx.moveTo(pts[1].x, pts[1].y); ctx.lineTo(pts[2].x, pts[2].y); }
+                if(ptAtual > 2) { ctx.moveTo(pts[1].x, pts[1].y); ctx.lineTo(pts[3].x, pts[3].y); }
+                if(ptAtual > 3) { ctx.moveTo(pts[1].x, pts[1].y); ctx.lineTo(pts[4].x, pts[4].y); }
+                ctx.stroke();
+
+                for (let i = 0; i < pts.length; i++) {
+                    ctx.beginPath(); ctx.arc(pts[i].x, pts[i].y, 15, 0, Math.PI * 2);
+                    ctx.fillStyle = i === ptAtual ? '#ff00ff' : (i < ptAtual ? '#ffcc00' : '#444'); ctx.fill();
+                    ctx.fillStyle = '#fff'; ctx.font = 'bold 14px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                    ctx.fillText(i + 1, pts[i].x, pts[i].y);
+                }
             }
+            draw();
 
-            let isDragging = false;
-            girl.onmousedown = function(e) { 
-                isDragging = true; girl.style.cursor = "grabbing"; girl.style.transition = "none"; 
-                falar("Me solta seu gigante!!", "#ff4444"); 
-                girl.style.transform = "scale(0.9) rotate(15deg)"; 
-            };
-            document.onmousemove = function(e) { 
-                if(isDragging) { girl.style.left = (e.clientX - 30) + 'px'; girl.style.top = (e.clientY - 50) + 'px'; girl.style.bottom = "auto"; } 
-            };
-            document.onmouseup = function() { 
-                isDragging = false; girl.style.cursor = "grab"; girl.style.transition = "transform 0.3s"; 
-                girl.style.transform = "scale(1) rotate(0deg)";
-                falar("Ugh... você me amassou!", "#fff"); 
-            };
-
-            let direcao = 1;
-            setInterval(() => {
-                if(!isDragging) {
-                    let currentLeft = parseInt(girl.style.left || window.innerWidth / 2);
-                    let mover = (Math.random() * 40 - 20); 
-                    if (mover < 0) direcao = -1; else if (mover > 0) direcao = 1;
-                    girl.style.transform = `scaleX(${direcao})`; 
-                    
-                    let newLeft = currentLeft + mover;
-                    if(newLeft > 0 && newLeft < window.innerWidth - 60) girl.style.left = newLeft + 'px';
-                    
-                    let canvas = document.getElementById('canvasBorracha');
-                    if (canvas && Math.random() > 0.7) { 
-                        let ctx = canvas.getContext('2d');
-                        ctx.clearRect(newLeft - 50, window.innerHeight - 150, 150, 150); 
-                        let falasLimpando = ["Sou uma faxineira agora?", "Que rabisco feio...", "Apagando a sua bagunça!", "Credo."];
-                        falar(falasLimpando[Math.floor(Math.random() * falasLimpando.length)], "#00ffcc");
+            canvas.addEventListener('pointerdown', function(e) {
+                if (ptAtual >= pts.length) return;
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left; const y = e.clientY - rect.top;
+                
+                if (Math.hypot(pts[ptAtual].x - x, pts[ptAtual].y - y) < 40) {
+                    ptAtual++; draw();
+                    if (ptAtual >= pts.length) {
+                        setTimeout(() => { telaDesenho.remove(); window.invocarStickGirlFisica(); }, 500);
                     }
                 }
-            }, 1000);
+            });
         };
-    </script>
+
+        window.invocarStickGirlFisica = function() {
+            if (typeof speakOracle === 'function') speakOracle(["Hmph. Você deu vida a isso? Cuide da sua própria criação."]);
+
+            // LIXEIRA
+            let lixo = document.createElement('div');
+            lixo.id = "stickTrash"; lixo.innerHTML = "🗑️";
+            lixo.style.cssText = "position:fixed; top:20px; left:20px; font-size:45px; z-index:9999998; cursor:pointer; transition:0.2s; text-shadow:0 0 15px #ff0000; display:flex; justify-content:center; align-items:center; user-select:none;";
+            document.body.appendChild(lixo);
+
+            // CANVAS DO CHÃO E DETECTOR DE CÍRCULOS
+            let drawFloorMode = false;
+            let floorCanvas = document.createElement('canvas');
+            floorCanvas.id = "stickFloorCanvas";
+            floorCanvas.width = window.innerWidth; floorCanvas.height = window.innerHeight;
+            floorCanvas.style.cssText = "position:fixed; top:0; left:0; z-index:9999997; pointer-events:none;";
+            document.body.appendChild(floorCanvas);
+            let ctxFloor = floorCanvas.getContext('2d');
+            
+            let drawBtn = document.createElement('button');
+            drawBtn.id = "stickDrawBtn"; drawBtn.innerHTML = "🖌️ Desenhar Chão";
+            drawBtn.style.cssText = "position:fixed; top:20px; right:20px; background:#111; color:#00ffcc; border:2px dashed #00ffcc; padding:10px 15px; border-radius:8px; font-family:'Cinzel', serif; font-weight:bold; font-size: 14px; cursor:pointer; z-index:9999999; box-shadow:0 0 15px rgba(0,255,204,0.4); transition: 0.2s;";
+            drawBtn.onclick = () => {
+                drawFloorMode = !drawFloorMode;
+                if(drawFloorMode) {
+                    drawBtn.style.background = "#00ffcc"; drawBtn.style.color = "#000"; drawBtn.innerHTML = "✏️ Modo Desenho ATIVADO";
+                    floorCanvas.style.pointerEvents = "auto"; floorCanvas.style.cursor = "crosshair";
+                } else {
+                    drawBtn.style.background = "#111"; drawBtn.style.color = "#00ffcc"; drawBtn.innerHTML = "🖌️ Desenhar Chão";
+                    floorCanvas.style.pointerEvents = "none";
+                }
+            };
+            document.body.appendChild(drawBtn);
+
+            // SISTEMA DE BOLAS E DESENHO
+            let drawnPoints = [];
+            let bolas = [];
+            let isDrawingFloor = false;
+            let lastX = 0, lastY = 0, totalAngle = 0, lastAngle = null;
+
+            function spawnBall(x, y) {
+                let b = document.createElement('div'); b.innerHTML = "⚽";
+                b.style.cssText = "position:fixed; font-size:30px; z-index:9999998; user-select:none; filter: drop-shadow(0 0 10px #ffcc00);";
+                document.body.appendChild(b);
+                bolas.push({el: b, x: x, y: y, vx: (Math.random()-0.5)*10, vy: -5});
+                falarDaAcao("Uma bola!! Que legal!", "spawnball");
+            }
+
+            floorCanvas.addEventListener('pointerdown', (e) => { 
+                isDrawingFloor = true; ctxFloor.beginPath(); ctxFloor.moveTo(e.clientX, e.clientY); 
+                lastX = e.clientX; lastY = e.clientY; totalAngle = 0; lastAngle = null;
+            });
+            floorCanvas.addEventListener('pointermove', (e) => {
+                if(!isDrawingFloor) return;
+                ctxFloor.lineTo(e.clientX, e.clientY);
+                ctxFloor.strokeStyle = '#fff'; ctxFloor.lineWidth = 8; ctxFloor.lineCap = 'round'; ctxFloor.stroke();
+                
+                let dx = e.clientX - lastX; let dy = e.clientY - lastY;
+                let dist = Math.hypot(dx, dy);
+                
+                // Salva pontos espaçados e calcula se formou um círculo!
+                if (dist > 5) {
+                    drawnPoints.push({x: e.clientX, y: e.clientY});
+                    let angle = Math.atan2(dy, dx);
+                    if (lastAngle !== null) {
+                        let diff = angle - lastAngle;
+                        while (diff > Math.PI) diff -= Math.PI * 2;
+                        while (diff < -Math.PI) diff += Math.PI * 2;
+                        totalAngle += diff;
+                        
+                        // Se completou ~3 voltas girando a caneta... BOOM, nasce a bola!
+                        if (Math.abs(totalAngle) > 18) {
+                            spawnBall(e.clientX, e.clientY);
+                            totalAngle = 0; 
+                        }
+                    }
+                    lastAngle = angle; lastX = e.clientX; lastY = e.clientY;
+                }
+            });
+            window.addEventListener('pointerup', () => isDrawingFloor = false);
+
+            // A GAROTA
+            let girl = document.createElement('div');
+            girl.id = "stickGirl"; 
+            girl.style.cssText = "position:fixed; width:60px; height:100px; z-index:9999999; cursor:grab; transform-origin: bottom center; filter: drop-shadow(0 0 5px #fff);";
+            girl.style.backgroundImage = `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 100"><circle cx="30" cy="20" r="12" stroke="white" stroke-width="2" fill="black"/><path d="M20,10 Q10,30 20,50" stroke="white" stroke-width="2" fill="none"/><path d="M40,10 Q50,30 40,50" stroke="white" stroke-width="2" fill="none"/><line x1="30" y1="32" x2="30" y2="60" stroke="white" stroke-width="3"/><path d="M30,35 L10,50 M30,35 L50,50" stroke="white" stroke-width="3"/><path d="M30,60 L20,90 M30,60 L40,90" stroke="white" stroke-width="3"/></svg>')`;
+            girl.style.backgroundSize = "contain"; girl.style.backgroundRepeat = "no-repeat";
+            document.body.appendChild(girl);
+
+            let lastSpeakTime = 0;
+            function falar(texto, cor) {
+                let txt = document.createElement('div'); txt.innerText = texto;
+                txt.style.cssText = `position:fixed; color:${cor||'#ffcc00'}; font-family:Arial; font-size:14px; font-weight:bold; z-index:9999999; text-shadow:1px 1px 2px #000; pointer-events:none;`;
+                document.body.appendChild(txt);
+                let op = 1, ty = 0;
+                let anm = setInterval(() => {
+                    op -= 0.05; ty -= 2; txt.style.opacity = op;
+                    txt.style.left = (gx - 20) + "px"; txt.style.top = (gy - 30 + ty) + "px";
+                    if(op <= 0) { clearInterval(anm); txt.remove(); }
+                }, 50);
+            }
+            function falarDaAcao(texto, id) {
+                if (Date.now() - lastSpeakTime < 2500) return; // Evita spam de mensagens
+                lastSpeakTime = Date.now();
+                falar(texto, "#00ffcc");
+            }
+
+            // O MOTOR FÍSICO
+            let gx = window.innerWidth / 2, gy = 50; 
+            let vx = 0, vy = 0;
+            let grav = 0.8, fric = 0.85;
+            let isDraggingGirl = false;
+            let lastMouseX = 0, lastMouseY = 0;
+            let state = 'falling'; let stateTimer = 0; let dir = 1; let slideDir = 0;
+
+            girl.onpointerdown = function(e) {
+                isDraggingGirl = true; girl.style.cursor = "grabbing";
+                lastMouseX = e.clientX; lastMouseY = e.clientY;
+                vx = 0; vy = 0; 
+                falar("Ei, me solta!", "#ff4444");
+            };
+
+            document.addEventListener('pointermove', function(e) {
+                if(isDraggingGirl) {
+                    vx = e.clientX - lastMouseX; vy = e.clientY - lastMouseY;
+                    lastMouseX = e.clientX; lastMouseY = e.clientY;
+                    gx = e.clientX - 30; gy = e.clientY - 50;
+                    
+                    let rectLixo = lixo.getBoundingClientRect();
+                    if(e.clientX > rectLixo.left && e.clientX < rectLixo.right && e.clientY > rectLixo.top && e.clientY < rectLixo.bottom) {
+                        lixo.style.transform = "scale(1.4)"; lixo.style.filter = "drop-shadow(0 0 30px #ff0000)"; lixo.innerText = "🔥";
+                    } else {
+                        lixo.style.transform = "scale(1)"; lixo.style.filter = "none"; lixo.innerText = "🗑️";
+                    }
+                }
+            });
+
+            document.addEventListener('pointerup', function(e) {
+                if(isDraggingGirl) {
+                    isDraggingGirl = false; girl.style.cursor = "grab";
+                    let rectLixo = lixo.getBoundingClientRect();
+                    if(e.clientX > rectLixo.left && e.clientX < rectLixo.right && e.clientY > rectLixo.top && e.clientY < rectLixo.bottom) {
+                        girl.remove(); lixo.remove(); drawBtn.remove(); floorCanvas.remove();
+                        bolas.forEach(b => b.el.remove()); // Apaga as bolas também
+                        if (typeof speakOracle === 'function') speakOracle(["Hahaha! Queimou a própria obra de arte. Típico de você."]);
+                        return; 
+                    }
+                    falar("Uuuui!!", "#fff");
+                }
+            });
+
+            function physicsLoop() {
+                if(!document.getElementById('stickGirl')) return; 
+
+                if(!isDraggingGirl) {
+                    vy += grav; gx += vx; gy += vy;
+                    if(gx < 0) { gx = 0; vx *= -fric; }
+                    if(gx > window.innerWidth - 60) { gx = window.innerWidth - 60; vx *= -fric; }
+
+                    let onGround = false; slideDir = 0;
+                    let feetX = gx + 30, feetY = gy + 100;
+
+                    // Colisão com o Limite Inferior
+                    if(gy > window.innerHeight - 100) {
+                        gy = window.innerHeight - 100; vy = 0; vx *= fric; onGround = true;
+                    } else {
+                        // Colisão com o Chão Desenhado e ESCORREGADOR
+                        for(let i = 0; i < drawnPoints.length; i++) {
+                            let pt = drawnPoints[i];
+                            if(vy >= 0 && Math.abs(pt.x - feetX) < 20 && Math.abs(pt.y - feetY) < 15) {
+                                gy = pt.y - 100; vy = 0; onGround = true;
+                                
+                                // Calcula a inclinação (Slope)
+                                if (i > 3 && i < drawnPoints.length - 3) {
+                                    let prev = drawnPoints[i-3]; let next = drawnPoints[i+3];
+                                    let slope = (next.y - prev.y) / (next.x - prev.x + 0.001);
+                                    if (slope > 0.4) { slideDir = 1; vx += 1.5; falarDaAcao("Uhuuu! Escorregando!", "slide"); } 
+                                    else if (slope < -0.4) { slideDir = -1; vx -= 1.5; falarDaAcao("Isso é divertido!!", "slide"); } 
+                                    else { vx *= fric; }
+                                } else { vx *= fric; }
+                                break; 
+                            }
+                        }
+                    }
+
+                    // MÁQUINA DE ANIMAÇÃO DA GAROTA
+                    if(slideDir !== 0) {
+                        state = 'sliding';
+                        girl.style.transform = `scaleX(${slideDir}) rotate(${slideDir * 20}deg)`;
+                    } else if(onGround) {
+                        stateTimer--;
+                        if(stateTimer <= 0) {
+                            let r = Math.random();
+                            if(r < 0.5) { state = 'walking'; vx = (Math.random() > 0.5 ? 4 : -4); dir = vx > 0 ? 1 : -1; stateTimer = 40 + Math.random() * 40; }
+                            else if(r < 0.8) { state = 'looking'; vx = 0; stateTimer = 40; }
+                            else { state = 'idle'; vx = 0; stateTimer = 50; }
+                        }
+                        if(state === 'walking') {
+                            girl.style.transform = `scaleX(${dir}) rotate(${Math.sin(Date.now() / 60) * 15}deg)`;
+                            gx += (dir * 2); // Anda de verdade ignorando atrito
+                        } else if(state === 'looking') {
+                            girl.style.transform = `scaleX(${Math.sin(Date.now() / 200) > 0 ? 1 : -1})`;
+                        } else {
+                            girl.style.transform = `scaleX(${dir}) rotate(0deg)`;
+                        }
+                    } else {
+                        girl.style.transform = `scaleX(${vx > 0 ? 1 : -1}) rotate(${vy * 2}deg)`;
+                    }
+                    
+                    // FÍSICA DAS BOLAS DE FUTEBOL
+                    for(let i=0; i<bolas.length; i++) {
+                        let b = bolas[i];
+                        b.vy += 0.8; b.x += b.vx; b.y += b.vy;
+                        if(b.y > window.innerHeight - 40) { b.y = window.innerHeight - 40; b.vy *= -0.7; b.vx *= 0.9; }
+                        if(b.x < 0) { b.x = 0; b.vx *= -0.8; }
+                        if(b.x > window.innerWidth - 30) { b.x = window.innerWidth - 30; b.vx *= -0.8; }
+                        
+                        // Bola colidindo com o chão desenhado
+                        for(let j=0; j<drawnPoints.length; j++) {
+                            let pt = drawnPoints[j];
+                            if(b.vy > 0 && Math.abs(pt.x - b.x - 15) < 20 && Math.abs(pt.y - b.y - 30) < 15) {
+                                b.y = pt.y - 30; b.vy *= -0.7; b.vx *= 0.9; break;
+                            }
+                        }
+                        
+                        // Garota Chutando a Bola
+                        if (Math.hypot((b.x+15) - (gx+30), (b.y+15) - (gy+50)) < 60) {
+                            b.vy = -12 - Math.random() * 5;
+                            b.vx = (dir * 10) + (Math.random() * 4 - 2);
+                            falarDaAcao("Toma essa!!", "kick");
+                        }
+                        
+                        b.el.style.left = b.x + 'px'; b.el.style.top = b.y + 'px';
+                        b.el.style.transform = `rotate(${b.x * 2}deg)`;
+                    }
+
+                } else {
+                    girl.style.transform = `scaleX(1) rotate(15deg) scale(0.9)`;
+                }
+
+                girl.style.left = gx + 'px'; girl.style.top = gy + 'px';
+                requestAnimationFrame(physicsLoop);
+            }
+            physicsLoop(); 
+        };
+       
+           // ==========================================
+        // SISTEMA DE BAÚ MÁGICO (GACHA)
+        // ==========================================
+        window.abrirBauMagico = function() {
+            if (window.chavesMagicas <= 0) { 
+                // A Oráculo rindo da sua cara (o "true" no final faz a foto dela aparecer)
+                window.mostrarAvisoEstilizado("Patético!", "Hahaha! Achou mesmo que podia roubar meus tesouros de graça? Derrote o Rin para conseguir uma Chave Mágica antes de tentar a sorte aqui, verme!", "#8a2be2", true); 
+                return; 
+            }
+            
+            // Verifica quais cartas ainda faltam
+            let todasAsCartas = Object.keys(window.bancoDeCartas);
+            let cartasFaltando = todasAsCartas.filter(id => !window.cartasDesbloqueadas.includes(id));
+            
+            if (cartasFaltando.length === 0) { 
+                window.mostrarAvisoEstilizado("Coleção Completa", "Você já possui todas as lendas de Aetheryon! Aguarde as próximas atualizações.", "#ffd700"); 
+                return; 
+            }
+                        
+            // Gasta a chave e sorteia
+            window.chavesMagicas--;
+            localStorage.setItem('aetheryonChaves', window.chavesMagicas);
+            
+            let idSorteada = cartasFaltando[Math.floor(Math.random() * cartasFaltando.length)];
+            window.cartasDesbloqueadas.push(idSorteada);
+            localStorage.setItem('aetheryonCartasUnlocked', JSON.stringify(window.cartasDesbloqueadas));
+            window.atualizarPowerLobby();
+
+            let carta = window.bancoDeCartas[idSorteada];
+
+            // TELA DE ABERTURA (Gacha Animation)
+            let telaBau = document.createElement('div');
+            telaBau.style.cssText = "position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.98); z-index:99999999; display:flex; flex-direction:column; justify-content:center; align-items:center;";
+            
+            telaBau.innerHTML = `
+                <h1 style="color:#00bfff; font-family:'Cinzel', serif; font-size:3rem; margin-bottom: 20px; animation: pulsarAmor 1s infinite;">ABRINDO BAÚ...</h1>
+                <div style="font-size: 80px; animation: tremerErro 0.5s infinite;">🎁</div>
+            `;
+            document.body.appendChild(telaBau);
+
+            // Revelação após 2 segundos
+            setTimeout(() => {
+                telaBau.innerHTML = `
+                    <h1 style="color:#ffd700; font-family:'Cinzel', serif; font-size:3.5rem; text-shadow:0 0 30px #ffd700; margin-bottom: 30px;">NOVA LENDA DESBLOQUEADA!</h1>
+                    <div class="carta-tcg cartas-ampliadas" style="border-color: ${carta.borda}; box-shadow: 0 0 50px ${carta.borda}; transform: scale(1.5); pointer-events:none;">
+                        <div class="carta-custo">${carta.custoMana}</div>
+                        <div class="carta-img-box"><img src="${carta.imagem}" onerror="this.src='https://via.placeholder.com/150/111/fff?text=Lenda'" style="object-position:top;"></div>
+                        <div class="carta-nome" style="color: ${carta.borda};">${carta.nome}</div>
+                        <div class="carta-efeito">${carta.efeito}</div>
+                        <div class="carta-status"><span class="carta-ataque">⚔️ ${carta.ataque}</span><span class="carta-vida">❤️ ${carta.vidaMax}</span></div>
+                    </div>
+                    <button onclick="this.parentElement.remove()" style="margin-top: 100px; padding: 15px 30px; background: #111; color: #fff; border: 2px solid #fff; font-family: 'Cinzel', serif; cursor:pointer; font-size: 20px;">INCRÍVEL!</button>
+                `;
+            }, 2000);
+        };
+
+        // ==========================================
+        // STICKGIRL FIGHT (O SURVIVAL MINI-GAME)
+        // ==========================================
+        // Coloque um botão no seu menu de interações chamando: window.iniciarStickgirlFight()
+        window.iniciarStickgirlFight = function() {
+            if (typeof inventario !== 'undefined' && !inventario.includes('stickgirl_fight')) {
+                alert("Derrote o Rin no modo CHAOTIC nas Dungeons para desbloquear esse evento mortal."); return;
+            }
+            if(document.getElementById('fightArena')) return;
+
+            let arena = document.createElement('div');
+            arena.id = 'fightArena';
+            arena.style.cssText = "position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:9999999; overflow:hidden; pointer-events:none;";
+            document.body.appendChild(arena);
+
+            // BURACO NEGRO (LIXO)
+            let buraco = document.createElement('div');
+            buraco.style.cssText = "position:absolute; bottom:50px; left:50px; width:150px; height:150px; background:radial-gradient(circle, #000 30%, #4b0082 100%); border-radius:50%; box-shadow:0 0 50px #4b0082; display:flex; justify-content:center; align-items:center; font-size: 40px; pointer-events:auto;";
+            buraco.innerHTML = "🕳️"; arena.appendChild(buraco);
+
+            // VIDAS DO JOGADOR
+            let vidasPlayer = 3;
+            let hudVidas = document.createElement('div');
+            hudVidas.style.cssText = "position:absolute; top:20px; right:20px; font-size:40px; text-shadow:0 0 10px #ff0000; pointer-events:none;";
+            hudVidas.innerHTML = "❤️❤️❤️"; arena.appendChild(hudVidas);
+
+            let mouseX = window.innerWidth/2, mouseY = window.innerHeight/2;
+            document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+
+            let inimigas = [];
+            let timeSurvived = 0;
+
+            function spawnFighter() {
+                if(inimigas.length >= 5) return;
+                let g = document.createElement('div');
+                g.style.cssText = "position:absolute; width:60px; height:100px; cursor:grab; pointer-events:auto; filter: drop-shadow(0 0 10px #ff0000); transform-origin:bottom center;";
+                g.style.backgroundImage = `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 100"><circle cx="30" cy="20" r="12" stroke="red" stroke-width="2" fill="black"/><path d="M20,10 Q10,30 20,50" stroke="red" stroke-width="2" fill="none"/><path d="M40,10 Q50,30 40,50" stroke="red" stroke-width="2" fill="none"/><line x1="30" y1="32" x2="30" y2="60" stroke="red" stroke-width="3"/><path d="M30,35 L10,50 M30,35 L50,50" stroke="red" stroke-width="3"/><path d="M30,60 L20,90 M30,60 L40,90" stroke="red" stroke-width="3"/></svg>')`;
+                g.style.backgroundSize = "contain"; g.style.backgroundRepeat = "no-repeat";
+                
+                // Nasce do lado direito da tela
+                g.dataset.x = window.innerWidth - 100; g.dataset.y = Math.random() * (window.innerHeight - 200) + 50;
+                g.dataset.cooldownAtaque = 180; // 3 segundos (60 frames * 3)
+                g.dataset.isDragging = "false";
+                
+                g.onmousedown = (e) => { g.dataset.isDragging = "true"; g.style.cursor = "grabbing"; };
+                
+                arena.appendChild(g); inimigas.push(g);
+            }
+
+            // Spawn Inicial
+            for(let i=0; i<5; i++) setTimeout(spawnFighter, i * 500);
+
+            // Timer de Reviver (a cada 60s revive uma se faltar)
+            setInterval(() => { timeSurvived++; if(timeSurvived % 60 === 0) spawnFighter(); }, 1000);
+
+            document.addEventListener('mouseup', (e) => {
+                inimigas.forEach((g, i) => {
+                    if(g.dataset.isDragging === "true") {
+                        g.dataset.isDragging = "false"; g.style.cursor = "grab";
+                        // Jogou no buraco?
+                        let rectB = buraco.getBoundingClientRect();
+                        if(e.clientX > rectB.left && e.clientX < rectB.right && e.clientY > rectB.top && e.clientY < rectB.bottom) {
+                            g.remove(); inimigas.splice(i, 1);
+                        }
+                    }
+                });
+            });
+
+            function fightLoop() {
+                if(!document.getElementById('fightArena')) return;
+                
+                for(let i = inimigas.length - 1; i >= 0; i--) {
+                    let g = inimigas[i];
+                    if(g.dataset.isDragging === "true") {
+                        g.dataset.x = mouseX - 30; g.dataset.y = mouseY - 50;
+                        g.style.transform = `scale(0.9) rotate(15deg)`;
+                    } else {
+                        // IA da Inimiga (Corre pro seu mouse!)
+                        let curX = parseFloat(g.dataset.x); let curY = parseFloat(g.dataset.y);
+                        let dx = mouseX - (curX + 30); let dy = mouseY - (curY + 50);
+                        let dist = Math.hypot(dx, dy);
+                        
+                        if(dist > 50) {
+                            // Anda
+                            curX += (dx / dist) * 2.5; curY += (dy / dist) * 2.5;
+                            g.style.transform = `scaleX(${dx > 0 ? 1 : -1}) rotate(${Math.sin(Date.now()/50)*15}deg)`;
+                        } else {
+                            // Ataca!
+                            let cd = parseInt(g.dataset.cooldownAtaque);
+                            if(cd <= 0) {
+                                // Toma Dano!
+                                vidasPlayer--;
+                                let v = ""; for(let k=0; k<vidasPlayer; k++) v += "❤️";
+                                hudVidas.innerHTML = v;
+                                document.body.style.boxShadow = "inset 0 0 100px red"; setTimeout(() => document.body.style.boxShadow = "none", 200);
+                                g.dataset.cooldownAtaque = 180; // reseta
+                                g.style.transform = `scaleX(${dx > 0 ? 1 : -1}) scale(1.3)`; // Animação de espadada
+                                
+                                if(vidasPlayer <= 0) {
+                                    alert(`GAME OVER! Você sobreviveu por ${timeSurvived} segundos.`);
+                                    arena.remove(); return; // Para o jogo
+                                }
+                            } else {
+                                g.dataset.cooldownAtaque = cd - 1;
+                                g.style.transform = `scaleX(${dx > 0 ? 1 : -1})`;
+                            }
+                        }
+                        g.dataset.x = curX; g.dataset.y = curY;
+                    }
+                    g.style.left = g.dataset.x + 'px'; g.style.top = g.dataset.y + 'px';
+                }
+                requestAnimationFrame(fightLoop);
+            }
+            fightLoop();
+        };
+
+     </script>
 
     <!-- ========================================== -->
     <!-- VISUAL DAS CARTAS E ZOOM (CSS)             -->
