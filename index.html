@@ -515,6 +515,7 @@
                 <button onclick="abrirCardGame(); toggleInteractionMenu();" style="background: #1a1a1a; color: #ffcc00; border: 1px solid #ffcc00; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif; box-shadow: 0 0 10px rgba(255,204,0,0.5);">🃏 Aetheryon Battlegrounds</button>
                 <button onclick="ativarBorracha(); toggleInteractionMenu();" style="background: #1a1a1a; color: #fff; border: 1px dashed #fff; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🧽 Usar Borracha Mágica</button>
                 <button onclick="abrirLapisSecreto(); toggleInteractionMenu();" style="background: #1a1a1a; color: #a855f7; border: 1px dashed #a855f7; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">✏️ Usar Lápis Secreto</button>
+                <button onclick="window.usarCanetaMagica(); toggleInteractionMenu();" style="background: #1a1a1a; color: #ffcc00; border: 1px dashed #ffcc00; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🖌️ Usar Caneta Mágica</button>
                 <button onclick="openMinigame('xadrez'); toggleInteractionMenu();" style="background: #1a1a1a; color: #d4af37; border: 1px solid #d4af37; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">♟️ Desafiar: Xadrez</button>             
                 <button onclick="openMinigame('damas'); toggleInteractionMenu();" style="background: #1a1a1a; color: #ff4500; border: 1px solid #ff4500; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🔴 Desafiar: Damas</button>
             </div>
@@ -3108,7 +3109,8 @@ if (!niveisRank.includes(playerRank)) {
             { id: 'folego_eterno', name: 'Fôlego Eterno', desc: 'Sobreviva à Sentença de Morte na Forca Arcana.', premio: 'Tema Água', corPremio: '#7FDBFF' }
             ,{ id: 'devorador_luz', name: 'O Fim da Fome', desc: 'Alcance 20 de energia na Cobrinha (Devoração Caótica).', premio: 'Tema Luz', corPremio: '#ffffff' },
              { id: 'sobrevivente_chuva', name: 'Dançando com o Caos', desc: 'Sobreviva à Chuva da Morte coletando 30 essências.', premio: 'Lápis Secreto', corPremio: '#a855f7' },
-             { id: 'simon_amnesia', name: 'Mente Inquebrável', desc: 'Sobreviva à Amnésia Fatal no Simon Arcano.', premio: 'Borracha Mágica', corPremio: '#ffffff' }
+             { id: 'simon_amnesia', name: 'Mente Inquebrável', desc: 'Sobreviva à Amnésia Fatal no Simon Arcano.', premio: 'Borracha Mágica', corPremio: '#ffffff' },
+             { id: 'oraculo_cards', name: 'O Silêncio da Soberana', desc: 'Reduza os pontos de vida da Oráculo a zero no Aetheryon Battlegrounds.', premio: 'Caneta Mágica', corPremio: '#ffcc00' }
         ];
 
         window.applyTheme = function(theme) {
@@ -5557,512 +5559,895 @@ if (!niveisRank.includes(playerRank)) {
         }
     </script>
 
-   <div id="cardGameMenuScreen" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle, #2a0a3a 0%, #050011 100%); z-index: 7000; flex-direction: column; justify-content: center; align-items: center; overflow: hidden; font-family: 'Cinzel', serif;">
-        
-        <span onclick="document.getElementById('cardGameMenuScreen').style.display='none'" style="position: absolute; top: 15px; right: 25px; color: #888; font-size: 40px; cursor: pointer; z-index: 7005; transition: 0.3s;">&times;</span>
+      <!-- ========================================== -->
+    <!-- BATTLEGROUNDS: LOBBY E TABULEIRO           -->
+    <!-- ========================================== -->
+    
+    <!-- 1. TELA LOBBY -->
+    <div id="cardGameMenuScreen" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle, #2a0a3a 0%, #050011 100%); z-index: 7000; flex-direction: column; justify-content: center; align-items: center; overflow: hidden; font-family: 'Cinzel', serif;">
+        <span onclick="window.fecharTudoDoCardGame()" style="position: absolute; top: 15px; right: 25px; color: #888; font-size: 40px; cursor: pointer; z-index: 7005; transition: 0.3s;">&times;</span>
 
         <h1 style="color: #ffcc00; font-size: 4rem; text-shadow: 0 0 20px #ffcc00, 0 0 40px #ffaa00; margin-bottom: 10px; text-align: center;">Aetheryon</h1>
         <h2 style="color: #fff; font-size: 2rem; letter-spacing: 5px; margin-top: 0; margin-bottom: 40px; text-shadow: 0 0 10px #fff;">Battlegrounds</h2>
 
         <div style="background: rgba(0,0,0,0.8); border: 2px solid #8a2be2; border-radius: 15px; padding: 40px; width: 90%; max-width: 400px; box-shadow: 0 0 30px rgba(138, 43, 226, 0.4);">
-            
-            <button class="cg-menu-btn destaque" onclick="iniciarDueloOraculo()">⚔️ Desafiar Oráculo</button>
-            
-            <button class="cg-menu-btn" disabled>
-                🏰 Dungeons<br>
-                <span style="font-size: 10px; font-family: 'Arial', sans-serif; color: #888; display: block; margin-top: 5px;">Os Arquitetos de Aetheryon estão trabalhando nisso...</span>
-            </button>
-            
-            <button class="cg-menu-btn" disabled>
-                🐉 Raids de Elite<br>
-                <span style="font-size: 10px; font-family: 'Arial', sans-serif; color: #888; display: block; margin-top: 5px;">Os Arquitetos de Aetheryon estão trabalhando nisso...</span>
-            </button>
-
-            <button class="cg-menu-btn" onclick="alert('Opções de Tela (Mobile/Desktop) em breve!')">⚙️ Opções</button>
-            
-            <button class="cg-menu-btn" style="border-color: #ff4444; color: #ff4444;" onclick="document.getElementById('cardGameMenuScreen').style.display='none'" onmouseover="this.style.background='#ff4444'; this.style.color='#fff';" onmouseout="this.style.background='#1a1a1a'; this.style.color='#ff4444';">🏃 Abandonar Salão</button>
+            <button class="cg-menu-btn destaque" onclick="window.iniciarDueloOraculo()">⚔️ Desafiar Oráculo</button>
+            <button class="cg-menu-btn" style="border-color: #00ffcc; color: #00ffcc;" onclick="window.abrirCentralDeDecks()">📚 Central de Decks</button>
+            <button class="cg-menu-btn" disabled>🏰 Dungeons<br><span style="font-size: 10px; font-family: 'Arial', sans-serif; color: #888; display: block; margin-top: 5px;">Os Arquitetos estão trabalhando nisso...</span></button>
+            <button class="cg-menu-btn" style="border-color: #ff4444; color: #ff4444;" onclick="window.fecharTudoDoCardGame()">🏃 Abandonar Salão</button>
         </div>
     </div>
 
-   <!-- ========================================== -->
-    <!-- TELA DO AETHERYON CARD GAME                -->
-    <!-- ========================================== -->
+    <!-- 2. CENTRAL DE DECKS (COLEÇÃO) -->
+    <div id="deckCenterScreen" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5,0,15,0.95); z-index: 7010; flex-direction: column; align-items: center; overflow-y: auto; font-family: 'Cinzel', serif; padding: 40px; box-sizing: border-box;">
+        <span onclick="window.fecharCentralDeDecks()" style="position: absolute; top: 20px; right: 30px; color: #ff4444; font-size: 50px; cursor: pointer; text-shadow: 0 0 15px #ff0000;">&times;</span>
+        <h1 style="color: #d4af37; text-shadow: 0 0 20px #d4af37; font-size: 3rem; margin-bottom: 30px;">Acervo de Lendas</h1>
+        <div id="deckGrid" style="display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; max-width: 80%;"></div>
+    </div>
+
+    <!-- 3. TELA DE FIM DE JOGO (VITÓRIA/DERROTA ÉPICA) -->
+    <div id="endGameScreen" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 999999; flex-direction: column; justify-content: center; align-items: center; font-family: 'Cinzel', serif; text-align: center;">
+        <h1 id="endGameTitle" style="font-size: 6rem; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 5px;">Vitória</h1>
+        <p id="endGameText" style="color: #ccc; font-size: 1.5rem; margin-bottom: 40px; font-family: 'Roboto', sans-serif;">Você calou a Oráculo.</p>
+        <button class="cg-menu-btn" style="width: auto; padding: 15px 30px; margin: 0; border-color: #ffcc00; color: #ffcc00;" onclick="window.retornarAoLobby()">Retornar ao Salão</button>
+    </div>
+
+    <!-- TELA DA CARTA GIGANTE (INSPEÇÃO) -->
+    <div id="modalCartaGigante" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 9999999; justify-content: center; align-items: center; cursor: pointer;" onclick="this.style.display='none'">
+        <div id="cartaGiganteContainer" style="transform: scale(2.0); pointer-events: none;"></div>
+        <div style="position: absolute; bottom: 10%; color: #ffcc00; font-family: 'Cinzel', serif; font-size: 20px; text-shadow: 0 0 10px #000;">Clique para fechar</div>
+    </div>
+
+    <!-- 4. TELA DA MESA (TABULEIRO) -->
     <div id="cardGameScreen" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle, #1a1a2e 0%, #050505 100%); z-index: 7000; flex-direction: column; justify-content: space-between; overflow: hidden; font-family: 'Cinzel', serif; transition: box-shadow 0.3s;">
         
-        <span onclick="document.getElementById('cardGameScreen').style.display='none'; document.getElementById('cardGameMenuScreen').style.display='flex';" style="position: absolute; top: 15px; right: 25px; color: #fff; font-size: 40px; cursor: pointer; z-index: 7005; text-shadow: 0 0 10px #ff0000;">&times;</span>
-
-        <button id="btnPassarTurno" onclick="passarTurno()" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); padding: 15px 20px; background: #333; color: #ffcc00; border: 2px solid #ffcc00; font-family: 'Cinzel', serif; font-weight: bold; font-size: 16px; border-radius: 8px; cursor: pointer; z-index: 7005; box-shadow: 0 0 15px rgba(255, 204, 0, 0.5); transition: 0.3s;">
-            PASSAR TURNO
+        <span onclick="window.mostrarEndGame('derrota', 'Você fugiu do duelo. Fraco.')" style="position: absolute; top: 15px; right: 25px; color: #fff; font-size: 40px; cursor: pointer; z-index: 7006; text-shadow: 0 0 10px #ff0000; transition: 0.3s;">&times;</span>
+        
+        <!-- BOTAO DE SAIR NO MEIO DO JOGO -->
+        <button onclick="window.retornarAoLobby()" style="position: absolute; top: 25px; left: 320px; z-index: 7006; background: #1a1a1a; color: #ffaa00; border: 2px solid #ffaa00; border-radius: 8px; padding: 10px 15px; cursor: pointer; font-family: 'Cinzel', serif; font-weight: bold; box-shadow: 0 0 15px rgba(255,170,0,0.3); transition: 0.3s;">
+            🔙 Sair do Jogo
         </button>
 
-        <div id="oracleAvatar" onclick="atacarBoss()" style="position: absolute; top: 10%; right: 5%; z-index: 9999; transition: all 0.5s; cursor: crosshair;">
-            <img src="oraculo.gif" onerror="this.src='https://via.placeholder.com/150/8a2be2/ffffff?text=Oraculo'" style="height: 150px; border-radius: 50%; filter: drop-shadow(0 0 15px #8a2be2); animation: flutuar 3s infinite ease-in-out;">
-            <div id="oracleFala" style="position: absolute; right: 120px; top: 20px; background: #fff; color: #000; padding: 10px; border-radius: 10px; border: 2px solid #8a2be2; font-size: 12px; font-weight: bold; width: 150px; display: none;">
-                Sério que você vai jogar isso?
+        <button onclick="document.getElementById('cardGameScreen').classList.toggle('cartas-ampliadas')" style="position: absolute; top: 25px; left: 25px; z-index: 7006; background: #1a1a1a; color: #00ffcc; border: 2px solid #00ffcc; border-radius: 8px; padding: 10px 15px; cursor: pointer; font-family: 'Cinzel', serif; font-weight: bold; box-shadow: 0 0 15px rgba(0,255,204,0.3); transition: 0.3s;">
+            🔍 Zoom Cartas
+        </button>
+
+        <button onclick="let h = document.getElementById('historicoBatalha'); h.style.display = h.style.display === 'none' ? 'block' : 'none';" style="position: absolute; top: 25px; left: 180px; z-index: 7006; background: #1a1a1a; color: #ffcc00; border: 2px solid #ffcc00; border-radius: 8px; padding: 10px 15px; cursor: pointer; font-family: 'Cinzel', serif; font-weight: bold; box-shadow: 0 0 15px rgba(255,204,0,0.3); transition: 0.3s;">
+            📜 Histórico
+        </button>
+
+        <!-- BOTÃO DE TUTORIAL (!) NO CANTINHO DIREITO -->
+        <button onclick="document.getElementById('tutorialCardGame').style.display='flex'" style="position: absolute; top: 80px; right: 25px; z-index: 7006; background: #1a1a1a; color: #00ffcc; border: 2px solid #00ffcc; border-radius: 50%; width: 45px; height: 45px; font-size: 24px; cursor: pointer; font-family: 'Cinzel', serif; font-weight: bold; box-shadow: 0 0 15px rgba(0,255,204,0.3); transition: 0.3s; display: flex; justify-content: center; align-items: center;" title="Ver Tutorial">!</button>
+
+        <!-- TELA DE TUTORIAL DO CARD GAME -->
+        <div id="tutorialCardGame" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 999999; justify-content: center; align-items: center; flex-direction: column; backdrop-filter: blur(5px); padding: 20px; box-sizing: border-box;">
+            <div style="background: #111; border: 2px solid #00ffcc; padding: 30px; border-radius: 10px; max-width: 600px; color: #fff; text-align: left; box-shadow: 0 0 30px rgba(0, 255, 204, 0.3); position: relative;">
+                <span onclick="document.getElementById('tutorialCardGame').style.display='none'" style="position: absolute; top: 10px; right: 20px; font-size: 30px; color: #888; cursor: pointer;">&times;</span>
+                <h2 style="color: #00ffcc; font-family: 'Cinzel', serif; text-align: center; margin-top: 0; font-size: 1.8rem;">BEM-VINDO AO JOGO DE CARTAS DE AETHERYON</h2>
+                <ol style="color: #ccc; font-size: 15px; line-height: 1.7; padding-left: 20px;">
+                    <li style="margin-bottom: 10px;">Você começa com <strong style="color:#0088ff;">1 de mana</strong> e o custo de cada carta está indicado no círculo azul no topo superior esquerdo. Cada rodada te concede um de mana máxima.</li>
+                    <li style="margin-bottom: 10px;">Leia a <strong style="color:#e8d5b5;">descrição</strong> de cada carta dos heróis para saber qual a funcionalidade delas.</li>
+                    <li style="margin-bottom: 10px;">Cada carta possui <strong style="color:#ffaa00;">ataque (⚔️)</strong> e <strong style="color:#ff4444;">vida (❤️)</strong> diferentes. Algumas te curam a cada rodada, fornecem escudos, entre vários outros efeitos.</li>
+                    <li style="margin-bottom: 10px;">Para atacar o inimigo, a sua carta deve estar na mesa. <strong style="color:#fff;">Clique na carta primeiro</strong> e depois clique na carta inimiga. Ou, você pode atacar a Oráculo diretamente clicando bem no retrato dela.</li>
+                    <li>Monitore a sua vida e mana máxima no menu da esquerda do tabuleiro e divirta-se!</li>
+                </ol>
+                <div style="text-align: center; margin-top: 25px;">
+                    <button onclick="document.getElementById('tutorialCardGame').style.display='none'" style="padding: 10px 30px; background: #00ffcc; color: #000; border: none; font-family: 'Cinzel', serif; font-weight: bold; cursor: pointer; border-radius: 5px; font-size: 16px;">Entendido!</button>
+                </div>
             </div>
         </div>
 
+        <div id="historicoBatalha" style="display: none; position: absolute; top: 80px; left: 25px; z-index: 7006; width: 300px; max-height: 50vh; background: rgba(0,0,0,0.85); border: 2px solid #ffcc00; border-radius: 8px; padding: 15px; overflow-y: auto; font-family: 'Roboto', sans-serif; font-size: 12px; box-shadow: 0 0 20px rgba(255,204,0,0.4);">
+            <h3 style="color: #ffcc00; font-family: 'Cinzel', serif; margin-top: 0; text-align: center; border-bottom: 1px solid #444; padding-bottom: 5px;">Diário de Batalha</h3>
+            <div id="logConteudo" style="display: flex; flex-direction: column; gap: 8px;"></div>
+        </div>
+
+        <div style="position: absolute; top: 15%; left: 3%; z-index: 7005; text-align: center;">
+            <div style="color: #ff4444; font-size: 16px; font-weight: bold; text-shadow: 0 0 5px #000; letter-spacing: 2px;">Inimigo</div>
+            <div style="width: 80px; height: 80px; background: radial-gradient(circle, #8a0000, #000); border: 3px solid #ff4444; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 35px; color: #fff; box-shadow: 0 0 20px #ff4444; font-weight: bold;" id="bossHP">30</div>
+        </div>
+
+        <div style="position: absolute; bottom: 15%; left: 3%; z-index: 7005; text-align: center;">
+            <div style="color: #00ffcc; font-size: 16px; font-weight: bold; text-shadow: 0 0 5px #000; letter-spacing: 2px;">Jogador</div>
+            <div style="width: 80px; height: 80px; background: radial-gradient(circle, #006644, #000); border: 3px solid #00ffcc; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 35px; color: #fff; box-shadow: 0 0 20px #00ffcc; font-weight: bold; position: relative;" id="playerHP">30</div>
+            <div style="margin-top: 15px; width: 80px; padding: 8px 0; background: #0088ff; border: 2px solid #fff; border-radius: 8px; color: #fff; font-weight: bold; font-size: 18px; box-shadow: 0 0 15px #0088ff;" id="playerMana">1/1</div>
+            
+            <div style="margin-top: 15px; background: #111; border: 2px solid #d4af37; border-radius: 8px; padding: 5px; color: #d4af37; font-family: 'Cinzel', serif; font-weight: bold; font-size: 12px; box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);">
+                Hero Power<br><span id="displayHeroPower" style="font-size: 18px; color: #fff;">0</span>
+            </div>
+        </div>
+
+        <button id="btnPassarTurno" onclick="window.passarTurno()" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); padding: 15px 20px; background: #333; color: #ffcc00; border: 2px solid #ffcc00; font-family: 'Cinzel', serif; font-weight: bold; font-size: 16px; border-radius: 8px; cursor: pointer; z-index: 7005; box-shadow: 0 0 15px rgba(255, 204, 0, 0.5); transition: 0.3s;">
+            PASSAR TURNO
+        </button>
+
+        <div id="oracleAvatar" onclick="window.atacarBoss()" style="position: absolute; top: 5%; right: 10%; z-index: 9999; transition: all 0.5s; cursor: crosshair;">
+            <img src="oraculo.gif" onerror="this.src='https://via.placeholder.com/150/8a2be2/ffffff?text=Oraculo'" style="height: 150px; border-radius: 50%; filter: drop-shadow(0 0 20px #8a2be2); animation: flutuar 3s infinite ease-in-out;">
+        </div>
+
         <div style="z-index: 7002; height: 35%; display: flex; flex-direction: column; align-items: center; border-bottom: 2px dashed rgba(138, 43, 226, 0.5);">
-            <div style="color: #ff4444; margin-top: 10px; font-size: 20px; text-shadow: 0 0 10px #ff4444;">Vida Inimiga: <span id="bossHP">30</span></div>
-            <div id="campoInimigo" style="display: flex; gap: 15px; margin-top: 20px; width: 80%; height: 120px; justify-content: center; align-items: center; background: rgba(255,0,0,0.1); border-radius: 10px;"></div>
+            <div id="campoInimigo" style="display: flex; gap: 15px; margin-top: auto; margin-bottom: 20px; width: 60%; height: 160px; justify-content: center; align-items: center; background: rgba(255,0,0,0.05); border-radius: 10px;"></div>
         </div>
 
         <div style="z-index: 7002; height: 35%; display: flex; flex-direction: column; align-items: center; border-bottom: 2px solid rgba(0, 255, 204, 0.5);">
-            <div id="campoJogador" style="display: flex; gap: 15px; margin-top: 20px; width: 80%; height: 120px; justify-content: center; align-items: center; background: rgba(0,255,204,0.1); border-radius: 10px;"></div>
-            <div style="color: #00ffcc; margin-top: auto; margin-bottom: 10px; font-size: 20px; text-shadow: 0 0 10px #00ffcc;">Sua Vida: <span id="playerHP">30</span> | Mana: <span id="playerMana">10/10</span></div>
+            <div id="campoJogador" style="display: flex; gap: 15px; margin-top: 20px; width: 60%; height: 160px; justify-content: center; align-items: center; background: rgba(0,255,204,0.05); border-radius: 10px;"></div>
         </div>
 
         <div style="z-index: 7002; height: 30%; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: flex-end; padding-bottom: -20px;">
-            <div id="maoJogador" style="display: flex; gap: -20px; perspective: 1000px;"></div>
+            <div id="maoJogador" style="display: flex; gap: 5px; perspective: 1000px;"></div>
         </div>
     </div>
 
+    <!-- ========================================== -->
+    <!-- MOTOR DE JOGO (JAVASCRIPT BLINDADO)        -->
+    <!-- ========================================== -->
     <script>
-        const bancoDeCartas = {
-            'ashley_lv1': { id: 'ashley_lv1', nome: 'Ashley, a Luz Guia', custoMana: 2, ataque: 2, vidaMax: 10, efeito: 'No início do turno, cura 5 de HP do jogador.', imagem: 'ashley_art1.jpg', borda: '#00ffcc', tipo: 'Normal' },
-            'karyna_lv1': { id: 'karyna_lv1', nome: 'Karyna, Corte Sombrio', custoMana: 3, ataque: 5, vidaMax: 6, efeito: 'Grito de Guerra: Anula curas inimigas.', imagem: 'karyna_card1.png', borda: '#ff0000', tipo: 'Épica' },
-            'eryn_astral': { id: 'eryn_astral', nome: 'Eryn, o Guardião Astral', custoMana: 8, ataque: 8, vidaMax: 15, efeito: 'Provocar. Não pode ser alvo de magias.', imagem: 'eryn_card1.png', borda: '#ffcc00', tipo: 'Lendária' },
-            // A NOVA CARTA: LILIA!
-            'lilia_lv1': { id: 'lilia_lv1', nome: 'Lilia, a Druida', custoMana: 5, ataque: 2, vidaMax: 6, efeito: 'Grito de Guerra: Restaura toda a Mana. Cura aliados em +3 e concede Escudo Natural (+1).', imagem: 'lilia_card1.png', borda: '#32cd32', tipo: 'Rara' }
+        // AUTO-INJEÇÃO DA CONQUISTA (Para você não precisar caçar o array lá em cima)
+        setTimeout(() => {
+            if (typeof conquistasDB !== 'undefined' && !conquistasDB.find(c => c.id === 'oraculo_cards')) {
+                conquistasDB.push({ id: 'oraculo_cards', name: 'O Silêncio da Soberana', desc: 'Reduza a Vida da Oráculo a zero nas Cartas.', premio: 'Caneta Mágica', corPremio: '#ffcc00' });
+            }
+        }, 1000);
+
+        // 1. BANCO DE DADOS DAS LENDAS
+        window.bancoDeCartas = {
+            'ashley_lv1': { id: 'ashley_lv1', nome: 'Ashley, a Luz Guia', custoMana: 2, ataque: 2, vidaMax: 10, efeito: 'Cura 5 de HP do jogador por turno.', imagem: 'card_ashley1.jpg', borda: '#00ffcc', tipo: 'Normal', provocar: false },
+            'karyna_lv1': { id: 'karyna_lv1', nome: 'Karyna, Corte Sombrio', custoMana: 3, ataque: 5, vidaMax: 6, efeito: 'Provocar. Causa MEDO em quem atacá-la.', imagem: 'karyna.png', borda: '#ff0000', tipo: 'Épica', provocar: true },
+            'eryn_astral': { id: 'eryn_astral', nome: 'Eryn, o Guardião Astral', custoMana: 8, ataque: 8, vidaMax: 15, efeito: 'Provocar. Protege o jogador.', imagem: 'eryn_card1.png', borda: '#ffcc00', tipo: 'Lendária', provocar: true },
+            'lilia_lv1': { id: 'lilia_lv1', nome: 'Lilia, a Druida', custoMana: 5, ataque: 2, vidaMax: 6, efeito: 'Grito: Rest. Mana. Passiva: +1 Vida/Escudo aliados E JOGADOR.', imagem: 'lilia.png', borda: '#32cd32', tipo: 'Rara', provocar: false },
+            'valerya_lv1': { id: 'valerya_lv1', nome: 'Valerya Ironpulse', custoMana: 4, ataque: 6, vidaMax: 8, efeito: 'Provocar. O Punho absorve impactos.', imagem: 'valerya.jpg', borda: '#ff8c00', tipo: 'Épica', provocar: true },
+            'ashton_lv1': { id: 'ashton_lv1', nome: 'Ashton Lancehearth', custoMana: 5, ataque: 8, vidaMax: 4, efeito: 'Fúria Sombria: Dano extremo, mas frágil.', imagem: 'card_ashton1.png', borda: '#8a2be2', tipo: 'Épica', provocar: false },
+            'scarlett_lv1': { id: 'scarlett_lv1', nome: 'Scarlett, a Rainha', custoMana: 7, ataque: 5, vidaMax: 12, efeito: 'Ataques CONGELAM o alvo (2 rodadas).', imagem: 'scarlett.png', borda: '#00ffff', tipo: 'Lendária', provocar: false },
+            'lysandre_lv1': { id: 'lysandre_lv1', nome: 'Lysandre, Guardião Selvagem', custoMana: 4, ataque: 4, vidaMax: 8, efeito: 'O dano causado cura todos os aliados.', imagem: 'lysandre.jpg', borda: '#32cd32', tipo: 'Épica', provocar: false },
+            'ashlan_lv1': { id: 'ashlan_lv1', nome: 'Ashlan Lancehearth', custoMana: 3, ataque: 5, vidaMax: 6, efeito: 'GaleForce: O alvo ganha 50% de chance de errar.', imagem: 'card_ashlan1.jpg', borda: '#32cd32', tipo: 'Lendária', provocar: false },
+            // NOSSO GATINHO NOVO AQUI!
+            'faelan_lv1': { id: 'faelan_lv1', nome: 'Faelan, Vendaval Felino', custoMana: 3, ataque: 3, vidaMax: 5, efeito: 'Seus ataques ENVENENAM o alvo (-2 Vida/turno).', imagem: 'card_faelan1.png', borda: '#00ff00', tipo: 'Épica', provocar: false },
+            'genevieve_lv1': { id: 'genevieve_lv1', nome: 'Genevieve, Transe Áureo', custoMana: 6, ataque: 3, vidaMax: 7, efeito: 'Charme: Seduze uma carta alvo (CD: 8).', imagem: 'card_genevieve1.png', borda: '#ffd700', tipo: 'Lendária', provocar: false },
+            'voryss_lv1': { id: 'voryss_lv1', nome: 'Voryss, Devoradora', custoMana: 8, ataque: 5, vidaMax: 10, efeito: 'Morte Inst.: Devora o alvo na próx. rodada (CD: 20).', imagem: 'card_voryss1.png', borda: '#4b0082', tipo: 'Lendária', provocar: false }
         };
 
-        // Mana máxima subiu para 15!
-        let manaTurnoMax = 1; 
-        let manaAtual = 1;
-        let cartaSelecionada = null;
-        let bossVidaAtual = 30;
-        let playerVidaAtual = 30; 
+        window.manaTurnoMax = 1; window.manaAtual = 1; window.cartaSelecionada = null;
+        window.bossVidaAtual = 200; window.playerVidaAtual = 80; 
+        window.playerEscudo = 0; window.bossEscudo = 0;
+        window.cdGenevieve = 0; // Cooldown de 8 rodadas
+        window.cdVoryss = 0;    // Cooldown de 20 rodadas
+        window.playerSangramento = 0; // O jogador sangrando 
+        window.bossEnvenenado = false; // Adicionamos o rastreador de veneno na Oráculo!
 
-        function atualizarUI() {
-            document.getElementById('playerMana').innerText = `${manaAtual}/${manaTurnoMax}`;
-            document.getElementById('playerHP').innerText = playerVidaAtual; 
-        }
-
-        window.mostrarFloatingText = function(elementoRef, texto, tipo) {
-            if (!elementoRef) return;
-            const rect = elementoRef.getBoundingClientRect();
-            const flutuante = document.createElement('div');
-            flutuante.innerText = texto;
-            flutuante.className = 'floating-text ' + tipo;
-            flutuante.style.left = (rect.left + rect.width / 2) + 'px';
-            flutuante.style.top = (rect.top + rect.height / 2) + 'px';
-            document.body.appendChild(flutuante);
-            setTimeout(() => { flutuante.remove(); }, 1000);
+        // 3. GERENCIADOR DE TELAS E MENUS
+        window.fecharTudoDoCardGame = function() {
+            ['cardGameMenuScreen', 'cardGameScreen', 'deckCenterScreen', 'endGameScreen', 'tutorialCardGame'].forEach(id => {
+                let el = document.getElementById(id);
+                if(el) el.style.display = 'none';
+            });
         };
 
         window.abrirCardGame = function() {
-            // Agora o botão do site abre o MENU LOBBY, e não a mesa direto!
-            document.getElementById('cardGameMenuScreen').style.display = 'flex';
-            if (typeof speakOracle === 'function') speakOracle(["Bem-vindo ao meu tabuleiro. Escolha como quer ser humilhado."]);
+            window.fecharTudoDoCardGame();
+            let menuLobby = document.getElementById('cardGameMenuScreen');
+            if(menuLobby) {
+                document.body.appendChild(menuLobby); 
+                menuLobby.style.zIndex = "9999999";
+                menuLobby.style.display = 'flex';
+                if (typeof speakOracle === 'function') speakOracle(["Bem-vindo ao meu tabuleiro. Escolha como quer ser humilhado."]);
+            }
         };
 
         window.iniciarDueloOraculo = function() {
-            document.getElementById('cardGameMenuScreen').style.display = 'none';
-            document.getElementById('cardGameScreen').style.display = 'flex';
-            
-            // Só dá as cartas iniciais se a mão estiver vazia (depois vamos fazer o Reset)
-            if(document.getElementById('maoJogador').innerHTML === '') {
-                comprarCarta('ashley_lv1');
-                comprarCarta('karyna_lv1');
-                comprarCarta('eryn_astral');
-                comprarCarta('lilia_lv1');
+            window.fecharTudoDoCardGame();
+            let mesaJogo = document.getElementById('cardGameScreen');
+            if(mesaJogo) {
+                document.body.appendChild(mesaJogo);
+                mesaJogo.style.zIndex = "9999999";
+                mesaJogo.style.display = 'flex';
             }
+            
+            // Abre o tutorial
+            let tutorial = document.getElementById('tutorialCardGame');
+            if(tutorial) tutorial.style.display = 'flex';
+
+            window.registrarLog("O duelo contra a Oráculo começou!", "#ffcc00");
+            window.comprarCarta('ashley_lv1'); window.comprarCarta('ashlan_lv1');
+            window.comprarCarta('faelan_lv1'); window.comprarCarta('lysandre_lv1');
+        };
+
+        window.inspecionarCartaGiga = function(htmlDaCarta) {
+            document.getElementById('cartaGiganteContainer').innerHTML = htmlDaCarta;
+            document.getElementById('modalCartaGigante').style.display = 'flex';
+        };
+
+        window.abrirCentralDeDecks = function() {
+            window.fecharTudoDoCardGame();
+            let central = document.getElementById('deckCenterScreen');
+            let grid = document.getElementById('deckGrid');
+            if(!central || !grid) return;
+            
+            document.body.appendChild(central);
+            central.style.zIndex = "9999999";
+            
+            grid.innerHTML = ''; 
+            Object.values(window.bancoDeCartas).forEach(carta => {
+                grid.innerHTML += `
+                    <div class="carta-tcg cartas-ampliadas" onclick="window.inspecionarCartaGiga(this.outerHTML)" style="border-color: ${carta.borda}; box-shadow: 0 0 15px ${carta.borda}88; margin: 0; cursor: pointer;">
+                        <div class="carta-custo">${carta.custoMana}</div>
+                        <div class="carta-img-box"><img src="${carta.imagem}" onerror="this.src='https://via.placeholder.com/150x120/1a1a1a/ffffff?text=Lenda'"></div>
+                        <div class="carta-nome" style="color: ${carta.borda};">${carta.nome}</div>
+                        <div class="carta-efeito">${carta.efeito}</div>
+                        <div class="carta-status"><span class="carta-ataque">⚔️ ${carta.ataque}</span><span class="carta-vida">❤️ ${carta.vidaMax}</span></div>
+                    </div>`;
+            });
+            central.style.display = 'flex';
+        };
+
+        window.fecharCentralDeDecks = function() {
+            window.fecharTudoDoCardGame();
+            let menu = document.getElementById('cardGameMenuScreen');
+            if(menu) menu.style.display = 'flex';
+        };
+
+        window.retornarAoLobby = function() {
+            window.fecharTudoDoCardGame();
+            let menu = document.getElementById('cardGameMenuScreen');
+            if(menu) menu.style.display = 'flex';
+        };
+
+        window.mostrarEndGame = function(resultado, msgOpcional = null) {
+            window.fecharTudoDoCardGame();
+            let endScreen = document.getElementById('endGameScreen');
+            let titulo = document.getElementById('endGameTitle');
+            let texto = document.getElementById('endGameText');
+
+            if(resultado === 'vitoria') {
+                if(titulo) { titulo.innerText = "VITÓRIA ÉPICA"; titulo.style.color = "#ffcc00"; titulo.style.textShadow = "0 0 30px #ffcc00, 0 0 60px #ffaa00"; }
+                
+                if (typeof inventario !== 'undefined' && !inventario.includes('caneta_magica')) {
+                    inventario.push('caneta_magica');
+                    localStorage.setItem('aetheryonInventario', JSON.stringify(inventario));
+                    if(typeof desbloquearConquista === 'function') desbloquearConquista('oraculo_cards');
+                    setTimeout(() => {
+                        if(typeof window.mostrarRecompensa === 'function') window.mostrarRecompensa("Caneta Mágica Obtida!", "Você silenciou a Oráculo no tabuleiro e ganhou o direito de invocar a Garota de Tinta. Acesse-a no Menu de Interações!", "🖌️");
+                    }, 500);
+                }
+                
+                if(texto) texto.innerHTML = "A Oráculo foi silenciada.<br><br><span style='color:#00ffcc; font-weight:bold;'>Nova Conquista: O Silêncio da Soberana!</span><br><span style='font-size: 16px;'>(A Caneta Mágica está no seu Menu de Interações)</span>";
+            } else {
+                if(titulo) { titulo.innerText = "DERROTA"; titulo.style.color = "#ff4444"; titulo.style.textShadow = "0 0 30px #ff0000, 0 0 60px #aa0000"; }
+                if(texto) texto.innerText = msgOpcional || "Seu deck foi pulverizado. Estude mais a lore de Aetheryon.";
+            }
+            if(endScreen) {
+                document.body.appendChild(endScreen);
+                endScreen.style.zIndex = "9999999";
+                endScreen.style.display = 'flex';
+            }
+            
+            let cJ = document.getElementById('campoJogador'); if(cJ) cJ.innerHTML = '';
+            let cI = document.getElementById('campoInimigo'); if(cI) cI.innerHTML = '';
+            let mJ = document.getElementById('maoJogador'); if(mJ) mJ.innerHTML = '';
+            let log = document.getElementById('logConteudo'); if(log) log.innerHTML = ''; 
+            window.bossVidaAtual = 200; window.playerVidaAtual = 80; window.playerEscudo = 0; window.bossEscudo = 0; window.bossEnvenenado = false;
+            window.manaTurnoMax = 1; window.manaAtual = 1; window.cartaSelecionada = null;
+        };
+
+        // 4. MOTOR DA MESA (CORE JAVASCRIPT DA PARTIDA)
+        window.registrarLog = function(mensagem, cor = '#ddd') {
+            const logBox = document.getElementById('logConteudo'); if(!logBox) return;
+            const p = document.createElement('div'); p.style.borderBottom = '1px solid #333'; p.style.paddingBottom = '6px'; p.style.color = cor;
+            p.innerHTML = `> ${mensagem}`; logBox.appendChild(p);
+            logBox.parentElement.scrollTop = logBox.parentElement.scrollHeight; 
+        };
+
+        window.atualizarUI = function() {
+            let pMana = document.getElementById('playerMana'); if(pMana) pMana.innerText = `${window.manaAtual}/${window.manaTurnoMax}`;
+            let pEscudo = window.playerEscudo > 0 ? `<br><span style="color:#32cd32;">🛡️${window.playerEscudo}</span>` : '';
+            let pSangue = window.playerSangramento > 0 ? `<br><span style="font-size:14px; color:#ff4444; font-weight:bold;">🩸 Sangrando (-${window.playerSangramento})</span>` : '';
+            let pHP = document.getElementById('playerHP'); if(pHP) pHP.innerHTML = window.playerVidaAtual + pEscudo + pSangue; 
+            
+            let bEscudo = window.bossEscudo > 0 ? `<br><span style="font-size:16px; color:#8a2be2;">🛡️${window.bossEscudo}</span>` : '';
+            // Se a oraculo tiver envenenada, mostra o icone verde na vida dela!
+            let bVeneno = window.bossEnvenenado ? `<br><span style="font-size:12px; color:#00ff00;">☠️ Veneno</span>` : '';
+            let bHP = document.getElementById('bossHP'); if(bHP) bHP.innerHTML = window.bossVidaAtual + bEscudo + bVeneno;
+
+            let poderTotal = 0;
+            document.querySelectorAll('#maoJogador .carta-tcg').forEach(carta => { poderTotal += parseInt(carta.dataset.ataque) + parseInt(carta.dataset.vida); });
+            let heroPowerEl = document.getElementById('displayHeroPower'); if(heroPowerEl) heroPowerEl.innerText = poderTotal;
+        };
+
+        window.mostrarFloatingText = function(elementoRef, texto, tipo, offsetX = 0) {
+            if (!elementoRef) return;
+            const rect = elementoRef.getBoundingClientRect(); const flutuante = document.createElement('div');
+            flutuante.innerText = texto; flutuante.className = 'floating-text ' + tipo;
+            flutuante.style.left = (rect.left + rect.width / 2 + offsetX) + 'px'; flutuante.style.top = (rect.top + rect.height / 2) + 'px';
+            flutuante.style.zIndex = "9999999";
+            let tela = document.getElementById('cardGameScreen'); if(tela) tela.appendChild(flutuante);
+            setTimeout(() => { flutuante.remove(); }, 1000);
         };
 
         window.comprarCarta = function(idDaCarta) {
-            const carta = bancoDeCartas[idDaCarta];
-            if (!carta) return;
-            const mao = document.getElementById('maoJogador');
-            
+            const carta = window.bancoDeCartas[idDaCarta]; if (!carta) return;
+            const mao = document.getElementById('maoJogador'); if(!mao) return;
+            if (mao.children.length >= 10) { window.mostrarFloatingText(document.getElementById('playerHP').parentElement, "Mão Cheia!", 'dano', 120); return; }
+
             const uniqueId = 'mao_' + Math.random().toString(36).substr(2, 9);
-            
-            // Adicionado o ícone de Escudo e a Tooltip!
             const cartaHTML = `
-                <div id="${uniqueId}" class="carta-tcg" data-idcarta="${carta.id}" data-ataque="${carta.ataque}" data-vida="${carta.vidaMax}" data-escudo="0" onclick="jogarCarta('${uniqueId}')" style="border-color: ${carta.borda}; box-shadow: 0 0 15px ${carta.borda}88;">
-                    <div class="carta-tooltip">Status: Normal</div>
-                    <div class="carta-custo">${carta.custoMana}</div>
-                    <div class="escudo-icon">🛡️1</div>
-                    <div class="carta-img-box"><img src="${carta.imagem}" alt="${carta.nome}" onerror="this.src='https://via.placeholder.com/150x120/1a1a1a/ffffff?text=FOTO+AQUI'"></div>
+                <div id="${uniqueId}" class="carta-tcg" data-idcarta="${carta.id}" data-nome="${carta.nome}" data-ataque="${carta.ataque}" data-vida="${carta.vidaMax}" data-escudo="0" data-provocar="${carta.provocar}" data-status="normal" data-turnos-cc="0" onclick="window.jogarCarta('${uniqueId}')" style="border-color: ${carta.borda}; box-shadow: 0 0 15px ${carta.borda}88;">
+                    <div class="carta-tooltip" style="border-color: ${carta.borda}; color: ${carta.borda}; text-shadow: 0 0 5px #000; z-index: 999999;">Status: Normal</div>
+                    <div class="carta-custo">${carta.custoMana}</div><div class="escudo-icon">🛡️0</div>
+                    <div class="carta-img-box"><img src="${carta.imagem}" onerror="this.src='https://via.placeholder.com/150x120/1a1a1a/ffffff?text=FOTO+AQUI'"></div>
                     <div class="carta-nome" style="color: ${carta.borda};">${carta.nome}</div>
                     <div class="carta-efeito">${carta.efeito}</div>
-                    <div class="carta-status">
-                        <span class="carta-ataque">⚔️ <span class="val-atk">${carta.ataque}</span></span>
-                        <span class="carta-vida">❤️ <span class="val-hp">${carta.vidaMax}</span></span>
-                    </div>
-                </div>
-            `;
-            mao.innerHTML += cartaHTML;
-            atualizarUI();
+                    <div class="carta-status"><span class="carta-ataque">⚔️ <span class="val-atk">${carta.ataque}</span></span><span class="carta-vida">❤️ <span class="val-hp">${carta.vidaMax}</span></span></div>
+                </div>`;
+            mao.innerHTML += cartaHTML; window.atualizarUI(); 
         };
 
         window.jogarCarta = function(idElemento) {
-            const elementoCarta = document.getElementById(idElemento);
-            if(!elementoCarta) return;
+            const elementoCarta = document.getElementById(idElemento); if(!elementoCarta) return;
+            const carta = window.bancoDeCartas[elementoCarta.dataset.idcarta]; const campo = document.getElementById('campoJogador');
 
-            const carta = bancoDeCartas[elementoCarta.dataset.idcarta];
-
-            if (manaAtual < carta.custoMana) {
-                elementoCarta.style.animation = 'tremerErro 0.3s';
-                setTimeout(() => elementoCarta.style.animation = '', 300);
-                return;
-            }
-            manaAtual -= carta.custoMana;
-            atualizarUI();
-
-            const campo = document.getElementById('campoJogador');
-            elementoCarta.setAttribute("onclick", `selecionarParaAtaque('${idElemento}')`);
-            elementoCarta.style.marginLeft = '0px'; 
-            elementoCarta.style.transform = 'scale(0.9)'; 
-            elementoCarta.style.cursor = 'crosshair'; 
-            elementoCarta.classList.add('carta-na-mesa');
-            campo.appendChild(elementoCarta);
-
-            // ===============================================
-            // GRITOS DE GUERRA (Efeitos ativados ao jogar a carta)
-            // ===============================================
-            if (carta.id === 'lilia_lv1') {
-                // 1. Restaura a Mana para o máximo do turno
-                manaAtual = manaTurnoMax;
-                atualizarUI();
-
-                // 2. Cura e Protege todos os aliados na mesa
-                let aliadosNaMesa = document.querySelectorAll('#campoJogador .carta-tcg');
-                aliadosNaMesa.forEach(aliado => {
-                    // Cura
-                    let vidaMaxAliado = bancoDeCartas[aliado.dataset.idcarta].vidaMax;
-                    let novaVida = parseInt(aliado.dataset.vida) + 3;
-                    if(novaVida > vidaMaxAliado) novaVida = vidaMaxAliado;
-                    aliado.dataset.vida = novaVida;
-                    aliado.querySelector('.val-hp').innerText = novaVida;
-                    mostrarFloatingText(aliado, "+3", 'cura');
-
-                    // Escudo Natural (+1)
-                    let escudoAtual = parseInt(aliado.dataset.escudo) || 0;
-                    aliado.dataset.escudo = escudoAtual + 1;
-                    aliado.classList.add('escudo-natureza');
-                    
-                    let iconeEscudo = aliado.querySelector('.escudo-icon');
-                    iconeEscudo.style.display = 'flex';
-                    iconeEscudo.innerText = '🛡️' + aliado.dataset.escudo;
-
-                    // Atualiza a Tooltip
-                    aliado.querySelector('.carta-tooltip').innerText = "Buff: Raízes (+1 Escudo)";
-                });
-
-                // Cura você também!
-                playerVidaAtual += 3;
-                if(playerVidaAtual > 30) playerVidaAtual = 30;
-                atualizarUI();
-                mostrarFloatingText(document.getElementById('playerHP').parentElement, "+3", 'cura');
-            }
+            if (campo.children.length >= 7) { window.mostrarFloatingText(campo, "Mesa Cheia!", 'dano'); return; }
+            if (window.manaAtual < carta.custoMana) { elementoCarta.style.animation = 'tremerErro 0.3s'; setTimeout(() => elementoCarta.style.animation = '', 300); return; }
+            window.manaAtual -= carta.custoMana;
+            elementoCarta.setAttribute("onclick", `window.selecionarParaAtaque('${idElemento}')`);
+            elementoCarta.style.marginLeft = '0px'; elementoCarta.style.cursor = 'crosshair'; 
+            elementoCarta.classList.add('carta-na-mesa'); campo.appendChild(elementoCarta);
+            
+            window.atualizarUI(); window.registrarLog(`Você invocou <b>${carta.nome}</b>.`, '#00ffcc');
+            if (carta.id === 'lilia_lv1') { window.manaAtual = window.manaTurnoMax; window.atualizarUI(); window.registrarLog("Lilia restaurou sua mana com a força da natureza!", '#32cd32'); }
         };
 
         window.selecionarParaAtaque = function(idElemento) {
-            const elemento = document.getElementById(idElemento);
-            if(!elemento || elemento.classList.contains('carta-exausta')) return;
-            
-            if(cartaSelecionada) {
-                cartaSelecionada.style.boxShadow = cartaSelecionada.classList.contains('escudo-natureza') 
-                    ? '0 0 25px #32cd32, inset 0 0 15px #32cd32' 
-                    : '0 0 15px ' + bancoDeCartas[cartaSelecionada.dataset.idcarta].borda + '88';
+            const elemento = document.getElementById(idElemento); if(!elemento || elemento.classList.contains('carta-exausta')) return;
+            if (elemento.dataset.status === 'congelado' || elemento.dataset.status === 'medo') {
+                window.mostrarFloatingText(elemento, "Atordoado!", 'dano');
+                elemento.style.animation = 'tremerErro 0.3s'; setTimeout(() => elemento.style.animation = '', 300); return;
             }
-            cartaSelecionada = elemento;
-            elemento.style.boxShadow = '0 0 40px #ffffff, 0 0 15px #ffcc00';
+            if(window.cartaSelecionada) { window.cartaSelecionada.style.boxShadow = window.cartaSelecionada.classList.contains('escudo-natureza') ? '0 0 25px #32cd32, inset 0 0 15px #32cd32' : '0 0 15px ' + window.bancoDeCartas[window.cartaSelecionada.dataset.idcarta].borda + '88'; }
+            window.cartaSelecionada = elemento; elemento.style.boxShadow = '0 0 40px #ffffff, 0 0 20px #ffffff';
         };
 
-        function exaurirCarta(carta) {
+        window.exaurirCarta = function(carta) {
             carta.classList.add('carta-exausta');
-            // Se tiver escudo, mantém a borda verde, senão tira o brilho
             carta.style.boxShadow = carta.classList.contains('escudo-natureza') ? '0 0 25px #32cd32, inset 0 0 15px #32cd32' : 'none';
-            cartaSelecionada = null;
-        }
+            window.cartaSelecionada = null;
+        };
 
-        // SISTEMA DE SOFRER DANO (ABSORVE ESCUDO PRIMEIRO)
-        function aplicarDanoNaCarta(elementoCarta, danoRecebido) {
-            let escudo = parseInt(elementoCarta.dataset.escudo) || 0;
-            let vida = parseInt(elementoCarta.dataset.vida);
+        window.aplicarCuraLysandre = function(danoCausado) {
+            window.registrarLog(`Lysandre canalizou seu Lifesteal, curando aliados em +${danoCausado} HP!`, '#32cd32');
+            document.querySelectorAll('#campoJogador .carta-tcg').forEach(aliado => {
+                let vidaMax = window.bancoDeCartas[aliado.dataset.idcarta].vidaMax;
+                let novaVida = parseInt(aliado.dataset.vida) + danoCausado;
+                if(novaVida > vidaMax) novaVida = vidaMax;
+                aliado.dataset.vida = novaVida; aliado.querySelector('.val-hp').innerText = novaVida;
+                window.mostrarFloatingText(aliado, `+${danoCausado}`, 'cura');
+            });
+        };
 
+        window.aplicarDanoNaCarta = function(elementoCarta, danoRecebido) {
+            let escudo = parseInt(elementoCarta.dataset.escudo) || 0; let vida = parseInt(elementoCarta.dataset.vida);
             if (escudo > 0) {
-                let danoAbsorvido = Math.min(escudo, danoRecebido);
-                escudo -= danoAbsorvido;
-                danoRecebido -= danoAbsorvido;
-                
-                elementoCarta.dataset.escudo = escudo;
-                let iconeEscudo = elementoCarta.querySelector('.escudo-icon');
-                
+                let danoAbsorvido = Math.min(escudo, danoRecebido); escudo -= danoAbsorvido; danoRecebido -= danoAbsorvido;
+                elementoCarta.dataset.escudo = escudo; let iconeEscudo = elementoCarta.querySelector('.escudo-icon');
                 if (escudo <= 0) {
-                    elementoCarta.classList.remove('escudo-natureza');
-                    iconeEscudo.style.display = 'none';
+                    elementoCarta.classList.remove('escudo-natureza', 'escudo-sombrio'); iconeEscudo.style.display = 'none';
                     elementoCarta.querySelector('.carta-tooltip').innerText = "Status: Normal";
-                } else {
-                    iconeEscudo.innerText = '🛡️' + escudo;
+                } else { iconeEscudo.innerText = '🛡️' + escudo; }
+            }
+            vida -= danoRecebido; elementoCarta.dataset.vida = vida; elementoCarta.querySelector('.val-hp').innerText = vida;
+            elementoCarta.style.animation = 'tremerErro 0.3s'; setTimeout(() => elementoCarta.style.animation = '', 300);
+            return vida;
+        };
+
+        window.atacarBoss = function() {
+            if(!window.cartaSelecionada) return; 
+            let lacaiosProvocar = Array.from(document.querySelectorAll('#campoInimigo .carta-tcg')).filter(c => c.dataset.provocar === 'true');
+            if(lacaiosProvocar.length > 0) {
+                window.mostrarFloatingText(document.getElementById('oracleAvatar'), "Bloqueado!", 'dano', -120);
+                window.cartaSelecionada.style.animation = 'tremerErro 0.3s'; setTimeout(() => window.cartaSelecionada.style.animation = '', 300); return;
+            }
+
+            // CHANCE DE ERRAR (Vento Sombrio)
+            if (window.cartaSelecionada.dataset.status === 'vento_sombrio') {
+                if (Math.random() < 0.5) { 
+                    window.mostrarFloatingText(window.cartaSelecionada, "ERROU!", 'dano', 0);
+                    window.registrarLog(`O ataque de ${window.cartaSelecionada.dataset.nome} errou miseravelmente por causa da ventania!`, '#ff4444');
+                    window.exaurirCarta(window.cartaSelecionada);
+                    return; 
                 }
             }
 
-            // O dano que sobrou vai pra vida
-            vida -= danoRecebido;
-            elementoCarta.dataset.vida = vida;
-            elementoCarta.querySelector('.val-hp').innerText = vida;
-
-            elementoCarta.style.animation = 'tremerErro 0.3s';
-            setTimeout(() => elementoCarta.style.animation = '', 300);
-
-            return vida;
-        }
-
-        window.atacarBoss = function() {
-            if(!cartaSelecionada) return; 
-
-            let atk = parseInt(cartaSelecionada.dataset.ataque);
-            cartaSelecionada.style.animation = 'animacaoAtaque 0.4s ease-in-out';
+            let atk = parseInt(window.cartaSelecionada.dataset.ataque); window.cartaSelecionada.style.animation = 'animacaoAtaque 0.4s ease-in-out';
             
-            bossVidaAtual -= atk;
-            if(bossVidaAtual < 0) bossVidaAtual = 0;
-            document.getElementById('bossHP').innerText = bossVidaAtual;
+            let danoReal = atk;
+            if (window.bossEscudo > 0) {
+                let abs = Math.min(window.bossEscudo, danoReal); window.bossEscudo -= abs; danoReal -= abs;
+                window.registrarLog(`O Escudo Sombrio da Oráculo absorveu ${abs} de dano!`, '#8a2be2');
+            }
+            window.bossVidaAtual -= danoReal; if(window.bossVidaAtual < 0) window.bossVidaAtual = 0; window.atualizarUI();
 
-            mostrarFloatingText(document.getElementById('oracleAvatar'), `-${atk}`, 'dano');
+            window.mostrarFloatingText(document.getElementById('oracleAvatar'), `-${danoReal}`, 'dano', -120); 
+            window.registrarLog(`<b>${window.cartaSelecionada.dataset.nome}</b> atacou a Oráculo (-${danoReal} HP).`, '#ffcc00');
 
             let avatarOracle = document.getElementById('oracleAvatar').querySelector('img');
-            avatarOracle.style.filter = 'drop-shadow(0 0 30px #ff0000) sepia(1) hue-rotate(-50deg) saturate(5)';
-            setTimeout(() => avatarOracle.style.filter = 'drop-shadow(0 0 15px #8a2be2)', 400);
-
-            exaurirCarta(cartaSelecionada);
-
-            if(bossVidaAtual === 0) {
-                setTimeout(() => alert('VITÓRIA ÉPICA! A Oráculo foi silenciada!'), 600);
+            if(avatarOracle) {
+                avatarOracle.style.filter = 'drop-shadow(0 0 30px #ff0000) sepia(1) hue-rotate(-50deg) saturate(5)';
+                setTimeout(() => avatarOracle.style.filter = 'drop-shadow(0 0 15px #8a2be2)', 400);
             }
+
+            // APLICA EFEITOS ESPECIAIS NA ORÁCULO
+            if (window.cartaSelecionada.dataset.idcarta === 'lysandre_lv1') window.aplicarCuraLysandre(atk);
+            if (window.cartaSelecionada.dataset.idcarta === 'faelan_lv1') {
+                window.bossEnvenenado = true; window.atualizarUI();
+                window.registrarLog(`A Oráculo foi ENVENENADA por Faelan! Perderá 2 HP por turno.`, '#00ff00');
+            }
+
+            window.exaurirCarta(window.cartaSelecionada);
+            if(window.bossVidaAtual === 0) { setTimeout(() => window.mostrarEndGame('vitoria'), 800); }
         };
 
         window.oraculoInvocarLacaio = function() {
-            const campoInimigo = document.getElementById('campoInimigo');
-            if(campoInimigo.children.length >= 4) return; 
-
+            const campoInimigo = document.getElementById('campoInimigo'); if(!campoInimigo || campoInimigo.children.length >= 7) return; 
+            const lacaios = [
+                { id: 'demonio_vento', nome: 'Demônio do Vento', atk: 2, hp: 15, img: 'card_demoniodovento.png', prov: 'false' },
+                { id: 'sombra_elite', nome: 'Sombra Elite', atk: 3, hp: 15, img: 'card_sombradeelite.png', prov: 'false' },
+                { id: 'besta_vazio', nome: 'Besta do Vazio', atk: 5, hp: 10, img: 'card_bestadovazio.png', prov: 'false' },
+                { id: 'oraculo_shield', nome: 'Bastião Sombrio', atk: 1, hp: 12, img: 'https://via.placeholder.com/150x120/111/4b0082?text=Escudo', prov: 'true' },
+                { id: 'assassino_vazio', nome: 'Assassino do Vazio', atk: 8, hp: 9, img: 'card_assassinadovazio.png', prov: 'false' }
+            ];
+            const lacaio = lacaios[Math.floor(Math.random() * lacaios.length)];
             const uniqueId = 'lacaio_' + Math.random().toString(36).substr(2, 9);
+            
+            // Define o que vai aparecer no balãozinho quando você passa o mouse!
+            let textoTooltip = 'Status: Normal';
+            let efText = 'Lacaio de Elite.';
+            if (lacaio.id === 'oraculo_shield') { efText = 'Provocar. Gera Escudo Sombrio.'; textoTooltip = 'Buff: Escudo Sombrio (+2 por turno)'; }
+            if (lacaio.id === 'demonio_vento') { efText = 'Seus ataques causam Ventania Sombria.'; textoTooltip = 'Passiva: Seus ataques desequilibram (50% errar)'; }
+            if (lacaio.id === 'assassino_vazio') { efText = 'Aplica Sangramento (3 Dano/Turno)'; }
+
             const lacaioHTML = `
-                <div id="${uniqueId}" class="carta-tcg carta-inimiga" onclick="atacarLacaioInimigo('${uniqueId}')" data-ataque="2" data-vida="2" data-escudo="0" style="border-color: #8a2be2; box-shadow: 0 0 15px #8a2be288; transform: scale(0.9); margin-left: 0; cursor: crosshair;">
-                    <div class="carta-custo" style="background:#8a2be2;">1</div>
-                    <div class="escudo-icon">🛡️0</div>
-                    <div class="carta-img-box"><img src="https://via.placeholder.com/150x120/111/8a2be2?text=Sombra"></div>
-                    <div class="carta-nome" style="color: #8a2be2;">Sombra Menor</div>
-                    <div class="carta-efeito">Lacaio da Oráculo.</div>
-                    <div class="carta-status">
-                        <span class="carta-ataque">⚔️ <span class="val-atk">2</span></span>
-                        <span class="carta-vida">❤️ <span class="val-hp">2</span></span>
-                    </div>
-                </div>
-            `;
-            campoInimigo.innerHTML += lacaioHTML;
+                <div id="${uniqueId}" class="carta-tcg carta-inimiga" data-idcarta="${lacaio.id}" data-nome="${lacaio.nome}" onclick="window.atacarLacaioInimigo('${uniqueId}')" data-ataque="${lacaio.atk}" data-vida="${lacaio.hp}" data-escudo="0" data-provocar="${lacaio.prov}" data-status="normal" data-turnos-cc="0" style="border-color: #8a2be2; box-shadow: 0 0 15px #8a2be288; margin-left: 0; cursor: crosshair;">
+                    <div class="carta-tooltip" style="border-color: #8a2be2; color: #8a2be2; z-index: 999999;">${textoTooltip}</div>
+                    <div class="carta-custo" style="background:#8a2be2;">?</div><div class="escudo-icon">🛡️0</div>
+                    <div class="carta-img-box"><img src="${lacaio.img}"></div><div class="carta-nome" style="color: #8a2be2;">${lacaio.nome}</div>
+                    <div class="carta-efeito">${efText}</div>
+                    <div class="carta-status"><span class="carta-ataque">⚔️ <span class="val-atk">${lacaio.atk}</span></span><span class="carta-vida">❤️ <span class="val-hp">${lacaio.hp}</span></span></div>
+                </div>`;
+            campoInimigo.innerHTML += lacaioHTML; window.registrarLog(`A Oráculo invocou <b>${lacaio.nome}</b>.`, '#8a2be2');
         };
 
         window.atacarLacaioInimigo = function(idLacaio) {
-            if(!cartaSelecionada) return; 
+            if(!window.cartaSelecionada) return; const lacaioAlvo = document.getElementById(idLacaio); if(!lacaioAlvo) return;
+            if(lacaioAlvo.dataset.provocar !== 'true') {
+                let lacaiosProvocar = Array.from(document.querySelectorAll('#campoInimigo .carta-tcg')).filter(c => c.dataset.provocar === 'true');
+                if(lacaiosProvocar.length > 0) { window.mostrarFloatingText(lacaioAlvo, "Alvo Inválido", 'dano'); window.cartaSelecionada.style.animation = 'tremerErro 0.3s'; setTimeout(() => window.cartaSelecionada.style.animation = '', 300); return; }
+            }
 
-            const lacaioAlvo = document.getElementById(idLacaio);
-            if(!lacaioAlvo) return;
+            // CHANCE DE ERRAR: EFEITO DA VENTANIA SOMBRIA
+            if (window.cartaSelecionada.dataset.status === 'vento_sombrio') {
+                if (Math.random() < 0.5) { 
+                    window.mostrarFloatingText(window.cartaSelecionada, "ERROU!", 'dano', 0);
+                    window.registrarLog(`O ataque de ${window.cartaSelecionada.dataset.nome} errou o alvo por causa das Sombras!`, '#ff4444');
+                    window.exaurirCarta(window.cartaSelecionada);
+                    return; 
+                }
+            }
 
-            let atkAtacante = parseInt(cartaSelecionada.dataset.ataque);
-            let atkDefensor = parseInt(lacaioAlvo.dataset.ataque);
+            let atkAtacante = parseInt(window.cartaSelecionada.dataset.ataque); let atkDefensor = parseInt(lacaioAlvo.dataset.ataque);
+            window.cartaSelecionada.style.animation = 'animacaoAtaque 0.4s ease-in-out';
+            window.mostrarFloatingText(lacaioAlvo, `-${atkAtacante}`, 'dano'); window.mostrarFloatingText(window.cartaSelecionada, `-${atkDefensor}`, 'dano');
+            window.registrarLog(`<b>${window.cartaSelecionada.dataset.nome}</b> atacou <b>${lacaioAlvo.dataset.nome}</b>.`, '#ff8c00');
 
-            cartaSelecionada.style.animation = 'animacaoAtaque 0.4s ease-in-out';
+            // === DEBUFFS ESPECIAIS AO ATACAR ===
+            // 1. Scarlett (Gelo)
+            if (window.cartaSelecionada.dataset.idcarta === 'scarlett_lv1') {
+                lacaioAlvo.dataset.status = 'congelado'; lacaioAlvo.dataset.turnosCc = '2'; lacaioAlvo.classList.add('congelado');
+                lacaioAlvo.querySelector('.carta-tooltip').innerText = "Status: Congelado (2 turnos)";
+                window.registrarLog(`<b>Scarlett</b> CONGELOU <b>${lacaioAlvo.dataset.nome}</b> por 2 turnos!`, '#00ffff');
+            }
+            // 2. Karyna (Medo)
+            if (window.cartaSelecionada.dataset.idcarta === 'karyna_lv1') {
+                lacaioAlvo.dataset.status = 'medo'; lacaioAlvo.dataset.turnosCc = '1'; lacaioAlvo.classList.add('com-medo');
+                lacaioAlvo.querySelector('.carta-tooltip').innerText = "Status: Com Medo";
+                window.registrarLog(`<b>Karyna</b> causou MEDO em <b>${lacaioAlvo.dataset.nome}</b>!`, '#ff0000');
+            }
+            // 3. Ashlan (Vento)
+            if (window.cartaSelecionada.dataset.idcarta === 'ashlan_lv1') {
+                lacaioAlvo.dataset.status = 'vento_ashlan'; lacaioAlvo.classList.add('vento-ashlan');
+                lacaioAlvo.querySelector('.carta-tooltip').innerText = "Debuff: Desequilibrado pela GaleForce (50% de chance de errar o ataque).";
+                window.registrarLog(`<b>Ashlan</b> desequilibrou ${lacaioAlvo.dataset.nome} com a GaleForce!`, '#32cd32');
+            }
+            // 4. Faelan (Veneno)
+            if (window.cartaSelecionada.dataset.idcarta === 'faelan_lv1') {
+                lacaioAlvo.dataset.status = 'envenenado'; lacaioAlvo.classList.add('envenenado');
+                lacaioAlvo.querySelector('.carta-tooltip').innerText = "Debuff: Essa carta está envenenada e perderá 2 de vida a cada turno.";
+                window.registrarLog(`<b>Faelan</b> ENVENENOU ${lacaioAlvo.dataset.nome}!`, '#00ff00');
+            }
+            // 5. Lysandre (Cura)
+            if (window.cartaSelecionada.dataset.idcarta === 'lysandre_lv1') {
+                window.aplicarCuraLysandre(atkAtacante);
+            }
 
-            mostrarFloatingText(lacaioAlvo, `-${atkAtacante}`, 'dano');
-            mostrarFloatingText(cartaSelecionada, `-${atkDefensor}`, 'dano');
+            if (window.cartaSelecionada.dataset.idcarta === 'genevieve_lv1' && window.cdGenevieve === 0) {
+                lacaioAlvo.dataset.status = 'seduzido'; lacaioAlvo.classList.add('seduzido');
+                lacaioAlvo.querySelector('.carta-tooltip').innerText = "Debuff: Seduzida por Genevieve. Atacará um aliado.";
+                window.registrarLog(`<b>Genevieve</b> SEDUZIU ${lacaioAlvo.dataset.nome}!`, '#ff69b4');
+                window.cdGenevieve = 8;
+            } else if (window.cartaSelecionada.dataset.idcarta === 'genevieve_lv1' && window.cdGenevieve > 0) {
+                window.registrarLog(`O Charme de Genevieve está recarregando (${window.cdGenevieve} turnos).`, '#aaa');
+            }
 
-            // Troca de dano usando a função nova que calcula o escudo!
-            let vidaInimigoRestante = aplicarDanoNaCarta(lacaioAlvo, atkAtacante);
-            let vidaMinhaRestante = aplicarDanoNaCarta(cartaSelecionada, atkDefensor);
+            // VORYSS (MORTE INSTANTÂNEA)
+            if (window.cartaSelecionada.dataset.idcarta === 'voryss_lv1' && window.cdVoryss === 0) {
+                lacaioAlvo.dataset.status = 'marcado_morte'; lacaioAlvo.classList.add('marcado-morte');
+                lacaioAlvo.querySelector('.carta-tooltip').innerText = "Debuff: Será DEVORADA no próximo turno!";
+                window.registrarLog(`<b>Voryss</b> marcou ${lacaioAlvo.dataset.nome} para ser DEVORADA!`, '#4b0082');
+                window.cdVoryss = 20;
+            } else if (window.cartaSelecionada.dataset.idcarta === 'voryss_lv1' && window.cdVoryss > 0) {
+                window.registrarLog(`A Fome de Voryss está recarregando (${window.cdVoryss} turnos).`, '#aaa');
+            }
 
-            if(vidaInimigoRestante <= 0) setTimeout(() => lacaioAlvo.remove(), 400);
+            // === AGORA SIM, APLICAMOS O DANO E CHECAMOS QUEM MORREU ===
+            let vidaInimigoRestante = window.aplicarDanoNaCarta(lacaioAlvo, atkAtacante); 
+            let vidaMinhaRestante = window.aplicarDanoNaCarta(window.cartaSelecionada, atkDefensor);
             
-            if(vidaMinhaRestante <= 0) {
-                setTimeout(() => cartaSelecionada.remove(), 400);
-                cartaSelecionada = null;
-            } else {
-                exaurirCarta(cartaSelecionada);
+            if(vidaInimigoRestante <= 0) {
+                let alvoMorto = lacaioAlvo; // Salva a referência do inimigo
+                setTimeout(() => alvoMorto.remove(), 400); 
+            }
+            
+            if(vidaMinhaRestante <= 0) { 
+                let cartaMorta = window.cartaSelecionada; // Salva a referência da sua carta
+                setTimeout(() => cartaMorta.remove(), 400); // Usa a referência salva no delay
+                window.cartaSelecionada = null; // Agora pode anular em segurança
+            } else { 
+                window.exaurirCarta(window.cartaSelecionada); 
+                // window.cartaSelecionada = null; // (Descomente esta linha se o jogo bugar mantendo a carta viva selecionada após atacar)
             }
         };
 
         window.passarTurno = function() {
-            if(cartaSelecionada) {
-                exaurirCarta(cartaSelecionada);
-            }
-
-            let lacaiosInimigos = document.querySelectorAll('#campoInimigo .carta-tcg');
-            let tempoAtaque = 0;
-            let playerHPDom = document.getElementById('playerHP').parentElement;
+            if(window.cartaSelecionada) window.exaurirCarta(window.cartaSelecionada);
+            let lacaiosInimigos = document.querySelectorAll('#campoInimigo .carta-tcg'); let tempoAtaque = 0; let playerHPDom = document.getElementById('playerHP').parentElement;
+            let temEscudoOraculo = false;
 
             lacaiosInimigos.forEach((lacaio, index) => {
+                if(lacaio.dataset.idcarta === 'oraculo_shield') temEscudoOraculo = true;
                 tempoAtaque += 600;
+                
                 setTimeout(() => {
-                    lacaio.style.animation = 'animacaoAtaqueInimigo 0.5s ease-in-out';
-                    let atk = parseInt(lacaio.dataset.ataque);
-                    playerVidaAtual -= atk;
-                    if (playerVidaAtual < 0) playerVidaAtual = 0;
-                    atualizarUI();
+                    let statusInimigo = lacaio.dataset.status;
 
-                    mostrarFloatingText(playerHPDom, `-${atk}`, 'dano');
+                    // EXECUTA A MORTE INSTANTÂNEA
+                    if (statusInimigo === 'marcado_morte') {
+                        window.mostrarFloatingText(lacaio, "DEVORADO!", 'dano');
+                        window.registrarLog(`As presas do Abismo devoraram ${lacaio.dataset.nome} instantaneamente!`, '#4b0082');
+                        setTimeout(() => lacaio.remove(), 400);
+                        return; // O coitado morreu, nem ataca.
+                    }
 
-                    let telaGame = document.getElementById('cardGameScreen');
-                    telaGame.style.boxShadow = 'inset 0 0 100px rgba(255,0,0,0.5)';
-                    setTimeout(() => telaGame.style.boxShadow = 'none', 200);
+                    // EXECUTA A SEDUÇÃO (Ataca um lacaio aliado e perde a vez)
+                    if (statusInimigo === 'seduzido') {
+                        let outrosInimigos = Array.from(document.querySelectorAll('#campoInimigo .carta-tcg')).filter(c => c !== lacaio);
+                        if (outrosInimigos.length > 0) {
+                            let vitimaAmiga = outrosInimigos[Math.floor(Math.random() * outrosInimigos.length)];
+                            let atk = parseInt(lacaio.dataset.ataque);
+                            window.mostrarFloatingText(vitimaAmiga, `-${atk} (Traição)`, 'dano');
+                            window.registrarLog(`${lacaio.dataset.nome}, cego de amor, atacou seu aliado ${vitimaAmiga.dataset.nome}!`, '#ff69b4');
+                            let restou = window.aplicarDanoNaCarta(vitimaAmiga, atk);
+                            if (restou <= 0) setTimeout(() => vitimaAmiga.remove(), 400);
+                        } else {
+                            window.registrarLog(`${lacaio.dataset.nome} beija o chão onde Genevieve pisou... e perde o turno.`, '#ff69b4');
+                        }
+                        return; // Perde o ataque no jogador!
+                    } 
+                    
+                    // PROCESSAR VENENO (Faelan)
+                    if (statusInimigo === 'envenenado') {
+                        window.mostrarFloatingText(lacaio, "-2 Veneno", 'dano');
+                        window.registrarLog(`${lacaio.dataset.nome} sofreu 2 de dano por VENENO!`, '#00ff00');
+                        let vidaRestante = window.aplicarDanoNaCarta(lacaio, 2);
+                        if (vidaRestante <= 0) {
+                            setTimeout(() => lacaio.remove(), 400);
+                            return; // Ele morre de veneno e não ataca!
+                        }
+                    }
 
-                    if(playerVidaAtual === 0) {
-                        setTimeout(() => alert('VOCÊ FOI DE VASCO! A Oráculo esmagou você.'), 600);
+                    // PROCESSAR CC (Gelo / Medo)
+                    let turnosRestantes = parseInt(lacaio.dataset.turnosCc) || 0;
+                    if (statusInimigo === 'congelado' || statusInimigo === 'medo') {
+                        turnosRestantes -= 1; lacaio.dataset.turnosCc = turnosRestantes;
+                        if (turnosRestantes <= 0) {
+                            lacaio.dataset.status = 'normal'; lacaio.classList.remove('congelado', 'com-medo');
+                            lacaio.querySelector('.carta-tooltip').innerText = "Status: Normal";
+                            window.mostrarFloatingText(lacaio, statusInimigo === 'congelado' ? "Descongelou" : "Coragem", 'cura');
+                        } else {
+                            window.mostrarFloatingText(lacaio, "Atordoado", 'dano');
+                            lacaio.querySelector('.carta-tooltip').innerText = `Status: ${statusInimigo} (${turnosRestantes} turno)`;
+                        }
+                        return; 
+                    }
+
+                    // CHANCE DO INIMIGO ERRAR (Efeito do Ashlan!)
+                    if (statusInimigo === 'vento_ashlan') {
+                        if (Math.random() < 0.5) {
+                            window.mostrarFloatingText(lacaio, "ERROU!", 'cura');
+                            window.registrarLog(`O vento da GaleForce fez ${lacaio.dataset.nome} errar o ataque!`, '#32cd32');
+                            return; // Pula a vez do inimigo
+                        }
+                    }
+
+                    lacaio.style.animation = 'animacaoAtaqueInimigo 0.5s ease-in-out'; let atk = parseInt(lacaio.dataset.ataque);
+                    let meusProvocadores = Array.from(document.querySelectorAll('#campoJogador .carta-tcg')).filter(c => c.dataset.provocar === 'true');
+                    
+                    if(meusProvocadores.length > 0) {
+                        let alvoDefensor = meusProvocadores[0]; let atkDefensor = parseInt(alvoDefensor.dataset.ataque);
+                        
+                        // DEMÔNIO DO VENTO APLICA DEBUFF NO SEU PROVOCADOR
+                        if (lacaio.dataset.idcarta === 'demonio_vento') {
+                            alvoDefensor.dataset.status = 'vento_sombrio'; alvoDefensor.classList.add('vento-sombrio');
+                            alvoDefensor.querySelector('.carta-tooltip').innerText = "Debuff: As sombras da ventania reduziram a chance de acerto em 50%.";
+                            window.registrarLog(`${lacaio.dataset.nome} aplicou ventania sombria em ${alvoDefensor.dataset.nome}!`, '#4b0082');
+                        }
+
+                        // O INIMIGO TE ATACOU E CAUSOU SANGRAMENTO
+                        if (lacaio.dataset.idcarta === 'assassino_vazio') {
+                            alvoDefensor.dataset.status = 'sangrando'; 
+                            alvoDefensor.dataset.danoSangramento = 3; // Olha o segredo aqui! Você pode colocar 2, 5, 10.
+                            alvoDefensor.classList.add('sangrando');
+                            alvoDefensor.querySelector('.carta-tooltip').innerText = "Debuff: Sangrando (-3 Vida/turno).";
+                            window.registrarLog(`O Assassino cortou uma artéria de ${alvoDefensor.dataset.nome}!`, '#8b0000');
+                        }
+
+                        window.mostrarFloatingText(alvoDefensor, `-${atk}`, 'dano'); window.mostrarFloatingText(lacaio, `-${atkDefensor}`, 'dano');
+                        window.registrarLog(`<b>${lacaio.dataset.nome}</b> atacou <b>${alvoDefensor.dataset.nome}</b>.`, '#ff4444');
+                        let vidaDefensor = window.aplicarDanoNaCarta(alvoDefensor, atk); let vidaLacaio = window.aplicarDanoNaCarta(lacaio, atkDefensor);
+                        if(vidaLacaio <= 0) setTimeout(() => lacaio.remove(), 400); if(vidaDefensor <= 0) setTimeout(() => alvoDefensor.remove(), 400);
+                    } else {
+                        let danoReal = atk;
+                        if(window.playerEscudo > 0) {
+                            let absorvido = Math.min(window.playerEscudo, danoReal); window.playerEscudo -= absorvido; danoReal -= absorvido;
+                            window.registrarLog(`Seu escudo absorveu ${absorvido} de dano!`, '#32cd32');
+                        }
+
+                        if (lacaio.dataset.idcarta === 'assassino_vazio') {
+                            window.playerSangramento = 3;
+                            window.registrarLog("O Assassino do Vazio rasgou sua garganta! Sangramento ativado.", '#8b0000');
+                        }
+                        
+                        window.playerVidaAtual -= danoReal; if (window.playerVidaAtual < 0) window.playerVidaAtual = 0; window.atualizarUI();
+                        window.mostrarFloatingText(playerHPDom, `-${danoReal}`, 'dano', 120); window.registrarLog(`A Oráculo te atacou (-${danoReal} HP).`, '#ff0000');
+
+                        let telaGame = document.getElementById('cardGameScreen'); if(telaGame) { telaGame.style.boxShadow = 'inset 0 0 100px rgba(255,0,0,0.5)'; setTimeout(() => telaGame.style.boxShadow = 'none', 200); }
+                        if(window.playerVidaAtual === 0) { setTimeout(() => window.mostrarEndGame('derrota'), 600); }
                     }
                 }, tempoAtaque);
             });
 
             setTimeout(() => {
-                oraculoInvocarLacaio();
+                if (window.playerVidaAtual > 0) window.oraculoInvocarLacaio();
+                
+                // ORÁCULO TOMA DANO DE VENENO
+                if (window.bossEnvenenado) {
+                    window.bossVidaAtual -= 2; if(window.bossVidaAtual < 0) window.bossVidaAtual = 0; window.atualizarUI();
+                    window.mostrarFloatingText(document.getElementById('oracleAvatar'), "-2 Veneno", 'dano', -120);
+                    window.registrarLog(`A Oráculo sofreu 2 de dano por VENENO!`, '#00ff00');
+                    if(window.bossVidaAtual === 0) { setTimeout(() => window.mostrarEndGame('vitoria'), 600); return; }
+                }
 
-                let cartasNaMesa = document.querySelectorAll('#campoJogador .carta-tcg');
+                if (temEscudoOraculo) {
+                    window.registrarLog("O Bastião do Vazio ressoa! +2 Escudo Sombrio para a Oráculo e seus lacaios.", '#8a2be2');
+                    window.bossEscudo += 2; window.atualizarUI();
+                    window.mostrarFloatingText(document.getElementById('oracleAvatar'), "+2 Escudo", 'cura', -120);
+                    document.querySelectorAll('#campoInimigo .carta-tcg').forEach(lacaioOraculo => {
+                        let escAtual = parseInt(lacaioOraculo.dataset.escudo) || 0;
+                        lacaioOraculo.dataset.escudo = escAtual + 2; lacaioOraculo.classList.add('escudo-sombrio');
+                        lacaioOraculo.querySelector('.carta-tooltip').innerText = `Buff: Escudo Sombrio (+2)`;
+                        let iconE = lacaioOraculo.querySelector('.escudo-icon'); iconE.style.display = 'flex'; iconE.innerText = '🛡️' + lacaioOraculo.dataset.escudo;
+                        window.mostrarFloatingText(lacaioOraculo, "+2 Escudo", 'cura');
+                    });
+                }
+
+                // JOGADOR SANGRA
+                if (window.playerSangramento > 0) {
+                    window.playerVidaAtual -= window.playerSangramento;
+                    window.mostrarFloatingText(playerHPDom, `-${window.playerSangramento} Sangue`, 'dano', 120);
+                }
+                
+                // DIMINUI OS COOLDOWNS DE GENEVIEVE E VORYSS A CADA RODADA
+                if (window.cdGenevieve > 0) window.cdGenevieve--;
+                if (window.cdVoryss > 0) window.cdVoryss--;
+
+                let cartasNaMesa = document.querySelectorAll('#campoJogador .carta-tcg'); let temLilia = false;
                 cartasNaMesa.forEach(carta => {
                     carta.classList.remove('carta-exausta');
                     
+                    // Limpa debuffs ao fim do turno APENAS de congelado e medo (Veneno e Vento duram até a morte)
+                    if (carta.dataset.status === 'congelado' || carta.dataset.status === 'medo') {
+                        carta.dataset.status = 'normal'; carta.classList.remove('congelado', 'com-medo'); carta.querySelector('.carta-tooltip').innerText = "Status: Normal";
+                    }
+                    if(carta.dataset.idcarta === 'lilia_lv1') temLilia = true;
                     if(carta.dataset.idcarta === 'ashley_lv1') {
-                        playerVidaAtual += 5;
-                        if(playerVidaAtual > 30) playerVidaAtual = 30;
-                        atualizarUI();
-                        
-                        mostrarFloatingText(playerHPDom, "+5", 'cura');
-                        
-                        let corOriginal = carta.style.borderColor;
-                        carta.style.boxShadow = '0 0 40px #00ff00, inset 0 0 20px #00ff00';
-                        setTimeout(() => {
-                            if(!carta.classList.contains('escudo-natureza')) {
-                                carta.style.boxShadow = 'none';
-                            } else {
-                                carta.style.boxShadow = '0 0 25px #32cd32, inset 0 0 15px #32cd32';
-                            }
-                        }, 800);
+                        window.playerVidaAtual = Math.min(30, window.playerVidaAtual + 5); window.atualizarUI();
+                        window.mostrarFloatingText(playerHPDom, "+5", 'cura', 120); window.registrarLog("Ashley curou você em +5 HP.", '#00ffcc');
                     }
                 });
-                
-                // SISTEMA DE MANA ACUMULANDO ATÉ 15
-                if(manaTurnoMax < 15) manaTurnoMax++;
-                manaAtual = manaTurnoMax;
-                atualizarUI();
-                
-                const cartasParaSortear = ['ashley_lv1', 'karyna_lv1', 'eryn_astral', 'lilia_lv1'];
-                const cartaPuxada = cartasParaSortear[Math.floor(Math.random() * cartasParaSortear.length)];
-                comprarCarta(cartaPuxada);
 
+                if (temLilia) {
+                    window.playerEscudo += 1; window.atualizarUI(); window.mostrarFloatingText(playerHPDom, "+1 Escudo", 'cura', -120);
+                    cartasNaMesa.forEach(aliado => {
+                        let novaVida = Math.min(window.bancoDeCartas[aliado.dataset.idcarta].vidaMax, parseInt(aliado.dataset.vida) + 1);
+                        aliado.dataset.vida = novaVida; aliado.querySelector('.val-hp').innerText = novaVida;
+                        aliado.dataset.escudo = (parseInt(aliado.dataset.escudo) || 0) + 1;
+                        aliado.classList.add('escudo-natureza'); 
+                        let iconeEscudo = aliado.querySelector('.escudo-icon'); iconeEscudo.style.display = 'flex'; iconeEscudo.innerText = '🛡️' + aliado.dataset.escudo;
+                        window.mostrarFloatingText(aliado, "+1 Vida/Escudo", 'cura');
+                    });
+                }
+                
+                window.manaTurnoMax = Math.min(15, window.manaTurnoMax + 1); window.manaAtual = window.manaTurnoMax; window.atualizarUI();
+                const cartasParaSortear = ['ashley_lv1', 'karyna_lv1', 'eryn_astral', 'lilia_lv1', 'valerya_lv1', 'ashton_lv1', 'scarlett_lv1', 'lysandre_lv1', 'ashlan_lv1', 'faelan_lv1'];
+                window.comprarCarta(cartasParaSortear[Math.floor(Math.random() * cartasParaSortear.length)]);
             }, Math.max(tempoAtaque + 500, 500));
+        };
+
+        // 5. A CANETA MÁGICA (STICK GIRL)
+        window.usarCanetaMagica = function() {
+            if (typeof inventario !== 'undefined' && !inventario.includes('caneta_magica')) {
+                if (typeof window.mostrarAvisoOraculo === 'function') {
+                    window.mostrarAvisoOraculo("Sério? Querendo usar o que não é seu? Vença-me no meu tabuleiro de cartas antes de ousar invocar a garota de tinta, seu verme.", "Você é patético! Vença-me nas cartas primeiro!");
+                } else {
+                    alert("Você precisa derrotar a Oráculo nas Cartas primeiro!");
+                }
+                return;
+            }
+            window.invocarCanetaMagica();
+        };
+
+        window.invocarCanetaMagica = function() {
+            if(document.getElementById('stickGirl')) { alert("A garota de tinta já está na tela!"); return; }
+
+            let girl = document.createElement('div');
+            girl.id = "stickGirl"; girl.style.position = "fixed"; girl.style.bottom = "10px"; girl.style.left = "50%";
+            girl.style.width = "60px"; girl.style.height = "100px"; girl.style.zIndex = "99999999";
+            girl.style.cursor = "grab"; girl.style.transition = "transform 0.3s";
+            
+            girl.style.backgroundImage = `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 100"><circle cx="30" cy="20" r="12" stroke="white" stroke-width="2" fill="black"/><path d="M20,10 Q10,30 20,50" stroke="white" stroke-width="2" fill="none"/><path d="M40,10 Q50,30 40,50" stroke="white" stroke-width="2" fill="none"/><line x1="30" y1="32" x2="30" y2="60" stroke="white" stroke-width="3"/><path d="M30,35 L10,50 M30,35 L50,50" stroke="white" stroke-width="3"/><path d="M30,60 L20,90 M30,60 L40,90" stroke="white" stroke-width="3"/></svg>')`;
+            girl.style.backgroundSize = "contain"; girl.style.backgroundRepeat = "no-repeat"; document.body.appendChild(girl);
+
+            function falar(texto, cor) {
+                let txt = document.createElement('div'); txt.innerText = texto;
+                txt.style.position = "fixed"; txt.style.left = (parseInt(girl.style.left) - 20) + "px"; 
+                txt.style.top = (parseInt(girl.style.top || window.innerHeight - 100) - 30) + "px";
+                txt.style.color = cor || "#ffcc00"; txt.style.fontFamily = "Arial"; 
+                txt.style.fontWeight = "bold"; txt.style.zIndex = "99999999";
+                txt.style.textShadow = "1px 1px 2px #000";
+                document.body.appendChild(txt); 
+                setTimeout(() => txt.remove(), 1200);
+            }
+
+            let isDragging = false;
+            girl.onmousedown = function(e) { 
+                isDragging = true; girl.style.cursor = "grabbing"; girl.style.transition = "none"; 
+                falar("Me solta seu gigante!!", "#ff4444"); 
+                girl.style.transform = "scale(0.9) rotate(15deg)"; 
+            };
+            document.onmousemove = function(e) { 
+                if(isDragging) { girl.style.left = (e.clientX - 30) + 'px'; girl.style.top = (e.clientY - 50) + 'px'; girl.style.bottom = "auto"; } 
+            };
+            document.onmouseup = function() { 
+                isDragging = false; girl.style.cursor = "grab"; girl.style.transition = "transform 0.3s"; 
+                girl.style.transform = "scale(1) rotate(0deg)";
+                falar("Ugh... você me amassou!", "#fff"); 
+            };
+
+            let direcao = 1;
+            setInterval(() => {
+                if(!isDragging) {
+                    let currentLeft = parseInt(girl.style.left || window.innerWidth / 2);
+                    let mover = (Math.random() * 40 - 20); 
+                    if (mover < 0) direcao = -1; else if (mover > 0) direcao = 1;
+                    girl.style.transform = `scaleX(${direcao})`; 
+                    
+                    let newLeft = currentLeft + mover;
+                    if(newLeft > 0 && newLeft < window.innerWidth - 60) girl.style.left = newLeft + 'px';
+                    
+                    let canvas = document.getElementById('canvasBorracha');
+                    if (canvas && Math.random() > 0.7) { 
+                        let ctx = canvas.getContext('2d');
+                        ctx.clearRect(newLeft - 50, window.innerHeight - 150, 150, 150); 
+                        let falasLimpando = ["Sou uma faxineira agora?", "Que rabisco feio...", "Apagando a sua bagunça!", "Credo."];
+                        falar(falasLimpando[Math.floor(Math.random() * falasLimpando.length)], "#00ffcc");
+                    }
+                }
+            }, 1000);
         };
     </script>
 
+    <!-- ========================================== -->
+    <!-- VISUAL DAS CARTAS E ZOOM (CSS)             -->
+    <!-- ========================================== -->
     <style>
-        .carta-tcg {
-            width: 140px; height: 200px; background: #111; border: 3px solid; border-radius: 8px;
-            position: relative; display: flex; flex-direction: column; align-items: center;
-            font-family: 'Arial', sans-serif; transition: 0.2s; cursor: pointer; margin-left: -20px;
-        }
-        .carta-tcg:hover { transform: translateY(-20px) scale(1.1); z-index: 100; }
-        
-        .carta-custo {
-            position: absolute; top: -10px; left: -10px; background: #0088ff; color: #fff;
-            width: 30px; height: 30px; border-radius: 50%; display: flex; justify-content: center;
-            align-items: center; font-weight: bold; font-size: 16px; border: 2px solid #fff;
-            box-shadow: 0 0 5px #000; z-index: 2;
-        }
-        .carta-img-box { width: 100%; height: 45%; overflow: hidden; border-bottom: 2px solid #333; border-radius: 5px 5px 0 0; }
-        .carta-img-box img { width: 100%; height: 100%; object-fit: cover; }
-        .carta-nome { font-size: 11px; font-weight: bold; text-align: center; margin-top: 5px; width: 90%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; }
-        .carta-efeito { font-size: 9px; color: #ccc; text-align: center; padding: 5px; flex-grow: 1; }
-        .carta-status { width: 100%; display: flex; justify-content: space-between; background: #000; padding: 5px; box-sizing: border-box; border-radius: 0 0 5px 5px; font-weight: bold; font-size: 14px; }
-        
-        .carta-ataque { color: #ffaa00; }
-        .carta-vida { color: #ff4444; }
-
-        @keyframes tremerErro {
-            0% { transform: translateX(0); border-color: #ff0000; }
-            25% { transform: translateX(-10px); }
-            50% { transform: translateX(10px); }
-            75% { transform: translateX(-10px); }
-            100% { transform: translateX(0); }
-        }
-
-        .carta-na-mesa:hover {
-            transform: scale(0.95) !important;
-            box-shadow: 0 0 25px rgba(255, 255, 255, 0.5) !important;
-            z-index: 1;
-        }
-
-        @keyframes flutuar { 0% {transform: translateY(0px);} 50% {transform: translateY(-15px);} 100% {transform: translateY(0px);} }
-
-        @keyframes animacaoAtaque {
-            0% { transform: scale(0.95) translateY(0); }
-            50% { transform: scale(1.05) translateY(-100px); z-index: 999; } 
-            100% { transform: scale(0.95) translateY(0); }
-        }
-        
-        .carta-exausta {
-            filter: grayscale(0.8) brightness(0.5);
-            cursor: not-allowed !important;
-        }
-
-        /* Efeito de RPG: Números pulando na tela */
-        .floating-text {
-            position: fixed;
-            font-weight: bold;
-            font-size: 35px;
-            pointer-events: none;
-            z-index: 10000;
-            animation: floatUp 1s ease-out forwards;
-            transform: translate(-50%, -50%);
-            font-family: 'Cinzel', serif;
-            text-shadow: 0 0 10px #000, 0 0 20px #000;
-        }
-        .floating-text.dano { color: #ff4444; }
-        .floating-text.cura { color: #00ff00; }
-
-        @keyframes floatUp {
-            0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-            100% { opacity: 0; transform: translate(-50%, -150%) scale(1.5); }
-        }
-
-        /* O pulo de ataque da Oráculo */
-        @keyframes animacaoAtaqueInimigo { 0% { transform: scale(1) translateY(0); } 50% { transform: scale(1.2) translate(-50px, 100px); z-index: 9999;} 100% { transform: scale(1) translateY(0); } }
-        
-        /* Efeito de hover no botão de passar turno */
-        #btnPassarTurno:hover { background: #ffcc00 !important; color: #000 !important; transform: translateY(-50%) scale(1.05) !important; }
-
-        /* Ícone de Escudo no canto da carta */
-        .escudo-icon {
-            position: absolute; top: -10px; right: -10px; background: #32cd32; color: #fff;
-            width: 30px; height: 30px; border-radius: 50%; display: none; justify-content: center;
-            align-items: center; font-weight: bold; font-size: 14px; border: 2px solid #fff;
-            box-shadow: 0 0 10px #32cd32; z-index: 5;
-        }
-
-        /* Efeito de Raízes da Natureza (Buff da Lilia) */
-        .escudo-natureza {
-            box-shadow: 0 0 25px #32cd32, inset 0 0 15px #32cd32 !important;
-            border-color: #32cd32 !important;
-        }
-
-        /* Tooltip de Status quando passa o mouse (Tamanho aumentado!) */
-        .carta-tooltip {
-            display: none; position: absolute; bottom: 105%; left: 50%; transform: translateX(-50%);
-            background: rgba(0,0,0,0.95); color: #fff; padding: 8px; border: 2px solid #00ffcc;
-            border-radius: 6px; font-size: 13px; font-weight: bold; width: 160px; text-align: center; z-index: 200; pointer-events: none;
-            box-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
-        }
-        .carta-tcg:hover .carta-tooltip { display: block; }
-
-        /* Estilos do Menu Principal do Card Game */
-        .cg-menu-btn {
-            width: 100%; padding: 15px; margin-bottom: 15px; font-family: 'Cinzel', serif; font-weight: bold;
-            font-size: 18px; color: #fff; background: #1a1a1a; border: 2px solid #444; border-radius: 8px;
-            cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 2px;
-        }
-        .cg-menu-btn:hover:not(:disabled) {
-            transform: scale(1.05); background: #333;
-        }
+        .cg-menu-btn { width: 100%; padding: 15px; margin-bottom: 15px; font-family: 'Cinzel', serif; font-weight: bold; font-size: 18px; color: #fff; background: #1a1a1a; border: 2px solid #444; border-radius: 8px; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 2px; }
+        .cg-menu-btn:hover:not(:disabled) { transform: scale(1.05); background: #333; }
         .cg-menu-btn.destaque { border-color: #ffcc00; color: #ffcc00; box-shadow: 0 0 15px rgba(255, 204, 0, 0.3); }
         .cg-menu-btn.destaque:hover { background: #ffcc00; color: #000; box-shadow: 0 0 25px rgba(255, 204, 0, 0.8); }
         .cg-menu-btn:disabled { color: #666; border-color: #333; cursor: not-allowed; opacity: 0.7; }
+
+        .carta-tcg { width: 130px; height: 180px; background: #111; border: 3px solid; border-radius: 8px; position: relative; display: flex; flex-direction: column; align-items: center; font-family: 'Arial', sans-serif; transition: 0.2s; cursor: pointer; }
+        .carta-tcg:hover { transform: translateY(-20px) scale(1.15); z-index: 100; }
+        .carta-custo { position: absolute; top: -10px; left: -10px; background: #0088ff; color: #fff; width: 30px; height: 30px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 16px; border: 2px solid #fff; box-shadow: 0 0 5px #000; z-index: 2; }
+        .carta-img-box { width: 100%; height: 40%; overflow: hidden; border-bottom: 2px solid #333; border-radius: 5px 5px 0 0; }
+        .carta-img-box img { width: 100%; height: 100%; object-fit: cover; }
+        .carta-nome { font-family: 'Cinzel', serif; font-size: 10px; font-weight: bold; text-align: center; margin-top: 6px; margin-bottom: 2px; width: 90%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; letter-spacing: 0.5px; }
+        .carta-efeito { font-family: 'Roboto', sans-serif; font-size: 9px; color: #e8d5b5; text-align: center; padding: 4px; flex-grow: 1; display: flex; align-items: center; justify-content: center; line-height: 1.3; background: rgba(0, 0, 0, 0.7); border-top: 1px solid #444; border-bottom: 1px solid #444; width: 100%; box-sizing: border-box; text-shadow: 1px 1px 2px #000; }
+        .carta-status { width: 100%; display: flex; justify-content: space-between; background: #000; padding: 5px; box-sizing: border-box; border-radius: 0 0 5px 5px; font-weight: bold; font-size: 14px; }
+        .carta-ataque { color: #ffaa00; } .carta-vida { color: #ff4444; }
+
+        .cartas-ampliadas .carta-tcg { width: 160px; height: 230px; margin-left: -25px; }
+        .cartas-ampliadas .carta-tcg:hover { transform: translateY(-25px) scale(1.2); }
+        .cartas-ampliadas .carta-nome { font-size: 13px; } .cartas-ampliadas .carta-efeito { font-size: 12px; padding: 6px; line-height: 1.4; }
+        .cartas-ampliadas .carta-status { font-size: 18px; } .cartas-ampliadas .carta-custo { width: 35px; height: 35px; font-size: 18px; }
+        .cartas-ampliadas .escudo-icon { width: 35px; height: 35px; font-size: 16px; }
+
+        .escudo-icon { position: absolute; top: -10px; right: -10px; background: #32cd32; color: #fff; width: 30px; height: 30px; border-radius: 50%; display: none; justify-content: center; align-items: center; font-weight: bold; font-size: 14px; border: 2px solid #fff; box-shadow: 0 0 10px #32cd32; z-index: 20; }
+
+        /* ====== OS EFEITOS VISUAIS FODAS DE RPG ====== */
+        .escudo-natureza { border-color: #32cd32 !important; box-shadow: 0 0 15px #32cd32 !important; position: relative; }
+        .escudo-natureza::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 150'%3E%3Cpath d='M-10,20 Q30,40 10,70 T110,100 M-20,100 Q40,120 50,160 M90,-10 Q80,50 120,80' stroke='%2332cd32' stroke-width='4' fill='none' stroke-linecap='round' opacity='0.7'/%3E%3C/svg%3E"); background-size: 100% 100%; pointer-events: none; z-index: 10; border-radius: 5px; }
+
+        .congelado { border-color: #00ffff !important; position: relative; }
+        .congelado::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(0,255,255,0.2) 50%, rgba(255,255,255,0.3) 100%); box-shadow: inset 0 0 30px #00ffff; backdrop-filter: blur(1px); pointer-events: none; z-index: 10; border-radius: 5px; border: 2px solid rgba(255,255,255,0.5); }
+
+        .com-medo { border-color: #4b0082 !important; animation: balancoMedo 1s ease-in-out infinite; position: relative; }
+        .com-medo::after { content: ''; position: absolute; top: -10px; left: -10px; right: -10px; bottom: -10px; background: radial-gradient(circle, transparent 30%, rgba(20,0,30,0.9) 100%); pointer-events: none; z-index: 10; border-radius: 10px; }
+        @keyframes balancoMedo { 0% { transform: rotate(-2deg); filter: grayscale(0.5); } 50% { transform: rotate(2deg); filter: grayscale(0.8); } 100% { transform: rotate(-2deg); filter: grayscale(0.5); } }
+
+        .escudo-sombrio { box-shadow: 0 0 25px #4b0082, inset 0 0 20px #000 !important; border-color: #8a2be2 !important; position: relative; }
+        .escudo-sombrio::after { content: ''; position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px; background: radial-gradient(circle, rgba(75, 0, 130, 0.4) 0%, rgba(0, 0, 0, 0.8) 100%); pointer-events: none; z-index: 10; border-radius: 8px; animation: fumacaSombria 2s infinite alternate; }
+        @keyframes fumacaSombria { 0% { filter: blur(2px); opacity: 0.7; } 100% { filter: blur(4px); opacity: 1; } }
+
+        /* NOVOS EFEITOS: Veneno e Ventanias */
+        .envenenado { box-shadow: 0 0 20px #00ff00, inset 0 0 20px #00ff00 !important; filter: hue-rotate(90deg); animation: palpitarVeneno 1.5s infinite; position: relative; }
+        @keyframes palpitarVeneno { 0% { opacity: 0.8; } 50% { opacity: 1; } 100% { opacity: 0.8; } }
+
+        .vento-ashlan { border-color: #32cd32 !important; position: relative; }
+        .vento-ashlan::after { content: ''; position: absolute; top: -15px; left: -15px; right: -15px; bottom: -15px; border: 3px dashed #32cd32; border-radius: 5px; animation: girarVento 2s linear infinite; pointer-events: none; z-index: 10; box-shadow: 0 0 15px rgba(50, 205, 50, 0.5); }
+        
+        .vento-sombrio { border-color: #4b0082 !important; position: relative; }
+        .vento-sombrio::after { content: ''; position: absolute; top: -15px; left: -15px; right: -15px; bottom: -15px; border: 3px dashed #4b0082; background: rgba(0,0,0,0.3); border-radius: 5px; animation: girarVento 1s linear infinite reverse; pointer-events: none; z-index: 10; box-shadow: 0 0 20px rgba(75, 0, 130, 0.8); }
+        
+        @keyframes girarVento { 100% { transform: rotate(360deg); } }
+
+        /* NOVOS DEBUFFS: Charme, Morte e Sangramento */
+        .seduzido { box-shadow: 0 0 20px #ff69b4, inset 0 0 15px #ff69b4 !important; border-color: #ff69b4 !important; animation: pulsarAmor 1s infinite alternate; }
+        @keyframes pulsarAmor { 0% { transform: scale(1); } 100% { transform: scale(1.05); } }
+        
+        .marcado-morte { filter: grayscale(1) brightness(0.4); border-color: #000 !important; box-shadow: inset 0 0 40px #000 !important; }
+        
+        .sangrando { border-color: #8b0000 !important; animation: pingarSangue 1.5s infinite; }
+        @keyframes pingarSangue { 50% { box-shadow: 0 10px 15px #8b0000; } }
+
+        .carta-tooltip { display: none; position: absolute; bottom: 105%; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.95); color: #fff; padding: 8px; border: 2px solid #00ffcc; border-radius: 6px; font-size: 13px; font-weight: bold; width: 160px; text-align: center; z-index: 200; pointer-events: none; box-shadow: 0 0 10px rgba(0, 255, 204, 0.5); }
+        .carta-tcg:hover .carta-tooltip { display: block; }
+        .floating-text { position: fixed; font-weight: bold; font-size: 45px; pointer-events: none; z-index: 99999999 !important; animation: floatUp 1s ease-out forwards; transform: translate(-50%, -50%); font-family: 'Cinzel', serif; text-shadow: 0 0 10px #000, 0 0 20px #000, 2px 2px 0px #000; }
+        .floating-text.dano { color: #ff4444; } .floating-text.cura { color: #00ff00; }
+        @keyframes floatUp { 0% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0; transform: translate(-50%, -150%) scale(1.5); } }
+        @keyframes tremerErro { 0% { transform: translateX(0); border-color: #ff0000; } 25% { transform: translateX(-10px); } 50% { transform: translateX(10px); } 75% { transform: translateX(-10px); } 100% { transform: translateX(0); } }
+        .carta-na-mesa:hover { transform: scale(0.95) !important; z-index: 1; }
+        .carta-na-mesa:not(.carta-exausta):hover { box-shadow: 0 0 25px rgba(255, 255, 255, 0.5) !important; }
+        @keyframes flutuar { 0% {transform: translateY(0px);} 50% {transform: translateY(-15px);} 100% {transform: translateY(0px);} }
+        @keyframes animacaoAtaque { 0% { transform: scale(0.95) translateY(0); } 50% { transform: scale(1.05) translateY(-100px); z-index: 999; } 100% { transform: scale(0.95) translateY(0); } }
+        .carta-exausta { filter: grayscale(0.8) brightness(0.5); cursor: not-allowed !important; }
+        @keyframes animacaoAtaqueInimigo { 0% { transform: scale(1) translateY(0); } 50% { transform: scale(1.2) translate(-50px, 100px); z-index: 9999;} 100% { transform: scale(1) translateY(0); } }
+        #btnPassarTurno:hover { background: #ffcc00 !important; color: #000 !important; transform: translateY(-50%) scale(1.05) !important; }
     </style>
+
+    <!-- MÁGICA FINAL (Injeta o Menu automaticamente para não sumir do código) -->
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const lobbyMenu = document.getElementById('cardGameMenuScreen');
+            if (lobbyMenu) document.body.appendChild(lobbyMenu);
+        });
+    </script>
 
     <!-- MÁGICA QUE DESENGOLA OS MINIGAMES -->
     <script>
@@ -6082,6 +6467,31 @@ if (!niveisRank.includes(playerRank)) {
             });
         });
     </script>
+
+    <!-- ========================================== -->
+    <!-- CABO CHUPETA PARA FORÇAR O JOGO A ABRIR    -->
+    <!-- ========================================== -->
+    <script>
+        function abrirCardGame() {
+            let menuLobby = document.getElementById('cardGameMenuScreen');
+            if(menuLobby) {
+                // Arranca o menu do fundo e soca na frente da tela à força
+                document.body.appendChild(menuLobby);
+                menuLobby.style.zIndex = "99999999";
+                menuLobby.style.display = 'flex';
+                if (typeof speakOracle === 'function') speakOracle(["Bem-vindo ao meu tabuleiro. Escolha como quer ser humilhado."]);
+            } else {
+                alert("Erro: O HTML do Lobby sumiu do código!");
+            }
+        }
+        window.abrirCardGame = abrirCardGame;
+    </script>
+
+        <!-- MODAL INSPECIONAR CARTA -->
+    <div id="modalCartaGigante" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 9999999; justify-content: center; align-items: center; cursor: pointer;" onclick="this.style.display='none'">
+        <div id="cartaGiganteContainer" style="transform: scale(2.5); pointer-events: none;"></div>
+        <div style="position: absolute; bottom: 10%; color: #ffcc00; font-family: 'Cinzel', serif; font-size: 20px; text-shadow: 0 0 10px #000;">Clique em qualquer lugar para fechar</div>
+    </div>
 
 </body>
 </html>
