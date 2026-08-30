@@ -397,7 +397,7 @@
             <button class="filter-btn active" onclick="filterHeroes('all', this)">Todos</button>
             <button class="filter-btn" onclick="filterHeroes('tank', this)">🛡️ Vanguard</button>
             <button class="filter-btn" onclick="filterHeroes('dps', this)">⚔️ Striker</button>
-            <button class="filter-btn" onclick="filterHeroes('support', this)">✨ Sustainer</button>
+            <button class="filter-btn" onclick="filterHeroes('support', this)">✨ Sustainer</button>                    
         </div>
     </header>
 
@@ -437,6 +437,7 @@
         <button id="btnHeroes" class="tab-btn active" onclick="switchTab('heroes')">👤 Lendas de Aetheryon</button>
         <button id="btnLocations" class="tab-btn" onclick="switchTab('locations')">🌍 Mapa e Regiões</button>
         <button id="btnRaces" class="tab-btn" onclick="switchTab('races')">🧬 Raças & Biologia</button>
+        <button style="background: #111; color: #ffd700; border: 1px solid #ffd700; padding: 10px 20px; font-family: 'Cinzel', serif; cursor: pointer; border-radius: 5px;" onclick="window.abrirLorebook()">📖 GRIMÓRIO (HISTÓRIA)</button>
     </div>
 
     <div class="gallery" id="gallery"></div>
@@ -890,6 +891,8 @@
             {
                 name: "Lennox Kraven", title: "A Caçadora de Olhos", role: "dps", image: "lennox.png",
                 avatar: "lennox_face.png",
+                model3dChar: "lennoxmodel.glb",
+                model3dWeapon: "lennoxweapon.glb",
                 quote: "\"Dinheiro é a única verdade. Se o seu olho vale mais que a sua vida, a culpa não é minha.\"",
                 faction: "💀 Mercado Negro", elemento: "⚙️ Físico / Execução", 
                 stats: { forca: 50, magia: 0, agilidade: 85, inteligencia: 50, carisma: 35, physDef: 25, magDef: 10 },
@@ -1194,7 +1197,60 @@
     description: "Curvilínea, debochada e dona de um charme selvagem irresistível, Mimi é a prova de que a linha entre a proteção e a sedução em Naturelands é extremamente tênue. Suas orelhas e cauda de raposa felpudas se movem ao ritmo de sua atitude provocante, usando o próprio corpo como a principal atração no campo de batalha.<br><br>Vestindo trajes mínimos de couro orgânico e folhagens mágicas ajustadas que deixam pouco para a imaginação, Mimi atrai a atenção de todos os inimigos. Sua parceira espiritual, a serpente Sora, se enrosca em suas curvas antes de disparar para criar escudos defensivos. Quanto mais os inimigos tentam subjugá-la ou atacar seus aliados, mais energia kinetic-mágica Mimi acumula, transformando a frustração dos oponentes em uma carga explosiva de dano corporal.",
     extraImages: ["mimi_art1.png", "mimi_art2.png", "mimi_art3.png"],
     secret: "Mimi usa sua aparência extremamente sensual e seu olhar provocativo como uma arma psicológica deliberada: ela adora ver a guarda dos inimigos cair antes de esmagá-los com a energia acumulada por Sora. Seu prazer no combate vem da dominação sensorial e do controle do campo de batalha."
-        },   
+        },
+        {
+                name: "Lynn Lancehearth", 
+                title: "A Matriarca Rebelde", 
+                role: "dps", 
+                image: "lynn.png",
+                avatar: "lynn_face.png",
+                quote: "\"Guarde suas ordens para os seus soldados, Scarlett. No meu castelo, a única regra que dita o ritmo é a minha lâmina.\"",
+                faction: "💎 Castelo Lynn (Diamond City)", 
+                elemento: "🔥 Fogo / Lâmina Mágica", 
+                stats: { forca: 35, magia: 65, agilidade: 90, inteligencia: 75, carisma: 75, physDef: 30, magDef: 40 },
+                race: "Elfa Mantra", 
+                weapon: "Florete Lendário 'Crimson Rose'",
+                weaponDetails: "Um florete nobre, ágil e incrivelmente afiado, adornado com joias vermelhas na guarda. Lynn usa sua reserva maciça de mana para inflamar a lâmina, derretendo armaduras e cortando inimigos com estocadas velozes enquanto dança agressivamente pelo campo de batalha.",
+                weaponImage: "lynn_weapon.png",
+                description: "A irmã mais nova da matriarca Scarlett Lancehearth e filha da falecida heroína Freya. Desde a sua adolescência, Lynn se provou uma garota ferozmente rebelde. Ela odiava as regras rígidas da nobreza de Diamond City e não suportava o excesso de autoridade e as ordens constantes de sua irmã mais velha.<br><br>Cansada de ser controlada, Lynn executou um plano ousado e definitivo: reivindicou judicialmente a sua parte colossal da herança familiar e abandonou o castelo principal. Com o dinheiro que lhe era de direito, ela não poupou despesas e construiu o seu próprio palacete fortificado, tornando-se a dona absoluta do luxuoso Castelo Lynn.<br><br>Hoje, ela vive sob suas próprias regras ao lado do marido e de sua filha atiradora, Devon. Em combate, Lynn exala luxo, arrogância e uma beleza perigosa, rejeitando a postura fria e tática de sua irmã para atuar como uma duelista implacável na linha de frente.",
+                extraImages: ["lynn_art1.png", "lynn_combat.png"],
+                secret: "Apesar de toda a sua postura feroz de mulher independente e indomável perante a alta sociedade, Lynn tem uma fraqueza incrivelmente cômica na intimidade: ela é completamente viciada em ser mimada pelo seu marido. Em seus aposentos fechados, ela joga a pose de 'matriarca perigosa' pela janela, adorando deitar no colo dele para receber cafunés enquanto passa horas reclamando da irmã."
+            },
+            {
+                name: "Lorian", 
+                title: "O Refúgio de Cristal", 
+                role: "support", 
+                image: "lorian.png",
+                avatar: "lorian_face.png",
+                quote: "\"Enquanto minha esposa queima a linha de frente e nossa filha cobre a retaguarda, eu garanto que nossa família seja intocável.\"",
+                faction: "💎 Castelo Lynn (Diamond City)", 
+                elemento: "🔮 Cristal / Encantamento", 
+                stats: { forca: 15, magia: 85, agilidade: 70, inteligencia: 95, carisma: 100, physDef: 20, magDef: 80 },
+                race: "Humano", 
+                weapon: "Fios de Cristal Arcânico",
+                weaponDetails: "Ele controla finos e quase invisíveis fios de magia conectados a anéis em seus dedos. Lorian não busca o dano bruto, mas manipula o campo de batalha focando em Controle de Grupo, criando escudos reflexivos, curando aliados e prendendo inimigos sem nunca perder a sua postura graciosa.",
+                description: "Lorian é o marido humano da rebelde Lynn Lancehearth e o pai da atiradora de elite Devon. Dono de uma beleza incrivelmente andrógina e delicada, seu traço visual mais hipnotizante e único em toda a nobreza são seus cabelos roxos, extremamente longos e volumosos, que descem em cascatas sedosas pelas suas costas.<br><br>Ele é o contrapeso emocional e tático perfeito para a sua família. Enquanto Lynn é uma Elfa Mantra feroz que detesta seguir ordens, Lorian atua como o diplomata calmo e paciente que administra as finanças e as burocracias do luxuoso Castelo Lynn com um sorriso gentil, permitindo que a esposa viva em total liberdade. No campo de batalha, ele assume a posição de suporte. Utilizando barreiras cristalinas e feitiços de manipulação, ele orquestra a luta da retaguarda para garantir que a agressividade de sua esposa e a precisão cirúrgica de sua filha atinjam o seu potencial máximo.",
+                extraImages: ["lorian_art1.png", "lorian_elegante.png"],
+                secret: "Apesar de Lynn ter abandonado o castelo principal na adolescência justamente por odiar receber ordens, na intimidade, Lorian é quem detém o controle absoluto. Ele usa o seu charme andrógino, a cabeleira roxa deslumbrante e a sua voz suave para desarmar completamente a marra da esposa, tratando-a com tanto mimo que a matriarca feroz acaba derretendo e cedendo a todas as vontades do marido."
+            },
+            {
+                name: "Devon Lancehearth", 
+                title: "A Mira de Ferro", 
+                role: "dps", 
+                image: "devon.png",
+                avatar: "devon_face.png",
+                quote: "\"Vestidos limitam o movimento, e a hesitação limita a vida. Eu prefiro a minha besta e um alvo limpo.\"",
+                faction: "💎 Castelo Lynn (Diamond City)", 
+                elemento: "⚙️ Aço / Precisão", 
+                stats: { forca: 40, magia: 10, agilidade: 95, inteligencia: 80, carisma: 65, physDef: 35, magDef: 5 },
+                race: "Humana", 
+                weapon: "Besta Tática 'Ironclad'",
+                weaponDetails: "Uma crossbow mecânica e pesada, customizada pela própria Devon com trilhos de recarga ultrarrápida. Ela dispara virotes de aço com ponta de diamante temperado, capazes de perfurar blindagens e ignorar fortificações com uma precisão cirúrgica impressionante.",
+                weaponImage: "devon_weapon.png",
+                description: "Devon é a única filha da Elfa Mantra rebelde Lynn Lancehearth e do diplomata humano Lorian. Rejeitando a genética élfica da mãe e a delicadeza mágica do pai, Devon herdou a raça humana e decidiu trilhar um caminho de combate puramente letal e prático.<br><br>Ela subverte completamente todas as expectativas da rica metrópole de Diamond City[cite: 2]. Abraçando uma estética andrógina e *tomboy*, Devon é frequentemente confundida com um garoto de porte militar. Ela detesta roupas luxuosas, preferindo trajes táticos de combate focados em mobilidade e sobrevivência. Treinada na prestigiosa Academia Lancehearth, ela ignorou a esgrima clássica de sua família para se tornar uma atiradora implacável, calculando ventos e trajetórias para encerrar a luta antes mesmo do inimigo se aproximar.",
+                extraImages: ["devon_bikini.png", "devon_combat.png"],
+                secret: "Apesar de odiar os bailes de gala de Diamond City, Devon frequentemente comparece aos eventos vestindo ternos masculinos de alfaiataria fina, apenas para irritar a puritana e conservadora Princesa Ashley[cite: 12]. O mais cômico é que, graças à sua beleza andrógina e postura confiante, Devon acaba recebendo muito mais cartas de amor das nobres locais do que a maioria dos príncipes da corte."
+            },   
         ];
 
         // ==========================================
@@ -5571,18 +5627,59 @@ if (!niveisRank.includes(playerRank)) {
         <h1 style="color: #ffcc00; font-size: 4rem; text-shadow: 0 0 20px #ffcc00, 0 0 40px #ffaa00; margin-bottom: 10px; text-align: center;">Aetheryon</h1>
         <h2 style="color: #fff; font-size: 2rem; letter-spacing: 5px; margin-top: 0; margin-bottom: 40px; text-shadow: 0 0 10px #fff;">Battlegrounds</h2>
 
-       <div style="background: rgba(0,0,0,0.8); border: 2px solid #8a2be2; border-radius: 15px; padding: 40px; width: 90%; max-width: 400px; box-shadow: 0 0 30px rgba(138, 43, 226, 0.4);">
+       <div id="telaLobbyPrincipal" style="background: rgba(0,0,0,0.8); border: 2px solid #8a2be2; border-radius: 15px; padding: 40px; width: 90%; max-width: 400px; box-shadow: 0 0 30px rgba(138, 43, 226, 0.4); position: relative; z-index: 100;">
             <div style="display: flex; justify-content: space-between; color: #fff; font-family: 'Cinzel', serif; font-size: 14px; margin-bottom: 15px; border-bottom: 1px solid #8a2be2; padding-bottom: 5px;">
                 <span>⚡ Power: <span id="lobbyPowerLevel" style="color: #ffcc00; font-weight: bold;">0</span></span>
                 <span>💎 <span id="lobbyAetheryonite" style="color: #ff69b4; font-weight: bold;">0</span></span>
                 <span>🔑 <span id="lobbyChaves" style="color: #ffd700; font-weight: bold;">0</span></span>
             </div>
+            
             <button class="cg-menu-btn destaque" onclick="window.iniciarDueloOraculo()">⚔️ Desafiar Oráculo</button>
+            
+            <button class="cg-menu-btn" style="border-color: #00ffcc; color: #00ffcc; animation: pulsarAmor 2s infinite;" onclick="document.getElementById('mapaMundiScreen').style.display='block'; document.getElementById('mapaMundiScreen').style.zIndex='99999';">🌍 Explorar Aetheryon (Mapa)</button>
+            <button class="cg-menu-btn" style="border-color: #ffd700; color: #ffd700;" onclick="window.abrirLorebook()">📖 Grimório (História)</button>
+            
             <button class="cg-menu-btn" style="border-color: #ff4500; color: #ff4500;" onclick="window.abrirDungeons()">🏰 Dungeons (Rin)</button>
-            <button class="cg-menu-btn" style="border-color: #ffd700; color: #ffd700;" onclick="window.abrirAprimorarCartas()">⚒️ Aprimorar Cartas</button>
-            <button class="cg-menu-btn" style="border-color: #00bfff; color: #00bfff; animation: pulsarAmor 2s infinite;" onclick="window.abrirBauMagico()">🎁 Abrir Baú Mágico</button>
-            <button class="cg-menu-btn" style="border-color: #00ffcc; color: #00ffcc;" onclick="window.abrirCentralDeDecks()">📚 Central de Decks</button>
+            <button class="cg-menu-btn" style="border-color: #ffd700; color: #ffd700;" onclick="window.abrirAprimorarCartas()">⚒️ Forja de Lendas</button>
+            <button class="cg-menu-btn" style="border-color: #00bfff; color: #00bfff;" onclick="window.abrirBauMagico()">🎁 Abrir Baú Mágico</button>
             <button class="cg-menu-btn" style="border-color: #ff4444; color: #ff4444;" onclick="window.fecharTudoDoCardGame()">🏃 Abandonar Salão</button>
+        </div>
+    </div>
+
+     <!-- TELA DO MAPA MÚNDI (AETHERYON) -->
+    <div id="mapaMundiScreen" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: url('https://via.placeholder.com/1920x1080/050510/222244?text=Mapa+de+Aetheryon') no-repeat center center; background-size: cover; z-index: 7000; font-family: 'Cinzel', serif;">
+        <div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.8); border: 2px solid #00ffcc; padding: 15px 30px; border-radius: 10px; display: flex; gap: 30px; font-size: 18px; color: #fff; box-shadow: 0 0 20px rgba(0,255,204,0.4);">
+            <span>⚡ Power: <span id="mapPowerLevel" style="color: #ffcc00; font-weight: bold;">0</span></span>
+            <span>💎 <span id="mapAetheryonite" style="color: #ff69b4; font-weight: bold;">0</span></span>
+            <span>🔑 <span id="mapChaves" style="color: #ffd700; font-weight: bold;">0</span></span>
+        </div>
+        <span onclick="window.fecharMapaMundi()" style="position: absolute; top: 15px; right: 25px; color: #888; font-size: 40px; cursor: pointer; z-index: 10000000;">&times;</span>
+
+        <div class="map-node" style="top: 45%; left: 45%; background: #00ffcc; box-shadow: 0 0 20px #00ffcc;" onclick="window.abrirAprimorarCartas()"><div class="map-tooltip" style="border-color: #00ffcc;"><h3 style="margin:0; color:#00ffcc;">Diamond City</h3><p style="margin:5px 0 0 0; font-size:12px; color:#ccc;">Forja de Lendas e Aprimoramentos</p></div></div>
+        <div class="map-node" style="top: 25%; left: 65%; background: #8a2be2; box-shadow: 0 0 20px #8a2be2;" onclick="window.iniciarDueloOraculo()"><div class="map-tooltip" style="border-color: #8a2be2;"><h3 style="margin:0; color:#8a2be2;">Torre da Oráculo</h3><p style="margin:5px 0 0 0; font-size:12px; color:#ccc;">Desafie a Mestre das Cartas</p></div></div>
+        <div class="map-node" style="top: 65%; left: 70%; background: #ff4500; box-shadow: 0 0 20px #ff4500;" onclick="window.abrirDungeons()"><div class="map-tooltip" style="border-color: #ff4500;"><h3 style="margin:0; color:#ff4500;">Abismo Umbral</h3><p style="margin:5px 0 0 0; font-size:12px; color:#ccc;">Dungeons: Covil de Rin</p></div></div>
+        <div class="map-node" style="top: 70%; left: 30%; background: #ffd700; box-shadow: 0 0 20px #ffd700;" onclick="window.abrirBauMagico()"><div class="map-tooltip" style="border-color: #ffd700;"><h3 style="margin:0; color:#ffd700;">Santuário Gacha</h3><p style="margin:5px 0 0 0; font-size:12px; color:#ccc;">Abra Baús e Invoque Lendas</p></div></div>
+        
+        <style>
+            .map-node { position: absolute; width: 25px; height: 25px; border-radius: 50%; cursor: pointer; transform: translate(-50%, -50%); border: 3px solid #fff; transition: 0.2s; animation: pulsarAmor 2s infinite; }
+            .map-node:hover { transform: translate(-50%, -50%) scale(1.3); }
+            .map-node:hover .map-tooltip { opacity: 1; bottom: 40px; pointer-events: auto; }
+            .map-tooltip { opacity: 0; position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(10,10,10,0.95); border: 2px solid; padding: 15px; border-radius: 8px; white-space: nowrap; pointer-events: none; transition: 0.3s; text-align: center; }
+            .map-tooltip::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border-width: 8px; border-style: solid; border-color: inherit transparent transparent transparent; }
+        </style>
+    </div>
+
+    <!-- TELA DO LOREBOOK (GRIMÓRIO MÁGICO) -->
+    <div id="lorebookScreen" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5, 5, 10, 0.95); z-index: 8000; flex-direction: column; align-items: center; justify-content: center; font-family: 'Cinzel', serif;">
+        <span onclick="window.fecharLorebook()" style="position: absolute; top: 15px; right: 25px; color: #888; font-size: 40px; cursor: pointer; z-index: 10000000;">&times;</span>
+        <div style="display: flex; width: 90%; max-width: 1200px; height: 80vh; background: #0a0a0a; border: 2px solid #ffd700; border-radius: 15px; box-shadow: 0 0 40px rgba(255, 215, 0, 0.2); overflow: hidden;">
+            <div style="width: 300px; background: #111; border-right: 2px solid #333; padding: 20px; overflow-y: auto;">
+                <h2 style="color: #ffd700; text-align: center; text-shadow: 0 0 10px #ffd700; margin-top: 0; border-bottom: 1px solid #444; padding-bottom: 10px;">Crônicas de Aetheryon</h2>
+                <button onclick="window.carregarCapitulo(1)" style="width: 100%; padding: 15px; background: #222; color: #fff; border: 1px solid #ffd700; font-family: 'Cinzel', serif; font-size: 16px; cursor: pointer; margin-bottom: 10px; border-radius: 5px;">📖 Capítulo 1: O Despertar</button>
+                <button onclick="window.carregarCapitulo(2)" style="width: 100%; padding: 15px; background: #1a1a1a; color: #666; border: 1px dashed #444; font-family: 'Cinzel', serif; font-size: 16px; cursor: pointer; margin-bottom: 10px; border-radius: 5px;">🔒 Capítulo 2 (Bloqueado)</button>
+            </div>
+            <div id="lorebookConteudo" style="flex-grow: 1; padding: 40px; overflow-y: auto; background: #050505; color: #ddd; font-family: 'Georgia', serif; font-size: 18px; line-height: 1.8;">
+            </div>
         </div>
     </div>
 
@@ -5751,6 +5848,82 @@ if (!niveisRank.includes(playerRank)) {
         </div>
     </div>
 
+        <div id="mapaMundiScreen" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: url('https://via.placeholder.com/1920x1080/050510/222244?text=Mapa+de+Aetheryon') no-repeat center center; background-size: cover; z-index: 7000; font-family: 'Cinzel', serif;">
+        
+        <div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.8); border: 2px solid #00ffcc; padding: 15px 30px; border-radius: 10px; display: flex; gap: 30px; font-size: 18px; color: #fff; box-shadow: 0 0 20px rgba(0,255,204,0.4);">
+            <span>⚡ Power: <span id="mapPowerLevel" style="color: #ffcc00; font-weight: bold;">0</span></span>
+            <span>💎 <span id="mapAetheryonite" style="color: #ff69b4; font-weight: bold;">0</span></span>
+            <span>🔑 <span id="mapChaves" style="color: #ffd700; font-weight: bold;">0</span></span>
+        </div>
+
+        <span onclick="window.retornarAoLobby()" style="position: absolute; top: 20px; right: 30px; color: #ff4444; font-size: 50px; cursor: pointer; text-shadow: 0 0 10px #000;">&times;</span>
+
+        <div class="map-node" style="top: 45%; left: 45%; background: #00ffcc; box-shadow: 0 0 20px #00ffcc;" onclick="window.abrirAprimorarCartas()">
+            <div class="map-tooltip" style="border-color: #00ffcc;">
+                <h3 style="margin:0; color:#00ffcc;">Diamond City</h3>
+                <p style="margin:5px 0 0 0; font-size:12px; color:#ccc;">Forja de Lendas e Aprimoramentos</p>
+            </div>
+        </div>
+
+        <div class="map-node" style="top: 25%; left: 65%; background: #8a2be2; box-shadow: 0 0 20px #8a2be2;" onclick="window.iniciarDueloOraculo()">
+            <div class="map-tooltip" style="border-color: #8a2be2;">
+                <h3 style="margin:0; color:#8a2be2;">Torre da Oráculo</h3>
+                <p style="margin:5px 0 0 0; font-size:12px; color:#ccc;">Desafie a Mestre das Cartas</p>
+            </div>
+        </div>
+
+        <div class="map-node" style="top: 65%; left: 70%; background: #ff4500; box-shadow: 0 0 20px #ff4500;" onclick="window.abrirDungeons()">
+            <div class="map-tooltip" style="border-color: #ff4500;">
+                <h3 style="margin:0; color:#ff4500;">Abismo Umbral</h3>
+                <p style="margin:5px 0 0 0; font-size:12px; color:#ccc;">Dungeons: Covil de Rin</p>
+            </div>
+        </div>
+
+        <div class="map-node" style="top: 70%; left: 30%; background: #ffd700; box-shadow: 0 0 20px #ffd700;" onclick="window.abrirBauMagico()">
+            <div class="map-tooltip" style="border-color: #ffd700;">
+                <h3 style="margin:0; color:#ffd700;">Santuário Gacha</h3>
+                <p style="margin:5px 0 0 0; font-size:12px; color:#ccc;">Abra Baús e Invoque Lendas</p>
+            </div>
+        </div>
+
+        <div class="map-node" style="top: 20%; left: 30%; background: #ff4444; box-shadow: 0 0 20px #ff4444;" onclick="window.iniciarStickgirlFight()">
+            <div class="map-tooltip" style="border-color: #ff4444;">
+                <h3 style="margin:0; color:#ff4444;">Coliseu de Papel</h3>
+                <p style="margin:5px 0 0 0; font-size:12px; color:#ccc;">Minigame: Sobrevivência</p>
+            </div>
+        </div>
+        
+        <style>
+            .map-node { position: absolute; width: 25px; height: 25px; border-radius: 50%; cursor: pointer; transform: translate(-50%, -50%); border: 3px solid #fff; transition: 0.2s; animation: pulsarAmor 2s infinite; }
+            .map-node:hover { transform: translate(-50%, -50%) scale(1.3); }
+            .map-node:hover .map-tooltip { opacity: 1; bottom: 40px; pointer-events: auto; }
+            .map-tooltip { opacity: 0; position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(10,10,10,0.95); border: 2px solid; padding: 15px; border-radius: 8px; white-space: nowrap; pointer-events: none; transition: 0.3s; text-align: center; }
+            /* Setinha virada pra baixo */
+            .map-tooltip::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border-width: 8px; border-style: solid; border-color: inherit transparent transparent transparent; }
+        </style>
+    </div>
+
+         <div id="lorebookScreen" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5, 5, 10, 0.95); z-index: 8000; flex-direction: column; align-items: center; justify-content: center; font-family: 'Cinzel', serif;">
+        
+        <span onclick="window.fecharLorebook()" style="position: absolute; top: 20px; right: 40px; color: #ffd700; font-size: 50px; cursor: pointer; text-shadow: 0 0 15px #ffd700; transition: 0.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#ffd700'">&times;</span>
+
+        <div style="display: flex; width: 90%; max-width: 1200px; height: 80vh; background: #0a0a0a; border: 2px solid #ffd700; border-radius: 15px; box-shadow: 0 0 40px rgba(255, 215, 0, 0.2); overflow: hidden;">
+            
+            <div style="width: 300px; background: #111; border-right: 2px solid #333; padding: 20px; overflow-y: auto;">
+                <h2 style="color: #ffd700; text-align: center; text-shadow: 0 0 10px #ffd700; margin-top: 0; border-bottom: 1px solid #444; padding-bottom: 10px;">Crônicas de Aetheryon</h2>
+                
+                <button onclick="window.carregarCapitulo(1)" style="width: 100%; padding: 15px; background: #222; color: #fff; border: 1px solid #ffd700; font-family: 'Cinzel', serif; font-size: 16px; cursor: pointer; margin-bottom: 10px; border-radius: 5px; transition: 0.2s; box-shadow: 0 0 10px rgba(255,215,0,0.3);">📖 Capítulo 1: O Despertar</button>
+                
+                <button onclick="window.carregarCapitulo(2)" style="width: 100%; padding: 15px; background: #1a1a1a; color: #666; border: 1px dashed #444; font-family: 'Cinzel', serif; font-size: 16px; cursor: pointer; margin-bottom: 10px; border-radius: 5px;">🔒 Capítulo 2 (Bloqueado)</button>
+                
+                <button onclick="window.carregarCapitulo(3)" style="width: 100%; padding: 15px; background: #1a1a1a; color: #666; border: 1px dashed #444; font-family: 'Cinzel', serif; font-size: 16px; cursor: pointer; margin-bottom: 10px; border-radius: 5px;">🔒 Capítulo 3 (Bloqueado)</button>
+            </div>
+
+            <div id="lorebookConteudo" style="flex-grow: 1; padding: 40px; overflow-y: auto; background: url('https://www.transparenttextures.com/patterns/black-paper.png'); color: #ddd; font-family: 'Georgia', serif; font-size: 18px; line-height: 1.8;">
+                </div>
+        </div>
+    </div>
+
     <!-- ========================================== -->
     <!-- MOTOR DE JOGO (JAVASCRIPT BLINDADO)        -->
     <!-- ========================================== -->
@@ -5885,6 +6058,64 @@ if (!niveisRank.includes(playerRank)) {
                     </div>`;
             });
         };
+
+        window.fecharMapaMundi = function() {
+            let map = document.getElementById('mapaMundiScreen');
+            if (map) map.style.display = 'none';
+            let lobby = document.getElementById('telaLobbyPrincipal');
+            if (lobby) lobby.style.display = 'block'; // Traz o menu de volta
+        };
+
+        // ==========================================
+        // SISTEMA DO GRIMÓRIO (LORE)
+        // ==========================================
+        window.abrirLorebook = function() {
+            window.fecharTudoDoCardGame();
+            let lobby = document.getElementById('telaLobbyPrincipal');
+            if (lobby) lobby.style.display = 'none';
+
+            let loreScreen = document.getElementById('lorebookScreen');
+            if(loreScreen) {
+                loreScreen.style.display = 'flex';
+                window.carregarCapitulo(1); // Já abre no cap 1
+            }
+        };
+
+        window.fecharLorebook = function() {
+            let loreScreen = document.getElementById('lorebookScreen');
+            if(loreScreen) loreScreen.style.display = 'none';
+            let lobby = document.getElementById('telaLobbyPrincipal');
+            if (lobby) lobby.style.display = 'block'; // Traz o menu de volta
+        };
+
+        window.carregarCapitulo = function(numero) {
+        let conteudo = document.getElementById('lorebookConteudo');
+        
+        if (numero === 1) {
+            conteudo.innerHTML = `
+                <h1 style="color: #ffd700; font-family: 'Cinzel', serif; font-size: 3rem; text-align: center; margin-top: 0;">Capítulo 1: O Despertar</h1>
+                
+                <img src="chapter1cover.png" style="width: 100%; max-height: 400px; object-fit: cover; border: 2px solid #ffd700; border-radius: 10px; margin-bottom: 30px;">
+                
+                <p>A luz dourada do sol de Aetheryon atravessava os imensos vitrais lapidados do Castelo Lancehearth, banhando a colossal mesa de carvalho do grande salão real. O cheiro de pães frescos, frutas das Naturelands e carnes assadas preenchia o ar.</p>
+                
+                <p>A rotina da nobreza parecia tranquila, até o ruído suave de passos descalços e o balançar delicado de uma saia curta quebrarem o silêncio.</p>
+                
+                <p>Ashlan entrou deslizando pelo salão. O jovem príncipe caçula vestia uma blusa larga que caía suavemente por um dos ombros e meias brancas thigh highs que subiam até o meio de suas coxas delicadas. Com um suspiro dramático e um dengo quase infantil, ele se jogou com leveza em uma das cadeiras esculpidas, ajeitando as meias com dedos finos e fazendo um biquinho de insatisfação.</p>
+
+                <img src="chapter2cover.png" style="width: 100%; max-height: 400px; object-fit: cover; border: 2px solid #ffd700; border-radius: 10px; margin-bottom: 30px;">
+
+                <p>— Ashlan, pelo amor de Freya, vira homem nessa mesa pelo menos por cinco minutos! — esbravejou a Alta Sacerdotisa, o rosto vermelho de pura indignação enquanto o jovem empregado Elian quase derrubava a bandeja de pães no chão, tremendo de vergonha e olhando disfarçadamente para a princesa. — Nós estamos em uma mesa real! Você é um guerreiro da casa Lancehearth, empunha uma relíquia e fica aí se comportando como uma garotinha mimada no meio do salão!</p>
+            `;
+        } else {
+            // Sistema de segurança: se a tela chique der erro, ele avisa mesmo assim!
+            if (typeof window.mostrarAvisoEstilizado === 'function') {
+                window.mostrarAvisoEstilizado("Páginas em Branco", "As magias que compõem este capítulo ainda não foram escritas pelo Autor. Aguarde o desenrolar das Crônicas de Aetheryon!", "#8a2be2");
+            } else {
+                alert("Páginas em Branco: As magias que compõem este capítulo ainda não foram escritas pelo Autor!");
+            }
+        }
+    };
 
         window.selecionarParaUpgrade = function(id) {
             window.cartaSendoAprimorada = id;
@@ -6925,6 +7156,7 @@ if (!niveisRank.includes(playerRank)) {
             }
             physicsLoop(); 
         };
+
        
            // ==========================================
         // SISTEMA DE BAÚ MÁGICO (GACHA)
@@ -7230,6 +7462,66 @@ if (!niveisRank.includes(playerRank)) {
         <div id="cartaGiganteContainer" style="transform: scale(2.5); pointer-events: none;"></div>
         <div style="position: absolute; bottom: 10%; color: #ffcc00; font-family: 'Cinzel', serif; font-size: 20px; text-shadow: 0 0 10px #000;">Clique em qualquer lugar para fechar</div>
     </div>
+
+    <script>
+    // ==========================================
+    // SCRIPT DE FORÇA BRUTA (CONSERTADO E AUTOMÁTICO)
+    // ==========================================
+    
+    window.abrirMapaMundi = function() {
+        var telaMapa = document.getElementById('mapaMundiScreen');
+        
+        if (telaMapa) {
+            document.body.appendChild(telaMapa); 
+            telaMapa.style.display = 'block';
+            
+            // CONSERTA O FUNDO TRANSPARENTE SOZINHO
+            telaMapa.style.position = 'fixed';
+            telaMapa.style.top = '0';
+            telaMapa.style.left = '0';
+            telaMapa.style.width = '100vw';
+            telaMapa.style.height = '100vh';
+            telaMapa.style.backgroundColor = '#050505'; // Fundo preto sólido
+            telaMapa.style.zIndex = '9999999';
+
+            // CONSERTA O BOTÃO 'X' SOZINHO
+            var botaoX = telaMapa.querySelector('span'); 
+            if (botaoX) {
+                botaoX.onclick = function() { telaMapa.style.display = 'none'; };
+                botaoX.style.cursor = 'pointer';
+            }
+        }
+    };
+
+    window.abrirLorebook = function() {
+        var telaLivro = document.getElementById('lorebookScreen');
+        
+        if (telaLivro) {
+            document.body.appendChild(telaLivro);
+            telaLivro.style.display = 'flex';
+            
+            // CONSERTA O FUNDO TRANSPARENTE SOZINHO
+            telaLivro.style.position = 'fixed';
+            telaLivro.style.top = '0';
+            telaLivro.style.left = '0';
+            telaLivro.style.width = '100vw';
+            telaLivro.style.height = '100vh';
+            telaLivro.style.backgroundColor = '#050505'; // Fundo preto sólido
+            telaLivro.style.zIndex = '9999999';
+
+            // CONSERTA O BOTÃO 'X' SOZINHO
+            var botaoX = telaLivro.querySelector('span');
+            if (botaoX) {
+                botaoX.onclick = function() { telaLivro.style.display = 'none'; };
+                botaoX.style.cursor = 'pointer';
+            }
+
+            if (typeof window.carregarCapitulo === "function") {
+                window.carregarCapitulo(1);
+            }
+        }
+    };
+</script>
 
 </body>
 </html>
