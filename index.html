@@ -416,6 +416,8 @@
     <option value="wasteland.mp3">🏜️ Música: Wasteland</option>
     <option value="iwilltry.mp3">🎈 Música: Terrifier</option>
     <option value="bossfight.mp3">🗡️ Música: Boss Fight</option>
+    <option value="hafuku.mp3">🎀 Música: Hafuku</option>
+    <option value="koharu.mp3">🌸 Música: Koharu</option>
 </select>
 <div style="display: flex; align-items: center; gap: 5px; background: #111; padding: 0 15px; border: 2px solid #444; border-radius: 5px; height: 42px; margin: 0;">
     <span style="color: #aaa; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🔉 VOL:</span>
@@ -437,7 +439,8 @@
         <button id="btnHeroes" class="tab-btn active" onclick="switchTab('heroes')">👤 Lendas de Aetheryon</button>
         <button id="btnLocations" class="tab-btn" onclick="switchTab('locations')">🌍 Mapa e Regiões</button>
         <button id="btnRaces" class="tab-btn" onclick="switchTab('races')">🧬 Raças & Biologia</button>
-        <button style="background: #111; color: #ffd700; border: 1px solid #ffd700; padding: 10px 20px; font-family: 'Cinzel', serif; cursor: pointer; border-radius: 5px;" onclick="window.abrirLorebook()">📖 GRIMÓRIO (HISTÓRIA)</button>
+        <button style="background: #111; color: #00ffcc; border: 1px solid #00ffcc; padding: 10px 20px; font-family: 'Cinzel', serif; cursor: pointer; border-radius: 5px; margin-left: 10px;" onclick="window.open('mapa.html', '_blank')">🌍 MAPA MÚNDI</button>
+        <button style="background: #111; color: #ffd700; border: 1px solid #ffd700; padding: 10px 20px; font-family: 'Cinzel', serif; cursor: pointer; border-radius: 5px; margin-left: 10px;" onclick="window.open('grimorio.html', '_blank')">📖 GRIMÓRIO (HISTÓRIA)</button>
     </div>
 
     <div class="gallery" id="gallery"></div>
@@ -1250,7 +1253,42 @@
                 description: "Devon é a única filha da Elfa Mantra rebelde Lynn Lancehearth e do diplomata humano Lorian. Rejeitando a genética élfica da mãe e a delicadeza mágica do pai, Devon herdou a raça humana e decidiu trilhar um caminho de combate puramente letal e prático.<br><br>Ela subverte completamente todas as expectativas da rica metrópole de Diamond City[cite: 2]. Abraçando uma estética andrógina e *tomboy*, Devon é frequentemente confundida com um garoto de porte militar. Ela detesta roupas luxuosas, preferindo trajes táticos de combate focados em mobilidade e sobrevivência. Treinada na prestigiosa Academia Lancehearth, ela ignorou a esgrima clássica de sua família para se tornar uma atiradora implacável, calculando ventos e trajetórias para encerrar a luta antes mesmo do inimigo se aproximar.",
                 extraImages: ["devon_bikini.png", "devon_combat.png"],
                 secret: "Apesar de odiar os bailes de gala de Diamond City, Devon frequentemente comparece aos eventos vestindo ternos masculinos de alfaiataria fina, apenas para irritar a puritana e conservadora Princesa Ashley[cite: 12]. O mais cômico é que, graças à sua beleza andrógina e postura confiante, Devon acaba recebendo muito mais cartas de amor das nobres locais do que a maioria dos príncipes da corte."
-            },   
+            },
+            {
+                name: "Aqua", 
+                title: "O Pilar dos Oceanos", 
+                role: "support", // Híbrida de Maga de Controle e Suporte Absoluto
+                image: "aqua_astral.png",
+                avatar: "aqua_face.png",
+                quote: "\"Cada gota de chuva, cada lágrima e cada oceano deste mundo nascem e evaporam com o meu respirar.\"",
+                faction: "🏔️ Montanha dos Astrais", 
+                elemento: "💧 Água Pura / Hidromancia Cósmica", 
+                stats: { forca: 10, magia: 100, agilidade: 85, inteligencia: 100, carisma: 95, physDef: 40, magDef: 100 },
+                race: "Divindade Cósmica (Astral)", 
+                weapon: "Cálice do Cânone (A Nascente)",
+                weaponDetails: "Um artefato divino flutuante que transborda a 'Água Gênesis'. Aqua não ataca com força bruta; ela controla correntes de altíssima pressão capazes de fatiar aço celestial e cria maremotos purificadores que podem afogar exércitos inteiros de uma só vez.",
+                weaponImage: "aqua_weapon.png",
+                description: "Aqua é a entidade cósmica suprema que governa o elemento da Água, sendo uma das figuras mais vitais de todo o universo. Ela habita no cume isolado e de segurança máxima da Montanha dos Astrais, muito além do alcance do mundo mortal. A sua biologia reflete a pureza cristalina dos oceanos: ela possui uma pele perfeitamente lisa e perpetuamente fria, com um lindo brilho perolado iridescente semelhante ao interior de uma concha. O seu olhar é predatório e penetrante, com pupilas em frestas verticais, e ela ostenta cristas elegantes e semi-translúcidas nos antebraços e panturrilhas.<br><br>A existência de Aqua é o que mantém Aetheryon vivo. Como um Pilar Vivo da Existência, a sua vida está diretamente atrelada à água do mundo. Se Aqua morrer, a produção natural de água simplesmente cessará. Os oceanos vão secar, a chuva nunca mais cairá, e o mundo enfrentará uma catástrofe global e uma extinção em massa agonizante através da sede extrema. Por ser a infraestrutura viva da hidratação do mundo, ela se mantém protegida na fortaleza impenetrável do norte.",
+                extraImages: ["aqua_art1.png", "aqua_art2.png"],
+                secret: "Os cabelos grossos e resistentes de Aqua, que variam em todo o espectro aquático de azuis e verdes, possuem pontas que emitem uma fraca bioluminescência natural[cite: 2]. A verdadeira tragédia do mundo mortal é que chuvas torrenciais não são fenômenos naturais comuns: quando Aqua, do topo de sua montanha, chora de tristeza observando as guerras sangrentas de Aetheryon, as suas lágrimas despencam dos céus causando inundações catastróficas."
+            },
+            {
+    name: "Lilith",
+    title: "A Soberana Amargurada",
+    role: "dps",
+    image: "lilith.png",
+    avatar: "lilith_face.png",
+    quote: "\"Governei sobre cinzas e ergui muralhas de mentiras. Se o destino deste mundo é sangrar eternamente, eu mesma irei arrancar os deuses do trono e reescrever a existência.\"",
+    faction: "👑 Ex-Vondale / Renegada (Busca pelo Reino Proibido)",
+    elemento: "🌀 Maestria Elemental Arcana / Vazio Nihil",
+    stats: { forca: 20, magia: 100, agilidade: 70, inteligencia: 98, carisma: 65, physDef: 50, magDef: 98 },
+    race: "Humana (Portadora do Fragmento do Gênesis)",
+    weapon: "O Cetro Nihil (The Nihil Scepter)",
+    weaponDetails: "Artefato ancestral indestrutível desenterrado nas ruínas do Deserto Consagrado. Conectado diretamente a um Fragmento do Gênesis dos deuses criadores, permite a Lilith conjurar cataclismos de Fogo, Água, Gelo, Terra e Energia Arcana em escala massiva. Sua única e fatal fraqueza é a rejeição absoluta à energia de Luz/Sagrada, sendo incapaz de absorvê-la ou canalizá-la.",
+    description: "Outrora a reverenciada e justa rainha de Vondale, Lilith viu o seu mundo ruir durante a Grande Guerra. Embora mantida a salvo dentro das fortificações da Capital Real, o conflito custou a vida do seu amado marido e aniquilou a elite militar que jurara proteger a nação.<br><br>Governou em solidão durante anos, sustentando uma paz frágil enquanto criava sua filha, a Princesa Herdeira. Porém, quando o ciclo de carnificina recomeçou devido às maquinações de Karyna Blackfield, a mente de Lilith sucumbiu ao desespero e ao ódio. Farta das promessas vazias dos mortais, abdicou de seu trono em favor de Genevieve e partiu em uma cruzada solitária.<br><br>Hoje, portando o aterrador Cetro Nihil recuperado do Deserto Consagrado, ela busca romper as fronteiras do mítico 'Reino Proibido' (Forbidden Realm) para confrontar as divindades criadoras e reescrever as leis de Aetheryon.",
+    extraImages: ["lilith_art1.png", "lilith_art2.png"],
+    secret: "Apesar de empunhar poder suficiente para aniquilar exércitos inteiros, Lilith guarda dois pontos de vulnerabilidade extrema. O primeiro é físico-mágico: o Cetro Nihil entra em curto-circuito e colapsa se confrontado com pura Luz Divina (como o poder empunhado por Ashley Lancehearth). O segundo é emocional: a culpa excruciante por ter abandonado a própria filha em Vondale, justificando para si mesma que apagar e recriar o cosmos é o único legado capaz de garantir a sobrevivência da princesa."
+},   
         ];
 
         // ==========================================
@@ -1332,6 +1370,21 @@
                 extraImages: ["vondale_palace.jpg", "vondale_street.png"],
                 secret: "A pureza e o luxo de Vondale escondem conspirações brutais nos bastidores. A nobreza utiliza sua influência econômica para ditar o preço de recursos essenciais em outros continentes, purgando qualquer um que ameace o prestígio da Rainha Genevieve."
             },
+            {
+    name: "Deserto Consagrado",
+    title: "O Vasto Sepulcro de Areia",
+    image: "desertoconsagrado.png",
+    avatar: "consecratedicon.jpg",
+    quote: "\"Sob toneladas de areia fervente repousam os maiores segredos da Grande Guerra. Poucos têm a coragem de cavar... e menos ainda sobrevivem para carregar o que encontram.\"",
+    faction: "🏜️ Território Selvagem / Fronteira Sul de Naturelands",
+    elemento: "🔥 Calor Escaldante, Areia Densa e Éter Primordial",
+    race: "Habitantes: Caçadores de Relíquias, Nômades e Vermes da Areia",
+    weapon: "Lâminas de Obsidiana & Balistas de Escavação",
+    weaponDetails: "Armas e ferramentas forjadas com ligas resistentes a calor extremo, arpões pesados para abater feras das dunas e pás rúnicas para desenterrar artefatos ancestrais.",
+    description: "Localizado diretamente ao sul de Naturelands, o Deserto Consagrado é uma imensidão implacável de areia densa, tempestades de poeira sufocantes e calor escaldante.<br><br>Antes da Grande Guerra, este território abrigava um império majestoso e próspero. No entanto, os confrontos catastróficos pulverizaram cidades inteiras, transformando civilizações inteiras em dunas estéreis. Enterrados a dezenas de metros sob as areias movediças repousam arsenais perdidos, tesouros inestimáveis e relíquias divinas da Era dos Criadores — como o temido Cetro Nihil empunhado pela renegada Lilith.<br><br>Cruzar o deserto exige preparação rigorosa contra desidratação e o constante perigo de predadores subterrâneos colossais que caçam guiados pelas vibrações dos passos na areia.",
+    extraImages: ["desertoconsagradoart1.jpg", "desertoconsagradoart2.png"],
+    secret: "Nas profundezas da Necrópole Soterrada, as areias cobrem câmaras secretas onde os deuses criadores deixaram Fragmentos do Gênesis selados. O calor sobrenatural do deserto não é totalmente solar, mas sim o vazamento de energia cósmica contínua dessas relíquias primordiais enterradas."
+          },
         ];
 
         // ==========================================
@@ -7463,65 +7516,6 @@ if (!niveisRank.includes(playerRank)) {
         <div style="position: absolute; bottom: 10%; color: #ffcc00; font-family: 'Cinzel', serif; font-size: 20px; text-shadow: 0 0 10px #000;">Clique em qualquer lugar para fechar</div>
     </div>
 
-    <script>
-    // ==========================================
-    // SCRIPT DE FORÇA BRUTA (CONSERTADO E AUTOMÁTICO)
-    // ==========================================
-    
-    window.abrirMapaMundi = function() {
-        var telaMapa = document.getElementById('mapaMundiScreen');
-        
-        if (telaMapa) {
-            document.body.appendChild(telaMapa); 
-            telaMapa.style.display = 'block';
-            
-            // CONSERTA O FUNDO TRANSPARENTE SOZINHO
-            telaMapa.style.position = 'fixed';
-            telaMapa.style.top = '0';
-            telaMapa.style.left = '0';
-            telaMapa.style.width = '100vw';
-            telaMapa.style.height = '100vh';
-            telaMapa.style.backgroundColor = '#050505'; // Fundo preto sólido
-            telaMapa.style.zIndex = '9999999';
-
-            // CONSERTA O BOTÃO 'X' SOZINHO
-            var botaoX = telaMapa.querySelector('span'); 
-            if (botaoX) {
-                botaoX.onclick = function() { telaMapa.style.display = 'none'; };
-                botaoX.style.cursor = 'pointer';
-            }
-        }
-    };
-
-    window.abrirLorebook = function() {
-        var telaLivro = document.getElementById('lorebookScreen');
-        
-        if (telaLivro) {
-            document.body.appendChild(telaLivro);
-            telaLivro.style.display = 'flex';
-            
-            // CONSERTA O FUNDO TRANSPARENTE SOZINHO
-            telaLivro.style.position = 'fixed';
-            telaLivro.style.top = '0';
-            telaLivro.style.left = '0';
-            telaLivro.style.width = '100vw';
-            telaLivro.style.height = '100vh';
-            telaLivro.style.backgroundColor = '#050505'; // Fundo preto sólido
-            telaLivro.style.zIndex = '9999999';
-
-            // CONSERTA O BOTÃO 'X' SOZINHO
-            var botaoX = telaLivro.querySelector('span');
-            if (botaoX) {
-                botaoX.onclick = function() { telaLivro.style.display = 'none'; };
-                botaoX.style.cursor = 'pointer';
-            }
-
-            if (typeof window.carregarCapitulo === "function") {
-                window.carregarCapitulo(1);
-            }
-        }
-    };
-</script>
 
 </body>
 </html>

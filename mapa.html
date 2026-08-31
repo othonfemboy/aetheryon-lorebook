@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Mapa de Aetheryon</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #050505;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden; /* Impede que a tela crie barra de rolagem se a imagem for grande */
+        }
+        
+        .mapa-img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; /* Garante que o mapa apareça inteiro na tela sem cortar */
+            box-shadow: 0 0 50px rgba(0, 255, 204, 0.2);
+        }
+        
+        .btn-voltar {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #00ffcc;
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            border: 1px solid #00ffcc;
+            padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .btn-voltar:hover {
+            background: #00ffcc;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BOTÃO DE VOLTAR -->
+    <a href="javascript:window.close();" class="btn-voltar">← Voltar para o Salão</a>
+
+    <!-- AQUI VAI A IMAGEM DO SEU MAPA -->
+    <img src="sua_arte_do_mapa.png" class="mapa-img" alt="Mapa Múndi de Aetheryon">
+
+</body>
+</html>
