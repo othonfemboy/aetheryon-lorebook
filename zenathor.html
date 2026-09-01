@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenathor - O Império Sombrio</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
+
+        body {
+            margin: 0;
+            background-color: #030303;
+            overflow: auto;
+            font-family: 'Cinzel', serif;
+        }
+        
+        .mapa-container {
+            position: relative;
+            display: inline-block; 
+            width: 100vw;
+            min-width: 1400px;
+        }
+
+        .mapa-img { width: 100%; height: auto; display: block; }
+
+        .btn-voltar {
+            position: fixed;
+            top: 20px; left: 20px;
+            color: #ff3333;
+            text-decoration: none;
+            border: 1px solid #ff3333;
+            padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 5px;
+            transition: 0.3s;
+            z-index: 100;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+        }
+
+        .btn-voltar:hover { background: #8b0000; color: #fff; border-color: #ff0000; }
+
+        /* ALFINETES ZENATHOR (Visual Macabro) */
+        .ponto-mapa {
+            position: absolute;
+            width: 24px; height: 24px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 2px solid;
+            border-radius: 50%;
+            cursor: pointer;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            animation: pulsarSangue 2s infinite;
+        }
+
+        @keyframes pulsarSangue {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+            50% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+        }
+
+        .tooltip {
+            position: absolute;
+            bottom: 40px; left: 50%;
+            transform: translateX(-50%);
+            background: rgba(5, 5, 5, 0.95);
+            border: 1px solid;
+            padding: 12px 25px;
+            border-radius: 5px;
+            color: white;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s ease;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0,0,0,0.9);
+        }
+
+        .ponto-mapa:hover .tooltip { opacity: 1; }
+
+        /* EFEITO DE NEVE E CINZAS DE SANGUE */
+        .particulas-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 5; overflow: hidden;
+        }
+        .cinza {
+            position: absolute;
+            border-radius: 50%;
+            background: #ff3333;
+            box-shadow: 0 0 10px 5px rgba(255, 0, 0, 0.4);
+            animation: cairCinzas 10s linear infinite;
+        }
+        .cinza.neve { background: #add8e6; box-shadow: 0 0 10px 5px rgba(173, 216, 230, 0.3); }
+
+        @keyframes cairCinzas {
+            0% { transform: translateY(-50px) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.8; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="mapa.html" class="btn-voltar">← Fugir para o Mapa Múndi</a>
+
+    <div class="mapa-container">
+        <!-- MAPA DE ZENATHOR -->
+        <img src="zenathor_map.png" class="mapa-img" alt="Mapa de Zenathor">
+
+        <!-- CINZAS CAINDO -->
+        <div class="particulas-container">
+            <div class="cinza neve" style="left: 15%; width: 6px; height: 6px; animation-duration: 12s;"></div>
+            <div class="cinza" style="left: 45%; width: 8px; height: 8px; animation-duration: 9s; animation-delay: 2s;"></div>
+            <div class="cinza neve" style="left: 65%; width: 5px; height: 5px; animation-duration: 14s; animation-delay: 1s;"></div>
+            <div class="cinza" style="left: 85%; width: 7px; height: 7px; animation-duration: 11s; animation-delay: 3s;"></div>
+            <div class="cinza neve" style="left: 25%; width: 9px; height: 9px; animation-duration: 15s; animation-delay: 4s;"></div>
+        </div>
+
+        <!-- ================= PONTOS DE INTERESSE ================= -->
+
+        <!-- BLACKFIELD CASTLE (Centro) - Abre o Grimório -->
+        <div class="ponto-mapa" style="top: 45%; left: 50%; border-color: #ff0000; box-shadow: 0 0 20px #ff0000;" onclick="window.open('grimorio.html', '_blank')">
+            <div class="tooltip" style="border-color: #ff0000;">
+                <h3 style="margin: 0; color: #ff0000;">Blackfield Castle</h3>
+                <span style="font-size: 12px; color: #aaa;">O Coração Sangrento do Império</span>
+            </div>
+        </div>
+
+        <!-- VHAL-KURU NECROPOLIS (Topo Centro) - Bloqueado pela Karyna -->
+        <div class="ponto-mapa" style="top: 15%; left: 50%; border-color: #00ffff; box-shadow: 0 0 15px #00ffff;" onclick="mostrarErroKaryna()">
+            <div class="tooltip" style="border-color: #00ffff;">
+                <h3 style="margin: 0; color: #00ffff;">Vhal-Kuru Necropolis</h3>
+                <span style="font-size: 12px; color: #aaa;">Onde a morte é apenas o começo</span>
+            </div>
+        </div>
+
+        <!-- SHADOWCLAW DISTRICT (Meio Esquerda) - Bloqueado -->
+        <div class="ponto-mapa" style="top: 48%; left: 18%; border-color: #8b0000; box-shadow: 0 0 15px #8b0000;" onclick="mostrarErroKaryna()">
+            <div class="tooltip" style="border-color: #8b0000;">
+                <h3 style="margin: 0; color: #8b0000;">Shadowclaw District</h3>
+                <span style="font-size: 12px; color: #aaa;">Residências da Aristocracia Sombria</span>
+            </div>
+        </div>
+
+        <!-- CHURCH OF CRYA (Meio Direita) - Bloqueado -->
+        <div class="ponto-mapa" style="top: 45%; left: 86%; border-color: #a9a9a9; box-shadow: 0 0 15px #a9a9a9;" onclick="mostrarErroKaryna()">
+            <div class="tooltip" style="border-color: #a9a9a9;">
+                <h3 style="margin: 0; color: #a9a9a9;">Church of Crya</h3>
+                <span style="font-size: 12px; color: #aaa;">Fé nas Trevas</span>
+            </div>
+        </div>
+
+        <!-- THE PALE BASTION (Fundo Centro) - Bloqueado -->
+        <div class="ponto-mapa" style="top: 85%; left: 50%; border-color: #696969; box-shadow: 0 0 15px #696969;" onclick="mostrarErroKaryna()">
+            <div class="tooltip" style="border-color: #696969;">
+                <h3 style="margin: 0; color: #696969;">The Pale Bastion</h3>
+                <span style="font-size: 12px; color: #aaa;">Vigilância Eterna. Sem Misericórdia.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================= -->
+    <!-- SISTEMA DA AVATAR: KARYNA BLACKFIELD                    -->
+    <!-- ======================================================= -->
+    <div style="position: fixed; bottom: -10px; right: 20px; z-index: 9999; display: flex; align-items: flex-end; font-family: 'Georgia', serif;">
+        
+        <div id="caixa-dialogo-karyna" style="display: none; background: rgba(10,10,10,0.95); border: 2px solid #8b0000; border-radius: 15px; padding: 20px; width: 340px; margin-right: 15px; margin-bottom: 50px; color: #fff; box-shadow: 0 0 20px rgba(139, 0, 0, 0.5); position: relative;">
+            
+            <span onclick="fecharGuia()" style="position: absolute; top: 15px; right: 20px; color: #ff4444; font-size: 24px; cursor: pointer; font-weight: bold;">&times;</span>
+            <h4 style="color: #ff3333; margin-top: 0; font-family: 'Cinzel', serif; border-bottom: 1px solid #333; padding-bottom: 10px;">Karyna Blackfield</h4>
+            
+            <p id="texto-karyna" style="font-size: 15px; line-height: 1.5; font-style: italic;">"Ora, ora... um visitante com sangue quente batendo nas portas de Zenathor. Veio oferecer seu pescoço ou só se perder no gelo?"</p>
+            
+            <div id="opcoes-karyna" style="display: flex; flex-direction: column; gap: 8px; margin-top: 15px;">
+                <button onclick="responderKaryna('castelo')" style="background: #111; color: #ddd; border: 1px solid #444; padding: 10px; border-radius: 5px; cursor: pointer; text-align: left; transition: 0.3s;">🏰 Fale-me sobre o Castelo.</button>
+                <button onclick="responderKaryna('necropole')" style="background: #111; color: #ddd; border: 1px solid #444; padding: 10px; border-radius: 5px; cursor: pointer; text-align: left; transition: 0.3s;">💀 O que é aquela luz azul ao norte?</button>
+                <button onclick="responderKaryna('frio')" style="background: #111; color: #ddd; border: 1px solid #444; padding: 10px; border-radius: 5px; cursor: pointer; text-align: left; transition: 0.3s;">❄️ Que lugar agradável.</button>
+            </div>
+        </div>
+
+        <!-- Coloque a imagem da Karyna 2D .png aqui -->
+        <img id="imagemKaryna" src="karyna_2d.png" onclick="abrirGuia()" style="width: 250px; min-height: 300px; cursor: pointer; filter: drop-shadow(0 0 15px rgba(139, 0, 0, 0.6)); transition: 0.3s; border: 1px dashed red; background: rgba(255,0,0,0.1);" alt="Karyna Blackfield">
+    </div>
+
+   <!-- TELA DE ÁREA EM CONSTRUÇÃO (HUMILHAÇÃO DA KARYNA PISTOLA) -->
+    <div id="modalKarynaErro" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.95); z-index: 9999999; align-items: center; justify-content: center; font-family: 'Georgia', serif;">
+        <div style="background: #050505; border: 2px solid #8b0000; border-radius: 15px; padding: 30px; max-width: 650px; width: 90%; display: flex; align-items: center; gap: 25px; position: relative; box-shadow: 0 0 50px rgba(139, 0, 0, 0.8);">
+            
+            <span onclick="fecharErroKaryna()" style="position: absolute; top: 15px; right: 20px; color: #ff3333; font-size: 30px; cursor: pointer; font-weight: bold; font-family: Arial, sans-serif;">&times;</span>
+            
+            <!-- AQUI ELA JÁ APARECE COM A CARA BRAVA -->
+            <img src="karyna_2dbrava.png" style="width: 160px; height: auto; border-radius: 10px; border: 2px solid #ff3333; box-shadow: 0 0 20px rgba(139, 0, 0, 0.6);" alt="Karyna Brava">
+            
+            <div>
+                <h2 style="color: #ff3333; margin-top: 0; font-family: 'Cinzel', serif; font-size: 24px; border-bottom: 1px solid #333; padding-bottom: 10px;">Território Restrito</h2>
+                <p style="color: #ddd; font-size: 18px; font-style: italic; line-height: 1.6;">
+                    "Tentando fuçar onde não foi chamado? Que adorável. Meus necromantes ainda estão erguendo os muros dessa área. Dê mais um passo e eu transformo seus ossos em decoração pro meu salão principal."
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // LÓGICA DO DIÁLOGO DA KARYNA
+        function abrirGuia() {
+            document.getElementById('caixa-dialogo-karyna').style.display = 'block';
+            document.getElementById('texto-karyna').innerText = '"Ora, ora... um visitante com sangue quente batendo nas portas de Zenathor. Veio oferecer seu pescoço ou só se perder no gelo?"';
+            
+            // Garante que ela começa com a cara normal de tédio/arrogância
+            document.getElementById('imagemKaryna').style.border = "none";
+            document.getElementById('imagemKaryna').style.background = "transparent";
+            document.getElementById('imagemKaryna').src = "karyna_2d.png";
+        }
+
+        function fecharGuia() {
+            document.getElementById('caixa-dialogo-karyna').style.display = 'none';
+            // Volta pra cara normal quando o jogador vai embora
+            document.getElementById('imagemKaryna').src = "karyna_2d.png"; 
+        }
+
+        function responderKaryna(assunto) {
+            let texto = "";
+            let imagemAtualizada = "karyna_2d.png"; // Imagem padrão
+
+            if (assunto === 'castelo') {
+                texto = '"Onde eu sento e assisto vocês, vermes, rastejarem. O trono é feito de ferro negro e muito sangue. Não recomendo tentar sentar nele sem ser convidado."';
+                imagemAtualizada = "karyna_2dbrava.png"; // Fica irritada por falarem do trono dela
+            } 
+            else if (assunto === 'necropole') {
+                texto = '"Achou que a morte era o fim do trabalho? Que ingenuidade. Em Zenathor, seus ossos marcham sob nosso comando mesmo depois que sua alma desiste."';
+                imagemAtualizada = "karyna_2d.png"; // Mantém a postura séria de líder
+            }
+            else if (assunto === 'frio') {
+                texto = '"Deboche na minha presença? Hahaha... Adoro. Vai ser muito divertido ouvir seus gritos ecoando na Arena Soulforged enquanto o frio congela suas lágrimas."';
+                imagemAtualizada = "karyna_2dsorrindo.png"; // O sorriso macabro e sádico entra aqui!
+            }
+
+            // Atualiza o texto na tela
+            document.getElementById('texto-karyna').innerText = texto;
+            
+            // Troca a expressão dela na mesma hora!
+            document.getElementById('imagemKaryna').src = imagemAtualizada; 
+        }
+
+        // LÓGICA DO ERRO DE ÁREA EM CONSTRUÇÃO
+        function mostrarErroKaryna() {
+            document.getElementById('modalKarynaErro').style.display = 'flex';
+        }
+        function fecharErroKaryna() {
+            document.getElementById('modalKarynaErro').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

@@ -2,52 +2,138 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Mapa de Aetheryon</title>
+    <title>Mapa Interativo de Aetheryon</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
+
         body {
             margin: 0;
             background-color: #050505;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden; /* Impede que a tela crie barra de rolagem se a imagem for grande */
+            /* Permite rolar a tela caso o mapa seja gigante */
+            overflow: auto; 
+            font-family: 'Cinzel', serif;
         }
         
+        /* A caixa que segura o mapa e os botões juntos */
+        .mapa-container {
+            position: relative;
+            display: inline-block; 
+            width: 100vw;
+            min-width: 1200px; /* Garante que o mapa não fique espremido em telas pequenas */
+        }
+
         .mapa-img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain; /* Garante que o mapa apareça inteiro na tela sem cortar */
-            box-shadow: 0 0 50px rgba(0, 255, 204, 0.2);
+            width: 100%;
+            height: auto;
+            display: block;
         }
-        
+
+        /* O botão de voltar fixo na tela */
         .btn-voltar {
-            position: absolute;
+            position: fixed;
             top: 20px;
             left: 20px;
             color: #00ffcc;
             text-decoration: none;
-            font-family: 'Cinzel', serif;
             border: 1px solid #00ffcc;
             padding: 10px 20px;
             background: rgba(0, 0, 0, 0.8);
             border-radius: 5px;
             transition: 0.3s;
+            z-index: 100;
         }
 
-        .btn-voltar:hover {
-            background: #00ffcc;
-            color: #000;
+        .btn-voltar:hover { background: #00ffcc; color: #000; }
+
+        /* ========================================= */
+        /* VISUAL DOS PONTOS INTERATIVOS             */
+        /* ========================================= */
+        .ponto-mapa {
+            position: absolute; /* Permite mover livremente por cima da imagem */
+            width: 20px;
+            height: 20px;
+            background-color: transparent; /* Deixa invisível, ou mude para uma cor se quiser a bolinha */
+            border: 2px solid #ffd700;
+            border-radius: 50%;
+            cursor: pointer;
+            transform: translate(-50%, -50%); /* Centraliza o clique exato na coordenada */
+            box-shadow: 0 0 15px #ffd700, inset 0 0 10px #ffd700;
+            animation: pulsar 2s infinite;
         }
+
+        @keyframes pulsar {
+            0% { box-shadow: 0 0 10px #ffd700; transform: translate(-50%, -50%) scale(1); }
+            50% { box-shadow: 0 0 25px #ffd700; transform: translate(-50%, -50%) scale(1.3); }
+            100% { box-shadow: 0 0 10px #ffd700; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        /* A CAIXA DE TEXTO (TOOLTIP) QUE APARECE AO PASSAR O MOUSE */
+        .tooltip {
+            position: absolute;
+            bottom: 35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(10, 10, 10, 0.95);
+            border: 1px solid;
+            padding: 10px 20px;
+            border-radius: 5px;
+            color: white;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s ease;
+            text-align: center;
+        }
+
+        .ponto-mapa:hover .tooltip { opacity: 1; }
     </style>
 </head>
 <body>
 
-    <!-- BOTÃO DE VOLTAR -->
-    <a href="javascript:window.close();" class="btn-voltar">← Voltar para o Salão</a>
+    <a href="javascript:window.close();" class="btn-voltar">← Voltar ao Salão</a>
 
-    <!-- AQUI VAI A IMAGEM DO SEU MAPA -->
-    <img src="sua_arte_do_mapa.png" class="mapa-img" alt="Mapa Múndi de Aetheryon">
+    <div class="mapa-container">
+        
+        <!-- SUA IMAGEM GIGANTE AQUI -->
+        <img src="aetheryon_map.png" class="mapa-img" alt="Mapa de Aetheryon">
+
+        <!-- ======================================================== -->
+        <!-- OS ALFINETES NO MAPA (AJUSTE O TOP E O LEFT PARA MOVER)  -->
+        <!-- ======================================================== -->
+
+        <!-- DIAMOND CITY NO MAPA MÚNDI -->
+<div class="ponto-mapa" style="top: 72%; left: 73%; border-color: #00bfff;" onclick="window.location.href='diamond_city.html'">
+    <div class="tooltip" style="border-color: #00bfff;">
+        <h3 style="margin: 0; color: #00bfff;">Diamond City</h3>
+        <span style="font-size: 12px; color: #aaa;">Clique para explorar a cidade</span>
+    </div>
+</div>
+
+        <!-- ZENATHOR (Esquerda/Meio) -->
+        <div class="ponto-mapa" style="top: 38%; left: 16%; border-color: #a9a9a9;" onclick="window.location.href='zenathor.html'">
+            <div class="tooltip" style="border-color: #a9a9a9;">
+                <h3 style="margin: 0; color: #fff;">Zenathor</h3>
+                <span style="font-size: 12px; color: #aaa;">O Império Negro do Inverno Eterno</span>
+            </div>
+        </div>
+
+        <!-- NATURELANDS (Centro) -->
+        <div class="ponto-mapa" style="top: 42%; left: 50%; border-color: #32cd32;" onclick="window.location.href='naturelands.html'">
+            <div class="tooltip" style="border-color: #32cd32;">
+                <h3 style="margin: 0; color: #32cd32;">Naturelands</h3>
+                <span style="font-size: 12px; color: #aaa;">Vale Submerso da Luz Viva</span>
+            </div>
+        </div>
+        
+        <!-- KAGEJIMA (Direita/Extremo Baixo) -->
+        <div class="ponto-mapa" style="top: 85%; left: 88%; border-color: #ff4500;" onclick="alert('Ilha Vulcânica')">
+            <div class="tooltip" style="border-color: #ff4500;">
+                <h3 style="margin: 0; color: #ff4500;">Kagejima</h3>
+                <span style="font-size: 12px; color: #aaa;">Ilha Obsidiana de Fogo e Sombras</span>
+            </div>
+        </div>
+
+    </div>
 
 </body>
 </html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naturelands - O Santuário Selvagem</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
+
+        body {
+            margin: 0;
+            background-color: #021008;
+            overflow: auto;
+            font-family: 'Cinzel', serif;
+        }
+        
+        .mapa-container {
+            position: relative;
+            display: inline-block; 
+            width: 100vw;
+            min-width: 1400px;
+        }
+
+        .mapa-img { width: 100%; height: auto; display: block; }
+
+        .btn-voltar {
+            position: fixed;
+            top: 20px; left: 20px;
+            color: #32cd32;
+            text-decoration: none;
+            border: 1px solid #32cd32;
+            padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 5px;
+            transition: 0.3s;
+            z-index: 100;
+            box-shadow: 0 0 10px rgba(50, 205, 50, 0.2);
+        }
+
+        .btn-voltar:hover { background: #32cd32; color: #000; border-color: #32cd32; }
+
+        /* ALFINETES NATURELANDS (Visual Mágico) */
+        .ponto-mapa {
+            position: absolute;
+            width: 24px; height: 24px;
+            background-color: rgba(0, 20, 0, 0.5);
+            border: 2px solid;
+            border-radius: 50%;
+            cursor: pointer;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            animation: pulsarLuz 2.5s infinite;
+        }
+
+        @keyframes pulsarLuz {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; box-shadow: 0 0 10px currentColor; }
+            50% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; box-shadow: 0 0 25px currentColor; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; box-shadow: 0 0 10px currentColor; }
+        }
+
+        .tooltip {
+            position: absolute;
+            bottom: 40px; left: 50%;
+            transform: translateX(-50%);
+            background: rgba(5, 15, 5, 0.95);
+            border: 1px solid;
+            padding: 12px 25px;
+            border-radius: 5px;
+            color: white;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s ease;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+        }
+
+        .ponto-mapa:hover .tooltip { opacity: 1; }
+
+        /* EFEITO DE VAGALUMES MÁGICOS */
+        .particulas-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 5; overflow: hidden;
+        }
+        
+        .vagalume {
+            position: absolute;
+            border-radius: 50%;
+            background: #adff2f;
+            box-shadow: 0 0 15px 5px rgba(173, 255, 47, 0.6);
+            animation: vooVagalume 8s ease-in-out infinite alternate;
+        }
+        .vagalume.azul { background: #00ffff; box-shadow: 0 0 15px 5px rgba(0, 255, 255, 0.6); }
+
+        @keyframes vooVagalume {
+            0% { transform: translate(0, 0) scale(0.8); opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { transform: translate(100px, -150px) scale(1.2); opacity: 0.3; }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="mapa.html" class="btn-voltar">← Voltar para o Mapa Múndi</a>
+
+    <div class="mapa-container">
+        <!-- MAPA DAS NATURELANDS -->
+        <img src="naturelands_map.png" class="mapa-img" alt="Mapa das Naturelands">
+
+        <!-- VAGALUMES FLUTUANDO -->
+        <div class="particulas-container">
+            <div class="vagalume" style="top: 80%; left: 20%; width: 6px; height: 6px; animation-duration: 7s;"></div>
+            <div class="vagalume azul" style="top: 60%; left: 45%; width: 8px; height: 8px; animation-duration: 9s; animation-delay: 2s;"></div>
+            <div class="vagalume" style="top: 40%; left: 65%; width: 5px; height: 5px; animation-duration: 6s; animation-delay: 1s;"></div>
+            <div class="vagalume azul" style="top: 70%; left: 85%; width: 7px; height: 7px; animation-duration: 11s; animation-delay: 3s;"></div>
+            <div class="vagalume" style="top: 30%; left: 35%; width: 9px; height: 9px; animation-duration: 10s; animation-delay: 4s;"></div>
+        </div>
+
+        <!-- ================= PONTOS DE INTERESSE ================= -->
+
+        <!-- ARBOREAL HEART (Centro) - Abre o Grimório -->
+        <div class="ponto-mapa" style="top: 48%; left: 50%; color: #32cd32; border-color: #32cd32;" onclick="window.open('grimorio.html', '_blank')">
+            <div class="tooltip" style="border-color: #32cd32;">
+                <h3 style="margin: 0; color: #32cd32;">Arboreal Heart</h3>
+                <span style="font-size: 12px; color: #aaa;">Cidade da Árvore Milenar</span>
+            </div>
+        </div>
+
+        <!-- LUMINESCENT SPRING (Topo Centro) - Bloqueado pela Lilia -->
+        <div class="ponto-mapa" style="top: 15%; left: 50%; color: #00ffff; border-color: #00ffff;" onclick="mostrarErroLilia()">
+            <div class="tooltip" style="border-color: #00ffff;">
+                <h3 style="margin: 0; color: #00ffff;">Luminescent Spring</h3>
+                <span style="font-size: 12px; color: #aaa;">Cachoeira Reversa da Renovação</span>
+            </div>
+        </div>
+
+        <!-- FELARI & FOXERI WOODS (Meio Esquerda) - Bloqueado -->
+        <div class="ponto-mapa" style="top: 45%; left: 18%; color: #ff8c00; border-color: #ff8c00;" onclick="mostrarErroLilia()">
+            <div class="tooltip" style="border-color: #ff8c00;">
+                <h3 style="margin: 0; color: #ff8c00;">Felari & Foxeri Woods</h3>
+                <span style="font-size: 12px; color: #aaa;">Lares ancestrais dos clãs</span>
+            </div>
+        </div>
+
+        <!-- BLOOMHAVEN (Meio Direita) - Bloqueado -->
+        <div class="ponto-mapa" style="top: 38%; left: 82%; color: #ff69b4; border-color: #ff69b4;" onclick="mostrarErroLilia()">
+            <div class="tooltip" style="border-color: #ff69b4;">
+                <h3 style="margin: 0; color: #ff69b4;">Bloomhaven</h3>
+                <span style="font-size: 12px; color: #aaa;">Vila Oculta do Florescer Eterno</span>
+            </div>
+        </div>
+
+        <!-- BOVINIA (Fundo Centro) - Bloqueado -->
+        <div class="ponto-mapa" style="top: 75%; left: 50%; color: #ffd700; border-color: #ffd700;" onclick="mostrarErroLilia()">
+            <div class="tooltip" style="border-color: #ffd700;">
+                <h3 style="margin: 0; color: #ffd700;">Bovinia</h3>
+                <span style="font-size: 12px; color: #aaa;">Pastos férteis dos Cowari</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================= -->
+    <!-- SISTEMA DA AVATAR: LILIA (CENTAURO FOFINHA)             -->
+    <!-- ======================================================= -->
+    <div style="position: fixed; bottom: -10px; right: 20px; z-index: 9999; display: flex; align-items: flex-end; font-family: 'Georgia', serif;">
+        
+        <div id="caixa-dialogo-lilia" style="display: none; background: rgba(5, 20, 10, 0.95); border: 2px solid #32cd32; border-radius: 15px; padding: 20px; width: 340px; margin-right: 15px; margin-bottom: 50px; color: #fff; box-shadow: 0 0 20px rgba(50, 205, 50, 0.4); position: relative;">
+            
+            <span onclick="fecharGuia()" style="position: absolute; top: 15px; right: 20px; color: #32cd32; font-size: 24px; cursor: pointer; font-weight: bold;">&times;</span>
+            <h4 style="color: #adff2f; margin-top: 0; font-family: 'Cinzel', serif; border-bottom: 1px solid #224422; padding-bottom: 10px;">Lilia</h4>
+            
+            <p id="texto-lilia" style="font-size: 15px; line-height: 1.5; font-style: italic;">"Oh, olá! Um viajante! Seja muito bem-vindo às Naturelands. Posso te ajudar a encontrar algum caminho seguro pela floresta?"</p>
+            
+            <div id="opcoes-lilia" style="display: flex; flex-direction: column; gap: 8px; margin-top: 15px;">
+                <button onclick="responderLilia('arvore')" style="background: #0a1a0a; color: #ddd; border: 1px solid #225522; padding: 10px; border-radius: 5px; cursor: pointer; text-align: left; transition: 0.3s;">🌳 Fale-me sobre essa Árvore Gigante.</button>
+                <button onclick="responderLilia('rios')" style="background: #0a1a0a; color: #ddd; border: 1px solid #225522; padding: 10px; border-radius: 5px; cursor: pointer; text-align: left; transition: 0.3s;">💧 Por que a água brilha tanto?</button>
+                <button onclick="responderLilia('elogio')" style="background: #0a1a0a; color: #ddd; border: 1px solid #225522; padding: 10px; border-radius: 5px; cursor: pointer; text-align: left; transition: 0.3s;">🌸 Você é muito gentil, Lilia.</button>
+            </div>
+        </div>
+
+        <!-- Coloque a imagem da Lilia 2D .png aqui -->
+        <img id="imagemLilia" src="lilia_2d.png" onclick="abrirGuia()" style="width: 250px; min-height: 300px; cursor: pointer; filter: drop-shadow(0 0 15px rgba(50, 205, 50, 0.4)); transition: 0.3s; border: 1px dashed #32cd32; background: rgba(50,205,50,0.1);" alt="Lilia, a Centauro">
+    </div>
+
+    <!-- TELA DE ÁREA EM CONSTRUÇÃO (DESCULPAS DA LILIA) -->
+    <div id="modalLiliaErro" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 20, 10, 0.90); z-index: 9999999; align-items: center; justify-content: center; font-family: 'Georgia', serif;">
+        <div style="background: #05150a; border: 2px solid #32cd32; border-radius: 15px; padding: 30px; max-width: 650px; width: 90%; display: flex; align-items: center; gap: 25px; position: relative; box-shadow: 0 0 50px rgba(50, 205, 50, 0.6);">
+            
+            <span onclick="fecharErroLilia()" style="position: absolute; top: 15px; right: 20px; color: #32cd32; font-size: 30px; cursor: pointer; font-weight: bold; font-family: Arial, sans-serif;">&times;</span>
+            <img src="lilia_2dpreocupada.png" style="width: 160px; height: auto; border-radius: 10px; border: 2px solid #32cd32; box-shadow: 0 0 20px rgba(50, 205, 50, 0.4);" alt="Lilia Preocupada">
+            
+            <div>
+                <h2 style="color: #adff2f; margin-top: 0; font-family: 'Cinzel', serif; font-size: 24px; border-bottom: 1px solid #224422; padding-bottom: 10px;">Caminho Bloqueado</h2>
+                <p style="color: #ddd; font-size: 18px; font-style: italic; line-height: 1.6;">
+                    "Oh, me desculpe! As raízes deste caminho ainda estão crescendo e as fadinhas estão arrumando a terra... É muito perigoso ir por ali agora. Você pode voltar mais tarde? Prometo que estará lindo!"
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // LÓGICA DO DIÁLOGO DA LILIA
+        function abrirGuia() {
+            document.getElementById('caixa-dialogo-lilia').style.display = 'block';
+            document.getElementById('texto-lilia').innerText = '"Oh, olá! Um viajante! Seja muito bem-vindo às Naturelands. Posso te ajudar a encontrar algum caminho seguro pela floresta?"';
+            
+            document.getElementById('imagemLilia').style.border = "none";
+            document.getElementById('imagemLilia').style.background = "transparent";
+            document.getElementById('imagemLilia').src = "lilia_2d.png";
+        }
+
+        function fecharGuia() {
+            document.getElementById('caixa-dialogo-lilia').style.display = 'none';
+            document.getElementById('imagemLilia').src = "lilia_2d.png"; 
+        }
+
+        function responderLilia(assunto) {
+            let texto = "";
+            let imagemAtualizada = "lilia_2d.png"; 
+
+            if (assunto === 'arvore') {
+                texto = '"Ah, o Arboreal Heart! É a Árvore Milenar que dá vida a todos nós. A mana dela flui pelas raízes mantendo as Naturelands sempre tão verdes e pacíficas."';
+                imagemAtualizada = "lilia_2dfeliz.png"; // Fica toda contente explicando
+            } 
+            else if (assunto === 'rios') {
+                texto = '"É magia pura! As correntes carregam a energia cristalizada do solo. Mas tome cuidado nas margens, alguns animais selvagens não são tão amistosos..."';
+                imagemAtualizada = "lilia_2dpreocupada.png"; // Fica levemente preocupada alertando o jogador
+            }
+            else if (assunto === 'elogio') {
+                texto = '"Oh... puxa... M-Muito obrigada! Eu só quero garantir que ninguém se machuque nessas florestas... Fico feliz em ajudar!"';
+                imagemAtualizada = "lilia_2dfeliz.png"; // Fica envergonhada/feliz
+            }
+
+            document.getElementById('texto-lilia').innerText = texto;
+            document.getElementById('imagemLilia').src = imagemAtualizada; 
+        }
+
+        // LÓGICA DO ERRO DE ÁREA EM CONSTRUÇÃO
+        function mostrarErroLilia() {
+            document.getElementById('modalLiliaErro').style.display = 'flex';
+        }
+        function fecharErroLilia() {
+            document.getElementById('modalLiliaErro').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

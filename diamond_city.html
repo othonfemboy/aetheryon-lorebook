@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diamond City - Mapa Detalhado</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
+
+        body {
+            margin: 0;
+            background-color: #050505;
+            overflow: auto; /* Permite arrastar no celular/PC */
+            font-family: 'Cinzel', serif;
+        }
+        
+        .mapa-container {
+            position: relative;
+            display: inline-block; 
+            width: 100vw;
+            min-width: 1400px; /* Garante que o mapa não perca os detalhes espremido */
+        }
+
+        .mapa-img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .btn-voltar {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: #ffd700;
+            text-decoration: none;
+            border: 1px solid #ffd700;
+            padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 5px;
+            transition: 0.3s;
+            z-index: 100;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+        }
+
+        .btn-voltar:hover { background: #ffd700; color: #000; }
+
+        /* VISUAL DOS ALFINETES */
+        .ponto-mapa {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border: 2px solid;
+            border-radius: 50%;
+            cursor: pointer;
+            transform: translate(-50%, -50%);
+            animation: pulsar 2s infinite;
+        }
+
+        @keyframes pulsar {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+            50% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+        }
+
+        .tooltip {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(10, 10, 10, 0.95);
+            border: 1px solid;
+            padding: 12px 25px;
+            border-radius: 5px;
+            color: white;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s ease;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0,0,0,0.9);
+        }
+
+        .ponto-mapa:hover .tooltip { opacity: 1; }
+
+        /* Garante que os alfinetes fiquem por cima da névoa */
+        .ponto-mapa {
+            z-index: 10; 
+        }
+
+        /* ========================================= */
+        /* NOVO EFEITO: ORBES MAGICAS VISÍVEIS       */
+        /* ========================================= */
+        .particulas-container {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; /* Mouse atravessa a magia */
+            z-index: 5;
+            overflow: hidden;
+        }
+
+        .orbe {
+            position: absolute;
+            border-radius: 50%;
+            background: #ffd700;
+            box-shadow: 0 0 20px 10px rgba(255, 215, 0, 0.6);
+            animation: flutuarOrbe 8s linear infinite;
+        }
+
+        .orbe.azul { background: #00ffff; box-shadow: 0 0 20px 10px rgba(0, 255, 255, 0.6); }
+        
+        @keyframes flutuarOrbe {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translateY(-200px) scale(1.5); opacity: 0; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- VOLTA PARA O MAPA MÚNDI -->
+    <a href="mapa.html" class="btn-voltar">← Voltar ao Mapa Múndi</a>
+
+    <div class="mapa-container">
+        
+        <!-- A ARTE DA CIDADE -->
+        <img src="diamondcity_map.png" class="mapa-img" alt="Mapa de Diamond City"><!-- EFEITO DE ORBES VOANDO -->
+        <div class="particulas-container">
+            <div class="orbe" style="left: 20%; width: 10px; height: 10px; animation-duration: 12s;"></div>
+            <div class="orbe azul" style="left: 45%; width: 15px; height: 15px; animation-duration: 9s; animation-delay: 2s;"></div>
+            <div class="orbe" style="left: 70%; width: 8px; height: 8px; animation-duration: 15s; animation-delay: 1s;"></div>
+            <div class="orbe azul" style="left: 85%; width: 12px; height: 12px; animation-duration: 10s; animation-delay: 3s;"></div>
+            <div class="orbe" style="left: 30%; width: 20px; height: 20px; animation-duration: 14s; animation-delay: 4s;"></div>
+        </div>
+
+        <!-- ======================================================== -->
+        <!-- PONTOS DE INTERESSE DA CIDADE                            -->
+        <!-- ======================================================== -->
+
+        <!-- CASTELO LANCEHEARTH (Centro) -->
+        <div class="ponto-mapa" style="top: 38%; left: 50%; border-color: #ffd700; box-shadow: 0 0 15px #ffd700;" onclick="window.open('grimorio.html', '_blank')">
+            <div class="tooltip" style="border-color: #ffd700;">
+                <h3 style="margin: 0; color: #ffd700;">Castelo Lancehearth</h3>
+                <span style="font-size: 12px; color: #aaa;">Sede da Nobreza Real</span>
+            </div>
+        </div>
+
+        <!-- CELESTIAL GARDENS (Esquerda Cima) -->
+        <div class="ponto-mapa" style="top: 30%; left: 20%; border-color: #00ffff; box-shadow: 0 0 15px #00ffff;" onclick="mostrarErroAshley()">
+            <div class="tooltip" style="border-color: #00ffff;">
+                <h3 style="margin: 0; color: #00ffff;">Celestial Gardens</h3>
+                <span style="font-size: 12px; color: #aaa;">Jardins de Água e Luz</span>
+            </div>
+        </div>
+
+        <!-- THE BLACK MARKET (Setor Penumbra - Direita Baixo) -->
+        <div class="ponto-mapa" style="top: 83%; left: 71%; border-color: #ff8c00; box-shadow: 0 0 15px #ff8c00;" onclick="mostrarErroAshley()">
+            <div class="tooltip" style="border-color: #ff8c00;">
+                <h3 style="margin: 0; color: #ff8c00;">The Black Market</h3>
+                <span style="font-size: 12px; color: #aaa;">Comércio Ilegal do Setor Penumbra</span>
+            </div>
+        </div>
+
+        <!-- BIO-ALCHEMY FACTORIES (Setor Penumbra - Extrema Direita) -->
+        <div class="ponto-mapa" style="top: 75%; left: 91%; border-color: #32cd32; box-shadow: 0 0 15px #32cd32;" onclick="mostrarErroAshley()">
+            <div class="tooltip" style="border-color: #32cd32;">
+                <h3 style="margin: 0; color: #32cd32;">Fábricas Bio-Alquímicas</h3>
+                <span style="font-size: 12px; color: #aaa;">Produção da fumaça verde</span>
+            </div>
+        </div>
+
+       <!-- SUN TEMPLE (Topo Centro) -->
+        <div class="ponto-mapa" style="top: 15%; left: 50%; border-color: #ffaa00; box-shadow: 0 0 15px #ffaa00;" onclick="mostrarErroAshley()">
+            <div class="tooltip" style="border-color: #ffaa00;">
+                <h3 style="margin: 0; color: #ffaa00;">Sun Temple</h3>
+                <span style="font-size: 12px; color: #aaa;">Centro da Fé e Luz Pura</span>
+            </div>
+        </div>
+
+        <!-- SAPPHIRE SPIRES (Esquerda Cima) -->
+        <div class="ponto-mapa" style="top: 25%; left: 28%; border-color: #4169e1; box-shadow: 0 0 15px #4169e1;" onclick="mostrarErroAshley()">
+            <div class="tooltip" style="border-color: #4169e1;">
+                <h3 style="margin: 0; color: #4169e1;">Sapphire Spires</h3>
+                <span style="font-size: 12px; color: #aaa;">Distrito de Cristal</span>
+            </div>
+        </div>
+
+        <!-- RUBY PALACES (Direita Cima) -->
+        <div class="ponto-mapa" style="top: 22%; left: 70%; border-color: #dc143c; box-shadow: 0 0 15px #dc143c;" onclick="mostrarErroAshley()">
+            <div class="tooltip" style="border-color: #dc143c;">
+                <h3 style="margin: 0; color: #dc143c;">Ruby Palaces</h3>
+                <span style="font-size: 12px; color: #aaa;">Residências da Alta Nobreza</span>
+            </div>
+        </div>
+
+        <!-- CATHEDRAL OF SANTALUME (Extrema Direita Cima) -->
+        <div class="ponto-mapa" style="top: 38%; left: 82%; border-color: #e6e6fa; box-shadow: 0 0 15px #e6e6fa;" onclick="mostrarErroAshley()">
+            <div class="tooltip" style="border-color: #e6e6fa;">
+                <h3 style="margin: 0; color: #e6e6fa;">Cathedral of Santalume</h3>
+                <span style="font-size: 12px; color: #aaa;">Local de Adoração Ancestral</span>
+            </div>
+        </div>
+
+        <!-- THE GRAND BAZAAR (Centro Direita) -->
+        <div class="ponto-mapa" style="top: 48%; left: 68%; border-color: #ff69b4; box-shadow: 0 0 15px #ff69b4;" onclick="mostrarErroAshley()">
+            <div class="tooltip" style="border-color: #ff69b4;">
+                <h3 style="margin: 0; color: #ff69b4;">The Grand Bazaar</h3>
+                <span style="font-size: 12px; color: #aaa;">Centro Comercial de Aetheryonite</span>
+            </div>
+        </div>
+
+        <!-- ARTISAN'S ENCLAVE (Centro Esquerda) -->
+        <div class="ponto-mapa" style="top: 48%; left: 32%; border-color: #87cefa; box-shadow: 0 0 15px #87cefa;" onclick="mostrarErroAshley()">
+            <div class="tooltip" style="border-color: #87cefa;">
+                <h3 style="margin: 0; color: #87cefa;">Artisan's Enclave</h3>
+                <span style="font-size: 12px; color: #aaa;">Forja de Relíquias e Armas</span>
+            </div>
+        </div>
+
+        <!-- CENTRAL SQUARE (Meio - Abaixo do Castelo) -->
+        <div class="ponto-mapa" style="top: 55%; left: 50%; border-color: #ffffff; box-shadow: 0 0 15px #ffffff;" onclick="mostrarErroAshley()">
+            <div class="tooltip" style="border-color: #ffffff;">
+                <h3 style="margin: 0; color: #ffffff;">Central Square</h3>
+                <span style="font-size: 12px; color: #aaa;">O Coração da Cidade</span>
+            </div>
+        </div>
+
+        <!-- GATE OF RADIANCE (Portão que divide a cidade) -->
+        <div class="ponto-mapa" style="top: 68%; left: 50%; border-color: #ffd700; box-shadow: 0 0 15px #ffd700;" onclick="mostrarErroAshley()">
+            <div class="tooltip" style="border-color: #ffd700;">
+                <h3 style="margin: 0; color: #ffd700;">Gate of Radiance</h3>
+                <span style="font-size: 12px; color: #aaa;">A fronteira para o Setor Penumbra</span>
+            </div>
+        </div>
+
+        <!-- DOCKS OF SHADOW (Setor Penumbra - Esquerda Baixo) -->
+        <div class="ponto-mapa" style="top: 73%; left: 15%; border-color: #2f4f4f; box-shadow: 0 0 15px #2f4f4f;" onclick="mostrarErroAshley()">
+            <div class="tooltip" style="border-color: #2f4f4f;">
+                <h3 style="margin: 0; color: #2f4f4f;">Docks of Shadow</h3>
+                <span style="font-size: 12px; color: #aaa;">Contrabando e Águas Tóxicas</span>
+            </div>
+        </div>
+
+        <!-- FORGOTTEN ALLEYWAYS (Setor Penumbra - Centro Baixo) -->
+        <div class="ponto-mapa" style="top: 83%; left: 35%; border-color: #696969; box-shadow: 0 0 15px #696969;" onclick="mostrarErroAshley()">
+            <div class="tooltip" style="border-color: #696969;">
+                <h3 style="margin: 0; color: #696969;">Forgotten Alleyways</h3>
+                <span style="font-size: 12px; color: #aaa;">A parte mais perigosa do subúrbio</span>
+            </div>
+        </div>
+
+    </div>
+
+<!-- ========================================= -->
+<!-- SISTEMA DA AVATAR: PRINCESA ASHLEY        -->
+<!-- ========================================= -->
+
+<div style="position: fixed; bottom: -10px; right: 20px; z-index: 9999; display: flex; align-items: flex-end; font-family: 'Georgia', serif;">
+    
+    <!-- CAIXA DE DIÁLOGO DA ASHLEY -->
+    <div id="caixa-dialogo" style="display: none; background: rgba(10,10,10,0.95); border: 2px solid #b22222; border-radius: 15px; padding: 20px; width: 320px; margin-right: 15px; margin-bottom: 50px; color: #fff; box-shadow: 0 0 20px rgba(178, 34, 34, 0.4); position: relative;">
+        
+        <!-- BOTÃO DE FECHAR -->
+        <span onclick="fecharGuia()" style="position: absolute; top: 15px; right: 20px; color: #ff4444; font-size: 24px; cursor: pointer; font-weight: bold;">&times;</span>
+
+        <h4 style="color: #ff4444; margin-top: 0; font-family: 'Cinzel', serif; border-bottom: 1px solid #333; padding-bottom: 10px; padding-right: 20px;">Princesa Ashley</h4>
+        
+        <!-- TEXTO QUE MUDA -->
+        <p id="texto-avatar" style="font-size: 15px; line-height: 1.5; font-style: italic;">"O que você quer, plebeu? Fale logo, estou ocupada com assuntos da realeza e minha paciência é mínima."</p>
+        
+        <!-- BOTÕES DE PERGUNTA -->
+        <div id="opcoes-avatar" style="display: flex; flex-direction: column; gap: 8px; margin-top: 15px;">
+            <button onclick="responderGuia('castelo')" style="background: #111; color: #ddd; border: 1px solid #444; padding: 10px; border-radius: 5px; cursor: pointer; text-align: left; transition: 0.3s;">🏰 Fale-me sobre o Castelo.</button>
+            <button onclick="responderGuia('penumbra')" style="background: #111; color: #ddd; border: 1px solid #444; padding: 10px; border-radius: 5px; cursor: pointer; text-align: left; transition: 0.3s;">☠️ O que é o Setor Penumbra?</button>
+            <button onclick="responderGuia('ashlan')" style="background: #111; color: #ddd; border: 1px solid #444; padding: 10px; border-radius: 5px; cursor: pointer; text-align: left; transition: 0.3s;">🗡️ Onde está o Ashlan?</button>
+            <button onclick="responderGuia('vestido')" style="background: #111; color: #ddd; border: 1px solid #444; padding: 10px; border-radius: 5px; cursor: pointer; text-align: left; transition: 0.3s;">💎 Belo vestido, majestade.</button>
+        </div>
+    </div>
+
+    <!-- IMAGEM DA ASHLEY CLICÁVEL -->
+    <!-- Coloque a imagem .png SEM FUNDO aqui! -->
+    <img id="imagemAshley" src="ashley_2d.png" onclick="abrirGuia()" style="width: 250px; min-height: 300px; cursor: pointer; filter: drop-shadow(0 0 10px rgba(178, 34, 34, 0.4)); transition: 0.3s;" alt="Avatar da Princesa Ashley">
+    
+</div>
+
+<script>
+    // FUNÇÃO PARA ABRIR O DIÁLOGO
+    function abrirGuia() {
+        document.getElementById('caixa-dialogo').style.display = 'block';
+        document.getElementById('texto-avatar').innerText = '"O que você quer, plebeu? Fale logo, estou ocupada com assuntos da realeza e minha paciência é mínima."';
+        
+        // Volta para a expressão normal ao abrir
+        document.getElementById('imagemAshley').src = "ashley_2d.png";
+    }
+
+    // FUNÇÃO PARA FECHAR O DIÁLOGO
+    function fecharGuia() {
+        document.getElementById('caixa-dialogo').style.display = 'none';
+        
+        // Volta pra cara de tédio quando o jogador vai embora
+        document.getElementById('imagemAshley').src = "ashley_2d.png"; 
+    }
+
+    // FUNÇÃO PARA RESPONDER E TROCAR A CARA DELA
+    function responderGuia(assunto) {
+        let texto = "";
+        let imagemAtualizada = "ashley_2d.png"; // A imagem padrão
+
+        if (assunto === 'castelo') {
+            texto = '"O Castelo Lancehearth é o ápice da civilização, obviamente. Aetheryonite puro. Agora, se for entrar, limpe essas suas botas imundas. Não quero você sujando meus tapetes."';
+            // Exemplo: Pode usar uma imagem dela apontando ou com cara de orgulho
+             imagemAtualizada = "ashley_2dorgulhosa.png"; 
+        } 
+        else if (assunto === 'penumbra') {
+            texto = '"Por que eu saberia sobre aquele chiqueiro tóxico? Lixo se mistura com lixo. Fique bem longe de mim se você andou pisando naquelas docas!"';
+            // Exemplo: Usa a imagem dela com nojo extremo
+             imagemAtualizada = "ashley_2dnojo.png"; 
+        }
+        else if (assunto === 'ashlan') {
+            texto = '"Aquele moleque insolente! Fica se vestindo como uma garotinha mimada e me matando de vergonha. Só de ouvir o nome do Ashlan minha enxaqueca ataca!"';
+            // Exemplo: Usa a imagem dela pistola/gritando
+             imagemAtualizada = "ashley_2dirritada.png"; 
+        }
+        else if (assunto === 'vestido') {
+            texto = '"Humpf. Finalmente notou? São cristais lapidados à mão do Distrito de Safira. Custa mais do que você ganharia em dez vidas miseráveis."';
+            // Exemplo: Usa a imagem dela com um sorrisinho arrogante
+             imagemAtualizada = "ashley_2dsorrindo.png"; 
+        }
+
+        // 1. Atualiza o texto na tela
+        document.getElementById('texto-avatar').innerText = texto;
+        
+        // 2. Troca a imagem dela na tela instantaneamente!
+        // (Só descomentar as linhas acima quando você gerar as outras imagens)
+        document.getElementById('imagemAshley').src = imagemAtualizada; 
+    }
+</script>
+
+       <!-- ========================================= -->
+<!-- TELA DE ÁREA EM CONSTRUÇÃO (ASHLEY PISTOLA)-->
+<!-- ========================================= -->
+<div id="modalAshleyErro" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.92); z-index: 9999999; align-items: center; justify-content: center; font-family: 'Georgia', serif;">
+    
+    <div style="background: #0a0a0a; border: 2px solid #b22222; border-radius: 15px; padding: 30px; max-width: 650px; width: 90%; display: flex; align-items: center; gap: 25px; position: relative; box-shadow: 0 0 40px rgba(178, 34, 34, 0.6);">
+        
+        <!-- BOTÃO DE FECHAR -->
+        <span onclick="fecharErroAshley()" style="position: absolute; top: 15px; right: 20px; color: #ff4444; font-size: 30px; cursor: pointer; font-weight: bold; font-family: Arial, sans-serif;">&times;</span>
+        
+        <!-- IMAGEM DELA -->
+        <img src="ashley_2d.png" style="width: 160px; height: auto; border-radius: 10px; border: 2px solid #ff4444; box-shadow: 0 0 20px rgba(178, 34, 34, 0.5);" alt="Ashley Irritada">
+        
+        <!-- TEXTO DA HUMILHAÇÃO -->
+        <div>
+            <h2 style="color: #ff4444; margin-top: 0; font-family: 'Cinzel', serif; font-size: 24px; border-bottom: 1px solid #444; padding-bottom: 10px;">Acesso Negado</h2>
+            <p style="color: #ddd; font-size: 18px; font-style: italic; line-height: 1.6;">
+                "Além de ser pobre, é burro também? Essa parte ainda está em construção. Os incompetentes dos arquitetos estão demorando muito. Suma da minha frente até que terminem!"
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Função que abre a tela de xingamento
+    function mostrarErroAshley() {
+        document.getElementById('modalAshleyErro').style.display = 'flex';
+    }
+    // Função que fecha a tela
+    function fecharErroAshley() {
+        document.getElementById('modalAshleyErro').style.display = 'none';
+    }
+</script>
+
+</body>
+</html>
