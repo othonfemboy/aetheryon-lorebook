@@ -371,6 +371,72 @@
                 padding: 8px 10px !important;
                 margin: 5px 2px !important;
             }
+
+            /* ÍCONES DE STATUS EMBAIXO DA CARTA */
+        .icone-status {
+            position: relative;
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            cursor: help;
+            margin: 2px;
+        }
+
+        /* CAIXA DE TEXTO QUE SURGE NO MOUSE */
+        .tooltip-status {
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(10, 10, 10, 0.95);
+            border: 1px solid;
+            color: #fff;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.2s;
+            z-index: 50;
+        }
+
+        .icone-status:hover .tooltip-status {
+            opacity: 1;
+        }
+
+        /* ========================================= */
+        /* CURSOR DE ESPADA PERSONALIZADO            */
+        /* ========================================= */
+        
+        /* A coordenada '2 2' avisa que o clique sai da ponta da lâmina (topo-direito) */
+        body, html, #cardGameScreen, #telaLobbyPrincipal, #deckCenterScreen, #mapaMundiScreen, #dungeonScreen {
+            cursor: url('espada_cursor.png') 2 2, auto !important; 
+        }
+
+        .carta-tcg, button, .cg-menu-btn, .map-node, span[onclick], #oracleAvatar, .ponto-mapa {
+            cursor: url('espada_cursor.png') 2 2, pointer !important;
+        }
+
+        /* ========================================= */
+        /* ADAPTAÇÃO PARA CELULAR (MOBILE)           */
+        /* ========================================= */
+        @media (max-width: 800px) {
+            .carta-tcg { transform: scale(0.65); margin-left: -20px; }
+            .carta-tcg:hover { transform: scale(0.75); z-index: 50; }
+
+            #campoInimigo, #campoJogador { width: 95%; height: 100px; flex-wrap: wrap; }
+            #maoJogador { transform: scale(0.75); margin-bottom: 0px; }
+
+            #bossHP, #playerHP { width: 50px; height: 50px; font-size: 20px; border-width: 2px; }
+            #oracleAvatar img { height: 90px !important; }
+            
+            button[onclick*="historicoBatalha"], button[onclick*="cartas-ampliadas"] { display: none !important; }
+            button[onclick*="modalSairJogo"] { top: 10px !important; left: 10px !important; padding: 5px 10px !important; font-size: 12px !important; }
+            #btnPassarTurno { bottom: 15% !important; top: auto !important; right: 5px !important; padding: 8px !important; font-size: 10px !important; }
+
+            div[style*="top: 10%; left: 3%"] { top: 2% !important; left: 2% !important; flex-direction: column !important; }
+            div[style*="bottom: 15%; left: 3%"] { bottom: 2% !important; left: 2% !important; flex-direction: column !important; }
         }
 
     </style>
@@ -383,6 +449,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
 
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 </head>
 <body>
@@ -1178,7 +1246,7 @@
     quote: "\"Minha irmã usou a ciência para quebrar almas e alimentar devaneios vis. Eu uso o mesmo conhecimento para que nenhuma vida seja apagada de Aetheryon.\"",
     faction: "🌿 Naturelands",
     elemento: "🍃 Botânica Curativa & Alquimia Vital",
-    stats: { forca: 32, magia: 78, agilidade: 70, inteligencia: 98, carisma: 86, physDef: 52, magDef: 80 },
+    stats: { forca: 32, magia: 40, agilidade: 50, inteligencia: 100, carisma: 92, physDef: 20, magDef: 20 },
     race: "Humana",
     weapon: "Bisturi de Cristal Esmeralda & Ampolas Vivas",
     weaponDetails: "Um conjunto de lâminas cirúrgicas purificadas com essência de éter vegetal combinadas a frascos de vidro temperado. Em combate, Thalia quebra catalisadores botânicos no solo que liberam névoas de regeneração celular acelerada, estancam hemorragias massivas e aumentam a resistência física e mágica de toda a vanguarda.",
@@ -3226,6 +3294,19 @@ if (!niveisRank.includes(playerRank)) {
              { id: 'simon_amnesia', name: 'Mente Inquebrável', desc: 'Sobreviva à Amnésia Fatal no Simon Arcano.', premio: 'Borracha Mágica', corPremio: '#ffffff' },
              { id: 'oraculo_cards', name: 'O Silêncio da Soberana', desc: 'Reduza os pontos de vida da Oráculo a zero no Aetheryon Battlegrounds.', premio: 'Caneta Mágica', corPremio: '#ffcc00' }
         ];
+
+        // AUTO-INJEÇÃO DA CONQUISTA DO RIN CHAOTIC
+        setTimeout(() => {
+            if (typeof conquistasDB !== 'undefined' && !conquistasDB.find(c => c.id === 'rin_chaotic')) {
+                conquistasDB.push({ 
+                    id: 'rin_chaotic', 
+                    name: 'Caos Dominado', 
+                    desc: 'Sobreviva à Implosão Umbral e derrote Rin no modo Chaotic.', 
+                    premio: 'Stickgirl Fight', 
+                    corPremio: '#ff4444' 
+                });
+            }
+        }, 1000);
 
         window.applyTheme = function(theme) {
             const btnTheme = document.getElementById('themeToggleBtn');
@@ -5693,10 +5774,8 @@ if (!niveisRank.includes(playerRank)) {
             
             <button class="cg-menu-btn destaque" onclick="window.iniciarDueloOraculo()">⚔️ Desafiar Oráculo</button>
             
-            <button class="cg-menu-btn" style="border-color: #00ffcc; color: #00ffcc; animation: pulsarAmor 2s infinite;" onclick="document.getElementById('mapaMundiScreen').style.display='block'; document.getElementById('mapaMundiScreen').style.zIndex='99999';">🌍 Explorar Aetheryon (Mapa)</button>
-            <button class="cg-menu-btn" style="border-color: #ffd700; color: #ffd700;" onclick="window.abrirLorebook()">📖 Grimório (História)</button>
-            
             <button class="cg-menu-btn" style="border-color: #ff4500; color: #ff4500;" onclick="window.abrirDungeons()">🏰 Dungeons (Rin)</button>
+            <button class="cg-menu-btn" style="border-color: #8a2be2; color: #8a2be2;" onclick="window.abrirCentralDeDecks()">🃏 Acervo de Lendas</button>
             <button class="cg-menu-btn" style="border-color: #ffd700; color: #ffd700;" onclick="window.abrirAprimorarCartas()">⚒️ Forja de Lendas</button>
             <button class="cg-menu-btn" style="border-color: #00bfff; color: #00bfff;" onclick="window.abrirBauMagico()">🎁 Abrir Baú Mágico</button>
             <button class="cg-menu-btn" style="border-color: #ff4444; color: #ff4444;" onclick="window.fecharTudoDoCardGame()">🏃 Abandonar Salão</button>
@@ -5800,6 +5879,14 @@ if (!niveisRank.includes(playerRank)) {
                     <s id="upEfeitoVelho" style="color:#666; display:block; margin-bottom:5px;">Efeito Nível 1</s>
                     <strong style="color:#ffd700; display:block;" id="upEfeitoNovo">Efeito Nível 2</strong>
                 </div>
+
+                <div style="background: #222; padding: 10px; border-radius: 5px; margin-bottom: 15px; border: 1px solid #444;">
+                    <p style="margin: 0; font-size: 14px; color: #aaa;">Suas Moedas: <span id="upgrade-moedas-atuais" style="color: #ffd700;">0</span></p>
+                    <p style="margin: 5px 0; font-size: 14px; color: #aaa;">Custo: <span id="upgrade-custo" style="color: #ffaa00;">0</span></p>
+                    <hr style="border: 1px dashed #555;">
+                    <p style="margin: 0; font-size: 16px; color: #fff;">Saldo Final: <span id="upgrade-moedas-restantes">0</span></p>
+                </div>
+
                 <button onclick="window.confirmarUpgrade()" style="width: 100%; padding: 12px; background: #ffd700; color: #000; font-family: 'Cinzel', serif; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; box-shadow: 0 0 15px #ffd700;">Aprimorar Carta!</button>
             </div>
         </div>
@@ -5831,9 +5918,21 @@ if (!niveisRank.includes(playerRank)) {
         <span onclick="window.mostrarEndGame('derrota', 'Você fugiu do duelo. Fraco.')" style="position: absolute; top: 15px; right: 25px; color: #fff; font-size: 40px; cursor: pointer; z-index: 7006; text-shadow: 0 0 10px #ff0000; transition: 0.3s;">&times;</span>
         
         <!-- BOTAO DE SAIR NO MEIO DO JOGO -->
-        <button onclick="window.retornarAoLobby()" style="position: absolute; top: 25px; left: 320px; z-index: 7006; background: #1a1a1a; color: #ffaa00; border: 2px solid #ffaa00; border-radius: 8px; padding: 10px 15px; cursor: pointer; font-family: 'Cinzel', serif; font-weight: bold; box-shadow: 0 0 15px rgba(255,170,0,0.3); transition: 0.3s;">
+       <button onclick="document.getElementById('modalSairJogo').style.display='flex'" style="position: absolute; top: 25px; left: 320px; z-index: 7006; background: #1a1a1a; color: #ffaa00; border: 2px solid #ffaa00; border-radius: 8px; padding: 10px 15px; cursor: pointer; font-family: 'Cinzel', serif; font-weight: bold; box-shadow: 0 0 15px rgba(255,170,0,0.3); transition: 0.3s;">
             🔙 Sair do Jogo
         </button>
+
+        <!-- MODAL DE CONFIRMAÇÃO DE FUGA -->
+        <div id="modalSairJogo" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 9999999; justify-content: center; align-items: center; flex-direction: column; font-family: 'Cinzel', serif;">
+            <div style="background: #111; border: 2px solid #ffaa00; padding: 40px; border-radius: 10px; text-align: center; box-shadow: 0 0 30px rgba(255,170,0,0.4);">
+                <h2 style="color: #ffaa00; font-size: 2rem; margin-top: 0;">Abandonar Duelo?</h2>
+                <p style="color: #ccc; font-size: 1.2rem; font-family: 'Roboto', sans-serif; margin-bottom: 30px;">Tem certeza que deseja fugir? A mesa será reiniciada.</p>
+                <div style="display: flex; gap: 20px; justify-content: center;">
+                    <button onclick="window.abandonarPartida()" style="padding: 12px 30px; background: #ff4444; color: #fff; border: 2px solid #aa0000; font-family: 'Cinzel', serif; font-weight: bold; font-size: 16px; cursor: pointer; border-radius: 5px;">SIM, FUGIR</button>
+                    <button onclick="document.getElementById('modalSairJogo').style.display='none'" style="padding: 12px 30px; background: #222; color: #fff; border: 2px solid #888; font-family: 'Cinzel', serif; font-weight: bold; font-size: 16px; cursor: pointer; border-radius: 5px;">NÃO, CONTINUAR</button>
+                </div>
+            </div>
+        </div>
 
         <button onclick="document.getElementById('cardGameScreen').classList.toggle('cartas-ampliadas')" style="position: absolute; top: 25px; left: 25px; z-index: 7006; background: #1a1a1a; color: #00ffcc; border: 2px solid #00ffcc; border-radius: 8px; padding: 10px 15px; cursor: pointer; font-family: 'Cinzel', serif; font-weight: bold; box-shadow: 0 0 15px rgba(0,255,204,0.3); transition: 0.3s;">
             🔍 Zoom Cartas
@@ -5843,20 +5942,19 @@ if (!niveisRank.includes(playerRank)) {
             📜 Histórico
         </button>
 
-        <!-- BOTÃO DE TUTORIAL (!) NO CANTINHO DIREITO -->
+        <!-- BOTÃO DE TUTORIAL -->
         <button onclick="document.getElementById('tutorialCardGame').style.display='flex'" style="position: absolute; top: 80px; right: 25px; z-index: 7006; background: #1a1a1a; color: #00ffcc; border: 2px solid #00ffcc; border-radius: 50%; width: 45px; height: 45px; font-size: 24px; cursor: pointer; font-family: 'Cinzel', serif; font-weight: bold; box-shadow: 0 0 15px rgba(0,255,204,0.3); transition: 0.3s; display: flex; justify-content: center; align-items: center;" title="Ver Tutorial">!</button>
 
-        <!-- TELA DE TUTORIAL DO CARD GAME -->
+        <!-- TELA DE TUTORIAL -->
         <div id="tutorialCardGame" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 999999; justify-content: center; align-items: center; flex-direction: column; backdrop-filter: blur(5px); padding: 20px; box-sizing: border-box;">
             <div style="background: #111; border: 2px solid #00ffcc; padding: 30px; border-radius: 10px; max-width: 600px; color: #fff; text-align: left; box-shadow: 0 0 30px rgba(0, 255, 204, 0.3); position: relative;">
                 <span onclick="document.getElementById('tutorialCardGame').style.display='none'" style="position: absolute; top: 10px; right: 20px; font-size: 30px; color: #888; cursor: pointer;">&times;</span>
-                <h2 style="color: #00ffcc; font-family: 'Cinzel', serif; text-align: center; margin-top: 0; font-size: 1.8rem;">BEM-VINDO AO JOGO DE CARTAS DE AETHERYON</h2>
+                <h2 style="color: #00ffcc; font-family: 'Cinzel', serif; text-align: center; margin-top: 0; font-size: 1.8rem;">BEM-VINDO AO JOGO DE CARTAS</h2>
                 <ol style="color: #ccc; font-size: 15px; line-height: 1.7; padding-left: 20px;">
-                    <li style="margin-bottom: 10px;">Você começa com <strong style="color:#0088ff;">1 de mana</strong> e o custo de cada carta está indicado no círculo azul no topo superior esquerdo. Cada rodada te concede um de mana máxima.</li>
+                    <li style="margin-bottom: 10px;">Você começa com <strong style="color:#0088ff;">1 de mana</strong> e o custo de cada carta está indicado no círculo azul no topo.</li>
                     <li style="margin-bottom: 10px;">Leia a <strong style="color:#e8d5b5;">descrição</strong> de cada carta dos heróis para saber qual a funcionalidade delas.</li>
-                    <li style="margin-bottom: 10px;">Cada carta possui <strong style="color:#ffaa00;">ataque (⚔️)</strong> e <strong style="color:#ff4444;">vida (❤️)</strong> diferentes. Algumas te curam a cada rodada, fornecem escudos, entre vários outros efeitos.</li>
-                    <li style="margin-bottom: 10px;">Para atacar o inimigo, a sua carta deve estar na mesa. <strong style="color:#fff;">Clique na carta primeiro</strong> e depois clique na carta inimiga. Ou, você pode atacar a Oráculo diretamente clicando bem no retrato dela.</li>
-                    <li>Monitore a sua vida e mana máxima no menu da esquerda do tabuleiro e divirta-se!</li>
+                    <li style="margin-bottom: 10px;">Cada carta possui <strong style="color:#ffaa00;">ataque (⚔️)</strong> e <strong style="color:#ff4444;">vida (❤️)</strong> diferentes. Algumas te curam, fornecem escudos, etc.</li>
+                    <li style="margin-bottom: 10px;">Para atacar o inimigo, clique na carta e depois no alvo. Ou ataque a Oráculo diretamente no retrato dela.</li>
                 </ol>
                 <div style="text-align: center; margin-top: 25px;">
                     <button onclick="document.getElementById('tutorialCardGame').style.display='none'" style="padding: 10px 30px; background: #00ffcc; color: #000; border: none; font-family: 'Cinzel', serif; font-weight: bold; cursor: pointer; border-radius: 5px; font-size: 16px;">Entendido!</button>
@@ -5869,18 +5967,35 @@ if (!niveisRank.includes(playerRank)) {
             <div id="logConteudo" style="display: flex; flex-direction: column; gap: 8px;"></div>
         </div>
 
-        <div style="position: absolute; top: 15%; left: 3%; z-index: 7005; text-align: center;">
-            <div style="color: #ff4444; font-size: 16px; font-weight: bold; text-shadow: 0 0 5px #000; letter-spacing: 2px;">Inimigo</div>
-            <div style="width: 80px; height: 80px; background: radial-gradient(circle, #8a0000, #000); border: 3px solid #ff4444; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 35px; color: #fff; box-shadow: 0 0 20px #ff4444; font-weight: bold;" id="bossHP">30</div>
+        <!-- ============================================== -->
+        <!-- HUD DO INIMIGO LIMPADA E ORGANIZADA            -->
+        <!-- ============================================== -->
+        <div style="position: absolute; top: 10%; left: 3%; z-index: 7005; display: flex; align-items: center; gap: 15px;">
+            <div style="text-align: center;">
+                <div style="color: #ff4444; font-size: 16px; font-weight: bold; text-shadow: 0 0 5px #000; letter-spacing: 2px;">Inimigo</div>
+                <div style="width: 80px; height: 80px; background: radial-gradient(circle, #8a0000, #000); border: 3px solid #ff4444; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 35px; color: #fff; box-shadow: 0 0 20px #ff4444; font-weight: bold;" id="bossHP">200</div>
+            </div>
+            <!-- AQUI FICAM OS DEBUFFS DA ORÁCULO -->
+            <div id="bossStatusIcons" style="display: flex; flex-direction: column; gap: 5px; text-align: left; justify-content: center;"></div>
         </div>
 
-        <div style="position: absolute; bottom: 15%; left: 3%; z-index: 7005; text-align: center;">
-            <div style="color: #00ffcc; font-size: 16px; font-weight: bold; text-shadow: 0 0 5px #000; letter-spacing: 2px;">Jogador</div>
-            <div style="width: 80px; height: 80px; background: radial-gradient(circle, #006644, #000); border: 3px solid #00ffcc; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 35px; color: #fff; box-shadow: 0 0 20px #00ffcc; font-weight: bold; position: relative;" id="playerHP">30</div>
-            <div style="margin-top: 15px; width: 80px; padding: 8px 0; background: #0088ff; border: 2px solid #fff; border-radius: 8px; color: #fff; font-weight: bold; font-size: 18px; box-shadow: 0 0 15px #0088ff;" id="playerMana">1/1</div>
+        <!-- ============================================== -->
+        <!-- HUD DO JOGADOR LIMPADA E ORGANIZADA            -->
+        <!-- ============================================== -->
+        <div style="position: absolute; bottom: 15%; left: 3%; z-index: 7005; display: flex; align-items: center; gap: 15px;">
+            <div style="text-align: center;">
+                <div style="color: #00ffcc; font-size: 16px; font-weight: bold; text-shadow: 0 0 5px #000; letter-spacing: 2px;">Jogador</div>
+                <div style="width: 80px; height: 80px; background: radial-gradient(circle, #006644, #000); border: 3px solid #00ffcc; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 35px; color: #fff; box-shadow: 0 0 20px #00ffcc; font-weight: bold;" id="playerHP">30</div>
+                <div style="margin-top: 10px; width: 80px; padding: 5px 0; background: #0088ff; border: 2px solid #fff; border-radius: 8px; color: #fff; font-weight: bold; font-size: 16px; box-shadow: 0 0 15px #0088ff;" id="playerMana">1/1</div>
+            </div>
             
-            <div style="margin-top: 15px; background: #111; border: 2px solid #d4af37; border-radius: 8px; padding: 5px; color: #d4af37; font-family: 'Cinzel', serif; font-weight: bold; font-size: 12px; box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);">
-                Hero Power<br><span id="displayHeroPower" style="font-size: 18px; color: #fff;">0</span>
+            <div style="display: flex; flex-direction: column; justify-content: center; gap: 10px;">
+                <!-- AQUI FICAM OS DEBUFFS DO JOGADOR -->
+                <div id="playerStatusIcons" style="display: flex; flex-direction: column; gap: 5px; text-align: left;"></div>
+                
+                <div style="background: #111; border: 2px solid #d4af37; border-radius: 8px; padding: 5px 10px; color: #d4af37; font-family: 'Cinzel', serif; font-weight: bold; font-size: 12px; box-shadow: 0 0 10px rgba(212, 175, 55, 0.5); text-align: center;">
+                    Hero Power<br><span id="displayHeroPower" style="font-size: 18px; color: #fff;">0</span>
+                </div>
             </div>
         </div>
 
@@ -6085,14 +6200,57 @@ if (!niveisRank.includes(playerRank)) {
         window.atualizarPowerLobby = function() {
             let totalPower = 0;
             Object.values(window.cartasPlayerLevel).forEach(lv => { totalPower += (lv * 10); });
-            let painel = document.getElementById('lobbyPowerLevel');
-            if (painel) painel.innerText = totalPower;
+            
+            // Atualiza o Power
+            let painelPower = document.getElementById('lobbyPowerLevel');
+            if (painelPower) painelPower.innerText = totalPower;
+
+            // ==========================================
+            // ATUALIZA A GRANA E AS CHAVES NO LOBBY!
+            // ==========================================
+            let painelCristal = document.getElementById('lobbyAetheryonite');
+            if (painelCristal) painelCristal.innerText = window.aetheryonite || 0;
+
+            let painelChaves = document.getElementById('lobbyChaves');
+            if (painelChaves) painelChaves.innerText = window.chavesMagicas || 0;
+            
+            // Atualiza também no Mapa Múndi, se ele estiver aberto
+            let mapaCristal = document.getElementById('mapAetheryonite');
+            if (mapaCristal) mapaCristal.innerText = window.aetheryonite || 0;
+            
+            let mapaChaves = document.getElementById('mapChaves');
+            if (mapaChaves) mapaChaves.innerText = window.chavesMagicas || 0;
+            let mapaPower = document.getElementById('mapPowerLevel');
+            if (mapaPower) mapaPower.innerText = totalPower;
         };
+        
+        // Garante que o jogo puxe os valores reais logo que você abre a página
+        setTimeout(() => window.atualizarPowerLobby(), 200);
 
         window.abrirDungeons = function() {
             window.fecharTudoDoCardGame();
             let ds = document.getElementById('dungeonScreen');
             document.body.appendChild(ds); ds.style.zIndex = "9999999"; ds.style.display = 'flex';
+        };
+
+        window.abandonarPartida = function() {
+            document.getElementById('modalSairJogo').style.display = 'none';
+            
+            // Tira todas as cartas da mesa
+            document.getElementById('campoJogador').innerHTML = ''; 
+            document.getElementById('campoInimigo').innerHTML = ''; 
+            document.getElementById('maoJogador').innerHTML = '';
+            let log = document.getElementById('logConteudo'); if(log) log.innerHTML = ''; 
+            
+            // Zera todos os debuffs, mana e HP
+            window.bossVidaAtual = 200; window.playerVidaAtual = 80; 
+            window.playerEscudo = 0; window.bossEscudo = 0; 
+            window.bossEnvenenado = 0; window.bossSangrando = 0; window.playerSangramento = 0; 
+            window.cdGenevieve = 0; window.cdVoryss = 0;
+            window.manaTurnoMax = 1; window.manaAtual = 1; window.cartaSelecionada = null;
+            
+            window.atualizarUI();
+            window.retornarAoLobby();
         };
 
         window.abrirAprimorarCartas = function() {
@@ -6198,19 +6356,37 @@ if (!niveisRank.includes(playerRank)) {
             document.getElementById('upHpVelho').innerText = carta.vidaMax + (level - 1); document.getElementById('upHpNovo').innerText = carta.vidaMax + level;
             document.getElementById('upEfeitoVelho').innerText = window.obterEfeitoLevel(id, level); document.getElementById('upEfeitoNovo').innerText = window.obterEfeitoLevel(id, level + 1);
             
+            // ===============================================
+            // MATEMÁTICA DAS MOEDAS E ATUALIZAÇÃO DA TELA!
+            // ===============================================
+            let custoLevel = custo[level];
+            let saldoFinal = window.aetheryonite - custoLevel;
+            
+            // Joga os valores na tela HTML
+            document.getElementById('upgrade-moedas-atuais').innerText = window.aetheryonite;
+            document.getElementById('upgrade-custo').innerText = custoLevel;
+            document.getElementById('upgrade-moedas-restantes').innerText = saldoFinal;
+            
+            let txtSaldo = document.getElementById('upgrade-moedas-restantes');
             let btn = document.getElementById('btnConfirmarUpgrade');
+            
             if(!btn) {
                 btn = document.createElement('button'); btn.id = 'btnConfirmarUpgrade';
                 btn.style.cssText = "width: 100%; padding: 12px; font-family: 'Cinzel', serif; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 15px;";
                 painel.appendChild(btn);
             }
-            if (window.aetheryonite >= custo[level]) {
-                btn.innerText = `Aprimorar (-${custo[level]} 💎)`; btn.style.background = "#ffd700"; btn.style.color = "#000"; btn.style.boxShadow = "0 0 15px #ffd700";
-                btn.onclick = () => window.confirmarUpgrade(id, custo[level]);
+            
+            // Libera ou bloqueia o botão dependendo do dinheiro
+            if (saldoFinal >= 0) {
+                txtSaldo.style.color = "#00ffcc"; // Fica verde
+                btn.innerText = `Aprimorar (-${custoLevel} 💎)`; 
+                btn.style.background = "#ffd700"; btn.style.color = "#000"; btn.style.boxShadow = "0 0 15px #ffd700";
+                btn.onclick = () => window.confirmarUpgrade(id, custoLevel);
             } else {
-                btn.innerText = `Falta Aetheryonite (${custo[level]} 💎)`; btn.style.background = "#333"; btn.style.color = "#ff4444"; btn.style.boxShadow = "none";
-                // A TELA TOP PRA QUANDO FALTA CRISTAL:
-                btn.onclick = () => window.mostrarAvisoEstilizado("Cristais Insuficientes", `Você precisa de <b>${custo[level]} Aetheryonite</b> para aprimorar esta lenda.<br>Derrote Chefes nas Dungeons para farmar mais!`, "#ff4444");
+                txtSaldo.style.color = "#ff4444"; // Fica vermelho
+                btn.innerText = `Falta Aetheryonite`; 
+                btn.style.background = "#333"; btn.style.color = "#ff4444"; btn.style.boxShadow = "none";
+                btn.onclick = () => window.mostrarAvisoEstilizado("Cristais Insuficientes", `Você precisa de <b>${custoLevel} Aetheryonite</b>. Derrote Chefes para farmar mais!`, "#ff4444");
             }
         };
 
@@ -6377,15 +6553,23 @@ if (!niveisRank.includes(playerRank)) {
 
         window.atualizarUI = function() {
             let pMana = document.getElementById('playerMana'); if(pMana) pMana.innerText = `${window.manaAtual}/${window.manaTurnoMax}`;
-            let pEscudo = window.playerEscudo > 0 ? `<br><span style="color:#32cd32;">🛡️${window.playerEscudo}</span>` : '';
-            let pSangue = window.playerSangramento > 0 ? `<br><span style="font-size:14px; color:#ff4444; font-weight:bold;">🩸 Sangrando (-${window.playerSangramento})</span>` : '';
-            let pHP = document.getElementById('playerHP'); if(pHP) pHP.innerHTML = window.playerVidaAtual + pEscudo + pSangue; 
             
-            let bEscudo = window.bossEscudo > 0 ? `<br><span style="font-size:16px; color:#8a2be2;">🛡️${window.bossEscudo}</span>` : '';
-            // Se a oraculo tiver envenenada, mostra o icone verde na vida dela!
-            let bVeneno = window.bossEnvenenado ? `<br><span style="font-size:12px; color:#00ff00;">☠️ Veneno</span>` : '';
-            let bHP = document.getElementById('bossHP'); if(bHP) bHP.innerHTML = window.bossVidaAtual + bEscudo + bVeneno;
+            // SÓ O NÚMERO DENTRO DO CÍRCULO DO JOGADOR
+            document.getElementById('playerHP').innerText = window.playerVidaAtual; 
+            let pStatus = "";
+            if (window.playerEscudo > 0) pStatus += `<span style="background: rgba(0,0,0,0.8); padding: 4px 8px; border-radius: 5px; border: 1px solid #32cd32; color:#32cd32; font-size:12px;">🛡️ Escudo (${window.playerEscudo})</span>`;
+            if (window.playerSangramento > 0) pStatus += `<span style="background: rgba(0,0,0,0.8); padding: 4px 8px; border-radius: 5px; border: 1px solid #ff4444; color:#ff4444; font-size:12px; font-weight:bold;">🩸 Sangrando (-${window.playerSangramento})</span>`;
+            document.getElementById('playerStatusIcons').innerHTML = pStatus;
 
+            // SÓ O NÚMERO DENTRO DO CÍRCULO DO INIMIGO
+            document.getElementById('bossHP').innerText = window.bossVidaAtual;
+            let bStatus = "";
+            if (window.bossEscudo > 0) bStatus += `<span style="background: rgba(0,0,0,0.8); padding: 4px 8px; border-radius: 5px; border: 1px solid #8a2be2; color:#8a2be2; font-size:12px;">🛡️ Escudo Sombrio (${window.bossEscudo})</span>`;
+            if (window.bossEnvenenado > 0) bStatus += `<span style="background: rgba(0,0,0,0.8); padding: 4px 8px; border-radius: 5px; border: 1px solid #00ff00; color:#00ff00; font-size:12px; font-weight:bold;">☠️ Veneno (-${window.bossEnvenenado})</span>`;
+            if (window.bossSangrando > 0) bStatus += `<span style="background: rgba(0,0,0,0.8); padding: 4px 8px; border-radius: 5px; border: 1px solid #ff4444; color:#ff4444; font-size:12px; font-weight:bold;">🩸 Sangrando (-${window.bossSangrando})</span>`;
+            document.getElementById('bossStatusIcons').innerHTML = bStatus;
+
+            // HERO POWER
             let poderTotal = 0;
             document.querySelectorAll('#maoJogador .carta-tcg').forEach(carta => { poderTotal += parseInt(carta.dataset.ataque) + parseInt(carta.dataset.vida); });
             let heroPowerEl = document.getElementById('displayHeroPower'); if(heroPowerEl) heroPowerEl.innerText = poderTotal;
@@ -6468,16 +6652,45 @@ if (!niveisRank.includes(playerRank)) {
             });
         };
 
+        // NOVA FUNÇÃO: Organiza os textos pra mostrar Escudo e Debuff JUNTOS
+        window.renderizarTooltip = function(carta) {
+            let escudo = parseInt(carta.dataset.escudo) || 0;
+            let status = carta.dataset.status;
+            let linhas = [];
+
+            // Se tiver escudo, adiciona na primeira linha
+            if (escudo > 0) linhas.push(`<span style="color:#8a2be2;">🛡️ Escudo Sombrio (+${escudo})</span>`);
+            
+            // Se tiver debuff, adiciona na segunda linha
+            if (status === 'envenenado') linhas.push(`<span style="color:#00ff00;">☠️ Envenenado (-2 Vida por turno)</span>`);
+            else if (status === 'sangrando') linhas.push(`<span style="color:#ff3333;">🩸 Sangrando (-${carta.dataset.danoSangue || 3} Vida por turno)</span>`);
+            else if (status === 'congelado') linhas.push("❄️ Congelado (Atordoado)");
+            else if (status === 'medo') linhas.push("😨 Com Medo (Atordoado)");
+            else if (status === 'vento_ashlan' || status === 'vento_sombrio') linhas.push("🌪️ Ventania (50% errar)");
+            else if (status === 'seduzido') linhas.push("💖 Seduzida (Traição)");
+            else if (status === 'marcado_morte') linhas.push("💀 Será DEVORADA!");
+
+            if (linhas.length === 0) linhas.push("Status: Normal");
+
+            carta.querySelector('.carta-tooltip').innerHTML = linhas.join('<br><hr style="border:0; border-top:1px solid #444; margin: 3px 0;">');
+        };
+
         window.aplicarDanoNaCarta = function(elementoCarta, danoRecebido) {
             let escudo = parseInt(elementoCarta.dataset.escudo) || 0; let vida = parseInt(elementoCarta.dataset.vida);
             if (escudo > 0) {
                 let danoAbsorvido = Math.min(escudo, danoRecebido); escudo -= danoAbsorvido; danoRecebido -= danoAbsorvido;
                 elementoCarta.dataset.escudo = escudo; let iconeEscudo = elementoCarta.querySelector('.escudo-icon');
+                
                 if (escudo <= 0) {
                     elementoCarta.classList.remove('escudo-natureza', 'escudo-sombrio'); iconeEscudo.style.display = 'none';
-                    elementoCarta.querySelector('.carta-tooltip').innerText = "Status: Normal";
-                } else { iconeEscudo.innerText = '🛡️' + escudo; }
+                } else { 
+                    iconeEscudo.innerText = '🛡️' + escudo; 
+                }
             }
+            
+            // Chama a função mágica pra arrumar a caixinha de texto!
+            window.renderizarTooltip(elementoCarta);
+            
             vida -= danoRecebido; elementoCarta.dataset.vida = vida; elementoCarta.querySelector('.val-hp').innerText = vida;
             elementoCarta.style.animation = 'tremerErro 0.3s'; setTimeout(() => elementoCarta.style.animation = '', 300);
             return vida;
@@ -6519,17 +6732,23 @@ if (!niveisRank.includes(playerRank)) {
                 setTimeout(() => avatarOracle.style.filter = 'drop-shadow(0 0 15px #8a2be2)', 400);
             }
 
-            // APLICA EFEITOS ESPECIAIS NA ORÁCULO
-            if (window.cartaSelecionada.dataset.idcarta === 'lysandre_lv1') window.aplicarCuraLysandre(atk);
+            // 4. Faelan (Veneno - MAX 5 STACKS)
             if (window.cartaSelecionada.dataset.idcarta === 'faelan_lv1') {
-                window.bossEnvenenado = true; window.atualizarUI();
-                window.registrarLog(`A Oráculo foi ENVENENADA por Faelan! Perderá 2 HP por turno.`, '#00ff00');
+                let lvl = parseInt(window.cartaSelecionada.dataset.level) || 1;
+                let addVeneno = 1 + lvl; 
+                // Math.min trava o valor para nunca passar de 5!
+                window.bossEnvenenado = Math.min(5, (window.bossEnvenenado || 0) + addVeneno);
+                window.atualizarUI();
+                window.registrarLog(`Faelan aplicou VENENO! (Total: ${window.bossEnvenenado})`, '#00ff00');
             }
 
+            // 6. Elara (Sangramento - MAX 5 STACKS)
             if (window.cartaSelecionada.dataset.idcarta === 'elara_lv1') {
                 let lvl = parseInt(window.cartaSelecionada.dataset.level) || 1;
-                window.bossSangrando = (window.bossSangrando || 0) + (2 + lvl); window.atualizarUI();
-                window.registrarLog(`As feras de Elara causaram hemorragia no Chefe!`, '#8b0000');
+                let addSangue = 2 + lvl; 
+                window.bossSangrando = Math.min(5, (window.bossSangrando || 0) + addSangue); 
+                window.atualizarUI();
+                window.registrarLog(`As feras de Elara causaram Sangramento! (Total: ${window.bossSangrando})`, '#8b0000');
             }
 
             window.exaurirCarta(window.cartaSelecionada);
@@ -6598,20 +6817,18 @@ if (!niveisRank.includes(playerRank)) {
             campoInimigo.innerHTML += lacaioHTML; window.registrarLog(`A Oráculo invocou <b>${lacaio.nome}</b>.`, '#8a2be2');
         };
 
-        window.atacarLacaioInimigo = function(idLacaio) {
+       window.atacarLacaioInimigo = function(idLacaio) {
             if(!window.cartaSelecionada) return; const lacaioAlvo = document.getElementById(idLacaio); if(!lacaioAlvo) return;
             if(lacaioAlvo.dataset.provocar !== 'true') {
                 let lacaiosProvocar = Array.from(document.querySelectorAll('#campoInimigo .carta-tcg')).filter(c => c.dataset.provocar === 'true');
                 if(lacaiosProvocar.length > 0) { window.mostrarFloatingText(lacaioAlvo, "Alvo Inválido", 'dano'); window.cartaSelecionada.style.animation = 'tremerErro 0.3s'; setTimeout(() => window.cartaSelecionada.style.animation = '', 300); return; }
             }
 
-            // CHANCE DE ERRAR: EFEITO DA VENTANIA SOMBRIA
             if (window.cartaSelecionada.dataset.status === 'vento_sombrio') {
                 if (Math.random() < 0.5) { 
                     window.mostrarFloatingText(window.cartaSelecionada, "ERROU!", 'dano', 0);
-                    window.registrarLog(`O ataque de ${window.cartaSelecionada.dataset.nome} errou o alvo por causa das Sombras!`, '#ff4444');
-                    window.exaurirCarta(window.cartaSelecionada);
-                    return; 
+                    window.registrarLog(`O ataque de ${window.cartaSelecionada.dataset.nome} errou o alvo!`, '#ff4444');
+                    window.exaurirCarta(window.cartaSelecionada); return; 
                 }
             }
 
@@ -6620,82 +6837,56 @@ if (!niveisRank.includes(playerRank)) {
             window.mostrarFloatingText(lacaioAlvo, `-${atkAtacante}`, 'dano'); window.mostrarFloatingText(window.cartaSelecionada, `-${atkDefensor}`, 'dano');
             window.registrarLog(`<b>${window.cartaSelecionada.dataset.nome}</b> atacou <b>${lacaioAlvo.dataset.nome}</b>.`, '#ff8c00');
 
-            // === DEBUFFS ESPECIAIS AO ATACAR ===
-            // 1. Scarlett (Gelo)
-            if (window.cartaSelecionada.dataset.idcarta === 'scarlett_lv1') {
-                lacaioAlvo.dataset.status = 'congelado'; lacaioAlvo.dataset.turnosCc = '2'; lacaioAlvo.classList.add('congelado');
-                lacaioAlvo.querySelector('.carta-tooltip').innerText = "Status: Congelado (2 turnos)";
-                window.registrarLog(`<b>Scarlett</b> CONGELOU <b>${lacaioAlvo.dataset.nome}</b> por 2 turnos!`, '#00ffff');
-            }
-            // 2. Karyna (Medo)
-            if (window.cartaSelecionada.dataset.idcarta === 'karyna_lv1') {
-                lacaioAlvo.dataset.status = 'medo'; lacaioAlvo.dataset.turnosCc = '1'; lacaioAlvo.classList.add('com-medo');
-                lacaioAlvo.querySelector('.carta-tooltip').innerText = "Status: Com Medo";
-                window.registrarLog(`<b>Karyna</b> causou MEDO em <b>${lacaioAlvo.dataset.nome}</b>!`, '#ff0000');
-            }
-            // 3. Ashlan (Vento)
-            if (window.cartaSelecionada.dataset.idcarta === 'ashlan_lv1') {
-                lacaioAlvo.dataset.status = 'vento_ashlan'; lacaioAlvo.classList.add('vento-ashlan');
-                lacaioAlvo.querySelector('.carta-tooltip').innerText = "Debuff: Desequilibrado pela GaleForce (50% de chance de errar o ataque).";
-                window.registrarLog(`<b>Ashlan</b> desequilibrou ${lacaioAlvo.dataset.nome} com a GaleForce!`, '#32cd32');
-            }
-            // 4. Faelan (Veneno)
-            if (window.cartaSelecionada.dataset.idcarta === 'faelan_lv1') {
-                lacaioAlvo.dataset.status = 'envenenado'; lacaioAlvo.classList.add('envenenado');
-                lacaioAlvo.querySelector('.carta-tooltip').innerText = "Debuff: Essa carta está envenenada e perderá 2 de vida a cada turno.";
-                window.registrarLog(`<b>Faelan</b> ENVENENOU ${lacaioAlvo.dataset.nome}!`, '#00ff00');
-            }
-            // 5. Lysandre (Cura)
-            if (window.cartaSelecionada.dataset.idcarta === 'lysandre_lv1') {
-                window.aplicarCuraLysandre(atkAtacante);
+            // === APLICA DEBUFFS NO LACAIO ===
+            if (window.cartaSelecionada.dataset.idcarta === 'scarlett_lv1') { lacaioAlvo.dataset.status = 'congelado'; lacaioAlvo.dataset.turnosCc = '2'; lacaioAlvo.classList.add('congelado'); window.registrarLog(`<b>Scarlett</b> CONGELOU <b>${lacaioAlvo.dataset.nome}</b>!`, '#00ffff'); }
+            if (window.cartaSelecionada.dataset.idcarta === 'karyna_lv1') { lacaioAlvo.dataset.status = 'medo'; lacaioAlvo.dataset.turnosCc = '1'; lacaioAlvo.classList.add('com-medo'); window.registrarLog(`<b>Karyna</b> causou MEDO em <b>${lacaioAlvo.dataset.nome}</b>!`, '#ff0000'); }
+            if (window.cartaSelecionada.dataset.idcarta === 'ashlan_lv1') { lacaioAlvo.dataset.status = 'vento_ashlan'; lacaioAlvo.classList.add('vento-ashlan'); window.registrarLog(`<b>Ashlan</b> desequilibrou ${lacaioAlvo.dataset.nome} com a GaleForce!`, '#32cd32'); }
+            if (window.cartaSelecionada.dataset.idcarta === 'faelan_lv1') { lacaioAlvo.dataset.status = 'envenenado'; lacaioAlvo.classList.add('envenenado'); window.registrarLog(`<b>Faelan</b> ENVENENOU ${lacaioAlvo.dataset.nome}!`, '#00ff00'); }
+            if (window.cartaSelecionada.dataset.idcarta === 'lysandre_lv1') { window.aplicarCuraLysandre(atkAtacante); }
+            if (window.cartaSelecionada.dataset.idcarta === 'elara_lv1') { 
+                let lvl = parseInt(window.cartaSelecionada.dataset.level) || 1;
+                lacaioAlvo.dataset.status = 'sangrando'; lacaioAlvo.classList.add('sangrando'); lacaioAlvo.dataset.danoSangue = 2 + lvl;
+                window.registrarLog(`As feras de <b>Elara</b> rasgaram ${lacaioAlvo.dataset.nome}! SANGRAMENTO APLICADO!`, '#8b0000');
             }
 
             if (window.cartaSelecionada.dataset.idcarta === 'genevieve_lv1' && window.cdGenevieve === 0) {
-                lacaioAlvo.dataset.status = 'seduzido'; lacaioAlvo.classList.add('seduzido');
-                lacaioAlvo.querySelector('.carta-tooltip').innerText = "Debuff: Seduzida por Genevieve. Atacará um aliado.";
+                lacaioAlvo.dataset.status = 'seduzido'; lacaioAlvo.classList.add('seduzido'); window.cdGenevieve = 8;
                 window.registrarLog(`<b>Genevieve</b> SEDUZIU ${lacaioAlvo.dataset.nome}!`, '#ff69b4');
-                window.cdGenevieve = 8;
             } else if (window.cartaSelecionada.dataset.idcarta === 'genevieve_lv1' && window.cdGenevieve > 0) {
                 window.registrarLog(`O Charme de Genevieve está recarregando (${window.cdGenevieve} turnos).`, '#aaa');
             }
 
-            // VORYSS (MORTE INSTANTÂNEA)
             if (window.cartaSelecionada.dataset.idcarta === 'voryss_lv1' && window.cdVoryss === 0) {
-                lacaioAlvo.dataset.status = 'marcado_morte'; lacaioAlvo.classList.add('marcado-morte');
-                lacaioAlvo.querySelector('.carta-tooltip').innerText = "Debuff: Será DEVORADA no próximo turno!";
+                lacaioAlvo.dataset.status = 'marcado_morte'; lacaioAlvo.classList.add('marcado-morte'); window.cdVoryss = 20;
                 window.registrarLog(`<b>Voryss</b> marcou ${lacaioAlvo.dataset.nome} para ser DEVORADA!`, '#4b0082');
-                window.cdVoryss = 20;
             } else if (window.cartaSelecionada.dataset.idcarta === 'voryss_lv1' && window.cdVoryss > 0) {
                 window.registrarLog(`A Fome de Voryss está recarregando (${window.cdVoryss} turnos).`, '#aaa');
             }
 
-            // 6. Elara (Sangramento)
-            if (window.cartaSelecionada.dataset.idcarta === 'elara_lv1') {
-                let lvl = parseInt(window.cartaSelecionada.dataset.level) || 1;
-                let danoSangue = 2 + lvl;
-                lacaioAlvo.dataset.status = 'sangrando'; lacaioAlvo.classList.add('sangrando');
-                lacaioAlvo.dataset.danoSangue = danoSangue; // Salva o dano do nível dela na ferida
-                lacaioAlvo.querySelector('.carta-tooltip').innerText = `Debuff: Sangrando (-${danoSangue} Vida/turno).`;
-                window.registrarLog(`As feras de <b>Elara</b> rasgaram ${lacaioAlvo.dataset.nome}! SANGRAMENTO APLICADO!`, '#8b0000');
-            }
+            // MÁGICA AQUI: Chama a função que constrói a caixa preta juntando Escudo + Debuff!
+            if(typeof window.renderizarTooltip === 'function') window.renderizarTooltip(lacaioAlvo);
 
-            // === AGORA SIM, APLICAMOS O DANO E CHECAMOS QUEM MORREU ===
+            // MÁGICA AQUI: Chama a função que constrói a caixa preta juntando Escudo + Debuff!
+            if(typeof window.renderizarTooltip === 'function') window.renderizarTooltip(lacaioAlvo);
+
+            // ==========================================
+            // APLICA O DANO E CHECA QUEM MORREU (CORRIGIDO)
+            // ==========================================
             let vidaInimigoRestante = window.aplicarDanoNaCarta(lacaioAlvo, atkAtacante); 
             let vidaMinhaRestante = window.aplicarDanoNaCarta(window.cartaSelecionada, atkDefensor);
             
             if(vidaInimigoRestante <= 0) {
-                let alvoMorto = lacaioAlvo; // Salva a referência do inimigo
-                setTimeout(() => alvoMorto.remove(), 400); 
+                let lacaioMorto = lacaioAlvo; // O jogo 'lembra' quem morreu
+                setTimeout(() => lacaioMorto.remove(), 400); 
             }
             
             if(vidaMinhaRestante <= 0) { 
-                let cartaMorta = window.cartaSelecionada; // Salva a referência da sua carta
-                setTimeout(() => cartaMorta.remove(), 400); // Usa a referência salva no delay
-                window.cartaSelecionada = null; // Agora pode anular em segurança
+                let cartaMorta = window.cartaSelecionada; // O jogo salva a sua carta antes de esquecer a seleção!
+                setTimeout(() => cartaMorta.remove(), 400); 
+                window.cartaSelecionada = null; 
             } else { 
                 window.exaurirCarta(window.cartaSelecionada); 
-                // window.cartaSelecionada = null; // (Descomente esta linha se o jogo bugar mantendo a carta viva selecionada após atacar)
-            }
+            } 
         };
 
         window.passarTurno = function() {
@@ -6828,31 +7019,42 @@ if (!niveisRank.includes(playerRank)) {
             setTimeout(() => {
                 if (window.playerVidaAtual > 0) window.bossInvocarLacaio();
                 
-                // ORÁCULO TOMA DANO DE VENENO
-                if (window.bossEnvenenado) {
-                    window.bossVidaAtual -= 2; if(window.bossVidaAtual < 0) window.bossVidaAtual = 0; window.atualizarUI();
-                    window.mostrarFloatingText(document.getElementById('oracleAvatar'), "-2 Veneno", 'dano', -120);
-                    window.registrarLog(`A Oráculo sofreu 2 de dano por VENENO!`, '#00ff00');
+               // ORÁCULO TOMA DANO DE VENENO (Stackado de verdade)
+                if (window.bossEnvenenado > 0) {
+                    window.bossVidaAtual -= window.bossEnvenenado; // Agora tira o dano certo (até 5)
+                    if(window.bossVidaAtual < 0) window.bossVidaAtual = 0; 
+                    window.atualizarUI();
+                    
+                    window.mostrarFloatingText(document.getElementById('oracleAvatar'), `-${window.bossEnvenenado} Veneno`, 'dano', -120);
+                    window.registrarLog(`A Oráculo sofreu ${window.bossEnvenenado} de dano por VENENO!`, '#00ff00');
                     if(window.bossVidaAtual === 0) { setTimeout(() => window.mostrarEndGame('vitoria'), 600); return; }
                 }
 
-                // ORÁCULO/RIN TOMA DANO DE SANGRAMENTO DA ELARA
+                // ORÁCULO/RIN TOMA DANO DE SANGRAMENTO (Stackado de verdade)
                 if (window.bossSangrando > 0) {
-                    window.bossVidaAtual -= window.bossSangrando; if(window.bossVidaAtual < 0) window.bossVidaAtual = 0; window.atualizarUI();
+                    window.bossVidaAtual -= window.bossSangrando; 
+                    if(window.bossVidaAtual < 0) window.bossVidaAtual = 0; 
+                    window.atualizarUI();
+                    
                     window.mostrarFloatingText(document.getElementById('oracleAvatar'), `-${window.bossSangrando} Sangue`, 'dano', -120);
                     window.registrarLog(`O Chefe sofreu ${window.bossSangrando} de dano por SANGRAMENTO!`, '#8b0000');
                     if(window.bossVidaAtual === 0) { setTimeout(() => window.mostrarEndGame('vitoria'), 600); return; }
                 }
 
+               // DÁ ESCUDO E EMPILHA OS TEXTOS CORRETAMENTE
                 if (temEscudoOraculo) {
-                    window.registrarLog("O Bastião do Vazio ressoa! +2 Escudo Sombrio para a Oráculo e seus lacaios.", '#8a2be2');
+                    window.registrarLog("O Bastião ressoa! +2 Escudo Sombrio para os aliados.", '#8a2be2');
                     window.bossEscudo += 2; window.atualizarUI();
                     window.mostrarFloatingText(document.getElementById('oracleAvatar'), "+2 Escudo", 'cura', -120);
+                    
                     document.querySelectorAll('#campoInimigo .carta-tcg').forEach(lacaioOraculo => {
                         let escAtual = parseInt(lacaioOraculo.dataset.escudo) || 0;
                         lacaioOraculo.dataset.escudo = escAtual + 2; lacaioOraculo.classList.add('escudo-sombrio');
-                        lacaioOraculo.querySelector('.carta-tooltip').innerText = `Buff: Escudo Sombrio (+2)`;
+                        
                         let iconE = lacaioOraculo.querySelector('.escudo-icon'); iconE.style.display = 'flex'; iconE.innerText = '🛡️' + lacaioOraculo.dataset.escudo;
+                        
+                        // MÁGICA 2: Não escreve texto na mão, chama a função para empilhar com o veneno!
+                        if(typeof window.renderizarTooltip === 'function') window.renderizarTooltip(lacaioOraculo);
                         window.mostrarFloatingText(lacaioOraculo, "+2 Escudo", 'cura');
                     });
                 }
@@ -6877,13 +7079,16 @@ if (!niveisRank.includes(playerRank)) {
                     }
                     if(carta.dataset.idcarta === 'lilia_lv1') temLilia = true;
                     if(carta.dataset.idcarta === 'ashley_lv1') {
-                        window.playerVidaAtual += 5; // A CURA REAL ACONTECE AQUI!
-                        if(window.playerVidaAtual > 80) window.playerVidaAtual = 80; // Trava no seu HP Máximo
+                        // Calcula a cura baseada no nível! (Nv 1 = 5, Nv 2 = 6...)
+                        let lvl = parseInt(carta.dataset.level) || 1;
+                        let curaReal = 4 + lvl; 
                         
-                        window.atualizarUI(); // Atualiza a barra de vida na hora
+                        window.playerVidaAtual += curaReal; 
+                        if(window.playerVidaAtual > 80) window.playerVidaAtual = 80; 
                         
-                        window.mostrarFloatingText(playerHPDom, "+5", 'cura', 120); 
-                        window.registrarLog("Ashley curou você em +5 HP.", '#00ffcc');
+                        window.atualizarUI(); 
+                        window.mostrarFloatingText(playerHPDom, `+${curaReal}`, 'cura', 120); 
+                        window.registrarLog(`Ashley curou você em +${curaReal} HP.`, '#00ffcc');
                     }
                 });
 
@@ -7274,11 +7479,28 @@ if (!niveisRank.includes(playerRank)) {
         // ==========================================
         // STICKGIRL FIGHT (O SURVIVAL MINI-GAME)
         // ==========================================
-        // Coloque um botão no seu menu de interações chamando: window.iniciarStickgirlFight()
         window.iniciarStickgirlFight = function() {
-            if (typeof inventario !== 'undefined' && !inventario.includes('stickgirl_fight')) {
-                alert("Derrote o Rin no modo CHAOTIC nas Dungeons para desbloquear esse evento mortal."); return;
+            // 1. Garante que o inventário existe
+            if (typeof window.inventario === 'undefined') {
+                window.inventario = JSON.parse(localStorage.getItem('aetheryonInventario')) || [];
             }
+
+            // 2. Verifica se NÃO tem a permissão
+            if (!window.inventario.includes('stickgirl_fight')) {
+                if (typeof window.mostrarAvisoEstilizado === 'function') {
+                    window.mostrarAvisoEstilizado(
+                        "INSETO INSOLENTE!", 
+                        "Sério mesmo que você está clicando onde não deve? Você não tem permissão para acessar essa arena.<br><br>Volte para as Dungeons e derrote o maldito <b>Rin no modo CHAOTIC</b> antes de me fazer perder tempo com você.", 
+                        "#8a2be2", 
+                        true 
+                    );
+                } else {
+                    alert("Derrote o Rin no modo CHAOTIC nas Dungeons para desbloquear esse evento mortal.");
+                }
+                return; // Bloqueia e encerra aqui
+            }
+
+            // 3. Se já tiver a caneta ou se for abrir direto
             if(document.getElementById('fightArena')) return;
 
             let arena = document.createElement('div');
@@ -7310,9 +7532,8 @@ if (!niveisRank.includes(playerRank)) {
                 g.style.backgroundImage = `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 100"><circle cx="30" cy="20" r="12" stroke="red" stroke-width="2" fill="black"/><path d="M20,10 Q10,30 20,50" stroke="red" stroke-width="2" fill="none"/><path d="M40,10 Q50,30 40,50" stroke="red" stroke-width="2" fill="none"/><line x1="30" y1="32" x2="30" y2="60" stroke="red" stroke-width="3"/><path d="M30,35 L10,50 M30,35 L50,50" stroke="red" stroke-width="3"/><path d="M30,60 L20,90 M30,60 L40,90" stroke="red" stroke-width="3"/></svg>')`;
                 g.style.backgroundSize = "contain"; g.style.backgroundRepeat = "no-repeat";
                 
-                // Nasce do lado direito da tela
                 g.dataset.x = window.innerWidth - 100; g.dataset.y = Math.random() * (window.innerHeight - 200) + 50;
-                g.dataset.cooldownAtaque = 180; // 3 segundos (60 frames * 3)
+                g.dataset.cooldownAtaque = 180; 
                 g.dataset.isDragging = "false";
                 
                 g.onmousedown = (e) => { g.dataset.isDragging = "true"; g.style.cursor = "grabbing"; };
@@ -7320,27 +7541,29 @@ if (!niveisRank.includes(playerRank)) {
                 arena.appendChild(g); inimigas.push(g);
             }
 
-            // Spawn Inicial
             for(let i=0; i<5; i++) setTimeout(spawnFighter, i * 500);
 
-            // Timer de Reviver (a cada 60s revive uma se faltar)
-            setInterval(() => { timeSurvived++; if(timeSurvived % 60 === 0) spawnFighter(); }, 1000);
+            let intervalTimer = setInterval(() => { timeSurvived++; if(timeSurvived % 60 === 0) spawnFighter(); }, 1000);
 
-            document.addEventListener('mouseup', (e) => {
+            let mouseUpHandler = (e) => {
                 inimigas.forEach((g, i) => {
                     if(g.dataset.isDragging === "true") {
                         g.dataset.isDragging = "false"; g.style.cursor = "grab";
-                        // Jogou no buraco?
                         let rectB = buraco.getBoundingClientRect();
                         if(e.clientX > rectB.left && e.clientX < rectB.right && e.clientY > rectB.top && e.clientY < rectB.bottom) {
                             g.remove(); inimigas.splice(i, 1);
                         }
                     }
                 });
-            });
+            };
+            document.addEventListener('mouseup', mouseUpHandler);
 
             function fightLoop() {
-                if(!document.getElementById('fightArena')) return;
+                if(!document.getElementById('fightArena')) {
+                    clearInterval(intervalTimer);
+                    document.removeEventListener('mouseup', mouseUpHandler);
+                    return;
+                }
                 
                 for(let i = inimigas.length - 1; i >= 0; i--) {
                     let g = inimigas[i];
@@ -7348,30 +7571,27 @@ if (!niveisRank.includes(playerRank)) {
                         g.dataset.x = mouseX - 30; g.dataset.y = mouseY - 50;
                         g.style.transform = `scale(0.9) rotate(15deg)`;
                     } else {
-                        // IA da Inimiga (Corre pro seu mouse!)
                         let curX = parseFloat(g.dataset.x); let curY = parseFloat(g.dataset.y);
                         let dx = mouseX - (curX + 30); let dy = mouseY - (curY + 50);
                         let dist = Math.hypot(dx, dy);
                         
                         if(dist > 50) {
-                            // Anda
                             curX += (dx / dist) * 2.5; curY += (dy / dist) * 2.5;
                             g.style.transform = `scaleX(${dx > 0 ? 1 : -1}) rotate(${Math.sin(Date.now()/50)*15}deg)`;
                         } else {
-                            // Ataca!
                             let cd = parseInt(g.dataset.cooldownAtaque);
                             if(cd <= 0) {
-                                // Toma Dano!
                                 vidasPlayer--;
                                 let v = ""; for(let k=0; k<vidasPlayer; k++) v += "❤️";
                                 hudVidas.innerHTML = v;
                                 document.body.style.boxShadow = "inset 0 0 100px red"; setTimeout(() => document.body.style.boxShadow = "none", 200);
-                                g.dataset.cooldownAtaque = 180; // reseta
-                                g.style.transform = `scaleX(${dx > 0 ? 1 : -1}) scale(1.3)`; // Animação de espadada
+                                g.dataset.cooldownAtaque = 180; 
+                                g.style.transform = `scaleX(${dx > 0 ? 1 : -1}) scale(1.3)`;
                                 
                                 if(vidasPlayer <= 0) {
                                     alert(`GAME OVER! Você sobreviveu por ${timeSurvived} segundos.`);
-                                    arena.remove(); return; // Para o jogo
+                                    arena.remove(); 
+                                    return; 
                                 }
                             } else {
                                 g.dataset.cooldownAtaque = cd - 1;
@@ -7474,6 +7694,49 @@ if (!niveisRank.includes(playerRank)) {
             const lobbyMenu = document.getElementById('cardGameMenuScreen');
             if (lobbyMenu) document.body.appendChild(lobbyMenu);
         });
+
+        // ==========================================
+        // VERIFICAÇÃO DO EVENTO STICKGIRL FIGHT
+        // ==========================================
+        window.iniciarStickgirlFight = function() {
+            // 1. Garante que o inventário existe
+            if (typeof window.inventario === 'undefined') {
+                window.inventario = JSON.parse(localStorage.getItem('aetheryonInventario')) || [];
+            }
+
+            // 2. Verifica se NÃO tem a permissão
+            if (!window.inventario.includes('stickgirl_fight')) {
+                if (typeof window.mostrarAvisoEstilizado === 'function') {
+                    window.mostrarAvisoEstilizado(
+                        "INSETO INSOLENTE!", 
+                        "Sério mesmo que você está clicando onde não deve? Você não tem permissão para acessar essa arena.<br><br>Volte para as Dungeons e derrote o maldito <b>Rin no modo CHAOTIC</b> antes de me fazer perder tempo com você.", 
+                        "#8a2be2", 
+                        true 
+                    );
+                } else {
+                    alert("Derrote o Rin no modo CHAOTIC nas Dungeons para desbloquear esse evento mortal.");
+                }
+                return; // Bloqueia e encerra aqui
+            }
+
+            // 3. SE TIVER DESBLOQUEADO, INICIA O JOGO
+            if (typeof window.usarCanetaMagica === 'function') {
+                window.usarCanetaMagica(); // Chama o minigame
+            } else {
+                // Caso não tenha a caneta, puxa a arena de emergência
+                if(document.getElementById('fightArena')) return;
+                
+                let arena = document.createElement('div');
+                arena.id = 'fightArena';
+                arena.style.cssText = "position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:9999999; overflow:hidden; pointer-events:none;";
+                document.body.appendChild(arena);
+                
+                if (typeof window.mostrarAvisoEstilizado === 'function') {
+                    window.mostrarAvisoEstilizado("Stickgirl Fight", "Iniciando a arena de papel...", "#ff4444");
+                }
+            }
+        };
+
     </script>
 
     <!-- MÁGICA QUE DESENGOLA OS MINIGAMES -->
@@ -7494,6 +7757,17 @@ if (!niveisRank.includes(playerRank)) {
             });
         });
     </script>
+
+    <!-- FORÇANDO O CURSOR (MARRETADA FINAL) -->
+    <style>
+        body, html, div, p, h1, h2, h3, span {
+            cursor: url('espada_cursor.png'), auto !important;
+        }
+
+        button, .carta-tcg, .cg-menu-btn, .map-node, #oracleAvatar, img {
+            cursor: url('espada_cursor.png'), pointer !important;
+        }
+    </style>
 
     <!-- ========================================== -->
     <!-- CABO CHUPETA PARA FORÇAR O JOGO A ABRIR    -->
