@@ -422,21 +422,59 @@
         /* ADAPTAÇÃO PARA CELULAR (MOBILE)           */
         /* ========================================= */
         @media (max-width: 800px) {
-            .carta-tcg { transform: scale(0.65); margin-left: -20px; }
-            .carta-tcg:hover { transform: scale(0.75); z-index: 50; }
+            /* Mão do jogador: encolhe e gruda no fundo da tela */
+            #maoJogador { 
+                transform: scale(0.60) !important; 
+                transform-origin: bottom center !important; 
+                margin-bottom: 10px !important; 
+            }
+            /* Sobrepõe as cartas um pouco mais para caberem 7-8 na mão */
+            .carta-tcg { margin-left: -30px !important; }
+            .carta-tcg:hover { transform: scale(1.1) translateY(-20px) !important; z-index: 50 !important; }
 
-            #campoInimigo, #campoJogador { width: 95%; height: 100px; flex-wrap: wrap; }
-            #maoJogador { transform: scale(0.75); margin-bottom: 0px; }
+            /* Campos espremidos pra caber tudo na vertical */
+            #campoInimigo, #campoJogador { width: 95% !important; height: 95px !important; flex-wrap: wrap !important; gap: 5px !important; margin-top: 10px !important; }
 
-            #bossHP, #playerHP { width: 50px; height: 50px; font-size: 20px; border-width: 2px; }
-            #oracleAvatar img { height: 90px !important; }
+            /* Diminui as bolhas de vida e a foto da Oráculo */
+            #bossHP, #playerHP { width: 55px !important; height: 55px !important; font-size: 22px !important; border-width: 2px !important; }
+            #oracleAvatar img { height: 75px !important; }
             
+            /* Esconde coisas inúteis no celular pra limpar a tela */
             button[onclick*="historicoBatalha"], button[onclick*="cartas-ampliadas"] { display: none !important; }
-            button[onclick*="modalSairJogo"] { top: 10px !important; left: 10px !important; padding: 5px 10px !important; font-size: 12px !important; }
-            #btnPassarTurno { bottom: 15% !important; top: auto !important; right: 5px !important; padding: 8px !important; font-size: 10px !important; }
+            
+            /* Tira o "Sair do Jogo" de cima da vida do Boss e joga pro MEIO do topo */
+            button[onclick*="modalSairJogo"] { 
+                top: 15px !important; 
+                left: 50% !important; 
+                transform: translateX(-50%) !important; 
+                padding: 8px 15px !important; 
+            }
 
-            div[style*="top: 10%; left: 3%"] { top: 2% !important; left: 2% !important; flex-direction: column !important; }
-            div[style*="bottom: 15%; left: 3%"] { bottom: 2% !important; left: 2% !important; flex-direction: column !important; }
+            /* HUD DO INIMIGO: Ajusta no cantinho esquerdo */
+            div[style*="top: 10%; left: 3%"] { 
+                top: 15px !important; 
+                left: 5px !important; 
+                flex-direction: column !important; 
+                gap: 5px !important;
+            }
+
+            /* HUD DO JOGADOR: Levanta para NÃO ficar esmagando as cartas (160px do chão) */
+            div[style*="bottom: 15%; left: 3%"] { 
+                bottom: 160px !important; 
+                left: 5px !important; 
+                flex-direction: column !important; 
+                gap: 5px !important;
+            }
+
+            /* BOTAO PASSAR TURNO: Levanta e joga pro cantinho direito */
+            #btnPassarTurno { 
+                top: auto !important;
+                bottom: 160px !important; 
+                right: 5px !important; 
+                padding: 10px 15px !important; 
+                font-size: 11px !important; 
+                transform: none !important;
+            }
         }
 
     </style>
