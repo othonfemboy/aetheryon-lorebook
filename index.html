@@ -422,17 +422,28 @@
         /* ADAPTAÇÃO PARA CELULAR (MOBILE)           */
         /* ========================================= */
         @media (max-width: 800px) {
-            /* Mão do jogador: encolhe e gruda no fundo da tela */
+            /* Mão do jogador agora é um Carrossel! */
             #maoJogador { 
-                transform: scale(0.60) !important; 
-                transform-origin: bottom center !important; 
-                margin-bottom: 10px !important; 
+                transform: scale(0.65) !important; 
+                transform-origin: bottom left !important; /* Alinha à esquerda */
+                margin-bottom: 0px !important; 
+                justify-content: flex-start !important; 
+                overflow-x: auto !important; /* Permite arrastar com o dedo */
+                overflow-y: visible !important;
+                width: 100vw !important; /* Ocupa a largura toda */
+                padding-bottom: 15px !important;
+                padding-left: 60px !important; /* Abre espaço pra seta esquerda */
+                padding-right: 60px !important; /* Abre espaço pra seta direita */
+                scroll-behavior: smooth !important;
+                scrollbar-width: none; /* Esconde a barra de rolagem feia */
             }
-            /* Sobrepõe as cartas um pouco mais para caberem 7-8 na mão */
-            .carta-tcg { margin-left: -30px !important; }
+            #maoJogador::-webkit-scrollbar { display: none; }
+
+            /* Tira o esmagamento das cartas e impede elas de encolherem */
+            .carta-tcg { margin-left: 5px !important; flex-shrink: 0 !important; }
             .carta-tcg:hover { transform: scale(1.1) translateY(-20px) !important; z-index: 50 !important; }
 
-            /* Campos espremidos pra caber tudo na vertical */
+            /* Espreme o campo dos lacaios pra caber tudo */
             #campoInimigo, #campoJogador { width: 95% !important; height: 95px !important; flex-wrap: wrap !important; gap: 5px !important; margin-top: 10px !important; }
 
             /* Diminui as bolhas de vida e a foto da Oráculo */
@@ -441,40 +452,32 @@
             
             /* Esconde coisas inúteis no celular pra limpar a tela */
             button[onclick*="historicoBatalha"], button[onclick*="cartas-ampliadas"] { display: none !important; }
-            
-            /* Tira o "Sair do Jogo" de cima da vida do Boss e joga pro MEIO do topo */
-            button[onclick*="modalSairJogo"] { 
-                top: 15px !important; 
-                left: 50% !important; 
-                transform: translateX(-50%) !important; 
-                padding: 8px 15px !important; 
-            }
+            button[onclick*="modalSairJogo"] { top: 15px !important; left: 50% !important; transform: translateX(-50%) !important; padding: 8px 15px !important; }
 
-            /* HUD DO INIMIGO: Ajusta no cantinho esquerdo */
-            div[style*="top: 10%; left: 3%"] { 
-                top: 15px !important; 
-                left: 5px !important; 
-                flex-direction: column !important; 
-                gap: 5px !important;
-            }
+            /* HUD DO INIMIGO: Ajusta no cantinho esquerdo superior */
+            div[style*="top: 10%; left: 3%"] { top: 15px !important; left: 5px !important; flex-direction: column !important; gap: 5px !important; }
 
-            /* HUD DO JOGADOR: Levanta para NÃO ficar esmagando as cartas (160px do chão) */
+            /* ======================================================== */
+            /* SOLUÇÃO DO OVERLAP: Levanta a Vida e o Botão do Jogador  */
+            /* ======================================================== */
             div[style*="bottom: 15%; left: 3%"] { 
-                bottom: 160px !important; 
-                left: 5px !important; 
+                bottom: 185px !important; /* Subiu de 160 pra 185 */
+                left: 10px !important; 
                 flex-direction: column !important; 
-                gap: 5px !important;
+                gap: 5px !important; 
             }
 
-            /* BOTAO PASSAR TURNO: Levanta e joga pro cantinho direito */
             #btnPassarTurno { 
-                top: auto !important;
-                bottom: 160px !important; 
-                right: 5px !important; 
+                top: auto !important; 
+                bottom: 185px !important; /* Subiu pra alinhar com a Vida */
+                right: 10px !important; 
                 padding: 10px 15px !important; 
                 font-size: 11px !important; 
-                transform: none !important;
+                transform: none !important; 
             }
+
+            /* Exibe as setas de scroll que a gente criou no HTML */
+            .seta-scroll { display: flex !important; }
         }
 
     </style>
@@ -6057,6 +6060,11 @@ if (!niveisRank.includes(playerRank)) {
             <div id="maoJogador" style="display: flex; gap: 5px; perspective: 1000px;"></div>
         </div>
     </div>
+
+        <!-- SETAS DE SCROLL DA MÃO (Aparecem apenas no celular) -->
+        <button class="seta-scroll" onclick="document.getElementById('maoJogador').scrollBy({left: -180, behavior: 'smooth'})" style="display: none; position: absolute; bottom: 35px; left: 10px; z-index: 9999; width: 45px; height: 45px; background: #111; border: 2px solid #00ffcc; border-radius: 50%; color: #00ffcc; font-weight: bold; font-size: 20px; justify-content: center; align-items: center; box-shadow: 0 0 15px rgba(0, 255, 204, 0.5); cursor: pointer;">&#9664;</button>
+
+        <button class="seta-scroll" onclick="document.getElementById('maoJogador').scrollBy({left: 180, behavior: 'smooth'})" style="display: none; position: absolute; bottom: 35px; right: 10px; z-index: 9999; width: 45px; height: 45px; background: #111; border: 2px solid #00ffcc; border-radius: 50%; color: #00ffcc; font-weight: bold; font-size: 20px; justify-content: center; align-items: center; box-shadow: 0 0 15px rgba(0, 255, 204, 0.5); cursor: pointer;">&#9654;</button>
 
         <div id="mapaMundiScreen" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: url('https://via.placeholder.com/1920x1080/050510/222244?text=Mapa+de+Aetheryon') no-repeat center center; background-size: cover; z-index: 7000; font-family: 'Cinzel', serif;">
         
