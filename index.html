@@ -422,62 +422,66 @@
         /* ADAPTAÇÃO PARA CELULAR (MOBILE)           */
         /* ========================================= */
         @media (max-width: 800px) {
-            /* Mão do jogador agora é um Carrossel! */
+            /* ARRANCA A MÃO DO FUNDO E GRUDA DIRETO NA TELA */
             #maoJogador { 
+                position: fixed !important;
+                bottom: 0px !important;
+                left: 0 !important;
+                width: 100vw !important;
                 transform: scale(0.65) !important; 
-                transform-origin: bottom left !important; /* Alinha à esquerda */
-                margin-bottom: 0px !important; 
+                transform-origin: bottom left !important; 
                 justify-content: flex-start !important; 
-                overflow-x: auto !important; /* Permite arrastar com o dedo */
+                overflow-x: auto !important; 
                 overflow-y: visible !important;
-                width: 100vw !important; /* Ocupa a largura toda */
-                padding-bottom: 15px !important;
-                padding-left: 60px !important; /* Abre espaço pra seta esquerda */
-                padding-right: 60px !important; /* Abre espaço pra seta direita */
+                padding-bottom: 5px !important;
+                padding-left: 70px !important; /* Espaço da seta esquerda */
+                padding-right: 70px !important; /* Espaço da seta direita */
                 scroll-behavior: smooth !important;
-                scrollbar-width: none; /* Esconde a barra de rolagem feia */
+                scrollbar-width: none;
+                z-index: 7006 !important;
             }
             #maoJogador::-webkit-scrollbar { display: none; }
 
-            /* Tira o esmagamento das cartas e impede elas de encolherem */
-            .carta-tcg { margin-left: 5px !important; flex-shrink: 0 !important; }
-            .carta-tcg:hover { transform: scale(1.1) translateY(-20px) !important; z-index: 50 !important; }
+            /* Espaçamento e comportamento ao passar o dedo */
+            .carta-tcg { margin-left: 10px !important; flex-shrink: 0 !important; }
+            .carta-tcg:hover { transform: scale(1.1) translateY(-20px) !important; }
 
-            /* Espreme o campo dos lacaios pra caber tudo */
-            #campoInimigo, #campoJogador { width: 95% !important; height: 95px !important; flex-wrap: wrap !important; gap: 5px !important; margin-top: 10px !important; }
+            /* PREGA AS SETAS NA TELA PARA NÃO ROLAREM JUNTO */
+            .seta-scroll { 
+                display: flex !important; 
+                position: fixed !important; 
+                bottom: 25px !important; 
+                z-index: 7010 !important;
+            }
+            .seta-scroll[onclick*="-180"] { left: 5px !important; } /* Seta esquerda */
+            .seta-scroll[onclick*="180"] { right: 5px !important; } /* Seta direita */
 
-            /* Diminui as bolhas de vida e a foto da Oráculo */
-            #bossHP, #playerHP { width: 55px !important; height: 55px !important; font-size: 22px !important; border-width: 2px !important; }
-            #oracleAvatar img { height: 75px !important; }
-            
-            /* Esconde coisas inúteis no celular pra limpar a tela */
-            button[onclick*="historicoBatalha"], button[onclick*="cartas-ampliadas"] { display: none !important; }
-            button[onclick*="modalSairJogo"] { top: 15px !important; left: 50% !important; transform: translateX(-50%) !important; padding: 8px 15px !important; }
-
-            /* HUD DO INIMIGO: Ajusta no cantinho esquerdo superior */
-            div[style*="top: 10%; left: 3%"] { top: 15px !important; left: 5px !important; flex-direction: column !important; gap: 5px !important; }
-
-            /* ======================================================== */
-            /* SOLUÇÃO DO OVERLAP: Levanta a Vida e o Botão do Jogador  */
-            /* ======================================================== */
+            /* HUD DO JOGADOR - Vida mais pra cima pra liberar espaço */
             div[style*="bottom: 15%; left: 3%"] { 
-                bottom: 185px !important; /* Subiu de 160 pra 185 */
+                bottom: 190px !important; 
                 left: 10px !important; 
                 flex-direction: column !important; 
                 gap: 5px !important; 
+                z-index: 7005 !important;
             }
 
+            /* BOTÃO DE PASSAR TURNO - Alinhado com a Vida */
             #btnPassarTurno { 
                 top: auto !important; 
-                bottom: 185px !important; /* Subiu pra alinhar com a Vida */
+                bottom: 190px !important; 
                 right: 10px !important; 
                 padding: 10px 15px !important; 
                 font-size: 11px !important; 
                 transform: none !important; 
             }
 
-            /* Exibe as setas de scroll que a gente criou no HTML */
-            .seta-scroll { display: flex !important; }
+            /* O RESTO DA TELA (Campos, Inimigo e Botões de cima) */
+            #campoInimigo, #campoJogador { width: 95% !important; height: 95px !important; flex-wrap: wrap !important; gap: 5px !important; margin-top: 5px !important; }
+            #bossHP, #playerHP { width: 55px !important; height: 55px !important; font-size: 22px !important; border-width: 2px !important; }
+            #oracleAvatar img { height: 75px !important; }
+            button[onclick*="historicoBatalha"], button[onclick*="cartas-ampliadas"] { display: none !important; }
+            button[onclick*="modalSairJogo"] { top: 15px !important; left: 50% !important; transform: translateX(-50%) !important; padding: 8px 15px !important; }
+            div[style*="top: 10%; left: 3%"] { top: 15px !important; left: 5px !important; flex-direction: column !important; gap: 5px !important; }
         }
 
     </style>
