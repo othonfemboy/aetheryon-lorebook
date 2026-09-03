@@ -527,6 +527,9 @@
     <option value="bossfight.mp3">🗡️ Música: Boss Fight</option>
     <option value="hafuku.mp3">🎀 Música: Hafuku</option>
     <option value="koharu.mp3">🌸 Música: Koharu</option>
+    <option value="danceafrican.mp3">🇿🇦 Música: Dance Like An African</option>
+    <option value="paparazzi.mp3">🎵 Música: Paparazzi</option>
+    <option value="kandagawa.mp3">🐋 Música: Kandagawa Jet Girls</option>
 </select>
 <div style="display: flex; align-items: center; gap: 5px; background: #111; padding: 0 15px; border: 2px solid #444; border-radius: 5px; height: 42px; margin: 0;">
     <span style="color: #aaa; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🔉 VOL:</span>
@@ -716,6 +719,7 @@
                 race: "Divindade Cósmica", weapon: "Domínio Astral",
                 weaponDetails: "Não necessita de armas físicas. Como o Astral das Estrelas, ele conjura feitiços lunares e estelares devastadores, invoca chuvas de meteoros, dispara feixes de luz estelar pura e concentrada, e manipula a gravidade cósmica para obliterar exércitos inteiros.",
                 description: "Uma entidade cósmica suprema cuja força vital mantém o sol a brilhar em Aetheryon. Diferente da postura submissa de Ashlan, Eryn possui um perfil de 'femboy dominante'. Ele é absurdamente poderoso, superprotetor e possessivo, sendo capaz de aniquilar divisões militares inteiras apenas por ciúmes.<br><br>Sua presença distorce o espaço ao redor, fazendo o ar ficar denso e pesado para quem ousa se aproximar demais do seu amado Herdeiro do Vendaval.",
+                extraImages: ["eryn_art1.png", "eryn_art2.png"],
                 secret: "Eryn tem um transtorno de obsessão patológica por Ashlan Lancehearth. O deus milenar encontrou sua âncora emocional na delicadeza do príncipe e agora protege-o com uma psicopatia possessiva. Eryn é perfeitamente capaz de incinerar uma cidade ou explodir órgãos internos de camponeses inocentes apenas porque alguém olhou ou elogiou Ashlan nas ruas."
             },
             // --- O NÚCLEO DE ZENATHOR E ECLIPSE REQUIEM ---
@@ -1065,6 +1069,7 @@
             {
             name: "Príncipe Aelith", title: "O Esgrimista de Mournfall", role: "dps", image: "aelith.png",
             avatar: "aelith_face.png",
+            model3dChar: "aelithmodel.glb",
             quote: "\"Nas sombras da lâmina Mortis, até a luz aprende a se curvar.\"",
             faction: "🌑 Reino de Mournfall", elemento: "🌑 Sombra", 
             stats: { forca: 35, magia: 50, agilidade: 95, inteligencia: 65, carisma: 75, physDef: 10, magDef: 30 },
@@ -1316,7 +1321,8 @@
         },
         {
                 name: "Lynn Lancehearth", 
-                title: "A Matriarca Rebelde", 
+                title: "A Matriarca Rebelde",
+                model3dChar: "lynnmodel.glb", 
                 role: "dps", 
                 image: "lynn.png",
                 avatar: "lynn_face.png",
@@ -1401,7 +1407,80 @@
     description: "Outrora a reverenciada e justa rainha de Vondale, Lilith viu o seu mundo ruir durante a Grande Guerra. Embora mantida a salvo dentro das fortificações da Capital Real, o conflito custou a vida do seu amado marido e aniquilou a elite militar que jurara proteger a nação.<br><br>Governou em solidão durante anos, sustentando uma paz frágil enquanto criava sua filha, a Princesa Herdeira. Porém, quando o ciclo de carnificina recomeçou devido às maquinações de Karyna Blackfield, a mente de Lilith sucumbiu ao desespero e ao ódio. Farta das promessas vazias dos mortais, abdicou de seu trono em favor de Genevieve e partiu em uma cruzada solitária.<br><br>Hoje, portando o aterrador Cetro Nihil recuperado do Deserto Consagrado, ela busca romper as fronteiras do mítico 'Reino Proibido' (Forbidden Realm) para confrontar as divindades criadoras e reescrever as leis de Aetheryon.",
     extraImages: ["lilith_art1.png", "lilith_art2.png"],
     secret: "Apesar de empunhar poder suficiente para aniquilar exércitos inteiros, Lilith guarda dois pontos de vulnerabilidade extrema. O primeiro é físico-mágico: o Cetro Nihil entra em curto-circuito e colapsa se confrontado com pura Luz Divina (como o poder empunhado por Ashley Lancehearth). O segundo é emocional: a culpa excruciante por ter abandonado a própria filha em Vondale, justificando para si mesma que apagar e recriar o cosmos é o único legado capaz de garantir a sobrevivência da princesa."
-},   
+        },
+        {
+    name: "Corvin Grimm",
+    title: "O Ceifador Herege",
+    model3dChar: "corvinmodel.glb",
+    role: "tank",
+    image: "corvin.png",
+    avatar: "corvin_face.png",
+    quote: "\"Demônios não temem a morte porque acham que sua essência sempre retorna ao Caos. Eu existo para mostrar que até a alma de vocês pode ser triturada até não sobrar nada.\"",
+    faction: "🍃 Naturelands (Herege Renegado)",
+    elemento: "💀 Ruptura de Alma / Morte Espiritual",
+    stats: { forca: 55, magia: 60, agilidade: 65, inteligencia: 80, carisma: 35, physDef: 92, magDef: 80 },
+    race: "Humano",
+    weapon: "Anima Mortis (Foice Rúnica de Ruptura)",
+    weaponDetails: "Originalmente uma foice rústica de lavoura de Naturelands utilizada para abrir trilhas e podar bosques. Após desertar, Corvin mergulhou a lâmina em banhos de ferro frio e entalhou no aço glifos arcanos arrancados de grimórios profanos. O corte ignora a couraça física para romper a malha astral do adversário: a cada golpe desferido, a âncora espiritual do inimigo é fraturada, reduzindo cumulativamente em 6% o dano total causado pelo alvo (acumula até 5 vezes, atingindo 30% de atrofia de combate). Contra entidades do Caos e demônios abissais, a atrofia é intensificada e desestabiliza canalizações mágicas.",
+    weaponImage: "corvin_weapon.png",
+    description: "Nascido como um humano comum nas clareiras pacíficas de Naturelands, Corvin cresceu cercado pelos dogmas de comunhão com a terra e pelo respeito inegociável à vida pregado pelos druidas e anciãos locais.<br><br>Sua fé no equilíbrio natural desmoronou no dia em que as primeiras incursões de horrores demoníacos e aberrações do Caos rasgaram as fronteiras do bosque. Enquanto aldeias inteiras eram massacradas e o solo sagrado era envenenado por miasma necrótico, os clãs insistiam em conjurar raízes e amarras não letais na ingênua esperança de conter ou purificar o horror. Ao presenciar seus companheiros sendo devorados vivos e ver que a compaixão dos druidas apenas alimentava a fome das bestas, Corvin compreendeu uma verdade incontestável: o mal absoluto não respeita o ciclo da floresta, e o que não pode ser redimido precisa ser extirpado pela raiz.<br><br>Rejeitado e jurado como herege por defender o extermínio sistemático dos invasores, Corvin abandonou as terras natais levando apenas suas ferramentas de trabalho. Durante anos de exílio, invadiu mausoléus esquecidos, catacumbas de guerra e arquivos arcanos proibidos espalhados por Aetheryon, devorando tratados milenares de necromancia, anatomia espiritual e quebra astral. Combinando a disciplina de um lavrador obstinado com a heresia de rituais proibidos, ele transmutou sua antiga foice de colheita em um instrumento de suplício capaz de ferir o intangível.<br><br>No campo de batalha, Corvin atua como uma muralha viva e implacável na vanguarda da linha de frente. Sob a penumbra do capuz cinzento, seus olhos humanos transmitem o foco gélido de quem não teme a morte carnal. Vestindo sua máscara de aço fosco para filtrar o ar contaminado, ele avança contra abominações colossais sem recuar um único centímetro. Cada golpe de sua foice não busca apenas o sangue da criatura, mas arranca lascas de sua própria vontade de existir, atrofiando o poder destrutivo do inimigo a cada impacto até que os maiores terrores de Aetheryon não passem de carcaças enfraquecidas esperando o corte final.",
+    extraImages: ["corvin_art1.png", "corvin_combat.jpg"],
+    secret: "A máscara tática que cobre seu nariz, boca e mandíbula serve para filtrar miasmas tóxicos, mas seuOs registros atuais do projeto ainda não têm os detalhes e a lore do **Corvin Grimm** salvos no histórico."   
+        },
+        {
+            name: "Koharu 小春",
+            title: "A Forjadora de Éter",
+            model3dChar: "koharumodel.glb",
+            role: "dps",
+            image: "koharu.png",
+            avatar: "koharu_face.png",
+            quote: "\"Guerreiros do continente ainda batem ferro bruto em bigornas. Minhas espadas não apenas cortam: elas desestabilizam as ligações atômicas do alvo a cada estocada.\"",
+            faction: "⚙️ Aethelgard",
+            elemento: "⚙️ Magi-Tech",
+            stats: { forca: 60, magia: 75, agilidade: 95, inteligencia: 90, carisma: 70, physDef: 45, magDef: 60 },
+            race: "Elfa Mantra MagiTech",
+            weapon: "Florete Ressonante: Aether Needle Mk. VI",
+            weaponDetails: "Uma espada de estocada cirúrgica projetada e construída pela própria Koharu. O núcleo na empunhadura canaliza linhas de mana pura e vibra em frequências hiper-sônicas, permitindo que a lâmina penetre couraças pesadas, escudos mágicos e carapaças de demônios como se fossem ar. A arma conta com um sistema de resfriamento instantâneo que evita superaquecimento durante rajadas de golpes contínuos.",
+            weaponImage: "koharu_weapon.png",
+            description: "No coração industrial de Aethelgard, Koharu é reconhecida como a maior autoridade na fusão entre metalurgia tradicional e circuitos arcanos aplicados a armas brancas.<br><br>Enquanto a maioria dos engenheiros da ilha voltou sua atenção para autômatos bélicos ou artilharia de longo alcance, Koharu sempre manteve uma obsessão visceral pela esgrima e pela pureza do combate corpo a corpo. Recusando-se a depender apenas de projéteis, ela dedicou sua juventude a criar armas de corte capazes de competir e anular os poderes elementais que assolam o continente.<br><br>No campo de batalha, Koharu não se esconde atrás de barreiras. Vestindo seu uniforme leve sob medida para mobilidade absoluta, ela testa pessoalmente seus protótipos na vanguarda do combate. Seus movimentos são rápidos, fluidos e matematicamente calculados: cada passo é um cálculo de vetor e cada estocada de seu florete perfura pontos estruturais vulneráveis dos inimigos, deixando rastros de luz violeta e partículas de éter comprimido por onde passa.",
+            extraImages: ["koharu_art1.png", "koharu_art2.png"],
+            secret: "Koharu calibra todas as suas armas usando dados biométricos de combate que ela coleta secretamente nos duelos de Gayka e nos autômatos Gardys. Além disso, seu florete possui um 'Módulo de Sobrecarga Oculto': se ela estiver prestes a ser desarmada ou capturada, a empunhadura dispara uma descarga eletromagnética concentrada direto nos nervos da própria usuária, amplificando seus reflexos em 200% por trinta segundos ao custo de danos severos à própria musculatura após o término do efeito."
+        },
+        {
+            name: "Mana マナ",
+            title: "A Tecelã Balística",
+            role: "dps",
+            image: "mana.png",
+            avatar: "mana_face.png",
+            quote: "\"Foque apenas no seu corte, Koharu. Nenhuma lâmina ou feitiço inimigo tocará você enquanto a corda do meu arco estiver tensa.\"",
+            faction: "⚙️ Aethelgard",
+            elemento: "⚙️ Magi-Tech / Luz Etérea",
+            stats: { forca: 45, magia: 50, agilidade: 100, inteligencia: 100, carisma: 85, physDef: 35, magDef: 25 },
+            race: "Elfa Mantra MagiTech",
+            weapon: "Arco de Projeção Etérea: Amaterasu Mk. IV",
+            weaponDetails: "Um arco recurvo de alta precisão que dispensa flechas de madeira ou metal convencionais. Ao puxar a corda de fibra sintética energizada, o núcleo Magi-Tech no punho condensa partículas de éter atmosférico em virotes de pura luz comprimida. A arma possui sensores giroscópicos e atuadores magnéticos que compensam automaticamente a refração do ar e a interferência mágica, perfurando barreiras a quilômetros de distância.",
+            weaponImage: "mana_weapon.png",
+            description: "Dentro dos complexos industriais de Aethelgard, Mana é reverenciada como a artífice máxima de projéteis tensionados, arcos compostos e bestas de repetição de alta frequência.<br><br>Enquanto sua parceira de bancada e namorada, Koharu, é obcecada pela pureza e pelo choque térmico da esgrima corpo a corpo, Mana dedica cada minuto de estudo ao domínio balístico do combate à distância. As duas operam como uma unidade inseparável tanto no laboratório quanto nas frentes de teste: Koharu projeta as ligas supercondutoras e os gumes moleculares, enquanto Mana calcula a aceleração de vetores, tensões de disparo e micro-balística.<br><br>Com uma personalidade calma, acolhedora e surpreendentemente gentil para os padrões frios da ilha de ferro e luz, Mana funciona como o porto seguro de Koharu, sempre pronta para resfriar os ânimos da espadachim após horas ininterruptas de solda e calibragem exaustiva. Em batalha, essa doçura dá lugar a uma frieza matemática implacável: posicionada na retaguarda com seus trajes leves de estilo oriental adaptados para engenharia, ela dispara saraivadas de flechas de fótons que cobrem os avanços agressivos da namorada, garantindo que nenhum flanco de Koharu fique desprotegido.",
+            extraImages: ["mana_art1.jpg", "mana_art2.jpg", "mana_art3.jpg"],
+            secret: "O arco de Mana e o florete de Koharu compartilham uma frequência quântica sincronizada chamada 'Protocolo Vínculo Gêmeo'. Toda vez que a espada de Koharu penetra a blindagem de um inimigo, o ponto de impacto emite uma micro-baliza de sonar de éter que calibra instantaneamente os visores de Mana, garantindo que a próxima flecha disparada seja um acerto crítico teleguiado com 100% de taxa de perfuração."
+        },
+        {
+            name: "Seiya (静夜)",
+            title: "O Punho da Brisa Serena",
+            role: "dps",
+            image: "seiya.png",
+            avatar: "seiya_face.png",
+            quote: "\"I-irmã, por favor, manda eles levantarem do chão! Eu só queria treinar um pouco de vento, não precisa colocar ninguém pra lamber meus pés!\"",
+            faction: "🏔️ Pico dos Suspiros",
+            elemento: "🌪️ Vento / Artes Marciais (Em Treinamento)",
+            stats: { forca: 75, magia: 55, agilidade: 95, inteligencia: 80, carisma: 90, physDef: 30, magDef: 35 },
+            race: "Elfo Mantra",
+            weapon: "Artes Marciais do Vácuo (Desarmado) & Brisa Espiritual",
+            weaponDetails: "Diferente dos impactos sísmicos e da brutalidade devastadora de Byakuya, Seiya luta puramente desarmado tentando replicar a técnica da irmã com socos e chutes leves. Sem massa muscular para esmagar ossos, ele canaliza correntes de ar comprimido nas pontas dos dedos e nos calcanhares para desviar lâminas pesadas, criar pequenos vórtices de repulsão e desequilibrar oponentes maiores com rajadas de vento contínuas.",
+            description: "Irmão mais novo de Byakuya e formalmente o Vice-Líder da cidade-fortaleza de Kaelen, no Pico dos Suspiros. Dono de traços delicados, silhueta andrógina e um comportamento extremamente tímido e retraído, Seiya é o contraste absoluto da imponência arrogante e intimidadora de sua irmã.<br><br>Determinada a transformá-lo em uma figura de autoridade inquestionável, Byakuya assumiu pessoalmente seu treinamento marcial, insistindo para que ele domine o combate corpo a corpo desarmado e a manipulação do Vento. Embora Seiya se esforce para imitar os passos e as posturas da matriarca[cite: 1], sua falta de agressividade natural faz com que suas artes marciais sejam defensivas e acrobáticas: em vez de pulverizar armaduras, ele desliza pelas correntes de ar com leveza impressionante, evitando danos fatais enquanto tenta encontrar aberturas para desestabilizar os inimigos.<br><br>A maior provação de Seiya, no entanto, não está nos campos de batalha, mas nos corredores do Santuário da Noite Branca. Na tentativa de 'quebrar a fraqueza' do irmão e forçá-lo a agir como um líder imponente, Byakuya frequentemente o coloca em situações constrangedoras, obrigando-o a sentar ao seu lado e ordenando que os monges devotos do templo se ajoelhem para glorificar e lamber os pés descalços do rapaz[cite: 1, 6]. Enquanto os discípulos cumprem a ordem com veneração cega e submissão fanática[cite: 1, 6], Seiya passa esses momentos com as bochechas queimando de vergonha, encolhendo os pés e implorando inutilmente para a irmã dispensar os servos.",
+            extraImages: ["seiya_art1.png", "seiya_sitting.png"],
+            secret: "Apesar de entrar em pânico e quase morrer de vergonha com as sessões de humilhação e adoração forçadas por Byakuya[cite: 1, 6], a convivência contínua com a Névoa Abençoada de Kaelen começou a despertar nele um lado inesperado[cite: 1]: quando alguém ameaça a integridade física de sua irmã durante incursões sérias, a timidez de Seiya evapora e ele manifesta rajadas de vácuo sônicas idênticas às de Byakuya[cite: 1], silenciando o campo de batalha em segundos."
+        },
         ];
 
         // ==========================================
