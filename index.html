@@ -422,66 +422,74 @@
         /* ADAPTAÇÃO PARA CELULAR (MOBILE)           */
         /* ========================================= */
         @media (max-width: 800px) {
-            /* ARRANCA A MÃO DO FUNDO E GRUDA DIRETO NA TELA */
+            /* 1. MÃO DO JOGADOR (Fixo embaixo, carrossel livre) */
             #maoJogador { 
-                position: fixed !important;
-                bottom: 0px !important;
-                left: 0 !important;
-                width: 100vw !important;
-                transform: scale(0.65) !important; 
-                transform-origin: bottom left !important; 
-                justify-content: flex-start !important; 
-                overflow-x: auto !important; 
-                overflow-y: visible !important;
-                padding-bottom: 5px !important;
-                padding-left: 70px !important; /* Espaço da seta esquerda */
-                padding-right: 70px !important; /* Espaço da seta direita */
-                scroll-behavior: smooth !important;
-                scrollbar-width: none;
-                z-index: 7006 !important;
+                position: fixed !important; bottom: 0px !important; left: 0 !important; width: 100vw !important;
+                transform: scale(0.65) !important; transform-origin: bottom left !important; 
+                justify-content: flex-start !important; overflow-x: auto !important; overflow-y: visible !important;
+                padding-bottom: 5px !important; padding-left: 70px !important; padding-right: 70px !important;
+                scroll-behavior: smooth !important; scrollbar-width: none; z-index: 7006 !important;
             }
             #maoJogador::-webkit-scrollbar { display: none; }
+            #maoJogador .carta-tcg { margin-left: 10px !important; margin-right: 0 !important; flex-shrink: 0 !important; }
+            #maoJogador .carta-tcg:hover { transform: scale(1.1) translateY(-20px) !important; }
 
-            /* Espaçamento e comportamento ao passar o dedo */
-            .carta-tcg { margin-left: 10px !important; flex-shrink: 0 !important; }
-            .carta-tcg:hover { transform: scale(1.1) translateY(-20px) !important; }
+            /* 2. SETAS DA MÃO (Pra não ter que arrastar com o dedo se não quiser) */
+            .seta-scroll { display: flex !important; position: fixed !important; bottom: 25px !important; z-index: 7010 !important; }
+            .seta-scroll[onclick*="-180"] { left: 5px !important; }
+            .seta-scroll[onclick*="180"] { right: 5px !important; }
 
-            /* PREGA AS SETAS NA TELA PARA NÃO ROLAREM JUNTO */
-            .seta-scroll { 
-                display: flex !important; 
-                position: fixed !important; 
-                bottom: 25px !important; 
-                z-index: 7010 !important;
+            /* 3. CAMPOS DE BATALHA (Transformados em carrossel horizontal!) */
+            #campoInimigo, #campoJogador { 
+                width: 100vw !important; 
+                height: 120px !important; 
+                flex-wrap: nowrap !important; /* Proíbe de jogar as cartas pra baixo! */
+                overflow-x: auto !important; 
+                overflow-y: visible !important;
+                justify-content: flex-start !important; 
+                padding-left: 85px !important; /* Libera espaço pro HP não ficar por cima */
+                padding-right: 20px !important;
+                margin-top: 0 !important;
+                scrollbar-width: none;
             }
-            .seta-scroll[onclick*="-180"] { left: 5px !important; } /* Seta esquerda */
-            .seta-scroll[onclick*="180"] { right: 5px !important; } /* Seta direita */
+            #campoInimigo::-webkit-scrollbar, #campoJogador::-webkit-scrollbar { display: none; }
 
-            /* HUD DO JOGADOR - Vida mais pra cima pra liberar espaço */
+            /* 4. CARTAS NA MESA (Matando a caixa fantasma!) */
+            #campoInimigo .carta-tcg, #campoJogador .carta-tcg {
+                transform: scale(0.50) !important; /* Encolhe pela metade */
+                transform-origin: top left !important;
+                margin-right: -75px !important; /* Engole o espaço vazio deixado pelo encolhimento */
+                margin-left: 0 !important;
+                flex-shrink: 0 !important;
+            }
+            
+            /* Remove o pulo gigante se tentar clicar na carta que já tá na mesa */
+            #campoInimigo .carta-tcg:hover, #campoJogador .carta-tcg:hover {
+                transform: scale(0.55) !important;
+            }
+
+            /* 5. HUD DO JOGADOR (Sobe pra não tampar a mão) */
             div[style*="bottom: 15%; left: 3%"] { 
-                bottom: 190px !important; 
-                left: 10px !important; 
-                flex-direction: column !important; 
-                gap: 5px !important; 
-                z-index: 7005 !important;
+                bottom: 150px !important; left: 5px !important; flex-direction: column !important; gap: 5px !important; z-index: 7005 !important;
             }
 
-            /* BOTÃO DE PASSAR TURNO - Alinhado com a Vida */
+            /* 6. BOTÃO PASSAR TURNO (Sobe e vai pro canto) */
             #btnPassarTurno { 
-                top: auto !important; 
-                bottom: 190px !important; 
-                right: 10px !important; 
-                padding: 10px 15px !important; 
-                font-size: 11px !important; 
-                transform: none !important; 
+                top: auto !important; bottom: 160px !important; right: 5px !important; padding: 10px 15px !important; font-size: 11px !important; transform: none !important; z-index: 7005 !important;
             }
 
-            /* O RESTO DA TELA (Campos, Inimigo e Botões de cima) */
-            #campoInimigo, #campoJogador { width: 95% !important; height: 95px !important; flex-wrap: wrap !important; gap: 5px !important; margin-top: 5px !important; }
-            #bossHP, #playerHP { width: 55px !important; height: 55px !important; font-size: 22px !important; border-width: 2px !important; }
+            /* 7. HUD DO INIMIGO E CHEFÃO */
+            div[style*="top: 10%; left: 3%"] { top: 10px !important; left: 5px !important; flex-direction: column !important; gap: 5px !important; z-index: 7005 !important; }
+            #bossHP, #playerHP { width: 50px !important; height: 50px !important; font-size: 20px !important; border-width: 2px !important; }
+            #oracleAvatar { right: 5px !important; top: 10px !important; }
             #oracleAvatar img { height: 75px !important; }
+            
+            /* 8. BOTÃO SAIR E LIMPEZA GERAL */
             button[onclick*="historicoBatalha"], button[onclick*="cartas-ampliadas"] { display: none !important; }
-            button[onclick*="modalSairJogo"] { top: 15px !important; left: 50% !important; transform: translateX(-50%) !important; padding: 8px 15px !important; }
-            div[style*="top: 10%; left: 3%"] { top: 15px !important; left: 5px !important; flex-direction: column !important; gap: 5px !important; }
+            button[onclick*="modalSairJogo"] { top: 10px !important; left: 50% !important; transform: translateX(-50%) !important; padding: 5px 15px !important; font-size: 12px !important; z-index: 7010 !important; }
+            
+            /* Ajuste dos blocos base pra não esmagarem a tela */
+            div[style*="height: 35%"] { height: auto !important; flex-grow: 1; padding-top: 15px; border-bottom: none !important; }
         }
 
     </style>
