@@ -419,77 +419,63 @@
         }
 
         /* ========================================= */
-        /* ADAPTAÇÃO PARA CELULAR (MOBILE)           */
+        /* ADAPTAÇÃO PARA CELULAR (A SOLUÇÃO NUCLEAR)*/
         /* ========================================= */
         @media (max-width: 800px) {
-            /* 1. MÃO DO JOGADOR (Fixo embaixo, carrossel livre) */
+            /* 1. MÃO DO JOGADOR (Presa na base da tela) */
             #maoJogador { 
-                position: fixed !important; bottom: 0px !important; left: 0 !important; width: 100vw !important;
-                transform: scale(0.65) !important; transform-origin: bottom left !important; 
+                position: fixed !important; bottom: 0 !important; left: 0 !important; width: 100vw !important;
+                transform: scale(0.65) !important; transform-origin: bottom center !important; 
                 justify-content: flex-start !important; overflow-x: auto !important; overflow-y: visible !important;
-                padding-bottom: 5px !important; padding-left: 70px !important; padding-right: 70px !important;
-                scroll-behavior: smooth !important; scrollbar-width: none; z-index: 7006 !important;
+                padding: 0 20px 10px 20px !important; z-index: 7006 !important;
             }
             #maoJogador::-webkit-scrollbar { display: none; }
-            #maoJogador .carta-tcg { margin-left: 10px !important; margin-right: 0 !important; flex-shrink: 0 !important; }
+            #maoJogador .carta-tcg { margin: 0 -5px !important; flex-shrink: 0 !important; }
             #maoJogador .carta-tcg:hover { transform: scale(1.1) translateY(-20px) !important; }
 
-            /* 2. SETAS DA MÃO (Pra não ter que arrastar com o dedo se não quiser) */
-            .seta-scroll { display: flex !important; position: fixed !important; bottom: 25px !important; z-index: 7010 !important; }
-            .seta-scroll[onclick*="-180"] { left: 5px !important; }
-            .seta-scroll[onclick*="180"] { right: 5px !important; }
-
-            /* 3. CAMPOS DE BATALHA (Transformados em carrossel horizontal!) */
-            #campoInimigo, #campoJogador { 
-                width: 100vw !important; 
-                height: 120px !important; 
-                flex-wrap: nowrap !important; /* Proíbe de jogar as cartas pra baixo! */
-                overflow-x: auto !important; 
-                overflow-y: visible !important;
-                justify-content: flex-start !important; 
-                padding-left: 85px !important; /* Libera espaço pro HP não ficar por cima */
-                padding-right: 20px !important;
-                margin-top: 0 !important;
-                scrollbar-width: none;
+            /* 2. CAMPOS DE BATALHA (Arrancados do HTML e colados na tela) */
+            #campoInimigo { 
+                position: fixed !important; top: 110px !important; left: 0 !important; 
+                width: 100vw !important; height: 130px !important;
+                flex-wrap: nowrap !important; overflow-x: auto !important; overflow-y: visible !important;
+                justify-content: flex-start !important; align-items: center !important;
+                padding-left: 80px !important; /* Salva as cartas de nascerem atrás do HP */
+                padding-right: 20px !important; margin: 0 !important; z-index: 7002 !important;
+            }
+            
+            #campoJogador { 
+                position: fixed !important; bottom: 170px !important; left: 0 !important; 
+                width: 100vw !important; height: 130px !important;
+                flex-wrap: nowrap !important; overflow-x: auto !important; overflow-y: visible !important;
+                justify-content: flex-start !important; align-items: center !important;
+                padding-left: 80px !important; 
+                padding-right: 20px !important; margin: 0 !important; z-index: 7002 !important;
             }
             #campoInimigo::-webkit-scrollbar, #campoJogador::-webkit-scrollbar { display: none; }
 
-            /* 4. CARTAS NA MESA (Matando a caixa fantasma!) */
+            /* O FIM DA CAIXA FANTASMA NA MESA */
             #campoInimigo .carta-tcg, #campoJogador .carta-tcg {
-                transform: scale(0.50) !important; /* Encolhe pela metade */
-                transform-origin: top left !important;
-                margin-right: -75px !important; /* Engole o espaço vazio deixado pelo encolhimento */
-                margin-left: 0 !important;
+                transform: scale(0.55) !important; 
+                transform-origin: center !important;
+                margin: 0 -25px !important; /* Aproxima elas sem engolir tudo */
                 flex-shrink: 0 !important;
             }
+
+            /* 3. HUDS E AVATARES (Colados nos cantos) */
+            div[style*="top: 10%; left: 3%"] { position: fixed !important; top: 15px !important; left: 5px !important; flex-direction: column !important; gap: 5px !important; z-index: 7010 !important; }
+            div[style*="bottom: 15%; left: 3%"] { position: fixed !important; bottom: 150px !important; left: 5px !important; flex-direction: column !important; gap: 5px !important; z-index: 7010 !important; }
             
-            /* Remove o pulo gigante se tentar clicar na carta que já tá na mesa */
-            #campoInimigo .carta-tcg:hover, #campoJogador .carta-tcg:hover {
-                transform: scale(0.55) !important;
-            }
-
-            /* 5. HUD DO JOGADOR (Sobe pra não tampar a mão) */
-            div[style*="bottom: 15%; left: 3%"] { 
-                bottom: 150px !important; left: 5px !important; flex-direction: column !important; gap: 5px !important; z-index: 7005 !important;
-            }
-
-            /* 6. BOTÃO PASSAR TURNO (Sobe e vai pro canto) */
-            #btnPassarTurno { 
-                top: auto !important; bottom: 160px !important; right: 5px !important; padding: 10px 15px !important; font-size: 11px !important; transform: none !important; z-index: 7005 !important;
-            }
-
-            /* 7. HUD DO INIMIGO E CHEFÃO */
-            div[style*="top: 10%; left: 3%"] { top: 10px !important; left: 5px !important; flex-direction: column !important; gap: 5px !important; z-index: 7005 !important; }
             #bossHP, #playerHP { width: 50px !important; height: 50px !important; font-size: 20px !important; border-width: 2px !important; }
-            #oracleAvatar { right: 5px !important; top: 10px !important; }
-            #oracleAvatar img { height: 75px !important; }
+            #oracleAvatar { position: fixed !important; top: 15px !important; right: 5px !important; z-index: 7010 !important; }
+            #oracleAvatar img { height: 70px !important; }
+
+            /* 4. BOTÕES */
+            #btnPassarTurno { position: fixed !important; bottom: 150px !important; right: 5px !important; top: auto !important; transform: none !important; font-size: 11px !important; padding: 10px !important; z-index: 7010 !important; }
+            button[onclick*="modalSairJogo"] { position: fixed !important; top: 15px !important; left: 50% !important; transform: translateX(-50%) !important; padding: 5px 15px !important; font-size: 12px !important; z-index: 7010 !important; }
             
-            /* 8. BOTÃO SAIR E LIMPEZA GERAL */
-            button[onclick*="historicoBatalha"], button[onclick*="cartas-ampliadas"] { display: none !important; }
-            button[onclick*="modalSairJogo"] { top: 10px !important; left: 50% !important; transform: translateX(-50%) !important; padding: 5px 15px !important; font-size: 12px !important; z-index: 7010 !important; }
-            
-            /* Ajuste dos blocos base pra não esmagarem a tela */
-            div[style*="height: 35%"] { height: auto !important; flex-grow: 1; padding-top: 15px; border-bottom: none !important; }
+            /* 5. LIMPEZA */
+            button[onclick*="historicoBatalha"], button[onclick*="cartas-ampliadas"], .seta-scroll { display: none !important; }
+            div[style*="height: 35%"] { border: none !important; background: transparent !important; } /* Apaga as linhas tracejadas zoadas */
         }
 
     </style>
