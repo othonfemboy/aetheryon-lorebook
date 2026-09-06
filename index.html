@@ -422,60 +422,76 @@
         /* ADAPTAÇÃO PARA CELULAR (A SOLUÇÃO NUCLEAR)*/
         /* ========================================= */
         @media (max-width: 800px) {
-            /* 1. MÃO DO JOGADOR (Presa na base da tela) */
+            /* 1. MÃO DO JOGADOR */
             #maoJogador { 
                 position: fixed !important; bottom: 0 !important; left: 0 !important; width: 100vw !important;
-                transform: scale(0.65) !important; transform-origin: bottom center !important; 
+                transform: scale(0.65) !important; transform-origin: bottom left !important; 
                 justify-content: flex-start !important; overflow-x: auto !important; overflow-y: visible !important;
                 padding: 0 20px 10px 20px !important; z-index: 7006 !important;
+                flex-wrap: nowrap !important;
             }
-            #maoJogador::-webkit-scrollbar { display: none; }
+            #maoJogador::-webkit-scrollbar, #campoInimigo::-webkit-scrollbar, #campoJogador::-webkit-scrollbar { display: none; }
             #maoJogador .carta-tcg { margin: 0 -5px !important; flex-shrink: 0 !important; }
             #maoJogador .carta-tcg:hover { transform: scale(1.1) translateY(-20px) !important; }
+            #maoJogador .carta-tcg:last-child { margin-right: 50px !important; } /* Solta a última carta da mão! */
 
-            /* 2. CAMPOS DE BATALHA (Arrancados do HTML e colados na tela) */
+            /* 2. CAMPOS DE BATALHA */
             #campoInimigo { 
                 position: fixed !important; top: 110px !important; left: 0 !important; 
-                width: 100vw !important; height: 130px !important;
+                width: 100vw !important; height: 140px !important;
                 flex-wrap: nowrap !important; overflow-x: auto !important; overflow-y: visible !important;
                 justify-content: flex-start !important; align-items: center !important;
-                padding-left: 80px !important; /* Salva as cartas de nascerem atrás do HP */
+                padding-left: 110px !important; /* <--- EMPURRA AS CARTAS PRA LONGE DOS DEBUFFS! */
                 padding-right: 20px !important; margin: 0 !important; z-index: 7002 !important;
             }
             
             #campoJogador { 
-                position: fixed !important; bottom: 170px !important; left: 0 !important; 
-                width: 100vw !important; height: 130px !important;
+                position: fixed !important; bottom: 180px !important; left: 0 !important; 
+                width: 100vw !important; height: 140px !important;
                 flex-wrap: nowrap !important; overflow-x: auto !important; overflow-y: visible !important;
                 justify-content: flex-start !important; align-items: center !important;
-                padding-left: 80px !important; 
+                padding-left: 110px !important; /* <--- EMPURRA AS CARTAS PRA LONGE DA SUA VIDA! */
                 padding-right: 20px !important; margin: 0 !important; z-index: 7002 !important;
             }
-            #campoInimigo::-webkit-scrollbar, #campoJogador::-webkit-scrollbar { display: none; }
 
             /* O FIM DA CAIXA FANTASMA NA MESA */
             #campoInimigo .carta-tcg, #campoJogador .carta-tcg {
-                transform: scale(0.55) !important; 
-                transform-origin: center !important;
-                margin: 0 -25px !important; /* Aproxima elas sem engolir tudo */
-                flex-shrink: 0 !important;
+                transform: scale(0.55) !important; transform-origin: top left !important;
+                margin-right: -60px !important; margin-left: 0 !important; flex-shrink: 0 !important;
             }
 
-            /* 3. HUDS E AVATARES (Colados nos cantos) */
-            div[style*="top: 10%; left: 3%"] { position: fixed !important; top: 15px !important; left: 5px !important; flex-direction: column !important; gap: 5px !important; z-index: 7010 !important; }
-            div[style*="bottom: 15%; left: 3%"] { position: fixed !important; bottom: 150px !important; left: 5px !important; flex-direction: column !important; gap: 5px !important; z-index: 7010 !important; }
+            /* A MÁGICA QUE SALVA A CARTA PRESA NA DIREITA */
+            #campoInimigo .carta-tcg:last-child, #campoJogador .carta-tcg:last-child {
+                margin-right: 60px !important; 
+            }
+
+            /* 3. HUDS E AVATARES */
+            div[style*="top: 10%; left: 3%"] { position: fixed !important; top: 15px !important; left: 5px !important; flex-direction: column !important; gap: 5px !important; z-index: 7010 !important; pointer-events: none; }
+            div[style*="bottom: 15%; left: 3%"] { position: fixed !important; bottom: 140px !important; left: 5px !important; flex-direction: column !important; gap: 5px !important; z-index: 7010 !important; pointer-events: none; }
             
-            #bossHP, #playerHP { width: 50px !important; height: 50px !important; font-size: 20px !important; border-width: 2px !important; }
+            /* Reativa o clique só na bolha de HP pra não bugar outras coisas */
+            #bossHP, #playerHP { width: 50px !important; height: 50px !important; font-size: 20px !important; border-width: 2px !important; pointer-events: auto; }
+            
             #oracleAvatar { position: fixed !important; top: 15px !important; right: 5px !important; z-index: 7010 !important; }
             #oracleAvatar img { height: 70px !important; }
 
             /* 4. BOTÕES */
-            #btnPassarTurno { position: fixed !important; bottom: 150px !important; right: 5px !important; top: auto !important; transform: none !important; font-size: 11px !important; padding: 10px !important; z-index: 7010 !important; }
+            #btnPassarTurno { position: fixed !important; bottom: 140px !important; right: 5px !important; top: auto !important; transform: none !important; font-size: 11px !important; padding: 10px !important; z-index: 7010 !important; }
             button[onclick*="modalSairJogo"] { position: fixed !important; top: 15px !important; left: 50% !important; transform: translateX(-50%) !important; padding: 5px 15px !important; font-size: 12px !important; z-index: 7010 !important; }
             
-            /* 5. LIMPEZA */
+            /* 5. LIMPEZA E MELHORIA DA CAIXA DE TEXTO (TOOLTIP) */
             button[onclick*="historicoBatalha"], button[onclick*="cartas-ampliadas"], .seta-scroll { display: none !important; }
-            div[style*="height: 35%"] { border: none !important; background: transparent !important; } /* Apaga as linhas tracejadas zoadas */
+            div[style*="height: 35%"] { border: none !important; background: transparent !important; } 
+            
+            /* Formata a caixa de status para não vazar da tela do celular */
+            .carta-tooltip {
+                white-space: normal !important;
+                width: 160px !important;
+                font-size: 14px !important;
+                left: 50% !important;
+                transform: translateX(-50%) !important;
+                text-align: center !important;
+            }
         }
 
     </style>
@@ -1475,9 +1491,9 @@
             race: "Elfo Mantra",
             weapon: "Artes Marciais do Vácuo (Desarmado) & Brisa Espiritual",
             weaponDetails: "Diferente dos impactos sísmicos e da brutalidade devastadora de Byakuya, Seiya luta puramente desarmado tentando replicar a técnica da irmã com socos e chutes leves. Sem massa muscular para esmagar ossos, ele canaliza correntes de ar comprimido nas pontas dos dedos e nos calcanhares para desviar lâminas pesadas, criar pequenos vórtices de repulsão e desequilibrar oponentes maiores com rajadas de vento contínuas.",
-            description: "Irmão mais novo de Byakuya e formalmente o Vice-Líder da cidade-fortaleza de Kaelen, no Pico dos Suspiros. Dono de traços delicados, silhueta andrógina e um comportamento extremamente tímido e retraído, Seiya é o contraste absoluto da imponência arrogante e intimidadora de sua irmã.<br><br>Determinada a transformá-lo em uma figura de autoridade inquestionável, Byakuya assumiu pessoalmente seu treinamento marcial, insistindo para que ele domine o combate corpo a corpo desarmado e a manipulação do Vento. Embora Seiya se esforce para imitar os passos e as posturas da matriarca[cite: 1], sua falta de agressividade natural faz com que suas artes marciais sejam defensivas e acrobáticas: em vez de pulverizar armaduras, ele desliza pelas correntes de ar com leveza impressionante, evitando danos fatais enquanto tenta encontrar aberturas para desestabilizar os inimigos.<br><br>A maior provação de Seiya, no entanto, não está nos campos de batalha, mas nos corredores do Santuário da Noite Branca. Na tentativa de 'quebrar a fraqueza' do irmão e forçá-lo a agir como um líder imponente, Byakuya frequentemente o coloca em situações constrangedoras, obrigando-o a sentar ao seu lado e ordenando que os monges devotos do templo se ajoelhem para glorificar e lamber os pés descalços do rapaz[cite: 1, 6]. Enquanto os discípulos cumprem a ordem com veneração cega e submissão fanática[cite: 1, 6], Seiya passa esses momentos com as bochechas queimando de vergonha, encolhendo os pés e implorando inutilmente para a irmã dispensar os servos.",
+            description: "Irmão mais novo de Byakuya e formalmente o Vice-Líder da cidade-fortaleza de Kaelen, no Pico dos Suspiros. Dono de traços delicados, silhueta andrógina e um comportamento extremamente tímido e retraído, Seiya é o contraste absoluto da imponência arrogante e intimidadora de sua irmã.<br><br>Determinada a transformá-lo em uma figura de autoridade inquestionável, Byakuya assumiu pessoalmente seu treinamento marcial, insistindo para que ele domine o combate corpo a corpo desarmado e a manipulação do Vento. Embora Seiya se esforce para imitar os passos e as posturas da matriarca, sua falta de agressividade natural faz com que suas artes marciais sejam defensivas e acrobáticas: em vez de pulverizar armaduras, ele desliza pelas correntes de ar com leveza impressionante, evitando danos fatais enquanto tenta encontrar aberturas para desestabilizar os inimigos.<br><br>A maior provação de Seiya, no entanto, não está nos campos de batalha, mas nos corredores do Santuário da Noite Branca. Na tentativa de 'quebrar a fraqueza' do irmão e forçá-lo a agir como um líder imponente, Byakuya frequentemente o coloca em situações constrangedoras, obrigando-o a sentar ao seu lado e ordenando que os monges devotos do templo se ajoelhem para glorificar e lamber os pés descalços do rapaz. Enquanto os discípulos cumprem a ordem com veneração cega e submissão fanática, Seiya passa esses momentos com as bochechas queimando de vergonha, encolhendo os pés e implorando inutilmente para a irmã dispensar os servos.",
             extraImages: ["seiya_art1.png", "seiya_sitting.png"],
-            secret: "Apesar de entrar em pânico e quase morrer de vergonha com as sessões de humilhação e adoração forçadas por Byakuya[cite: 1, 6], a convivência contínua com a Névoa Abençoada de Kaelen começou a despertar nele um lado inesperado[cite: 1]: quando alguém ameaça a integridade física de sua irmã durante incursões sérias, a timidez de Seiya evapora e ele manifesta rajadas de vácuo sônicas idênticas às de Byakuya[cite: 1], silenciando o campo de batalha em segundos."
+            secret: "Apesar de entrar em pânico e quase morrer de vergonha com as sessões de humilhação e adoração forçadas por Byakuya, a convivência contínua com a Névoa Abençoada de Kaelen começou a despertar nele um lado inesperado: quando alguém ameaça a integridade física de sua irmã durante incursões sérias, a timidez de Seiya evapora e ele manifesta rajadas de vácuo sônicas idênticas às de Byakuya, silenciando o campo de batalha em segundos."
         },
         ];
 
