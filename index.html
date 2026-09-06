@@ -419,78 +419,78 @@
         }
 
         /* ========================================= */
-        /* ADAPTAÇÃO PARA CELULAR (A SOLUÇÃO NUCLEAR)*/
+        /* ADAPTAÇÃO PARA CELULAR (A SOLUÇÃO MÁGICA) */
         /* ========================================= */
         @media (max-width: 800px) {
-            /* 1. MÃO DO JOGADOR */
-            #maoJogador { 
-                position: fixed !important; bottom: 0 !important; left: 0 !important; width: 100vw !important;
-                transform: scale(0.65) !important; transform-origin: bottom left !important; 
-                justify-content: flex-start !important; overflow-x: auto !important; overflow-y: visible !important;
-                padding: 0 20px 10px 20px !important; z-index: 7006 !important;
+            /* 1. O SEGREDO: ZOOM! Reduz a carta E a caixa invisível ao mesmo tempo! */
+            .carta-tcg {
+                zoom: 0.65 !important;
+                transform: none !important; /* Mata o bug da carta cortada no meio */
+                margin: 5px !important;
+                flex-shrink: 0 !important;
+            }
+            .carta-tcg:hover { transform: translateY(-10px) !important; z-index: 50 !important; }
+
+            /* 2. HUDS E BOTOES (Fixos nas bordas para não atrapalhar) */
+            div[style*="top: 10%; left: 3%"] { position: fixed !important; top: 10px !important; left: 5px !important; flex-direction: column !important; gap: 5px !important; z-index: 7010 !important; }
+            div[style*="bottom: 15%; left: 3%"] { position: fixed !important; bottom: 150px !important; left: 5px !important; flex-direction: column !important; gap: 5px !important; z-index: 7010 !important; }
+            
+            #bossHP, #playerHP { width: 45px !important; height: 45px !important; font-size: 18px !important; border-width: 2px !important; }
+            #oracleAvatar { position: fixed !important; top: 10px !important; right: 5px !important; z-index: 7010 !important; }
+            #oracleAvatar img { height: 60px !important; }
+            
+            #btnPassarTurno { position: fixed !important; bottom: 150px !important; right: 5px !important; top: auto !important; transform: none !important; font-size: 11px !important; padding: 10px 15px !important; z-index: 7010 !important; }
+            button[onclick*="modalSairJogo"] { position: fixed !important; top: 10px !important; left: 50% !important; transform: translateX(-50%) !important; padding: 5px 15px !important; font-size: 12px !important; z-index: 7010 !important; }
+
+            /* 3. A MESA (Deixando o layout se montar sozinho na base da tela) */
+            #cardGameScreen { 
+                justify-content: flex-end !important; /* Empurra os campos todos pro chão da tela! */
+                padding-top: 80px !important; 
+                padding-bottom: 0 !important; 
+            }
+            
+            div[style*="height: 35%"], div[style*="height: 30%"] { 
+                height: auto !important; width: 100vw !important; border: none !important; background: transparent !important; margin: 2px 0 !important; flex-grow: 0 !important; 
+            }
+
+            /* 4. OS CAMPOS (Carrossel liso e com espaço pra Vida) */
+            #campoInimigo, #campoJogador {
+                width: 100vw !important;
+                min-height: 140px !important;
+                height: auto !important;
+                flex-wrap: nowrap !important; /* Proíbe de esmagar as cartas pra linha de baixo */
+                overflow-x: auto !important;
+                justify-content: flex-start !important;
+                align-items: center !important;
+                padding: 10px 20px 10px 85px !important; /* O 85px empurra as cartas pra não nascerem atrás do HP! */
+                margin: 0 !important;
+            }
+
+            /* 5. A SUA MÃO */
+            #maoJogador {
+                width: 100vw !important;
+                background: rgba(0,0,0,0.85) !important; /* Fundo preto pra destacar a mão */
+                padding: 15px 20px !important;
+                justify-content: flex-start !important;
                 flex-wrap: nowrap !important;
-            }
-            #maoJogador::-webkit-scrollbar, #campoInimigo::-webkit-scrollbar, #campoJogador::-webkit-scrollbar { display: none; }
-            #maoJogador .carta-tcg { margin: 0 -5px !important; flex-shrink: 0 !important; }
-            #maoJogador .carta-tcg:hover { transform: scale(1.1) translateY(-20px) !important; }
-            #maoJogador .carta-tcg:last-child { margin-right: 50px !important; } /* Solta a última carta da mão! */
-
-            /* 2. CAMPOS DE BATALHA */
-            #campoInimigo { 
-                position: fixed !important; top: 110px !important; left: 0 !important; 
-                width: 100vw !important; height: 140px !important;
-                flex-wrap: nowrap !important; overflow-x: auto !important; overflow-y: visible !important;
-                justify-content: flex-start !important; align-items: center !important;
-                padding-left: 110px !important; /* <--- EMPURRA AS CARTAS PRA LONGE DOS DEBUFFS! */
-                padding-right: 20px !important; margin: 0 !important; z-index: 7002 !important;
-            }
-            
-            #campoJogador { 
-                position: fixed !important; bottom: 180px !important; left: 0 !important; 
-                width: 100vw !important; height: 140px !important;
-                flex-wrap: nowrap !important; overflow-x: auto !important; overflow-y: visible !important;
-                justify-content: flex-start !important; align-items: center !important;
-                padding-left: 110px !important; /* <--- EMPURRA AS CARTAS PRA LONGE DA SUA VIDA! */
-                padding-right: 20px !important; margin: 0 !important; z-index: 7002 !important;
+                overflow-x: auto !important;
+                align-items: center !important;
+                height: 140px !important;
+                margin: 0 !important;
             }
 
-            /* O FIM DA CAIXA FANTASMA NA MESA */
-            #campoInimigo .carta-tcg, #campoJogador .carta-tcg {
-                transform: scale(0.55) !important; transform-origin: top left !important;
-                margin-right: -60px !important; margin-left: 0 !important; flex-shrink: 0 !important;
-            }
-
-            /* A MÁGICA QUE SALVA A CARTA PRESA NA DIREITA */
-            #campoInimigo .carta-tcg:last-child, #campoJogador .carta-tcg:last-child {
-                margin-right: 60px !important; 
-            }
-
-            /* 3. HUDS E AVATARES */
-            div[style*="top: 10%; left: 3%"] { position: fixed !important; top: 15px !important; left: 5px !important; flex-direction: column !important; gap: 5px !important; z-index: 7010 !important; pointer-events: none; }
-            div[style*="bottom: 15%; left: 3%"] { position: fixed !important; bottom: 140px !important; left: 5px !important; flex-direction: column !important; gap: 5px !important; z-index: 7010 !important; pointer-events: none; }
-            
-            /* Reativa o clique só na bolha de HP pra não bugar outras coisas */
-            #bossHP, #playerHP { width: 50px !important; height: 50px !important; font-size: 20px !important; border-width: 2px !important; pointer-events: auto; }
-            
-            #oracleAvatar { position: fixed !important; top: 15px !important; right: 5px !important; z-index: 7010 !important; }
-            #oracleAvatar img { height: 70px !important; }
-
-            /* 4. BOTÕES */
-            #btnPassarTurno { position: fixed !important; bottom: 140px !important; right: 5px !important; top: auto !important; transform: none !important; font-size: 11px !important; padding: 10px !important; z-index: 7010 !important; }
-            button[onclick*="modalSairJogo"] { position: fixed !important; top: 15px !important; left: 50% !important; transform: translateX(-50%) !important; padding: 5px 15px !important; font-size: 12px !important; z-index: 7010 !important; }
-            
-            /* 5. LIMPEZA E MELHORIA DA CAIXA DE TEXTO (TOOLTIP) */
+            /* 6. LIMPANDO O RESTO E ARRUMANDO O BALÃO DE TEXTO (TOOLTIP) */
+            #campoInimigo::-webkit-scrollbar, #campoJogador::-webkit-scrollbar, #maoJogador::-webkit-scrollbar { display: none; }
             button[onclick*="historicoBatalha"], button[onclick*="cartas-ampliadas"], .seta-scroll { display: none !important; }
-            div[style*="height: 35%"] { border: none !important; background: transparent !important; } 
             
-            /* Formata a caixa de status para não vazar da tela do celular */
-            .carta-tooltip {
-                white-space: normal !important;
-                width: 160px !important;
-                font-size: 14px !important;
-                left: 50% !important;
-                transform: translateX(-50%) !important;
-                text-align: center !important;
+            /* Deixa a caixinha preta de ler os buffs certinha no centro da carta */
+            .carta-tooltip { 
+                width: 150px !important; 
+                left: 50% !important; 
+                transform: translateX(-50%) !important; 
+                white-space: normal !important; 
+                text-align: center !important; 
+                font-size: 13px !important; 
             }
         }
 
