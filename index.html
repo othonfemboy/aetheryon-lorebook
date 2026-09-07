@@ -422,10 +422,7 @@
         /* ADAPTAÇÃO PARA CELULAR (BLINDAGEM ABSOLUTA) */
         /* ========================================= */
         @media (max-width: 800px) {
-            /* 1. TELA PRINCIPAL */
-            #cardGameScreen:not([style*="display: none"]) { 
-                display: block !important; /* Tiramos o flexbox que tava esmagando tudo */
-            }
+            /* 1. TELA PRINCIPAL (Sem forçar o display pro JS funcionar!) */
             #cardGameScreen { 
                 position: relative !important;
                 height: 100dvh !important; 
@@ -438,16 +435,16 @@
             div[style*="top: 10%; left: 3%"] { /* HUD Inimigo */
                 position: absolute !important; 
                 top: 5px !important; left: 5px !important; 
-                transform: scale(0.75) !important; /* Encolhe 25% pra caber */
+                transform: scale(0.75) !important; 
                 transform-origin: top left !important;
-                z-index: 50 !important;
+                z-index: 50 !important; margin: 0 !important;
             }
             div[style*="bottom: 15%; left: 3%"] { /* HUD Jogador */
                 position: absolute !important; 
-                top: 75px !important; left: 5px !important; bottom: auto !important; /* Colado embaixo do inimigo */
+                top: 75px !important; left: 5px !important; bottom: auto !important; 
                 transform: scale(0.75) !important;
                 transform-origin: top left !important;
-                z-index: 50 !important;
+                z-index: 50 !important; margin: 0 !important;
             }
 
             /* 3. AVATAR E BOTÃO SAIR */
@@ -467,8 +464,8 @@
             /* 4. AS MESAS DE DUELO (O Meio da Tela) */
             div[style*="height: 35%"] {
                 position: absolute !important;
-                top: 160px !important; /* Começa exatamente abaixo dos status */
-                height: calc(100dvh - 290px) !important; /* Ocupa só o espaço livre */
+                top: 160px !important; 
+                height: calc(100dvh - 290px) !important; 
                 width: 100vw !important;
                 display: flex !important;
                 flex-direction: column !important;
@@ -486,7 +483,7 @@
             /* Tamanho das Cartas na Mesa */
             #campoInimigo .carta-tcg, #campoJogador .carta-tcg {
                 transform: scale(0.55) !important;
-                margin: 0 -35px !important; /* Aproxima as cartas */
+                margin: 0 -35px !important; 
                 flex-shrink: 0 !important;
             }
 
@@ -495,7 +492,7 @@
                 position: absolute !important;
                 bottom: 0 !important; left: 0 !important;
                 width: 100vw !important; height: 130px !important; 
-                display: flex !important; align-items: flex-end !important; /* Cartas encostadas no chão */
+                display: flex !important; align-items: flex-end !important; 
                 overflow-x: auto !important; padding: 0 15px 10px 15px !important; margin: 0 !important; 
                 background: rgba(0,0,0,0.85) !important; z-index: 20 !important;
             }
