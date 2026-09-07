@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aetheryon Water Park</title>
+    <style>
+        body { margin: 0; padding: 0; background: #000814; color: white; font-family: sans-serif; overflow: hidden; }
+        
+        /* HEADER */
+        .header { text-align: center; padding: 20px; background: linear-gradient(180deg, #001a33 0%, #000814 100%); border-bottom: 2px solid #00ffff; box-shadow: 0 5px 20px rgba(0, 255, 255, 0.2); }
+        .header h1 { margin: 0; color: #00ffff; text-shadow: 0 0 10px #00ffff; letter-spacing: 2px; }
+        
+        /* MENU DE NÍVEIS */
+        #menuOndas { display: flex; flex-direction: column; align-items: center; margin-top: 50px; z-index: 10; position: relative; }
+        .btn-nivel { background: transparent; border: 2px solid; padding: 10px 20px; margin: 10px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.2s; text-transform: uppercase; }
+        .btn-nivel.normal { color: #00ffff; border-color: #00ffff; }
+        .btn-nivel.hard { color: #ff9900; border-color: #ff9900; }
+        .btn-nivel.tsunami { color: #ff0044; border-color: #ff0044; }
+        .btn-nivel:hover { transform: scale(1.05); box-shadow: 0 0 15px currentColor; }
+
+        /* ÁREA DO JOGO (CANVAS) */
+        #gameArea { display: none; flex-direction: column; align-items: center; justify-content: center; margin-top: 20px; }
+        #gameHUD { width: 800px; display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 20px; font-weight: bold; }
+        #waterCanvas { background: linear-gradient(180deg, #0a1128 0%, #001d3d 100%); border: 3px solid #00ffff; border-radius: 10px; box-shadow: 0 0 30px rgba(0, 255, 255, 0.3); cursor: crosshair; }
+
+        /* O ASHLAN (GUIA) */
+        #ashlanContainer { position: fixed; bottom: -10px; right: 20px; display: flex; align-items: flex-end; z-index: 50; }
+        #ashlanAvatar { width: 150px; cursor: pointer; filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.5)); transition: transform 0.2s; }
+        #ashlanAvatar:hover { transform: scale(1.05); }
+        
+        #ashlanBalao { background: white; color: black; padding: 15px; border-radius: 15px 15px 0 15px; max-width: 250px; font-size: 14px; font-weight: bold; border: 2px solid #00ffff; margin-right: 15px; margin-bottom: 80px; display: none; box-shadow: 0 0 15px rgba(255,255,255,0.5); }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>🌊 AETHERYON WATER PARK 🌊</h1>
+        <p style="color: #88ccff; margin-top: 5px;">Sobreviva às fúrias do oceano digital.</p>
+    </div>
+
+    <div id="menuOndas">
+        <h2 style="color: white; margin-bottom: 30px;">Keep the Island Alive</h2>
+        <button class="btn-nivel normal" onclick="iniciarOndas('normal')">Normal (60s | 10 Stickgirls)</button>
+        <button class="btn-nivel hard" onclick="iniciarOndas('hard')">Hard (75s | 8 Stickgirls)</button>
+        <button class="btn-nivel tsunami" onclick="iniciarOndas('tsunami')">Tsunami da Morte (90s | 5 Stickgirls)</button>
+    </div>
+
+    <div id="gameArea">
+        <div id="gameHUD">
+            <span id="hudTempo" style="color: #ffaa00;">Tempo: 60s</span>
+            <span id="hudPop" style="color: #00ffcc;">Sobreviventes: 10</span>
+        </div>
+        <canvas id="waterCanvas" width="800" height="400"></canvas>
+        <button onclick="voltarMenu()" style="margin-top: 20px; background: transparent; border: 1px solid gray; color: gray; padding: 8px 15px; cursor: pointer;">Desistir</button>
+    </div>
+
+    <div id="ashlanContainer">
+        <div id="ashlanBalao">Fala do Ashlan!</div>
+        <img id="ashlanAvatar" src="https://i.imgur.com/eBf27Gz.png" alt="Ashlan" onclick="clicouAshlan()">
+    </div>
+
+    <script>
+        // === SISTEMA DO ASHLAN ===
+        const ashlanBalao = document.getElementById('ashlanBalao');
+        let timerFala;
+
+        function falarAshlan(texto, tempo = 4000) {
+            clearTimeout(timerFala);
+            ashlanBalao.innerText = texto;
+            ashlanBalao.style.display = 'block';
+            timerFala = setTimeout(() => { ashlanBalao.style.display = 'none'; }, tempo);
+        }
+
+        function clicouAshlan() {
+            if (jogoRodando) {
+                falarAshlan("Concentre-se na água! Clique nas ondas antes que elas atinjam a ilha para anulá-las com uma marola!");
+            } else {
+                const dicas = [
+                    "Bem-vindo ao Water Park! Aqui treinamos reflexos contra os perigos aquáticos.",
+                    "No jogo 'Keep the Island Alive', você deve proteger as stickgirls das ondas gigantes.",
+                    "Seja rápido: clique na água perto das ondas para criar um impacto contrário e achatá-las!"
+                ];
+                falarAshlan(dicas[Math.floor(Math.random() * dicas.length)], 5000);
+            }
+        }
+
+        // === ENGINE DO JOGO (ONDAS DA MORTE) ===
+        const canvas = document.getElementById('waterCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let jogoRodando = false;
+        let animationId;
+        let ondas = [];
+        let marolas = [];
+        let stickgirls = [];
+        
+        let configAtual;
+        let tempoRestante = 0;
+        let loopTempo;
+        let loopSpawn;
+
+        const island = { x: 350, y: 300, width: 100, height: 20 };
+
+        const niveis = {
+            normal: { tempo: 60, pop: 10, spawnRate: 1500, waveSpeed: 2 },
+            hard: { tempo: 75, pop: 8, spawnRate: 1000, waveSpeed: 3.5 },
+            tsunami: { tempo: 90, pop: 5, spawnRate: 600, waveSpeed: 5 }
+        };
+
+        function iniciarOndas(nivel) {
+            document.getElementById('menuOndas').style.display = 'none';
+            document.getElementById('gameArea').style.display = 'flex';
+            
+            configAtual = niveis[nivel];
+            tempoRestante = configAtual.tempo;
+            ondas = [];
+            marolas = [];
+            stickgirls = [];
+
+            // Spawna as stickgirls na ilha
+            for(let i=0; i < configAtual.pop; i++) {
+                stickgirls.push({
+                    x: island.x + 10 + (Math.random() * 80),
+                    y: island.y - 15,
+                    viva: true
+                });
+            }
+
+            jogoRodando = true;
+            atualizarHUD();
+            
+            falarAshlan("A tempestade começou! Proteja-as com seus cliques!");
+
+            loopTempo = setInterval(() => {
+                tempoRestante--;
+                atualizarHUD();
+                if(tempoRestante <= 0) vencerJogo();
+            }, 1000);
+
+            // Gerador de Ondas
+            loopSpawn = setInterval(() => {
+                if(!jogoRodando) return;
+                // 1 = Esquerda pra Direita | -1 = Direita pra Esquerda
+                let direcao = Math.random() > 0.5 ? 1 : -1;
+                ondas.push({
+                    x: direcao === 1 ? -50 : canvas.width + 50,
+                    y: 300,
+                    radius: 30 + Math.random() * 25, // Altura da onda
+                    speed: configAtual.waveSpeed * (0.8 + Math.random() * 0.5),
+                    dir: direcao,
+                    ativa: true
+                });
+            }, configAtual.spawnRate);
+
+            gameLoop();
+        }
+
+        function atualizarHUD() {
+            document.getElementById('hudTempo').innerText = `Tempo: ${tempoRestante}s`;
+            let vivas = stickgirls.filter(s => s.viva).length;
+            document.getElementById('hudPop').innerText = `Sobreviventes: ${vivas}`;
+        }
+
+        // Clicar na água (Cria a marola defensiva)
+        canvas.addEventListener('mousedown', function(e) {
+            if(!jogoRodando) return;
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            // Só permite clicar na área da água
+            if (mouseY > 250) {
+                marolas.push({ x: mouseX, y: 300, raio: 0, raioMax: 60, ativa: true });
+            }
+        });
+
+        function gameLoop() {
+            if(!jogoRodando) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Desenha a Ilha
+            ctx.fillStyle = '#4a3b2c';
+            ctx.fillRect(island.x, island.y, island.width, island.height);
+            // Linha de água base
+            ctx.fillStyle = 'rgba(0, 150, 255, 0.4)';
+            ctx.fillRect(0, 300, canvas.width, canvas.height - 300);
+
+            // Desenha e atualiza Stickgirls
+            ctx.fillStyle = 'white';
+            let vivasCont = 0;
+            stickgirls.forEach(sg => {
+                if(sg.viva) {
+                    vivasCont++;
+                    // Corpinho simples
+                    ctx.fillRect(sg.x, sg.y, 4, 15);
+                    ctx.beginPath();
+                    ctx.arc(sg.x + 2, sg.y - 2, 4, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            });
+
+            if (vivasCont === 0 && jogoRodando) perderJogo();
+
+            // Atualiza Marolas do jogador
+            ctx.strokeStyle = '#00ffff';
+            ctx.lineWidth = 3;
+            marolas.forEach(m => {
+                if(m.ativa) {
+                    m.raio += 4;
+                    ctx.beginPath();
+                    ctx.arc(m.x, m.y, m.raio, 0, Math.PI * 2);
+                    ctx.stroke();
+                    if(m.raio > m.raioMax) m.ativa = false;
+                }
+            });
+
+            // Atualiza Ondas
+            ctx.fillStyle = 'rgba(0, 200, 255, 0.8)';
+            ondas.forEach(onda => {
+                if(onda.ativa) {
+                    onda.x += onda.speed * onda.dir;
+                    
+                    // Colisão da Onda com a Marola (Onda é achatada!)
+                    marolas.forEach(m => {
+                        if (m.ativa && Math.abs(onda.x - m.x) < m.raio) {
+                            onda.radius -= 1.5; // Reduz a onda
+                            if (onda.radius < 5) onda.ativa = false; // Onda morreu
+                        }
+                    });
+
+                    // Desenha a onda
+                    ctx.beginPath();
+                    ctx.arc(onda.x, onda.y, onda.radius, Math.PI, 0); // Semicírculo
+                    ctx.fill();
+
+                    // Colisão da Onda com a Ilha
+                    if (onda.x > island.x && onda.x < island.x + island.width && onda.radius > 15) {
+                        // Onda varreu a ilha! Mata as stickgirls que estão no caminho
+                        stickgirls.forEach(sg => {
+                            if (sg.viva && Math.abs(onda.x - sg.x) < 20) {
+                                sg.viva = false; // Afogou!
+                            }
+                        });
+                        atualizarHUD();
+                    }
+                }
+            });
+
+            // Limpeza de arrays
+            ondas = ondas.filter(o => o.ativa || o.x > -100 && o.x < canvas.width + 100);
+            marolas = marolas.filter(m => m.ativa);
+
+            animationId = requestAnimationFrame(gameLoop);
+        }
+
+        function vencerJogo() {
+            jogoRodando = false;
+            clearInterval(loopTempo);
+            clearInterval(loopSpawn);
+            falarAshlan("Incrível! Você sobreviveu à tempestade e manteve a ilha a salvo!", 6000);
+            setTimeout(voltarMenu, 5000);
+        }
+
+        function perderJogo() {
+            jogoRodando = false;
+            clearInterval(loopTempo);
+            clearInterval(loopSpawn);
+            falarAshlan("Não desista! O oceano é cruel, mas tente de novo. Eu estou com você.", 6000);
+            setTimeout(voltarMenu, 5000);
+        }
+
+        function voltarMenu() {
+            jogoRodando = false;
+            clearInterval(loopTempo);
+            clearInterval(loopSpawn);
+            cancelAnimationFrame(animationId);
+            document.getElementById('menuOndas').style.display = 'flex';
+            document.getElementById('gameArea').style.display = 'none';
+        }
+
+        // Dá uma saudação quando a tela abre
+        window.onload = () => clicouAshlan();
+    </script>
+</body>
+</html>

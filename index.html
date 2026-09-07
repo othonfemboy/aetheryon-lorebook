@@ -418,86 +418,24 @@
             cursor: url('espada_cursor.png') 2 2, pointer !important;
         }
 
-       /* ========================================= */
-        /* ADAPTAÇÃO PARA CELULAR (FLEXBOX REAL)     */
-        /* ========================================= */
-        @media (max-width: 800px) {
-            /* 1. TELA PRINCIPAL: Ocupa 100% do celular e divide os espaços por igual */
-            #cardGameScreen { 
-                position: fixed !important; 
-                top: 0 !important; left: 0 !important;
-                height: 100dvh !important; width: 100vw !important;
-                display: flex !important;
-                flex-direction: column !important;
-                justify-content: space-between !important;
-                padding: 0 !important; overflow: hidden !important; 
-                z-index: 9999 !important; background-color: #0d0d14 !important;
-            }
+       @media (max-width: 800px) {
+    /* Diminui as HUDs para elas não esmagarem as cartas */
+    div[style*="top: 10%; left: 3%"], div[style*="bottom: 15%; left: 3%"] {
+        transform: scale(0.7) !important;
+        transform-origin: left !important;
+    }
 
-            /* 2. TOPO (Status Inimigo + Avatar) */
-            div[style*="top: 10%; left: 3%"] { 
-                position: relative !important; top: 0 !important; left: 0 !important;
-                transform: scale(0.8) !important; transform-origin: top left !important;
-                margin: 5px !important; z-index: 50 !important;
-            }
-            #oracleAvatar { transform: scale(0.6) !important; position: absolute !important; top: 0 !important; right: 0 !important; }
-            button[onclick*="modalSairJogo"] { position: absolute !important; top: 5px !important; right: 80px !important; z-index: 60 !important; }
+    /* Diminui as cartas da mesa e da mão pra caberem na tela do celular */
+    .carta-tcg {
+        transform: scale(0.6) !important;
+        margin: 0 -25px !important; /* Faz uma carta ficar mais perto da outra */
+    }
 
-            /* 3. O MEIO DA TELA (A MESA DE DUELO) */
-            /* O flex-grow: 1 faz o meio esticar pra ocupar todo o espaço vazio, sem esmagar as cartas */
-            div[style*="height: 35%"] {
-                position: relative !important; top: 0 !important; height: auto !important;
-                flex-grow: 1 !important; 
-                display: flex !important; flex-direction: column !important;
-                justify-content: space-evenly !important; /* Dá o mesmo espaço pro inimigo e pra você */
-                align-items: center !important; width: 100vw !important;
-            }
-
-            #campoInimigo, #campoJogador { 
-                width: 100vw !important; height: 130px !important;
-                display: flex !important; align-items: center !important;
-                overflow-x: auto !important; padding: 0 10px !important;
-                position: relative !important; margin: 0 !important;
-            }
-
-            /* Escala das cartas na mesa (Inimigo e Jogador) */
-            #campoInimigo .carta-tcg, #campoJogador .carta-tcg {
-                transform: scale(0.55) !important;
-                margin: 0 -30px !important;
-            }
-
-            /* 4. ÁREA INFERIOR (Status Jogador, Botão e Mão) */
-            
-            /* Status Jogador */
-            div[style*="bottom: 15%; left: 3%"] { 
-                position: absolute !important; bottom: 140px !important; left: 5px !important;
-                transform: scale(0.8) !important; transform-origin: bottom left !important;
-                z-index: 50 !important;
-            }
-
-            /* Botão Passar Turno */
-            #btnPassarTurno { 
-                position: absolute !important; bottom: 145px !important; right: 10px !important;
-                transform: scale(0.9) !important; z-index: 60 !important; top: auto !important;
-            }
-
-            /* Mão do Jogador (Presa no chão) */
-            #maoJogador { 
-                position: relative !important; bottom: 0 !important; left: 0 !important;
-                width: 100vw !important; height: 135px !important; 
-                display: flex !important; align-items: flex-end !important; 
-                overflow-x: auto !important; padding: 0 10px 10px 10px !important; margin: 0 !important; 
-                background: rgba(0,0,0,0.85) !important; z-index: 20 !important;
-            }
-            #maoJogador .carta-tcg {
-                transform: scale(0.65) !important; transform-origin: bottom center !important;
-                margin: 0 -20px !important;
-            }
-
-            /* LIXO ESCONDIDO */
-            ::-webkit-scrollbar { display: none !important; }
-            button[onclick*="historicoBatalha"], button[onclick*="cartas-ampliadas"], .seta-scroll { display: none !important; }
-        }
+    /* Tira as barras de rolagem feias */
+    ::-webkit-scrollbar { 
+        display: none !important; 
+    }
+}
 
     </style>
 
@@ -652,6 +590,10 @@
                 <button onclick="abrirLapisSecreto(); toggleInteractionMenu();" style="background: #1a1a1a; color: #a855f7; border: 1px dashed #a855f7; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">✏️ Usar Lápis Secreto</button>
                 <button onclick="window.usarCanetaMagica(); toggleInteractionMenu();" style="background: #1a1a1a; color: #ffcc00; border: 1px dashed #ffcc00; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🖌️ Usar Caneta Mágica</button>
                 <button onclick="window.iniciarStickgirlFight(); toggleInteractionMenu();" style="background: #1a1a1a; color: #ff4444; border: 1px dashed #ff4444; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">⚔️ Stickgirl Fight</button>
+                 <button onclick="tentarUsarFacaMagica();" style="background: #1a1a1a; color: #ff0044; border: 1px dashed #ff0044; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🗡️ Usar Faca Mágica</button>
+                 <button onclick="abrirJogoDasMinhocas(); toggleInteractionMenu();" style="background: #1a1a1a; color: #ff4444; border: 1px dashed #ff4444; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🕳️ Desafiar: Martelada Rápida</button>
+                 <button onclick="window.open('waterpark.html', '_blank'); toggleInteractionMenu();" style="background: #001a33; color: #00ffff; border: 1px solid #00ffff; border-radius: 4px; padding: 10px; cursor: pointer; font-size: 13px; font-weight: bold; font-family: 'Cinzel', serif; box-shadow: 0 0 10px rgba(0, 255, 255, 0.5); text-shadow: 0 0 5px #00ffff;">🌊 Aetheryon Water Park</button>
+                 <button onclick="iniciarDivinePillar(); toggleInteractionMenu();" style="background: #001a33; color: #00ffff; border: 1px dashed #00ffff; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🪄 Usar DivinePillar</button>
                 <button onclick="openMinigame('xadrez'); toggleInteractionMenu();" style="background: #1a1a1a; color: #d4af37; border: 1px solid #d4af37; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">♟️ Desafiar: Xadrez</button>             
                 <button onclick="openMinigame('damas'); toggleInteractionMenu();" style="background: #1a1a1a; color: #ff4500; border: 1px solid #ff4500; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🔴 Desafiar: Damas</button>
             </div>
@@ -3041,6 +2983,14 @@ Responda como o Oráculo de Aetheryon.
                 <li><strong style="color: #fff;">Normal:</strong> Memorize a sequência de 4 cores durante 5 rodadas. Limite de 5 erros.</li>
                 <li><strong style="color: #ff0000;">Amnésia Fatal:</strong> 12 Rodadas torturantes. Começa com 6 cores, e na rodada 5 e 10 a Oráculo adiciona novas peças à mesa para destruir seu cérebro.</li>
             </ul>
+
+             <!-- JOGO DA MARTELADA -->
+            <h3 style="color: #ffeb3b; border-bottom: 1px solid #333; padding-bottom: 5px; font-family: 'Cinzel', serif;">🕳️ Martelada Rápida</h3>
+            <ul style="color: #ccc; font-size: 14.5px; line-height: 1.6; margin-bottom: 20px; padding-left: 20px;">
+                <li><strong style="color: #fff;">Normal:</strong> Clique nas minhocas que saem dos buracos o mais rápido possível. Deixar uma minhoca normal escapar conta como erro. O limite de erros diminui nos níveis mais difíceis.</li>
+                <li><strong style="color: #ff0000;">Total Extermination:</strong> No modo Total Extermination, cuidado com as toupeiras pretas (💣). Se clicar em 3 delas, você explode e perde o jogo na hora.</li>
+            </ul>
+
             
             <div style="text-align: center; margin-top: 30px;">
                 <button onclick="document.getElementById('infoDificuldadeModal').style.display='none'" style="padding: 10px 30px; background: #00ffcc; color: #000; border: none; font-family: 'Cinzel', serif; font-weight: bold; cursor: pointer; border-radius: 5px; font-size: 1.1rem; box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);">Entendido</button>
@@ -3430,6 +3380,41 @@ Responda como o Oráculo de Aetheryon.
         </div>
     </div>
 
+     <div id="whackScreen" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #0d0d14; z-index: 9000; flex-direction: column; align-items: center; color: white; font-family: sans-serif;">
+    
+    <div id="whackMenu" style="display: flex; flex-direction: column; align-items: center; margin-top: 100px;">
+        <h1 style="color: #00ffcc; text-shadow: 0 0 10px #00ffcc;">Esmaga-Minhoca</h1>
+        <p>Escolha o nível de extermínio:</p>
+        <button class="whack-btn" onclick="iniciarWhack('normal')">Normal (3 Buracos)</button>
+        <button class="whack-btn" onclick="iniciarWhack('hard')" style="color: #ff9900; border-color: #ff9900;">Hard (5 Buracos)</button>
+        <button class="whack-btn" onclick="iniciarWhack('total')" style="color: #ff0044; border-color: #ff0044;">Total Extermination (7 Buracos)</button>
+        <button class="whack-btn" onclick="fecharWhack()" style="margin-top: 30px; border-color: gray;">Sair</button>
+    </div>
+
+    <div id="whackGame" style="display: none; flex-direction: column; align-items: center; width: 100%; height: 100%;">
+        
+        <div style="display: flex; justify-content: space-between; width: 90%; max-width: 600px; margin-top: 20px; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 10px; border: 1px solid #333;">
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <span id="whackScore" style="color: #00ffcc; font-size: 20px; font-weight: bold;">Acertos: 0 / 15</span>
+                <span id="whackErrors" style="color: #ff4444; font-size: 16px;">Erros permitidos: ∞</span>
+                <span id="whackBombs" style="color: #ffaa00; font-size: 16px; display: none;">Bombas clicadas: 0/3</span>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div id="oraculoFala" style="background: white; color: black; padding: 10px; border-radius: 10px; font-size: 14px; max-width: 150px; text-align: center; display: none;">
+                    Fala da oraculo!
+                </div>
+                <img src="oraculo.gif" alt="Oraculo" style="width: 60px; height: 60px; border-radius: 50%; border: 2px solid #00ffcc;"> 
+            </div>
+        </div>
+
+        <div id="whackGrid" class="whack-grid">
+            </div>
+
+        <button class="whack-btn" onclick="fecharWhack()" style="margin-top: 30px; border-color: gray;">Desistir</button>
+    </div>
+</div>
+
             <!-- SCRIPT DO FIREBASE ATUALIZADO COM FIRESTORE -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
@@ -3503,7 +3488,8 @@ if (!niveisRank.includes(playerRank)) {
             ,{ id: 'devorador_luz', name: 'O Fim da Fome', desc: 'Alcance 20 de energia na Cobrinha (Devoração Caótica).', premio: 'Tema Luz', corPremio: '#ffffff' },
              { id: 'sobrevivente_chuva', name: 'Dançando com o Caos', desc: 'Sobreviva à Chuva da Morte coletando 30 essências.', premio: 'Lápis Secreto', corPremio: '#a855f7' },
              { id: 'simon_amnesia', name: 'Mente Inquebrável', desc: 'Sobreviva à Amnésia Fatal no Simon Arcano.', premio: 'Borracha Mágica', corPremio: '#ffffff' },
-             { id: 'oraculo_cards', name: 'O Silêncio da Soberana', desc: 'Reduza os pontos de vida da Oráculo a zero no Aetheryon Battlegrounds.', premio: 'Caneta Mágica', corPremio: '#ffcc00' }
+             { id: 'oraculo_cards', name: 'O Silêncio da Soberana', desc: 'Reduza os pontos de vida da Oráculo a zero no Aetheryon Battlegrounds.', premio: 'Caneta Mágica', corPremio: '#ffcc00' },
+             { id: 'faca_magica', name: 'O Extermínio Total', desc: 'Desintegre todas as pragas no nível Total Extermination do Esmaga-Minhoca.', premio: 'Faca Mágica', corPremio: '#ff0044' }
         ];
 
         // AUTO-INJEÇÃO DA CONQUISTA DO RIN CHAOTIC
@@ -4975,7 +4961,7 @@ if (!niveisRank.includes(playerRank)) {
                 if (document.getElementById('diffWins')) document.getElementById('diffWins').innerText = statsXadrez[dificuldadeXadrez].w;
             }
         };
-    </script>
+    </script>   
 
     <!-- ========================================== -->
     <!-- TELA E MOTOR DA FORCA (NOVA E BLINDADA)    -->
@@ -5691,6 +5677,45 @@ if (!niveisRank.includes(playerRank)) {
             oldInvocar(); 
             document.getElementById('btnLixeiraUniversos').style.display = 'flex'; // Liga a lixeira quando a bola nasce!
         };
+
+// ==========================================
+// SISTEMA DA FACA MÁGICA BLINDADO (AUTO-HTML)
+// ==========================================
+window.tentarUsarFacaMagica = function() {
+    if (localStorage.getItem('conquistaFacaMagica') === 'desbloqueada') {
+        if (typeof window.usarFacaMagica === 'function') {
+            window.usarFacaMagica(); 
+        } else {
+            alert("Erro: O minigame do Esmaga-Minhoca precisa estar no código pra Faca funcionar!");
+        }
+    } else {
+        window.mostrarAcessoNegado("Você é burro ou o quê? Tem que massacrar as pragas no Extermínio Total e conquistar a recompensa primeiro, seu insolente!");
+    }
+};
+
+window.mostrarAcessoNegado = function(mensagem) {
+    // 1. Se existir alguma tela escondida bugada, ele DELETA ela
+    let modalAntigo = document.getElementById('acessoNegadoModal');
+    if (modalAntigo) modalAntigo.remove();
+
+    // 2. Cria a tela neon vermelha do zero e gruda direto no topo do site
+    let modal = document.createElement('div');
+    modal.id = 'acessoNegadoModal';
+    modal.style.cssText = "display: flex; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 9999999; justify-content: center; align-items: center; font-family: sans-serif; backdrop-filter: blur(4px);";
+    
+    modal.innerHTML = `
+        <div style="background: #000; border: 2px solid #ff0000; border-radius: 10px; padding: 30px; text-align: center; max-width: 400px; box-shadow: 0 0 20px #ff0000; display: flex; flex-direction: column; align-items: center;">
+            <img src="oraculo.gif" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid #ff0000; box-shadow: 0 0 15px #ff0000; margin-bottom: 20px;">
+            <h2 style="color: #ff0000; font-size: 26px; text-shadow: 0 0 10px #ff0000; letter-spacing: 2px; margin-top: 0; margin-bottom: 10px;">ACESSO NEGADO</h2>
+            <p style="color: #ff4444; font-weight: bold; margin-bottom: 20px; font-size: 16px;">A Oráculo te encara com desprezo:</p>
+            <p style="color: #ccc; font-style: italic; margin-bottom: 30px; font-size: 16px; line-height: 1.5;">"${mensagem}"</p>
+            <button onclick="document.getElementById('acessoNegadoModal').remove()" style="background: #ff0000; color: white; border: none; padding: 12px 25px; font-weight: bold; border-radius: 5px; cursor: pointer; font-size: 16px; box-shadow: 0 0 15px #ff0000; transition: 0.2s;">PERDÃO, ORÁCULO</button>
+        </div>
+    `;
+    
+    // 3. Joga na tela e exibe na hora!
+    document.body.appendChild(modal);
+};
 
         // ==========================================
         // MINIGAME: SIMON ARCANO (ECOS DA MEMÓRIA)
@@ -7964,7 +7989,7 @@ if (!niveisRank.includes(playerRank)) {
                 'catchScreen', 'lapisScreen', 'oracleWarningScreen', 
                 'simonScreen', 'canvasBorracha', 'btnLixeiraUniversos',
                 'gameInfoModal', 'promoScreen', 'cardGameScreen',
-                'cardGameMenuScreen'
+                'cardGameMenuScreen', 'whackScreen'
             ];
 
             divsParaRaiz.forEach(id => {
@@ -8010,6 +8035,362 @@ if (!niveisRank.includes(playerRank)) {
         <div style="position: absolute; bottom: 10%; color: #ffcc00; font-family: 'Cinzel', serif; font-size: 20px; text-shadow: 0 0 10px #000;">Clique em qualquer lugar para fechar</div>
     </div>
 
+    <!-- ========================================= -->
+<!-- JOGO WHACK-A-MOLE: CÓDIGO BLINDADO V2     -->
+<!-- ========================================= -->
+
+<style>
+/* Estilos Base */
+.whack-btn { background: transparent; color: #00ffcc; border: 2px solid #00ffcc; padding: 10px 20px; margin: 10px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.2s; text-transform: uppercase; }
+.whack-btn:hover { background: rgba(0, 255, 204, 0.2); transform: scale(1.05); box-shadow: 0 0 15px #00ffcc; }
+.whack-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: 40px; max-width: 600px; }
+.whack-hole { width: 100px; height: 100px; background: #332211; border-radius: 50%; position: relative; overflow: hidden; border: 4px solid #1a1108; box-shadow: inset 0 20px 20px rgba(0,0,0,0.8); }
+.whack-mole { width: 80px; height: 80px; background: #a67c52; border-radius: 40px 40px 10px 10px; position: absolute; bottom: -80px; left: 10px; cursor: pointer; transition: bottom 0.15s ease-out; display: flex; align-items: center; justify-content: center; font-size: 30px; user-select: none; }
+.whack-hole.up .whack-mole { bottom: 0; }
+.whack-mole.bomba { background: #111; color: #ff4444; border: 2px solid #ff4444; }
+.whack-mole.bomba::after { content: '💣'; }
+.whack-mole.normal::after { content: '🐛'; }
+
+/* VFX: Efeito de Explosão e Tremor */
+@keyframes flashExplosao {
+    0% { background-color: transparent; }
+    10% { background-color: rgba(255, 0, 0, 0.8); }
+    50% { background-color: rgba(255, 150, 0, 0.5); }
+    100% { background-color: transparent; }
+}
+@keyframes tremeTela {
+    0% { transform: translate(0, 0); }
+    20% { transform: translate(-15px, 15px); }
+    40% { transform: translate(15px, -15px); }
+    60% { transform: translate(-15px, -15px); }
+    80% { transform: translate(15px, 15px); }
+    100% { transform: translate(0, 0); }
+}
+.anim-explosao { animation: flashExplosao 0.6s ease-out; pointer-events: none; }
+.anim-treme { animation: tremeTela 0.4s; }
+
+/* VFX: Rasgo da Faca Mágica */
+@keyframes slashAnim {
+    0% { width: 0; opacity: 1; }
+    40% { width: 150vw; opacity: 1; box-shadow: 0 0 20px #fff, 0 0 50px #00ffcc; }
+    100% { width: 150vw; opacity: 0; display: none; }
+}
+.faca-slash {
+    position: fixed; top: 50%; left: -25vw; height: 4px; background: white;
+    transform: rotate(-35deg); z-index: 99999999; animation: slashAnim 0.6s forwards ease-out;
+    pointer-events: none;
+}
+</style>
+
+<div id="whackScreenV2" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #0d0d14; z-index: 9999999; flex-direction: column; align-items: center; color: white; font-family: sans-serif;">
+    
+    <div id="overlayExplosao" style="position: absolute; top:0; left:0; width:100%; height:100%; z-index: 10; pointer-events: none;"></div>
+
+    <div id="whackMenuV2" style="display: flex; flex-direction: column; align-items: center; margin-top: 100px; z-index: 20;">
+        <h1 style="color: #00ffcc; text-shadow: 0 0 15px #00ffcc; font-size: 40px;">Esmaga-Minhoca</h1>
+        <p style="font-size: 18px; margin-bottom: 20px;">O Oráculo te desafia. Escolha o nível de extermínio:</p>
+        <button class="whack-btn" onclick="iniciarWhack('normal')">Normal (3 Buracos)</button>
+        <button class="whack-btn" onclick="iniciarWhack('hard')" style="color: #ff9900; border-color: #ff9900;">Hard (5 Buracos)</button>
+        <button class="whack-btn" onclick="iniciarWhack('total')" style="color: #ff0044; border-color: #ff0044;">Total Extermination (7 Buracos)</button>
+        <button class="whack-btn" onclick="fecharWhack()" style="margin-top: 30px; border-color: gray; color: gray;">Sair da Caverna</button>
+    </div>
+
+    <div id="whackGameV2" style="display: none; flex-direction: column; align-items: center; width: 100%; height: 100%; z-index: 20;">
+        <div style="display: flex; justify-content: space-between; width: 90%; max-width: 600px; margin-top: 20px; background: rgba(0,0,0,0.7); padding: 15px; border-radius: 10px; border: 2px solid #333; box-shadow: 0 0 20px rgba(0,0,0,0.8);">
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <span id="whackScoreV2" style="color: #00ffcc; font-size: 22px; font-weight: bold;">Acertos: 0 / 15</span>
+                <span id="whackErrorsV2" style="color: #ff4444; font-size: 16px;">Erros permitidos: ∞</span>
+                <span id="whackBombsV2" style="color: #ffaa00; font-size: 16px; display: none;">Bombas clicadas: 0/3</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div id="oraculoFalaV2" style="background: white; color: black; padding: 10px; border-radius: 10px; font-size: 14px; max-width: 150px; text-align: center; display: none; font-weight: bold; border: 2px solid #00ffcc;"></div>
+                <img src="oraculo.gif" alt="Oráculo" style="width: 70px; height: 70px; border-radius: 50%; border: 2px solid #00ffcc; box-shadow: 0 0 10px #00ffcc;"> 
+            </div>
+        </div>
+        <div id="whackGridV2" class="whack-grid"></div>
+        <button class="whack-btn" onclick="fecharWhack()" style="margin-top: 40px; border-color: gray; color: gray;">Desistir</button>
+    </div>
+
+    <div id="whackModalFim" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 50; flex-direction: column; align-items: center; justify-content: center; backdrop-filter: blur(5px);">
+        <div style="background: #111; border: 3px solid #00ffcc; border-radius: 15px; padding: 30px; text-align: center; max-width: 400px; box-shadow: 0 0 30px #00ffcc;" id="modalFimBox">
+            <img src="oraculo.gif" style="width: 100px; border-radius: 50%; border: 3px solid #00ffcc; margin-bottom: -50px; position: relative; top: -60px; background: #000;">
+            <h2 id="modalFimTitulo" style="color: #fff; font-size: 28px; margin-top: 0;">Fim de Jogo</h2>
+            <p id="modalFimTexto" style="font-size: 18px; color: #ccc; margin: 20px 0;">Mensagem da Oráculo aqui.</p>
+            
+            <div id="recompensaFaca" style="display: none; background: rgba(255, 0, 68, 0.2); border: 2px dashed #ff0044; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                <span style="font-size: 30px;">🗡️</span>
+                <h3 style="color: #ff0044; margin: 5px 0;">CONQUISTA DESBLOQUEADA!</h3>
+                <p style="color: #fff; font-size: 14px; margin: 0;">Você ganhou a Faca Mágica! Acesse no menu de Conquistas.</p>
+            </div>
+
+            <button class="whack-btn" onclick="voltarMenuWhack()">Menu Principal</button>
+            <button class="whack-btn" onclick="fecharWhack()" style="border-color: gray; color: gray;">Sair do Jogo</button>
+        </div>
+    </div>
+</div>
+
+<script>
+var whackScore = 0; var whackErrors = 0; var whackBombsClicked = 0; var whackTimer; var currentLevelData; var lastHole;
+var jogoAtivo = false; 
+var nivelAtualNome = ''; // Salva o nome do nível para a Faca Mágica
+
+var whackLevels = {
+    normal: { holes: 3, stayTime: 3000, spawnRate: 1500, maxScore: 15, maxErrors: 999, hasBombs: false },
+    hard: { holes: 5, stayTime: 2500, spawnRate: 1000, maxScore: 25, maxErrors: 12, hasBombs: false },
+    total: { holes: 7, stayTime: 2000, spawnRate: 800, maxScore: 50, maxErrors: 10, hasBombs: true }
+};
+var falasOraculo = ["Mais rápido, lesma!", "Errou de novo?", "Minha avó é mais rápida que você...", "Bate na minhoca, não no vento!"];
+
+window.abrirJogoDasMinhocas = function() {
+    var tela = document.getElementById('whackScreenV2');
+    if (tela) {
+        document.body.appendChild(tela);
+        tela.style.setProperty('display', 'flex', 'important');
+        tela.style.setProperty('z-index', '9999999', 'important'); 
+        document.getElementById('whackMenuV2').style.display = 'flex';
+        document.getElementById('whackGameV2').style.display = 'none';
+    }
+};
+
+window.abrirWhackAMole = window.abrirJogoDasMinhocas;
+
+window.fecharWhack = function() {
+    jogoAtivo = false; 
+    clearInterval(whackTimer);
+    var tela = document.getElementById('whackScreenV2');
+    if (tela) tela.style.setProperty('display', 'none', 'important');
+};
+
+// Se a sua função falarOraculo existir, ele usa ela. Se não, usa o balão de backup.
+function mostrarFalaLocal(texto, tempo = 3000) {
+    if (typeof falarOraculo === "function") {
+        falarOraculo(texto, tempo);
+    } else {
+        var balao = document.getElementById('oraculoFalaV2');
+        if(!balao) return;
+        balao.innerText = texto;
+        balao.style.display = 'block';
+        setTimeout(() => { balao.style.display = 'none'; }, tempo);
+    }
+}
+
+window.iniciarWhack = function(nivel) {
+    jogoAtivo = true; 
+    nivelAtualNome = nivel; // Guarda pra checar a faca mágica depois
+    document.getElementById('whackMenuV2').style.display = 'none';
+    document.getElementById('whackGameV2').style.display = 'flex';
+    currentLevelData = whackLevels[nivel];
+    whackScore = 0; whackErrors = 0; whackBombsClicked = 0;
+    document.getElementById('whackBombsV2').style.display = currentLevelData.hasBombs ? 'block' : 'none';
+    atualizarHudWhack();
+    
+    var grid = document.getElementById('whackGridV2');
+    grid.innerHTML = '';
+    for(let i = 0; i < currentLevelData.holes; i++) {
+        let hole = document.createElement('div');
+        hole.className = 'whack-hole';
+        let mole = document.createElement('div');
+        mole.className = 'whack-mole normal';
+        mole.addEventListener('click', baterMinhoca);
+        hole.appendChild(mole);
+        grid.appendChild(hole);
+    }
+    mostrarFalaLocal("Mostre o que sabe fazer!", 2000);
+    whackTimer = setInterval(subirMinhoca, currentLevelData.spawnRate);
+};
+
+function buracoAleatorio(holes) {
+    let buracosLivres = Array.from(holes).filter(function(h) {
+        return h !== lastHole && !h.classList.contains('up');
+    });
+    if (buracosLivres.length === 0) {
+        buracosLivres = Array.from(holes).filter(function(h) { return h !== lastHole; });
+    }
+    let idx = Math.floor(Math.random() * buracosLivres.length);
+    let hole = buracosLivres[idx];
+    lastHole = hole;
+    return hole;
+}
+
+function subirMinhoca() {
+    if (!jogoAtivo) return; 
+    
+    let holes = document.querySelectorAll('#whackGridV2 .whack-hole');
+    if(!holes.length) return;
+    let hole = buracoAleatorio(holes);
+    let mole = hole.querySelector('.whack-mole');
+    mole.className = 'whack-mole normal';
+    mole.isBomb = false;
+
+    if (currentLevelData.hasBombs && Math.random() < 0.2) {
+        mole.className = 'whack-mole bomba';
+        mole.isBomb = true;
+    }
+    hole.classList.add('up');
+    mole.foiBate = false;
+
+    // A SUa LÓGICA DO CRONÔMETRO ADICIONADA AQUI!
+    hole.timerDescer = setTimeout(() => {
+        if (!jogoAtivo) return; 
+        
+        if (hole.classList.contains('up')) {
+            hole.classList.remove('up');
+            if (!mole.foiBate && !mole.isBomb) {
+                whackErrors++;
+                atualizarHudWhack();
+                if(Math.random() > 0.5) mostrarFalaLocal(falasOraculo[Math.floor(Math.random() * falasOraculo.length)]);
+                if (whackErrors >= currentLevelData.maxErrors) finalizarJogo(false, "Game Over! Você deixou muitas escaparem.");
+            }
+        }
+    }, currentLevelData.stayTime);
+}
+
+// 3. CORREÇÃO DA MARRETADA FEITA POR VOCÊ!
+function baterMinhoca(e) {
+    if(!e.isTrusted || !jogoAtivo) return; 
+    let mole = this;
+    let hole = mole.parentElement;
+    if(!hole.classList.contains('up')) return;
+    
+    mole.foiBate = true;
+    hole.classList.remove('up');
+
+    // CANCELA O CRONÔMETRO QUANDO TOMA A MARRETADA
+    if (hole.timerDescer) clearTimeout(hole.timerDescer);
+    
+    if (mole.isBomb) {
+        whackBombsClicked++;
+        atualizarHudWhack();
+        if (typeof dispararVFXExplosao === 'function') dispararVFXExplosao(); 
+        
+        if (whackBombsClicked === 2) {
+            mostrarFalaLocal("Seu burro, se você clicar na bomba mais uma vez, a sua bunda vai explodir!", 4000);
+        } else if (whackBombsClicked >= 3) {
+            finalizarJogo(false, "CABUM! Parabéns, gênio, você explodiu sua própria bunda.");
+        } else {
+            mostrarFalaLocal("É CEGO? Isso é uma bomba!", 2000);
+        }
+    } else {
+        whackScore++;
+        atualizarHudWhack();
+        if (whackScore >= currentLevelData.maxScore) {
+            finalizarJogo(true, "Inacreditável... Você realmente massacrou todas as pragas. Mandou bem.");
+        }
+    }
+}
+
+function atualizarHudWhack() {
+    document.getElementById('whackScoreV2').innerText = `Acertos: ${whackScore} / ${currentLevelData.maxScore}`;
+    let limiteErros = currentLevelData.maxErrors > 100 ? "∞" : currentLevelData.maxErrors;
+    document.getElementById('whackErrorsV2').innerText = `Erros: ${whackErrors} / ${limiteErros}`;
+    document.getElementById('whackBombsV2').innerText = `Bombas clicadas: ${whackBombsClicked} / 3`;
+}
+
+// NOVA FUNÇÃO DE TELA DE FIM DE JOGO BLINDADA
+function finalizarJogo(vitória, msg) {
+    jogoAtivo = false;
+    clearInterval(whackTimer);
+    
+    // Configura o Modal (Com check de segurança)
+    var modal = document.getElementById('whackModalFim');
+    if(modal) modal.style.display = 'flex';
+    
+    var titulo = document.getElementById('modalFimTitulo');
+    if(titulo) {
+        titulo.innerText = vitória ? "VITÓRIA!" : "GAME OVER";
+        titulo.style.color = vitória ? "#00ffcc" : "#ff4444";
+    }
+    
+    var box = document.getElementById('modalFimBox');
+    if(box) {
+        box.style.borderColor = vitória ? "#00ffcc" : "#ff4444";
+        box.style.boxShadow = vitória ? "0 0 30px #00ffcc" : "0 0 30px #ff4444";
+    }
+    
+    var texto = document.getElementById('modalFimTexto');
+    if(texto) texto.innerText = msg;
+    
+    // Toca a voz
+    mostrarFalaLocal(msg, 5000);
+
+    // Sistema de Recompensa da Faca Mágica (Salva no LocalStorage)
+    if (vitória && nivelAtualNome === 'total') {
+        var faca = document.getElementById('recompensaFaca');
+        if(faca) faca.style.display = 'block';
+        localStorage.setItem('conquistaFacaMagica', 'desbloqueada');
+        mostrarFalaLocal("Você dominou o extermínio total e encontrou a Faca Mágica nas entranhas da caverna!", 6000);
+    } else {
+        var faca = document.getElementById('recompensaFaca');
+        if(faca) faca.style.display = 'none';
+    }
+}
+</script>
+
+<!-- MODAL DE ACESSO NEGADO -->
+<div id="acessoNegadoModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 9999999; justify-content: center; align-items: center; font-family: sans-serif; backdrop-filter: blur(4px);">
+    <div style="background: #000; border: 2px solid #ff0000; border-radius: 10px; padding: 30px; text-align: center; max-width: 400px; box-shadow: 0 0 20px #ff0000; position: relative; display: flex; flex-direction: column; align-items: center;">
+        
+        <img src="oraculo.gif" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid #ff0000; box-shadow: 0 0 15px #ff0000; margin-bottom: 20px;">
+        
+        <h2 style="color: #ff0000; font-size: 26px; text-shadow: 0 0 10px #ff0000; letter-spacing: 2px; margin-top: 0; margin-bottom: 10px;">ACESSO NEGADO</h2>
+        
+        <p style="color: #ff4444; font-weight: bold; margin-bottom: 20px; font-size: 16px;">A Oráculo te encara com desprezo:</p>
+        
+        <p id="textoAcessoNegado" style="color: #ccc; font-style: italic; margin-bottom: 30px; font-size: 16px; line-height: 1.5;"></p>
+        
+        <button onclick="document.getElementById('acessoNegadoModal').style.display='none'" style="background: #ff0000; color: white; border: none; padding: 12px 25px; font-weight: bold; border-radius: 5px; cursor: pointer; font-size: 16px; box-shadow: 0 0 15px #ff0000; transition: 0.2s;">PERDÃO, ORÁCULO</button>
+        
+    </div>
+</div>
+
+<div id="divinePillarOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: white; z-index: 99998; opacity: 0; transition: opacity 0.3s; pointer-events: none;"></div>
+
+<div id="divinePillarWidget" style="display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #001a33; border: 2px solid #00ffff; border-radius: 10px; padding: 15px; z-index: 99999; box-shadow: 0 0 20px rgba(0,255,255,0.5); text-align: center;">
+    <h3 style="color: #00ffff; margin: 0 0 10px 0;">🪄 DivinePillar</h3>
+    <button onclick="dispararOndaLuz()" style="background: #00ffff; color: #000; font-weight: bold; padding: 10px 20px; border: none; cursor: pointer; border-radius: 5px;">Disparar Onda de Luz</button>
+    <button onclick="document.getElementById('divinePillarWidget').style.display='none'" style="background: #333; color: white; border: none; padding: 10px 15px; margin-left: 10px; cursor: pointer; border-radius: 5px;">❌</button>
+</div>
+
+<script>
+    let divinePillarUsos = 0;
+
+    window.iniciarDivinePillar = function() {
+        if (localStorage.getItem('conquistaDivinePillar') === 'desbloqueada') {
+            divinePillarUsos = 0;
+            document.getElementById('divinePillarWidget').style.display = 'block';
+        } else {
+            // Usa o seu modal do "Acesso Negado"
+            mostrarAcessoNegado("Você precisa dominar o Tsunami da Morte no Water Park para empunhar essa arma divina, insolente!");
+        }
+    };
+
+    window.dispararOndaLuz = function() {
+        divinePillarUsos++;
+        let overlay = document.getElementById('divinePillarOverlay');
+        
+        if (divinePillarUsos <= 3) {
+            // Efeito de flash normal
+            overlay.style.display = 'block';
+            overlay.style.opacity = '0.5';
+            setTimeout(() => { overlay.style.opacity = '0'; }, 200);
+            setTimeout(() => { overlay.style.display = 'none'; }, 500);
+        } else {
+            // Oráculo Cega (A tela fica toda branca e ela reclama)
+            overlay.style.display = 'block';
+            overlay.style.opacity = '0.9';
+            document.getElementById('divinePillarWidget').style.display = 'none';
+            
+            // Reclamação dela (adapte a função falarOraculo se o nome for diferente no seu JS)
+            if (typeof falarOraculo === 'function') {
+                falarOraculo("MEUS OLHOS! Para de piscar essa porcaria de cajado na minha cara, você me cegou!!", 5000);
+            }
+            
+            // Fade out lento do clarão
+            setTimeout(() => { overlay.style.transition = 'opacity 3s'; overlay.style.opacity = '0'; }, 3000);
+            setTimeout(() => { overlay.style.display = 'none'; overlay.style.transition = 'opacity 0.3s'; }, 6000);
+        }
+    };
+</script>
 
 </body>
 </html>

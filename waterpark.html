@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aetheryon Water Park</title>
+    <style>
+        body { margin: 0; padding: 0; background: #000814; color: white; font-family: sans-serif; overflow-x: hidden; }
+        
+        .header { text-align: center; padding: 20px; background: linear-gradient(180deg, #001a33 0%, #000814 100%); border-bottom: 2px solid #00ffff; box-shadow: 0 5px 20px rgba(0, 255, 255, 0.2); position: relative; }
+        .header h1 { margin: 0; color: #00ffff; text-shadow: 0 0 10px #00ffff; letter-spacing: 2px; font-family: 'Cinzel', serif; }
+        
+        #statusLoja { position: absolute; right: 20px; top: 20px; text-align: right; }
+        .btn-loja { background: #ffaa00; color: #000; border: none; padding: 8px 15px; font-weight: bold; border-radius: 5px; cursor: pointer; box-shadow: 0 0 10px #ffaa00; margin-top: 5px; transition: 0.2s; }
+        .btn-loja:hover { transform: scale(1.05); }
+
+        /* HUB DE ESCOLHER JOGO */
+        #hubJogos { display: flex; flex-direction: column; align-items: center; margin-top: 30px; z-index: 10; position: relative; }
+        .game-card { background: #001a33; border: 2px solid #00ffff; border-radius: 10px; padding: 20px; margin: 10px; width: 400px; text-align: center; cursor: pointer; transition: 0.3s; }
+        .game-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,255,255,0.3); }
+
+        /* MENUS DOS JOGOS */
+        .menu-jogo { display: none; flex-direction: column; align-items: center; margin-top: 30px; z-index: 10; position: relative; }
+        .btn-nivel { background: transparent; border: 2px solid; padding: 10px 20px; margin: 10px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.2s; text-transform: uppercase; width: 350px; }
+        .btn-nivel.normal { color: #00ffff; border-color: #00ffff; }
+        .btn-nivel.hard { color: #ff9900; border-color: #ff9900; }
+        .btn-nivel.tsunami { color: #ff0044; border-color: #ff0044; }
+        .btn-nivel:hover { transform: scale(1.05); box-shadow: 0 0 15px currentColor; }
+        .regras-box { background: rgba(0,0,0,0.5); border: 1px dashed #aaa; padding: 15px; border-radius: 8px; width: 350px; text-align: left; margin-bottom: 20px; font-size: 14px; color: #ccc; }
+
+        /* ÁREAS DOS JOGOS (CANVAS) */
+        .gameArea { display: none; flex-direction: column; align-items: center; justify-content: center; margin-top: 20px; position: relative; }
+        .gameHUD { width: 90%; max-width: 800px; display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 20px; font-weight: bold; }
+        .canvas-container { position: relative; max-width: 100%; overflow: hidden; }
+        canvas { background: linear-gradient(180deg, #0a1128 0%, #001d3d 100%); border: 3px solid #00ffff; border-radius: 10px; box-shadow: 0 0 30px rgba(0, 255, 255, 0.3); }
+        #waterCanvas { cursor: crosshair; }
+        
+        .endGameOverlay { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); flex-direction: column; align-items: center; justify-content: center; z-index: 20; border-radius: 10px; }
+        
+        #powerPanel { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; justify-content: center; }
+        .btn-poder { background: #111; color: #fff; border: 2px solid; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; display: flex; flex-direction: column; align-items: center; min-width: 100px; }
+        .btn-poder span { font-size: 12px; font-weight: normal; margin-top: 5px; color: #aaa; }
+
+        /* MODAIS */
+        #lojaModal, #ashlanAlertModal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 100; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
+        .loja-box { background: #001a33; border: 2px solid #ffaa00; border-radius: 10px; padding: 20px; width: 90%; max-width: 600px; }
+        .loja-abas { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #333; padding-bottom: 10px; }
+        .btn-aba { background: transparent; color: white; border: none; font-size: 16px; cursor: pointer; padding: 5px 10px; }
+        .btn-aba.ativa { border-bottom: 2px solid #ffaa00; color: #ffaa00; font-weight: bold; }
+        .loja-item { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); padding: 10px; margin-bottom: 10px; border-radius: 5px; }
+        .btn-comprar { background: #ffaa00; color: black; border: none; padding: 5px 10px; font-weight: bold; cursor: pointer; border-radius: 3px; }
+
+        #ashlanAlertBox { background: #000814; border: 2px solid; border-radius: 10px; padding: 25px; text-align: center; max-width: 400px; display: flex; flex-direction: column; align-items: center; box-shadow: 0 0 20px; }
+        #ashlanAlertImg { width: 80px; height: 80px; border-radius: 50%; border: 2px solid; object-fit: cover; object-position: top; margin-bottom: 15px; }
+        
+        /* ASHLAN NPC */
+        #ashlanContainer { position: fixed; bottom: -10px; right: 20px; display: flex; align-items: flex-end; z-index: 50; }
+        #ashlanAvatar { width: 150px; cursor: pointer; filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.5)); transition: transform 0.2s; }
+        #ashlanAvatar:hover { transform: scale(1.05); }
+        #ashlanBalao { background: white; color: black; padding: 15px; border-radius: 15px 15px 0 15px; max-width: 250px; font-size: 14px; font-weight: bold; border: 2px solid #00ffff; margin-right: 15px; margin-bottom: 80px; display: none; box-shadow: 0 0 15px rgba(255,255,255,0.5); position: relative; }
+        .btn-roupa { background: #333; color: white; border: none; padding: 8px; font-size: 13px; margin: 2px; cursor: pointer; border-radius: 3px; width: 100%; transition: 0.2s; }
+        .btn-roupa:hover { background: #555; }
+    </style>
+</head>
+<body>
+
+    <div id="ashlanAlertModal">
+        <div id="ashlanAlertBox">
+            <img id="ashlanAlertImg" src="https://i.imgur.com/eBf27Gz.png">
+            <h2 id="ashlanAlertTitle">Título</h2>
+            <p id="ashlanAlertText">Mensagem aqui.</p>
+            <button onclick="document.getElementById('ashlanAlertModal').style.display='none'" style="padding: 10px 25px; background: #222; color: white; border: 1px solid gray; border-radius: 5px; cursor: pointer; font-weight: bold;">ENTENDIDO</button>
+        </div>
+    </div>
+
+    <div class="header">
+        <h1>🌊 AETHERYON WATER PARK 🌊</h1>
+        <div id="statusLoja">
+            <div style="color: #00ffff; font-weight: bold; font-size: 18px;">🎫 <span id="qtTickets">0</span> Tickets</div>
+            <button class="btn-loja" onclick="abrirLoja()">🛍️ Visitar Lojinha</button>
+        </div>
+    </div>
+
+    <div id="hubJogos">
+        <h2 style="color: white; margin-bottom: 20px;">Selecione uma Atração:</h2>
+        
+        <div class="game-card" onclick="abrirMenuJogo('menuOndas')">
+            <h3 style="color: #00ffff; margin: 0 0 10px 0;">🌊 Keep the Island Alive</h3>
+            <p style="color: #aaa; margin: 0; font-size: 14px;">Proteja as garotas das ondas mortais com cliques defensivos.</p>
+        </div>
+
+        <div class="game-card" onclick="abrirMenuJogo('menuSub')">
+            <h3 style="color: #ffaa00; margin: 0 0 10px 0;">⚓ Submarine Rescue</h3>
+            <p style="color: #aaa; margin: 0; font-size: 14px;">Pilote o submarino, desvie de escombros e resgate os mergulhadores.</p>
+        </div>
+    </div>
+
+    <div id="menuOndas" class="menu-jogo">
+        <h2 style="color: white;">Keep the Island Alive</h2>
+        <div class="regras-box">
+            <b style="color:#00ffff;">Regras:</b> Ondas gigantes virão das bordas. Clique na água antes que cheguem na ilha para criar uma marola defensiva e achatá-las! Se uma onda grande bater, afoga uma garota.
+        </div>
+        <button class="btn-nivel normal" onclick="iniciarOndas('normal')">Normal <br><span style="font-size:12px; color:#ccc;">Prêmio: +2 Tickets</span></button>
+        <button class="btn-nivel hard" onclick="iniciarOndas('hard')">Hard <br><span style="font-size:12px; color:#ccc;">Prêmio: +5 Tickets</span></button>
+        <button class="btn-nivel tsunami" onclick="iniciarOndas('tsunami')">Tsunami da Morte <br><span style="font-size:12px; color:#ccc;">Prêmio: +15 Tck & DivinePillar</span></button>
+        <button onclick="voltarHub('menuOndas')" style="margin-top: 20px; background: transparent; border: none; color: gray; cursor: pointer; text-decoration: underline;">⬅ Voltar ao Parque</button>
+    </div>
+
+    <div id="menuSub" class="menu-jogo">
+        <h2 style="color: white;">Submarine Rescue</h2>
+        <div class="regras-box">
+            <b style="color:#ffaa00;">Regras:</b> Use as <b style="color:#fff;">SETAS DO TECLADO</b> para pilotar. Resgate os mergulhadores que caem do céu. <br><br>
+            ⚠️ <b style="color:#ff4444;">Ameaças:</b> Desvie dos contêineres gigantes. Eles te esmagam e criam correntes fortes! Se 3 mergulhadores atingirem o chão, você perde.
+        </div>
+        <button class="btn-nivel normal" onclick="iniciarSub('normal')">Normal (10 Resgates) <br><span style="font-size:12px; color:#ccc;">Prêmio: +5 Tickets</span></button>
+        <button class="btn-nivel tsunami" onclick="iniciarSub('fatal')">Mergulho Fatal (30 Resgates) <br><span style="font-size:12px; color:#ccc;">Prêmio: +15 Tickets (Velocidade Bugada)</span></button>
+        <button onclick="voltarHub('menuSub')" style="margin-top: 20px; background: transparent; border: none; color: gray; cursor: pointer; text-decoration: underline;">⬅ Voltar ao Parque</button>
+    </div>
+
+    <div id="gameAreaOndas" class="gameArea">
+        <div class="gameHUD"><span id="hudTempoOndas" style="color:#ffaa00;">Tempo: 60s</span><span id="hudPopOndas" style="color:#00ffcc;">Sobreviventes: 10</span></div>
+        <div class="canvas-container">
+            <canvas id="waterCanvas" width="800" height="400"></canvas>
+            <div id="endGameOndas" class="endGameOverlay">
+                <h1 id="endTitleOndas" style="font-size: 40px; margin-bottom: 10px;">VITÓRIA!</h1>
+                <p id="endDescOndas" style="color: #ccc; margin-bottom: 10px;">Você ganhou +X Tickets!</p>
+                <div id="recompensaTsunami" style="display: none; background: rgba(0,255,255,0.2); border: 1px dashed #00ffff; padding: 10px; margin-bottom: 20px; border-radius: 5px; color: #00ffff; font-weight: bold;">
+                    🪄 CONQUISTA: DivinePillar Desbloqueada!
+                </div>
+                <div style="display: flex; gap: 20px;">
+                    <button class="btn-nivel normal" style="width: auto; padding: 10px 20px;" onclick="tentarNovamenteOndas()">Tentar Novamente</button>
+                    <button class="btn-nivel" style="border-color: gray; color: gray; width: auto; padding: 10px 20px;" onclick="voltarHubDeFim('gameAreaOndas')">Sair</button>
+                </div>
+            </div>
+        </div>
+        <div id="powerPanel">
+            <button id="btnP1" class="btn-poder" style="border-color: #3498db;" onclick="ativarPoder(1)">⏳ SLOW ONDAS<span id="qtdP1">0x</span></button>
+            <button id="btnP2" class="btn-poder" style="border-color: #2ecc71;" onclick="ativarPoder(2)">🛡️ IMUNIDADE<span id="qtdP2">0x</span></button>
+            <button id="btnP3" class="btn-poder" style="border-color: #e74c3c;" onclick="ativarPoder(3)">💥 SUPER CLIQUE<span id="qtdP3">0x</span></button>
+        </div>
+    </div>
+
+    <div id="gameAreaSub" class="gameArea">
+        <div class="gameHUD">
+            <span id="hudVidasSub" style="color:#ff4444;">Perdidos: 0/3</span>
+            <span id="hudResgatesSub" style="color:#ffaa00;">Resgates: 0/10</span>
+        </div>
+        <div class="canvas-container">
+            <canvas id="subCanvas" width="800" height="400"></canvas>
+            <div id="endGameSub" class="endGameOverlay">
+                <h1 id="endTitleSub" style="font-size: 40px; margin-bottom: 10px;">VITÓRIA!</h1>
+                <p id="endDescSub" style="color: #ccc; margin-bottom: 30px;">Você ganhou +X Tickets!</p>
+                <div style="display: flex; gap: 20px;">
+                    <button class="btn-nivel normal" style="width: auto; padding: 10px 20px;" onclick="tentarNovamenteSub()">Tentar Novamente</button>
+                    <button class="btn-nivel" style="border-color: gray; color: gray; width: auto; padding: 10px 20px;" onclick="voltarHubDeFim('gameAreaSub')">Sair</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="lojaModal">
+        <div class="loja-box">
+            <h2 style="color: #ffaa00; margin-top: 0;">Lojinha (🎫 <span id="lojaTickets"></span>)</h2>
+            <div class="loja-abas">
+                <button class="btn-aba ativa" onclick="mudarAbaLoja(1)" id="abaBtn1">🧪 Poderes</button>
+                <button class="btn-aba" onclick="mudarAbaLoja(2)" id="abaBtn2">👕 Roupas</button>
+            </div>
+            <div id="abaPoderes">
+                <div class="loja-item"><div><b style="color: #3498db;">⏳ Slow Ondas (10s)</b></div><button class="btn-comprar" onclick="comprarItem('p1', 30)">30 Tck</button></div>
+                <div class="loja-item"><div><b style="color: #2ecc71;">🛡️ Imunidade (10s)</b></div><button class="btn-comprar" onclick="comprarItem('p2', 35)">35 Tck</button></div>
+                <div class="loja-item"><div><b style="color: #e74c3c;">💥 Super Clique (15s)</b></div><button class="btn-comprar" onclick="comprarItem('p3', 40)">40 Tck</button></div>
+            </div>
+            <div id="abaRoupas" style="display: none;">
+                <div class="loja-item"><div><b style="color: #ff69b4;">👗 Saia Fofa</b></div><button id="btnCompraSaia" class="btn-comprar" onclick="comprarRoupa('saia', 20)">20 Tck</button></div>
+                <div class="loja-item"><div><b style="color: #00ffff;">🩲 Cueca Fofa</b></div><button id="btnCompraCueca" class="btn-comprar" onclick="comprarRoupa('cueca', 30)">30 Tck</button></div>
+            </div>
+            <button onclick="document.getElementById('lojaModal').style.display='none'" style="margin-top: 15px; padding: 5px 15px; cursor: pointer;">Fechar Loja</button>
+        </div>
+    </div>
+
+    <div id="ashlanContainer">
+        <div id="ashlanBalao">
+            <span id="ashlanTextoFala">E aí, precisa de algo?</span>
+            
+            <div id="ashlanOpcoesIniciais" style="display: none; flex-direction: column; gap: 5px; margin-top: 10px; border-top: 1px solid #ccc; padding-top: 10px;">
+                <button class="btn-roupa" onclick="ashlanExplicar()">🤔 O que tem no parque?</button>
+                <button class="btn-roupa" onclick="ashlanMostrarRoupas()">👕 Trocar sua roupa</button>
+                <button class="btn-roupa" onclick="ashlanMostrarInteracoes()">💬 Conversar</button>
+            </div>
+
+            <div id="ashlanInteracoes" style="display: none; flex-direction: column; gap: 5px; margin-top: 10px; border-top: 1px solid #ccc; padding-top: 10px;">
+                <button class="btn-roupa" onclick="falarInteracao('vermelho', 'Ah... V-você acha? Obrigado...')">Você é muito fofo!</button>
+                <button class="btn-roupa" onclick="falarInteracao('sorrindo', 'Sim! Eu namoro o astral Eryn.')">Você tem namorado?</button>
+                <button class="btn-roupa" onclick="falarInteracao('serio', 'Apesar dela me tratar mal às vezes, eu gosto da companhia da minha irmã Ashley.')">O que acha da sua irmã Ashley?</button>
+                <button class="btn-roupa" style="background: #555; margin-top: 5px;" onclick="voltarMenuAshlan()">⬅ Voltar</button>
+            </div>
+
+            <div id="ashlanMenuRoupas" style="display: none; flex-direction: column; gap: 5px; margin-top: 10px; border-top: 1px solid #ccc; padding-top: 10px;">
+                <button class="btn-roupa" onclick="equiparRoupa('normal')">Equipar Normal</button>
+                <button id="btnEqSaia" class="btn-roupa" onclick="equiparRoupa('saia')" style="display: none;">Equipar Saia Fofa</button>
+                <button id="btnEqCueca" class="btn-roupa" onclick="equiparRoupa('cueca')" style="display: none;">Equipar Cueca Fofa</button>
+                <button class="btn-roupa" style="background: #555; margin-top: 5px;" onclick="voltarMenuAshlan()">⬅ Voltar</button>
+            </div>
+        </div>
+        
+        <img id="ashlanAvatar" src="https://i.imgur.com/eBf27Gz.png" alt="Ashlan" onclick="clicouAshlan()">
+    </div>
+
+    <script>
+        // === DADOS E IMAGENS ===
+        let waterTickets = parseInt(localStorage.getItem('aetheryonWaterTickets')) || 0;
+        let inventario = JSON.parse(localStorage.getItem('aetheryonWaterInv')) || { p1: 0, p2: 0, p3: 0, roupas: [] };
+        let roupaAtual = localStorage.getItem('aetheryonAshlanRoupa') || 'normal';
+        let expressaoAtual = 'padrao'; 
+        
+        // ==============================================
+        // COLOQUE TODOS OS LINKS DAS EXPRESSÕES AQUI!
+        // ==============================================
+        const imagensAshlan = {
+            'normal_padrao': 'ashlanwater.png',
+            'normal_vermelho': 'ashlanwatervermelho1.png', // Substitua
+            'normal_sorrindo': 'ashlanwatersorrindo.png', // Substitua
+            'normal_serio': 'ashlanwaterserio.png', // Substitua
+            
+            'saia_padrao': 'ashlanwaterskirt.png',
+            'saia_vermelho': 'ashlanwaterskirtvermelho.png',
+            'saia_sorrindo': 'ashlanwaterskirtsorrindo.png',
+            'saia_serio': 'ashlanwaterskirtserio.png',
+            
+            'cueca_padrao': 'ashlanwaterskin2.png',
+            'cueca_vermelho': 'ashlanwatervermelho.png',
+            'cueca_sorrindo': 'ashlanwaterskin2sorrindo.png',
+            'cueca_serio': 'ashlanwaterskin2serio.png'
+        };
+
+        function salvarDados() {
+            localStorage.setItem('aetheryonWaterTickets', waterTickets);
+            localStorage.setItem('aetheryonWaterInv', JSON.stringify(inventario));
+            localStorage.setItem('aetheryonAshlanRoupa', roupaAtual);
+            atualizarInfoGeral();
+        }
+
+        function atualizarInfoGeral() {
+            document.getElementById('qtTickets').innerText = waterTickets;
+            document.getElementById('lojaTickets').innerText = waterTickets;
+            document.getElementById('qtdP1').innerText = inventario.p1 + 'x';
+            document.getElementById('qtdP2').innerText = inventario.p2 + 'x';
+            document.getElementById('qtdP3').innerText = inventario.p3 + 'x';
+            
+            // Juntando a roupa com a expressão!
+            let skinExata = roupaAtual + '_' + expressaoAtual;
+            document.getElementById('ashlanAvatar').src = imagensAshlan[skinExata] || imagensAshlan['normal_padrao'];
+            document.getElementById('ashlanAlertImg').src = imagensAshlan[roupaAtual + '_padrao'] || imagensAshlan['normal_padrao'];
+
+            if(inventario.roupas.includes('saia')) { document.getElementById('btnCompraSaia').innerText = "Adquirido"; document.getElementById('btnCompraSaia').disabled = true; }
+            if(inventario.roupas.includes('cueca')) { document.getElementById('btnCompraCueca').innerText = "Adquirido"; document.getElementById('btnCompraCueca').disabled = true; }
+        }
+
+        function mostrarAlertaAshlan(tipo, mensagem) {
+            expressaoAtual = 'padrao'; atualizarInfoGeral(); // Reseta pra padrão
+            let modal = document.getElementById('ashlanAlertModal');
+            let box = document.getElementById('ashlanAlertBox');
+            let title = document.getElementById('ashlanAlertTitle');
+            let text = document.getElementById('ashlanAlertText');
+
+            if (tipo === 'erro') {
+                box.style.borderColor = '#ff4444'; box.style.boxShadow = '0 0 20px #ff4444'; 
+                title.style.color = '#ff4444'; title.innerText = 'Ops... Faltou Ticket!';
+            } else if (tipo === 'sucesso') {
+                box.style.borderColor = '#00ffcc'; box.style.boxShadow = '0 0 20px #00ffcc'; 
+                title.style.color = '#00ffcc'; title.innerText = 'Parabéns!';
+            }
+            text.innerHTML = mensagem;
+            modal.style.display = 'flex';
+        }
+
+        function abrirLoja() { document.getElementById('lojaModal').style.display = 'flex'; atualizarInfoGeral(); }
+        function mudarAbaLoja(aba) {
+            document.getElementById('abaPoderes').style.display = aba === 1 ? 'block' : 'none';
+            document.getElementById('abaRoupas').style.display = aba === 2 ? 'block' : 'none';
+            document.getElementById('abaBtn1').className = aba === 1 ? 'btn-aba ativa' : 'btn-aba';
+            document.getElementById('abaBtn2').className = aba === 2 ? 'btn-aba ativa' : 'btn-aba';
+        }
+        function comprarItem(id, preco) {
+            if (waterTickets >= preco) { waterTickets -= preco; inventario[id]++; salvarDados(); mostrarAlertaAshlan('sucesso', 'Poder adquirido!'); } 
+            else { mostrarAlertaAshlan('erro', 'Tickets insuficientes.'); }
+        }
+        function comprarRoupa(id, preco) {
+            if (inventario.roupas.includes(id)) return;
+            if (waterTickets >= preco) { waterTickets -= preco; inventario.roupas.push(id); salvarDados(); mostrarAlertaAshlan('sucesso', 'Roupa comprada!'); } 
+            else { mostrarAlertaAshlan('erro', 'Tickets insuficientes.'); }
+        }
+
+        // === ASHLAN NPC (COM FECHAR NO CLIQUE E EXPRESSÕES) ===
+        const ashlanBalao = document.getElementById('ashlanBalao');
+        const ashlanTextoFala = document.getElementById('ashlanTextoFala');
+        let timerFala;
+        let menuAshlanAberto = false;
+
+        function falarAshlan(texto, tempo = 4000) {
+            clearTimeout(timerFala);
+            ashlanTextoFala.innerText = texto;
+            document.getElementById('ashlanOpcoesIniciais').style.display = 'none';
+            document.getElementById('ashlanMenuRoupas').style.display = 'none';
+            document.getElementById('ashlanInteracoes').style.display = 'none';
+            ashlanBalao.style.display = 'block';
+            if (tempo > 0) {
+                timerFala = setTimeout(() => { 
+                    ashlanBalao.style.display = 'none'; 
+                    menuAshlanAberto = false; 
+                    expressaoAtual = 'padrao'; // Reseta o rosto quando termina de falar
+                    atualizarInfoGeral(); 
+                }, tempo);
+            }
+        }
+
+        function clicouAshlan() {
+            if (jogoRodando || subRodando) {
+                falarAshlan("Foque no jogo! Sobreviva!", 3000);
+            } else {
+                if (menuAshlanAberto) { // SE CLICOU DE NOVO, FECHA O MENU!
+                    ashlanBalao.style.display = 'none';
+                    menuAshlanAberto = false;
+                    expressaoAtual = 'padrao';
+                    atualizarInfoGeral(); 
+                } else {
+                    menuAshlanAberto = true;
+                    expressaoAtual = 'padrao';
+                    atualizarInfoGeral(); 
+                    clearTimeout(timerFala);
+                    ashlanTextoFala.innerText = "E aí, o que manda?";
+                    document.getElementById('ashlanOpcoesIniciais').style.display = 'flex';
+                    document.getElementById('ashlanMenuRoupas').style.display = 'none';
+                    document.getElementById('ashlanInteracoes').style.display = 'none';
+                    ashlanBalao.style.display = 'block';
+                }
+            }
+        }
+
+        function voltarMenuAshlan() {
+            document.getElementById('ashlanOpcoesIniciais').style.display = 'flex';
+            document.getElementById('ashlanMenuRoupas').style.display = 'none';
+            document.getElementById('ashlanInteracoes').style.display = 'none';
+            expressaoAtual = 'padrao';
+            atualizarInfoGeral();
+        }
+
+        function ashlanExplicar() { falarAshlan("Temos as Ondas da Morte e o Resgate de Submarino. Escolha uma atração e divirta-se!", 5000); }
+        function ashlanMostrarRoupas() {
+            ashlanTextoFala.innerText = "O que eu devo vestir?";
+            document.getElementById('ashlanOpcoesIniciais').style.display = 'none';
+            document.getElementById('btnEqSaia').style.display = inventario.roupas.includes('saia') ? 'block' : 'none';
+            document.getElementById('btnEqCueca').style.display = inventario.roupas.includes('cueca') ? 'block' : 'none';
+            document.getElementById('ashlanMenuRoupas').style.display = 'flex';
+        }
+        function ashlanMostrarInteracoes() {
+            ashlanTextoFala.innerText = "Pode falar...";
+            document.getElementById('ashlanOpcoesIniciais').style.display = 'none';
+            document.getElementById('ashlanInteracoes').style.display = 'flex';
+        }
+
+        function equiparRoupa(id) { roupaAtual = id; salvarDados(); falarAshlan("Pronto! Como estou parecendo?", 2500); }
+
+        function falarInteracao(expressao, fala) {
+            expressaoAtual = expressao; // Muda o rosto mantendo a roupa!
+            atualizarInfoGeral();
+            falarAshlan(fala, 4000);
+        }
+
+        // === HUB NAVIGATION ===
+        function abrirMenuJogo(idMenu) { document.getElementById('hubJogos').style.display = 'none'; document.getElementById(idMenu).style.display = 'flex'; }
+        function voltarHub(idMenu) { document.getElementById(idMenu).style.display = 'none'; document.getElementById('hubJogos').style.display = 'flex'; }
+        function voltarHubDeFim(idArea) {
+            document.getElementById('endGameOndas').style.display = 'none';
+            document.getElementById('endGameSub').style.display = 'none';
+            document.getElementById(idArea).style.display = 'none';
+            document.getElementById('hubJogos').style.display = 'flex';
+        }
+
+        // =========================================================================
+        // JOGO 1: ONDAS DA MORTE
+        // =========================================================================
+        const ctxOndas = document.getElementById('waterCanvas').getContext('2d');
+        let jogoRodando = false, animOndas, ondas = [], marolas = [], stickgirls = [], configOndas, tempoOndas = 0, loopTempoOndas, loopSpawnOndas;
+        let buffSlow = false, buffImune = false, buffGodClick = false;
+        let ultimaDificuldadeOndas = 'normal';
+        const island = { x: 350, y: 300, width: 100, height: 20 };
+        const niveisOndas = {
+            normal: { tempo: 60, pop: 10, spawnRate: 1500, waveSpeed: 2, premio: 2 },
+            hard: { tempo: 75, pop: 8, spawnRate: 1000, waveSpeed: 3.5, premio: 5 },
+            tsunami: { tempo: 90, pop: 5, spawnRate: 600, waveSpeed: 5.5, premio: 15 }
+        };
+
+        function iniciarOndas(nivel) {
+            ultimaDificuldadeOndas = nivel;
+            document.getElementById('menuOndas').style.display = 'none';
+            document.getElementById('gameAreaOndas').style.display = 'flex';
+            document.getElementById('endGameOndas').style.display = 'none';
+            configOndas = niveisOndas[nivel]; tempoOndas = configOndas.tempo;
+            ondas = []; marolas = []; stickgirls = [];
+            buffSlow = false; buffImune = false; buffGodClick = false;
+            for(let i=0; i < configOndas.pop; i++) stickgirls.push({ x: island.x + 10 + (Math.random() * 80), y: island.y - 15, viva: true });
+            jogoRodando = true; atualizarHUDOndas(); 
+            falarAshlan("Proteja as garotas das ondas!", 3000);
+            
+            loopTempoOndas = setInterval(() => { tempoOndas--; atualizarHUDOndas(); if(tempoOndas <= 0) finalizarOndas(true); }, 1000);
+            loopSpawnOndas = setInterval(() => {
+                if(!jogoRodando) return;
+                let direcao = Math.random() > 0.5 ? 1 : -1;
+                ondas.push({ x: direcao === 1 ? -50 : 850, y: 300, radius: 30 + Math.random() * 25, speed: configOndas.waveSpeed * (0.8 + Math.random() * 0.5), dir: direcao, ativa: true });
+            }, configOndas.spawnRate);
+            gameLoopOndas();
+        }
+
+        function atualizarHUDOndas() {
+            document.getElementById('hudTempoOndas').innerText = `Tempo: ${tempoOndas}s`;
+            document.getElementById('hudPopOndas').innerText = `Sobreviventes: ${stickgirls.filter(s => s.viva).length}`;
+        }
+
+        function ativarPoder(tipo) {
+            if (!jogoRodando) return;
+            if (tipo === 1 && inventario.p1 > 0) { inventario.p1--; buffSlow = true; salvarDados(); setTimeout(() => buffSlow = false, 10000); falarAshlan("Ondas desaceleradas!", 2000); }
+            else if (tipo === 2 && inventario.p2 > 0) { inventario.p2--; buffImune = true; salvarDados(); setTimeout(() => buffImune = false, 10000); falarAshlan("Escudo ativado!", 2000); }
+            else if (tipo === 3 && inventario.p3 > 0) { inventario.p3--; buffGodClick = true; salvarDados(); setTimeout(() => buffGodClick = false, 15000); falarAshlan("Poder absurdo nas mãos!", 2000); }
+        }
+
+        document.getElementById('waterCanvas').addEventListener('mousedown', function(e) {
+            if(!jogoRodando) return;
+            const rect = this.getBoundingClientRect();
+            if (e.clientY - rect.top > 250) marolas.push({ x: e.clientX - rect.left, y: 300, raio: 0, raioMax: buffGodClick ? 150 : 60, ativa: true });
+        });
+
+        function gameLoopOndas() {
+            if(!jogoRodando) return;
+            ctxOndas.clearRect(0, 0, 800, 400);
+            ctxOndas.fillStyle = '#4a3b2c'; ctxOndas.fillRect(island.x, island.y, island.width, island.height);
+            ctxOndas.fillStyle = 'rgba(0, 150, 255, 0.4)'; ctxOndas.fillRect(0, 300, 800, 100);
+            if (buffImune) { ctxOndas.fillStyle = 'rgba(46, 204, 113, 0.3)'; ctxOndas.beginPath(); ctxOndas.arc(island.x + 50, island.y, 60, Math.PI, 0); ctxOndas.fill(); }
+
+            ctxOndas.fillStyle = 'white'; let vivasCont = 0;
+            stickgirls.forEach(sg => { if(sg.viva) { vivasCont++; ctxOndas.fillRect(sg.x, sg.y, 4, 15); ctxOndas.beginPath(); ctxOndas.arc(sg.x + 2, sg.y - 2, 4, 0, Math.PI * 2); ctxOndas.fill(); }});
+            if (vivasCont === 0 && jogoRodando) finalizarOndas(false);
+
+            ctxOndas.strokeStyle = buffGodClick ? '#e74c3c' : '#00ffff'; ctxOndas.lineWidth = buffGodClick ? 5 : 3;
+            marolas.forEach(m => { if(m.ativa) { m.raio += 4; ctxOndas.beginPath(); ctxOndas.arc(m.x, m.y, m.raio, 0, Math.PI * 2); ctxOndas.stroke(); if(m.raio > m.raioMax) m.ativa = false; }});
+
+            ctxOndas.fillStyle = 'rgba(0, 200, 255, 0.8)';
+            ondas.forEach(onda => {
+                if(onda.ativa) {
+                    onda.x += onda.speed * onda.dir * (buffSlow ? 0.5 : 1);
+                    marolas.forEach(m => { if (m.ativa && Math.abs(onda.x - m.x) < m.raio) { onda.radius -= buffGodClick ? 999 : 1.5; if (onda.radius < 5) onda.ativa = false; }});
+                    ctxOndas.beginPath(); ctxOndas.arc(onda.x, onda.y, onda.radius, Math.PI, 0); ctxOndas.fill();
+                    if (onda.x > island.x && onda.x < island.x + island.width && onda.radius > 15) {
+                        if (!buffImune) { let vitima = stickgirls.find(sg => sg.viva); if (vitima) vitima.viva = false; }
+                        onda.ativa = false; atualizarHUDOndas();
+                    }
+                }
+            });
+            ondas = ondas.filter(o => o.ativa || o.x > -100 && o.x < 900);
+            marolas = marolas.filter(m => m.ativa);
+            animOndas = requestAnimationFrame(gameLoopOndas);
+        }
+
+        function finalizarOndas(vitoria) {
+            jogoRodando = false; clearInterval(loopTempoOndas); clearInterval(loopSpawnOndas);
+            document.getElementById('endGameOndas').style.display = 'flex';
+            document.getElementById('recompensaTsunami').style.display = 'none';
+
+            if (vitoria) {
+                let ganho = configOndas.premio; waterTickets += ganho; salvarDados();
+                document.getElementById('endTitleOndas').innerText = "VITÓRIA!"; document.getElementById('endTitleOndas').style.color = "#00ffcc";
+                document.getElementById('endDescOndas').innerText = `As garotas sobreviveram! Você ganhou +${ganho} Tickets!`;
+                
+                if (ultimaDificuldadeOndas === 'tsunami') {
+                    localStorage.setItem('conquistaDivinePillar', 'desbloqueada');
+                    document.getElementById('recompensaTsunami').style.display = 'block'; // AVISO VISUAL DA CONQUISTA!
+                    falarAshlan("Você sobreviveu ao Tsunami... E conseguiu o DivinePillar de recompensa!", 6000);
+                } else {
+                    falarAshlan("Incrível! Mantivemos a ilha segura!", 5000);
+                }
+            } else {
+                document.getElementById('endTitleOndas').innerText = "FIM DE JOGO"; document.getElementById('endTitleOndas').style.color = "#ff4444";
+                document.getElementById('endDescOndas').innerText = "Todas as stickgirls foram levadas pelo mar...";
+                falarAshlan("O oceano é cruel... Não desista, tente outra vez!", 5000);
+            }
+        }
+        function tentarNovamenteOndas() { iniciarOndas(ultimaDificuldadeOndas); }
+
+        // =========================================================================
+        // JOGO 2: SUBMARINE RESCUE (NOVO!)
+        // =========================================================================
+        const ctxSub = document.getElementById('subCanvas').getContext('2d');
+        let subRodando = false, animSub, divers = [], containers = [], configSub;
+        let ultimaDificuldadeSub = 'normal';
+        let sub = { x: 400, y: 300, w: 40, h: 20, speed: 4 };
+        let chaves = { ArrowUp: false, ArrowDown: false, ArrowLeft: false, ArrowRight: false };
+        let subVidas = 3, subResgatados = 0, loopSpawnSub;
+
+        const niveisSub = {
+            normal: { obj: 10, spawnRate: 1500, variando: false, premio: 5 },
+            fatal: { obj: 30, spawnRate: 800, variando: true, premio: 15 }
+        };
+
+        // Controles Teclado (Impede a tela de scrollar)
+        window.addEventListener('keydown', e => { 
+            if(chaves.hasOwnProperty(e.code)) { chaves[e.code] = true; if(subRodando) e.preventDefault(); }
+        });
+        window.addEventListener('keyup', e => { 
+            if(chaves.hasOwnProperty(e.code)) chaves[e.code] = false; 
+        });
+
+        function iniciarSub(nivel) {
+            ultimaDificuldadeSub = nivel;
+            document.getElementById('menuSub').style.display = 'none';
+            document.getElementById('gameAreaSub').style.display = 'flex';
+            document.getElementById('endGameSub').style.display = 'none';
+            configSub = niveisSub[nivel];
+            
+            sub = { x: 400, y: 300, w: 40, h: 20, speed: 4 };
+            divers = []; containers = [];
+            subVidas = 3; subResgatados = 0;
+            subRodando = true;
+            atualizarHUDSub();
+            falarAshlan("Pilote o submarino! Cuidado com os contêineres e salve os mergulhadores!", 4000);
+
+            loopSpawnSub = setInterval(() => {
+                if(!subRodando) return;
+                let chance = Math.random();
+                if(chance > 0.4) {
+                    // Spawna Mergulhador
+                    divers.push({ x: 50 + Math.random() * 700, y: -20, vy: 1 + Math.random() * 1.5, variando: configSub.variando });
+                } else {
+                    // Spawna Container Assassino
+                    containers.push({ x: 50 + Math.random() * 700, y: -50, w: 50, h: 50, vy: 2 + Math.random() * 2 });
+                }
+            }, configSub.spawnRate);
+            
+            gameLoopSub();
+        }
+
+        function atualizarHUDSub() {
+            document.getElementById('hudVidasSub').innerText = `Perdidos: ${3 - subVidas}/3`;
+            document.getElementById('hudResgatesSub').innerText = `Resgates: ${subResgatados}/${configSub.obj}`;
+        }
+
+        function gameLoopSub() {
+            if(!subRodando) return;
+            ctxSub.clearRect(0,0,800,400);
+
+            // Fundo do Mar
+            ctxSub.fillStyle = 'rgba(0, 50, 100, 0.5)';
+            ctxSub.fillRect(0,0,800,400);
+            
+            // Movimento do Sub
+            let forcaCorrenteX = 0;
+            if(chaves.ArrowUp && sub.y > 0) sub.y -= sub.speed;
+            if(chaves.ArrowDown && sub.y < 380) sub.y += sub.speed;
+            if(chaves.ArrowLeft && sub.x > 0) sub.x -= sub.speed;
+            if(chaves.ArrowRight && sub.x < 760) sub.x += sub.speed;
+
+            // Desenha e Move Containers (Geram correntes!)
+            ctxSub.fillStyle = '#8B0000'; // Vermelho escuro
+            containers.forEach(c => {
+                c.y += c.vy;
+                ctxSub.fillRect(c.x, c.y, c.w, c.h);
+                // Detalhe do container
+                ctxSub.strokeStyle = '#000'; ctxSub.strokeRect(c.x, c.y, c.w, c.h);
+
+                // Força da Corrente da água (empurra o sub)
+                if (Math.abs(c.x - sub.x) < 100 && c.y < sub.y) {
+                    forcaCorrenteX += (sub.x > c.x) ? 1.5 : -1.5;
+                }
+
+                // Colisão Esmagamento (Submarino bateu no container)
+                if (sub.x < c.x + c.w && sub.x + sub.w > c.x && sub.y < c.y + c.h && sub.y + sub.h > c.y) {
+                    finalizarSub(false, "O submarino foi esmagado por um contêiner!");
+                }
+            });
+            sub.x += forcaCorrenteX; // Aplica corrente da água
+            if(sub.x < 0) sub.x = 0; if(sub.x > 760) sub.x = 760; // Trava nas bordas
+
+            // Desenha e Move Mergulhadores
+            ctxSub.fillStyle = '#00ffcc';
+            for(let i = divers.length - 1; i >= 0; i--) {
+                let d = divers[i];
+                
+                // Mergulho fatal buga a velocidade
+                if (d.variando) {
+                    if (Math.random() > 0.95) d.vy = 0.5 + Math.random() * 4;
+                }
+                
+                d.y += d.vy;
+                ctxSub.beginPath(); ctxSub.arc(d.x, d.y, 6, 0, Math.PI * 2); ctxSub.fill();
+
+                // Colisão Resgate (Sub pegou mergulhador)
+                if (d.x > sub.x && d.x < sub.x + sub.w && d.y > sub.y && d.y < sub.y + sub.h) {
+                    subResgatados++;
+                    divers.splice(i, 1);
+                    atualizarHUDSub();
+                    if (subResgatados >= configSub.obj) finalizarSub(true);
+                } 
+                // Morreu no fundo do mar
+                else if (d.y > 400) {
+                    subVidas--;
+                    divers.splice(i, 1);
+                    atualizarHUDSub();
+                    if (subVidas <= 0) finalizarSub(false, "Muitos mergulhadores se perderam no abismo...");
+                }
+            }
+
+            // Desenha o Submarino (Corpo e Periscópio)
+            ctxSub.fillStyle = '#ffaa00';
+            ctxSub.beginPath(); ctxSub.ellipse(sub.x + sub.w/2, sub.y + sub.h/2, sub.w/2, sub.h/2, 0, 0, Math.PI * 2); ctxSub.fill();
+            ctxSub.fillRect(sub.x + 10, sub.y - 8, 8, 10);
+
+            // Limpeza
+            containers = containers.filter(c => c.y < 450);
+
+            if(subRodando) animSub = requestAnimationFrame(gameLoopSub);
+        }
+
+        function finalizarSub(vitoria, msgDerrota = "") {
+            subRodando = false; clearInterval(loopSpawnSub);
+            document.getElementById('endGameSub').style.display = 'flex';
+            
+            if (vitoria) {
+                let ganho = configSub.premio; waterTickets += ganho; salvarDados();
+                document.getElementById('endTitleSub').innerText = "RESGATE CONCLUÍDO!"; document.getElementById('endTitleSub').style.color = "#00ffcc";
+                document.getElementById('endDescSub').innerText = `Você salvou todo mundo! Ganhou +${ganho} Tickets!`;
+                falarAshlan("Excelente pilotagem! O mar agradece.", 4000);
+            } else {
+                document.getElementById('endTitleSub').innerText = "FALHA CRÍTICA"; document.getElementById('endTitleSub').style.color = "#ff4444";
+                document.getElementById('endDescSub').innerText = msgDerrota;
+                falarAshlan("O oceano é impiedoso... Cuidado com a pressão!", 5000);
+            }
+        }
+        function tentarNovamenteSub() { iniciarSub(ultimaDificuldadeSub); }
+
+        window.onload = () => { atualizarInfoGeral(); };
+    </script>
+</body>
+</html>
