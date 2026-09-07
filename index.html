@@ -419,102 +419,82 @@
         }
 
        /* ========================================= */
-        /* ADAPTAÇÃO PARA CELULAR (BLINDAGEM ABSOLUTA) */
+        /* ADAPTAÇÃO PARA CELULAR (FLEXBOX REAL)     */
         /* ========================================= */
         @media (max-width: 800px) {
-            /* 1. TELA PRINCIPAL (Força o jogo a abrir por cima de tudo!) */
+            /* 1. TELA PRINCIPAL: Ocupa 100% do celular e divide os espaços por igual */
             #cardGameScreen { 
                 position: fixed !important; 
-                top: 0 !important;
-                left: 0 !important;
-                height: 100dvh !important; 
-                width: 100vw !important;
-                padding: 0 !important; 
-                overflow: hidden !important; 
-                z-index: 9999 !important; /* Fica acima de todo o site */
-            }
-
-            /* 2. HUDS (Encolhendo e pregando no topo) */
-            div[style*="top: 10%; left: 3%"] { /* HUD Inimigo */
-                position: absolute !important; 
-                top: 5px !important; left: 5px !important; 
-                transform: scale(0.75) !important; 
-                transform-origin: top left !important;
-                z-index: 50 !important; margin: 0 !important;
-            }
-            div[style*="bottom: 15%; left: 3%"] { /* HUD Jogador */
-                position: absolute !important; 
-                top: 75px !important; left: 5px !important; bottom: auto !important; 
-                transform: scale(0.75) !important;
-                transform-origin: top left !important;
-                z-index: 50 !important; margin: 0 !important;
-            }
-
-            /* 3. AVATAR E BOTÃO SAIR */
-            #oracleAvatar { 
-                position: absolute !important; 
-                top: 5px !important; right: -10px !important; 
-                transform: scale(0.65) !important; 
-                transform-origin: top right !important; 
-            }
-            button[onclick*="modalSairJogo"] { 
-                position: absolute !important; 
-                top: 10px !important; right: 100px !important; left: auto !important; 
-                transform: none !important; 
-                padding: 5px 15px !important; font-size: 14px !important; z-index: 60 !important; 
-            }
-
-            /* 4. AS MESAS DE DUELO (O Meio do Ecrã) */
-            div[style*="height: 35%"] {
-                position: absolute !important;
-                top: 160px !important; 
-                height: calc(100dvh - 290px) !important; 
-                width: 100vw !important;
+                top: 0 !important; left: 0 !important;
+                height: 100dvh !important; width: 100vw !important;
                 display: flex !important;
                 flex-direction: column !important;
-                justify-content: center !important;
-                gap: 5px !important;
-                z-index: 10 !important;
-            }
-            #campoInimigo, #campoJogador { 
-                height: 120px !important; min-height: 120px !important; width: 100vw !important;
-                display: flex !important; align-items: center !important;
-                overflow-x: auto !important; padding: 0 15px !important;
-                position: relative !important; margin: 0 !important; top: auto !important; bottom: auto !important; left: auto !important;
+                justify-content: space-between !important;
+                padding: 0 !important; overflow: hidden !important; 
+                z-index: 9999 !important; background-color: #0d0d14 !important;
             }
 
-            /* Tamanho das Cartas na Mesa */
+            /* 2. TOPO (Status Inimigo + Avatar) */
+            div[style*="top: 10%; left: 3%"] { 
+                position: relative !important; top: 0 !important; left: 0 !important;
+                transform: scale(0.8) !important; transform-origin: top left !important;
+                margin: 5px !important; z-index: 50 !important;
+            }
+            #oracleAvatar { transform: scale(0.6) !important; position: absolute !important; top: 0 !important; right: 0 !important; }
+            button[onclick*="modalSairJogo"] { position: absolute !important; top: 5px !important; right: 80px !important; z-index: 60 !important; }
+
+            /* 3. O MEIO DA TELA (A MESA DE DUELO) */
+            /* O flex-grow: 1 faz o meio esticar pra ocupar todo o espaço vazio, sem esmagar as cartas */
+            div[style*="height: 35%"] {
+                position: relative !important; top: 0 !important; height: auto !important;
+                flex-grow: 1 !important; 
+                display: flex !important; flex-direction: column !important;
+                justify-content: space-evenly !important; /* Dá o mesmo espaço pro inimigo e pra você */
+                align-items: center !important; width: 100vw !important;
+            }
+
+            #campoInimigo, #campoJogador { 
+                width: 100vw !important; height: 130px !important;
+                display: flex !important; align-items: center !important;
+                overflow-x: auto !important; padding: 0 10px !important;
+                position: relative !important; margin: 0 !important;
+            }
+
+            /* Escala das cartas na mesa (Inimigo e Jogador) */
             #campoInimigo .carta-tcg, #campoJogador .carta-tcg {
                 transform: scale(0.55) !important;
-                margin: 0 -35px !important; 
-                flex-shrink: 0 !important;
+                margin: 0 -30px !important;
             }
 
-            /* 5. A TUA MÃO (Fundo do Ecrã) */
+            /* 4. ÁREA INFERIOR (Status Jogador, Botão e Mão) */
+            
+            /* Status Jogador */
+            div[style*="bottom: 15%; left: 3%"] { 
+                position: absolute !important; bottom: 140px !important; left: 5px !important;
+                transform: scale(0.8) !important; transform-origin: bottom left !important;
+                z-index: 50 !important;
+            }
+
+            /* Botão Passar Turno */
+            #btnPassarTurno { 
+                position: absolute !important; bottom: 145px !important; right: 10px !important;
+                transform: scale(0.9) !important; z-index: 60 !important; top: auto !important;
+            }
+
+            /* Mão do Jogador (Presa no chão) */
             #maoJogador { 
-                position: absolute !important;
-                bottom: 0 !important; left: 0 !important;
-                width: 100vw !important; height: 130px !important; 
+                position: relative !important; bottom: 0 !important; left: 0 !important;
+                width: 100vw !important; height: 135px !important; 
                 display: flex !important; align-items: flex-end !important; 
-                overflow-x: auto !important; padding: 0 15px 10px 15px !important; margin: 0 !important; 
+                overflow-x: auto !important; padding: 0 10px 10px 10px !important; margin: 0 !important; 
                 background: rgba(0,0,0,0.85) !important; z-index: 20 !important;
             }
             #maoJogador .carta-tcg {
-                transform: scale(0.6) !important;
-                transform-origin: bottom center !important;
-                margin: 0 -25px !important;
-                flex-shrink: 0 !important;
+                transform: scale(0.65) !important; transform-origin: bottom center !important;
+                margin: 0 -20px !important;
             }
 
-            /* 6. BOTÃO PASSAR TURNO */
-            #btnPassarTurno { 
-                position: absolute !important; 
-                bottom: 140px !important; right: 10px !important; top: auto !important; 
-                transform: scale(0.85) !important; transform-origin: bottom right !important;
-                z-index: 30 !important;
-            }
-
-            /* LIXO ESCONDIDO (Scrollbars invisíveis) */
+            /* LIXO ESCONDIDO */
             ::-webkit-scrollbar { display: none !important; }
             button[onclick*="historicoBatalha"], button[onclick*="cartas-ampliadas"], .seta-scroll { display: none !important; }
         }
@@ -1096,7 +1076,7 @@
             {
             name: "Seddan Blackfield", title: "O Executor de Zenathor", role: "dps", image: "seddan.png",
             avatar: "seddan_face.png",
-            model3dChar: "voryssmodel.glb",
+            model3dChar: "seddanmodel.glb",
             quote: "\"A sombra de Crya devora qualquer luz que insiste em mentir.\"",
             faction: "💀 Zenathor (Igreja de Crya)", elemento: "🌑 Sombra / Execução", 
             stats: { forca: 30, magia: 65, agilidade: 85, inteligencia: 65, carisma: 10, physDef: 10, magDef: 40 },
