@@ -422,13 +422,16 @@
         /* ADAPTAÇÃO PARA CELULAR (BLINDAGEM ABSOLUTA) */
         /* ========================================= */
         @media (max-width: 800px) {
-            /* 1. TELA PRINCIPAL (Sem forçar o display pro JS funcionar!) */
+            /* 1. TELA PRINCIPAL (Força o jogo a abrir por cima de tudo!) */
             #cardGameScreen { 
-                position: relative !important;
+                position: fixed !important; 
+                top: 0 !important;
+                left: 0 !important;
                 height: 100dvh !important; 
                 width: 100vw !important;
                 padding: 0 !important; 
                 overflow: hidden !important; 
+                z-index: 9999 !important; /* Fica acima de todo o site */
             }
 
             /* 2. HUDS (Encolhendo e pregando no topo) */
@@ -461,7 +464,7 @@
                 padding: 5px 15px !important; font-size: 14px !important; z-index: 60 !important; 
             }
 
-            /* 4. AS MESAS DE DUELO (O Meio da Tela) */
+            /* 4. AS MESAS DE DUELO (O Meio do Ecrã) */
             div[style*="height: 35%"] {
                 position: absolute !important;
                 top: 160px !important; 
@@ -487,7 +490,7 @@
                 flex-shrink: 0 !important;
             }
 
-            /* 5. A SUA MÃO (Fundo da Tela) */
+            /* 5. A TUA MÃO (Fundo do Ecrã) */
             #maoJogador { 
                 position: absolute !important;
                 bottom: 0 !important; left: 0 !important;
