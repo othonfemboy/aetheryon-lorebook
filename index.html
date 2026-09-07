@@ -423,14 +423,13 @@
         /* ========================================= */
         @media (max-width: 800px) {
             /* 1. TELA PRINCIPAL */
-            /* A mágica aqui impede a tela de abrir sozinha antes da hora! */
             #cardGameScreen:not([style*="display: none"]) { 
                 display: flex !important; 
             }
             #cardGameScreen { 
                 flex-direction: column !important; 
-                justify-content: space-between !important; 
-                height: 100dvh !important; /* 100dvh conserta o buraco preto no fundo */
+                justify-content: flex-start !important; 
+                height: 100dvh !important; 
                 padding: 0 !important; overflow: hidden !important; 
             }
 
@@ -443,9 +442,18 @@
             #bossHP { width: 45px !important; height: 45px !important; font-size: 18px !important; }
             button[onclick*="modalSairJogo"] { position: absolute !important; top: 10px !important; left: 50% !important; transform: translateX(-50%) !important; padding: 5px 15px !important; font-size: 12px !important; z-index: 20 !important; }
 
-            /* 3. AS MESAS */
+            /* 3. A MESA (O CONTAINER RESSUSCITADO) */
+            /* Essa é a div que eu tinha apagado sem querer. Agora ela vai preencher o meio da tela. */
+            div[style*="height: 35%"] {
+                display: flex !important;
+                flex-direction: column !important;
+                flex-grow: 1 !important; /* Ocupa todo o espaço vazio do meio */
+                height: auto !important;
+                justify-content: center !important;
+            }
+
             #campoInimigo, #campoJogador { 
-                position: relative !important; width: 100vw !important; height: 120px !important; 
+                position: relative !important; width: 100vw !important; min-height: 120px !important; 
                 display: flex !important; flex-wrap: nowrap !important; overflow-x: auto !important; 
                 padding: 10px 20px !important; margin: 0 !important; top: auto !important; bottom: auto !important; left: auto !important;
             }
@@ -457,7 +465,6 @@
             }
             #playerHP { width: 45px !important; height: 45px !important; font-size: 18px !important; }
             
-            /* BOTÃO PASSAR TURNO: Pregado na tela pra nunca mais voar pro topo */
             #btnPassarTurno { 
                 position: fixed !important; right: 10px !important; bottom: 155px !important; 
                 top: auto !important; transform: none !important; font-size: 11px !important; padding: 10px !important; z-index: 7020 !important;
@@ -469,6 +476,7 @@
                 display: flex !important; flex-wrap: nowrap !important; overflow-x: auto !important; 
                 padding: 10px 20px !important; margin: 0 !important; bottom: 0 !important; 
                 background: rgba(0,0,0,0.8) !important;
+                flex-shrink: 0 !important; /* Impede a mão de ser esmagada */
             }
 
             /* 6. REGRAS DAS CARTAS NO CELULAR */
@@ -480,10 +488,9 @@
             }
             .carta-tcg:last-child { margin-right: 20px !important; }
             
-            /* LIXO ESCONDIDO */
+            /* LIXO ESCONDIDO DE VERDADE */
             #maoJogador::-webkit-scrollbar, #campoInimigo::-webkit-scrollbar, #campoJogador::-webkit-scrollbar { display: none; }
             button[onclick*="historicoBatalha"], button[onclick*="cartas-ampliadas"], .seta-scroll { display: none !important; }
-            div[style*="height: 35%"] { display: none !important; }
         }
 
     </style>
@@ -1063,6 +1070,7 @@
             {
             name: "Seddan Blackfield", title: "O Executor de Zenathor", role: "dps", image: "seddan.png",
             avatar: "seddan_face.png",
+            model3dChar: "voryssmodel.glb",
             quote: "\"A sombra de Crya devora qualquer luz que insiste em mentir.\"",
             faction: "💀 Zenathor (Igreja de Crya)", elemento: "🌑 Sombra / Execução", 
             stats: { forca: 30, magia: 65, agilidade: 85, inteligencia: 65, carisma: 10, physDef: 10, magDef: 40 },
@@ -1186,6 +1194,7 @@
                 id: "sion",
                 name: "S.I.O.N.",
                 title: "Sistema de Intervenção e Nanocura",
+                model3dChar: "sionmodel.glb",
                 role: "support", 
                 image: "sion.png",
                 avatar: "sion_face.png",
@@ -1484,8 +1493,63 @@
             weapon: "Artes Marciais do Vácuo (Desarmado) & Brisa Espiritual",
             weaponDetails: "Diferente dos impactos sísmicos e da brutalidade devastadora de Byakuya, Seiya luta puramente desarmado tentando replicar a técnica da irmã com socos e chutes leves. Sem massa muscular para esmagar ossos, ele canaliza correntes de ar comprimido nas pontas dos dedos e nos calcanhares para desviar lâminas pesadas, criar pequenos vórtices de repulsão e desequilibrar oponentes maiores com rajadas de vento contínuas.",
             description: "Irmão mais novo de Byakuya e formalmente o Vice-Líder da cidade-fortaleza de Kaelen, no Pico dos Suspiros. Dono de traços delicados, silhueta andrógina e um comportamento extremamente tímido e retraído, Seiya é o contraste absoluto da imponência arrogante e intimidadora de sua irmã.<br><br>Determinada a transformá-lo em uma figura de autoridade inquestionável, Byakuya assumiu pessoalmente seu treinamento marcial, insistindo para que ele domine o combate corpo a corpo desarmado e a manipulação do Vento. Embora Seiya se esforce para imitar os passos e as posturas da matriarca, sua falta de agressividade natural faz com que suas artes marciais sejam defensivas e acrobáticas: em vez de pulverizar armaduras, ele desliza pelas correntes de ar com leveza impressionante, evitando danos fatais enquanto tenta encontrar aberturas para desestabilizar os inimigos.<br><br>A maior provação de Seiya, no entanto, não está nos campos de batalha, mas nos corredores do Santuário da Noite Branca. Na tentativa de 'quebrar a fraqueza' do irmão e forçá-lo a agir como um líder imponente, Byakuya frequentemente o coloca em situações constrangedoras, obrigando-o a sentar ao seu lado e ordenando que os monges devotos do templo se ajoelhem para glorificar e lamber os pés descalços do rapaz. Enquanto os discípulos cumprem a ordem com veneração cega e submissão fanática, Seiya passa esses momentos com as bochechas queimando de vergonha, encolhendo os pés e implorando inutilmente para a irmã dispensar os servos.",
-            extraImages: ["seiya_art1.png", "seiya_sitting.png"],
+            extraImages: ["seiya_art1.png", "seiya_sitting.png", "seiya_manga.jpg"],
             secret: "Apesar de entrar em pânico e quase morrer de vergonha com as sessões de humilhação e adoração forçadas por Byakuya, a convivência contínua com a Névoa Abençoada de Kaelen começou a despertar nele um lado inesperado: quando alguém ameaça a integridade física de sua irmã durante incursões sérias, a timidez de Seiya evapora e ele manifesta rajadas de vácuo sônicas idênticas às de Byakuya, silenciando o campo de batalha em segundos."
+        },
+        {
+            name: "Dastan Lancehearth",
+            title: "O Rei Guerreiro",
+            role: "tank",
+            image: "dastan.png",
+            avatar: "dastan_face.png",
+            quote: "\"Sobrevivi às trincheiras da Grande Guerra e a exércitos inteiros de monstros... mas nada neste mundo testa mais a coragem de um homem do que tentar colocar ordem nessa família.\"",
+            faction: "💎 Diamond City",
+            elemento: "🔥 Fogo Lendário / Chamas Solares",
+            stats: { forca: 94, magia: 65, agilidade: 55, inteligencia: 85, carisma: 90, physDef: 96, magDef: 75 },
+            race: "Humano / Patriarca Real",
+            weapon: "Montante Lendário: Solaris Ignis (A Lâmina da Fornalha Solar)",
+            weaponDetails: "Uma espada colossal de duas mãos forjada nos núcleos incandescentes de Aetheryon. Ao ser brandida por Dastan, as runas entalhadas ao longo da lâmina explodem em chamas douradas contínuas que não queimam oxigênio comum, mas sim a essência mágica ao redor. A lâmina é pesada o suficiente para rachar escudos de cerco ao meio e libera ondas de fogo solar a cada balanço, incinerando carapaças de demônios e criando campos de magma sob os pés dos inimigos.",
+            weaponImage: "dastan_weapon.png",
+            description: "O patriarca da Dinastia Lancehearth e a espinha dorsal militar inabalável de Diamond City. Veterano endurecido pela carnificina das guerras passadas, Dastan provou o valor da resiliência humana ao empunhar uma das relíquias mais brutais do reino: o lendário montante flamejante Solaris Ignis.<br><br>Dono de uma compleição física colossal, ombros largos e um corpo coberto por cicatrizes de guerra, ele transmitiu sua força descomunal e sangue quente para Ashton. No campo de batalha, sua presença na vanguarda é avassaladora: quando Dastan crava a espada em chamas no solo, o calor derrete formações inteiras de infantaria, tornando-o o esteio que segura os ataques mais brutais de Zenathor e das hordas de Caos.<br><br>Apesar de seu respeito absoluto entre os generais e do terror que causa nos inimigos, o verdadeiro teste de Dastan acontece dentro do próprio castelo. Entre o temperamento gélido e sedutor de sua esposa Scarlett, o fanatismo religioso estridente de Ashley, os quebra-paus sísmicos de Ashton e a dor de cabeça constante de lidar com o romance caótico de Ashlan com a divindade Eryn, o Rei governa na base de autoridade marcial, ordens ríspidas e uma exaustão paterna sem fim.",
+            extraImages: ["dastan_art1.png", "dastan_throne.png"],
+            secret: "Por trás da pose de monarca severo, Dastan é completamente desarmado pela postura dominadora de Scarlett em seus aposentos privados. Além disso, ele guarda uma garrafa de destilado forte escondida atrás do brasão do trono de Diamond City — seu mecanismo de emergência para manter a sanidade durante as reuniões com o conselho da igreja e os surtos dos filhos."
+        },
+        {
+            name: "Lirya Ravenshire",
+            title: "A Prodígio de Mente Brilhante",
+            model3dChar: "liryamodel.glb",
+            model3dWeapon: "liryaweaponmodel.glb",
+            role: "dps",
+            image: "lirya.png",
+            avatar: "lirya_face.png",
+            quote: "\"Inteligência não serve apenas para governar palácios; serve para prever cada passo seu, desarmar a sua guarda e fazer você implorar antes mesmo de eu puxar o gatilho.\"",
+            faction: "💎 Diamond City (Casa Ravenshire)",
+            elemento: "⚙️ Magi-Tech / Frequência Sonora",
+            stats: { forca: 35, magia: 85, agilidade: 92, inteligencia: 100, carisma: 96, physDef: 40, magDef: 65 },
+            race: "Humana / Nobreza do Extremo Norte",
+            weapon: "Carabina de Pulso Magi-Tech: Banshee Mk. III",
+            weaponDetails: "Um rifle de precisão compacto adquirido clandestinamente durante suas expedições a Aethelgard. A arma é equipada com um sintetizador acústico que projeta frequências sônicas e ilusões auditivas perfeitas à distância, além de disparar feixes perfurantes de plasma comprimido capazes de furar barreiras arcanas e blindagens pesadas sem produzir recuo físico.",
+            weaponImage: "lirya_weapon.png",
+            description: "Herdeira da influente Casa Ravenshire, uma das famílias aristocráticas mais abastadas do extremo norte de Diamond City, Lirya é tão genial quanto perigosa e descarada. Detentora de um intelecto brilhante e de uma postura provocadora que adora desestabilizar quem tenta se aproximar, ela sempre preferiu o estudo de táticas, segredos da corte e tecnologias proibidas aos bailes da nobreza tradicional.<br><br>Seu feito mais lendário dentro da mansão ocorreu na noite em que sua mãe, Erythra — até então vista como uma dama respeitável e acima de qualquer suspeita —, tentou assassinar o próprio marido na cama para assumir o controle do patrimônio da linhagem. Atenta aos movimentos incomuns da mãe, Lirya antecipou o golpe com pura genialidade estratégica: utilizando os moduladores de frequência de seu armamento de Aethelgard, projetou sussurros ecoantes que pareciam vozes do além, congelando Erythra com o aviso de condenação eterna de sua alma. Aproveitando a hesitação da traidora, Lirya invadiu os aposentos de arma em punho e encurralou a mãe, acordando o pai a tempo de desmantelar o crime. Com a conspiração exposta, Erythra foi acorrentada e jogada nas masmorras subterrâneas de Diamond City.<br><br>Em batalha, Lirya combina sua mira cirúrgica com uma lábia afiada e desinibida. Ela manipula a percepção dos inimigos, confunde sentidos com ilusões de áudio e finaliza alvos com a frieza de quem já calculou o desfecho do combate dez jogadas antes.<br><br>Seu visual de assinatura reflete exatamente essa rebeldia desinibida: dentro dos salões da mansão e em suas oficinas secretas, Lirya desfila com um camisão azul-claro oversized folgado com estampas fofas, caído de lado sobre os ombros, usando apenas roupas íntimas brancas decoradas por baixo. Com longos cabelos azul-índigo soltos emoldurando o rosto provocador e pernas totalmente livres de qualquer tecido pesado, ela adota essa estética despreocupada e ultra-casual tanto para zombar da etiqueta puritana de Diamond City quanto para ter mobilidade absoluta ao calibrar circuitos arcanos.<br><br>",
+            extraImages: ["lirya_art1.png", "lirya_art2.png", "lirya_art3.png"],
+            secret: "Lirya visita secretamente as celas subterrâneas onde sua mãe está presa não por remorso, mas para extrair os contatos da rede de traição de Erythra. Além disso, ela financia contrabando de componentes direto das oficinas de Aethelgard, escondendo uma oficina de modificação de armas tecnológicas no subsolo de sua mansão sob o nariz da guarda real."
+        },
+        {
+            name: "Cassian Ravenshire",
+            title: "O Lorde do Bastião Boreal",
+            role: "tank",
+            image: "cassian.png",
+            avatar: "cassian_face.png",
+            quote: "\"Atravessei as fendas glaciais de Isenfall e domei o gelo vivo com as próprias mãos. Acha mesmo que a traição de cortesãos ou o aço de um invasor vão me fazer recuar?\"",
+            faction: "💎 Diamond City (Casa Ravenshire)",
+            elemento: "❄️ Gelo Boreal / Puro Aço",
+            stats: { forca: 92, magia: 60, agilidade: 58, inteligencia: 88, carisma: 82, physDef: 97, magDef: 80 },
+            race: "Humano / Aristocracia do Norte",
+            weapon: "Montante Pesado: Geada Negra & Montaria: Glacior",
+            weaponDetails: "Empunha a 'Geada Negra', uma colossal lâmina de duas mãos forjada com minério polar que congela armaduras inimigas a cada impacto bloqueado. Em campo aberto, Cassian cavalga 'Glacior', um garanhão lendário de puro gelo cristalino e mana azul viva trazido do extremo sul: a criatura esmaga linhas de frente com cascos diamantinos e congela o solo por onde galopa, criando terreno desfavorável para qualquer tropa inimiga.",
+            description: "Patriarca da Casa Ravenshire e comandante militar encarregado de vigiar a fronteira norte de Diamond City. Austero, intimidador e veterano de inúmeras batalhas, Cassian ganhou notoriedade continental após liderar uma expedição solitária e perigosa até Isenfall, o mítico reino insular localizado no extremo sul de Aetheryon.<br><br>Lá, em meio a tempestades implacáveis, ele ficou cara a cara com o jovem e belo Rei Soren Frostveil — o único herdeiro do trono que comanda a ilha sozinho desde a morte trágica de seus pais na Grande Guerra. Reconhecendo a honra bruta e a determinação de Cassian, Soren permitiu que o lorde enfrentasse o desafio das fendas glaciais, onde Cassian domou Glacior, um lendário cavalo forjado em puro gelo vivo e mana ancestral. A montaria selou uma aliança comercial velada entre Ravenshire e o trono isolado do sul.<br><br>De volta à sua mansão, o Lorde teve sua vida salva pelo intelecto cirúrgico de sua filha, Lirya: a garota usou armamentos tecnológicos de Aethelgard e projeções sonoras para aterrorizar e frustrar a tentativa de assassinato arquitetada pela própria mãe, Erythra. Grato à inteligência desinibida da filha, Cassian hoje fecha os olhos para suas oficinas clandestinas de engenharia e financia seus componentes contrabandeados. Em combate, Cassian monta Glacior e ergue a Geada Negra na vanguarda, avançando como uma avalanche blindada que atropela barreiras arcanas e congela exércitos inteiros sob seus cascos.",
+            extraImages: ["cassian_art1.png", "cassian_armor.png", "cassian_study.jpg"],
+            secret: "A aliança entre Cassian e o jovem Rei Soren de Isenfall é mantida em sigilo absoluto do Conselho de Diamond City. O gelo de Glacior e as remessas minerais que chegam do sul são utilizados por Cassian para refrigerar e energizar as bancadas secretas onde Lirya desenvolve seus protótipos de alta potência."
         },
         ];
 
@@ -1583,6 +1647,21 @@
     extraImages: ["desertoconsagradoart1.jpg", "desertoconsagradoart2.png"],
     secret: "Nas profundezas da Necrópole Soterrada, as areias cobrem câmaras secretas onde os deuses criadores deixaram Fragmentos do Gênesis selados. O calor sobrenatural do deserto não é totalmente solar, mas sim o vazamento de energia cósmica contínua dessas relíquias primordiais enterradas."
           },
+          {
+            name: "Isenfall",
+            title: "O Bastião Glacial do Sul",
+            image: "isenfall.png",
+            avatar: "isenfall_icon.png",
+            quote: "\"O mar ao redor congela caravelas; as fendas engolem exércitos. Se você pisou nas neves de Isenfall e ainda respira, considere isso a nossa primeira e última misericórdia.\"",
+            faction: "❄️ Coroa Glacial de Isenfall",
+            elemento: "Criomancia Primordial & Aço Criolítico",
+            race: "Habitantes: Humanos Boreais, Feras de Gelo Cristalino",
+            weapon: "Muralhas Glaciais & Guardas Criolíticos",
+            weaponDetails: "Defesas erguidas com gigantescos blocos de gelo perpétuo reforçados com ferro frio e runas de estase. Tropas de elite armadas com alabardas de gelo denso patrulham os fiordes montadas em corcéis cristalinos velozes e letais.",
+            description: "Localizado no extremo sul de Aetheryon, Isenfall é um reino insular de gelo puro e beleza austera, cercado por tempestades marítimas que afundam qualquer frota invasora.<br><br>Marcado pela tragédia da Grande Guerra, o reino perdeu seus antigos monarcas em combate direto contra as forças que ameaçavam o sul. Desde então, a ilha é governada solitariamente pelo filho sobrevivente, o belo e implacável Rei Soren Frostveil. O território é famoso por abrigar feras lendárias esculpidas em gelo vivo e vastas jazidas de aço criolítico.<br><br>Tradicionalmente fechada ao resto do continente, Isenfall estabeleceu recentemente um pacto de comércio confidencial com a Casa Ravenshire de Diamond City após o Lorde Cassian provar seu valor e domar o mítico garanhão Glacior.",
+            extraImages: ["isenfall_art1.png", "soren_frostveil.png"],
+            secret: "Sob o castelo principal de Soren existe o 'Abismo das Lágrimas Glaciais', onde os corpos intactos dos falecidos Rei e Rainha repousam preservados em sarcófagos de cristal eterno. O altar canaliza a criomancia residual do sacrifício real para abastecer a barreira de tempestades que oculta o reino dos radares e feitiços de espionagem do continente."
+        },
         ];
 
         // ==========================================
