@@ -5904,12 +5904,6 @@ window.mostrarAcessoNegado = function(mensagem) {
         </div>
     </div>
 
-    <div id="hudPromo" onclick="abrirPromoScreen()" style="position: fixed; top: 200px; left: 30px; z-index: 2000; cursor: pointer; text-align: center; transition: 0.2s;">
-        <div style="width: 60px; height: 60px; background: #111; border: 2px solid #ff00ff; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; box-shadow: 0 0 15px rgba(255, 0, 255, 0.5); animation: pulsePromo 2s infinite;">🎁</div>
-        <span style="display: block; background: #ff00ff; border: 1px solid #fff; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 11px; margin-top: -10px; font-weight: bold; position: relative; z-index: 10;">PROMOÇÃO!</span>
-    </div>
-    <style>@keyframes pulsePromo { 0% {box-shadow: 0 0 10px rgba(255,0,255,0.4);} 50% {box-shadow: 0 0 25px rgba(255,0,255,1);} 100% {box-shadow: 0 0 10px rgba(255,0,255,0.4);} }</style>
-
     <div id="promoScreen" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.95); z-index:6000; justify-content:center; align-items:center; flex-direction:column; backdrop-filter:blur(5px); padding:20px; box-sizing:border-box;">
         <span onclick="document.getElementById('promoScreen').style.display='none'" style="position: absolute; top: 15px; right: 25px; color: #888; font-size: 40px; cursor: pointer; z-index: 6001;">&times;</span>
         <h1 style="color: #ff00ff; font-family: 'Cinzel', serif; margin-bottom: 5px; text-shadow: 0 0 15px #ff00ff; text-align:center;">🎁 Sorteio Steam</h1>
@@ -8524,6 +8518,7 @@ function finalizarJogo(vitória, msg) {
     }
 </script>
 
+<script>
     // ========================================================
     // TELA DE ERRO BLINDADA DA ORÁCULO
     // ========================================================
@@ -8540,6 +8535,7 @@ function finalizarJogo(vitória, msg) {
         `;
         document.body.appendChild(modal);
     }
+</script>
 
 <!-- WIDGETS DE ARMAS: BLOODCRUSHER E DIVINE PILLAR           -->
 <!-- ======================================================== -->
@@ -8562,8 +8558,7 @@ function finalizarJogo(vitória, msg) {
 </div>
 
 <!-- WIDGET BLOODCRUSHER -->
-<h1 style="position: fixed; z-index: 99999999; color: red; font-size: 100px; top: 10px; left: 10px;">ESTOU LENDO O ARQUIVO CERTO</h1>
-<div id="bloodcrusherWidget" style="display: block; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999999; background: #1a0000; border: 5px solid red; padding: 40px; text-align: center;">
+<div id="bloodcrusherWidget" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999999; background: #1a0000; border: 5px solid red; padding: 40px; text-align: center;">
     <h3 style="color: #ff4444; margin: 0 0 10px 0; font-family: 'Cinzel', serif;">🔨 Bloodcrusher</h3>
     <img src="karynaweaponitem.png" style="height: 100px; object-fit: contain; filter: drop-shadow(0 0 15px #800080); margin-bottom: 5px;">
     <p style="color:#ccc; font-size: 13px; margin-top:0;">Clique na tela para esmagar!</p>
