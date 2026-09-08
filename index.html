@@ -487,6 +487,8 @@
     <option value="danceafrican.mp3">🇿🇦 Música: Dance Like An African</option>
     <option value="paparazzi.mp3">🎵 Música: Paparazzi</option>
     <option value="kandagawa.mp3">🐋 Música: Kandagawa Jet Girls</option>
+    <option value="talesofarise.mp3">💫 Música: Tales of Arise</option>
+    <option value="residentevil7.mp3">☢︎ Música: Resident Evil 7</option>
 </select>
 <div style="display: flex; align-items: center; gap: 5px; background: #111; padding: 0 15px; border: 2px solid #444; border-radius: 5px; height: 42px; margin: 0;">
     <span style="color: #aaa; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🔉 VOL:</span>
@@ -594,8 +596,9 @@
                  <button onclick="abrirJogoDasMinhocas(); toggleInteractionMenu();" style="background: #1a1a1a; color: #ff4444; border: 1px dashed #ff4444; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🕳️ Desafiar: Martelada Rápida</button>
                  <button onclick="window.open('waterpark.html', '_blank'); toggleInteractionMenu();" style="background: #001a33; color: #00ffff; border: 1px solid #00ffff; border-radius: 4px; padding: 10px; cursor: pointer; font-size: 13px; font-weight: bold; font-family: 'Cinzel', serif; box-shadow: 0 0 10px rgba(0, 255, 255, 0.5); text-shadow: 0 0 5px #00ffff;">🌊 Aetheryon Water Park</button>
                  <button onclick="iniciarDivinePillar(); toggleInteractionMenu();" style="background: #001a33; color: #00ffff; border: 1px dashed #00ffff; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🪄 Usar DivinePillar</button>
-                <button onclick="openMinigame('xadrez'); toggleInteractionMenu();" style="background: #1a1a1a; color: #d4af37; border: 1px solid #d4af37; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">♟️ Desafiar: Xadrez</button>             
-                <button onclick="openMinigame('damas'); toggleInteractionMenu();" style="background: #1a1a1a; color: #ff4500; border: 1px solid #ff4500; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🔴 Desafiar: Damas</button>
+                <button onclick="iniciarAquario(); toggleInteractionMenu();" style="background: #001a33; color: #3399ff; border: 1px dashed #3399ff; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🐟 Invocar Aquário Mágico</button>
+                <button onclick="window.iniciarBloodcrusher(); toggleInteractionMenu();" style="background: #1a0000; color: #ff4444; border: 1px dashed #ff4444; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🔨 Usar Bloodcrusher</button>
+                <button onclick="openMinigame('xadrez'); toggleInteractionMenu();" style="background: #1a1a1a; color: #d4af37; border: 1px solid #d4af37; border-radius: 4px; padding: 8px; cursor: pointer; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">♟️ Desafiar: Xadrez</button>                            
             </div>
         </div>
         
@@ -1495,6 +1498,7 @@
             race: "Humano / Aristocracia do Norte",
             weapon: "Montante Pesado: Geada Negra & Montaria: Glacior",
             weaponDetails: "Empunha a 'Geada Negra', uma colossal lâmina de duas mãos forjada com minério polar que congela armaduras inimigas a cada impacto bloqueado. Em campo aberto, Cassian cavalga 'Glacior', um garanhão lendário de puro gelo cristalino e mana azul viva trazido do extremo sul: a criatura esmaga linhas de frente com cascos diamantinos e congela o solo por onde galopa, criando terreno desfavorável para qualquer tropa inimiga.",
+             weaponImage: "cassian_weapon.png",
             description: "Patriarca da Casa Ravenshire e comandante militar encarregado de vigiar a fronteira norte de Diamond City. Austero, intimidador e veterano de inúmeras batalhas, Cassian ganhou notoriedade continental após liderar uma expedição solitária e perigosa até Isenfall, o mítico reino insular localizado no extremo sul de Aetheryon.<br><br>Lá, em meio a tempestades implacáveis, ele ficou cara a cara com o jovem e belo Rei Soren Frostveil — o único herdeiro do trono que comanda a ilha sozinho desde a morte trágica de seus pais na Grande Guerra. Reconhecendo a honra bruta e a determinação de Cassian, Soren permitiu que o lorde enfrentasse o desafio das fendas glaciais, onde Cassian domou Glacior, um lendário cavalo forjado em puro gelo vivo e mana ancestral. A montaria selou uma aliança comercial velada entre Ravenshire e o trono isolado do sul.<br><br>De volta à sua mansão, o Lorde teve sua vida salva pelo intelecto cirúrgico de sua filha, Lirya: a garota usou armamentos tecnológicos de Aethelgard e projeções sonoras para aterrorizar e frustrar a tentativa de assassinato arquitetada pela própria mãe, Erythra. Grato à inteligência desinibida da filha, Cassian hoje fecha os olhos para suas oficinas clandestinas de engenharia e financia seus componentes contrabandeados. Em combate, Cassian monta Glacior e ergue a Geada Negra na vanguarda, avançando como uma avalanche blindada que atropela barreiras arcanas e congela exércitos inteiros sob seus cascos.",
             extraImages: ["cassian_art1.png", "cassian_armor.png", "cassian_study.jpg"],
             secret: "A aliança entre Cassian e o jovem Rei Soren de Isenfall é mantida em sigilo absoluto do Conselho de Diamond City. O gelo de Glacior e as remessas minerais que chegam do sul são utilizados por Cassian para refrigerar e energizar as bancadas secretas onde Lirya desenvolve seus protótipos de alta potência."
@@ -3489,7 +3493,10 @@ if (!niveisRank.includes(playerRank)) {
              { id: 'sobrevivente_chuva', name: 'Dançando com o Caos', desc: 'Sobreviva à Chuva da Morte coletando 30 essências.', premio: 'Lápis Secreto', corPremio: '#a855f7' },
              { id: 'simon_amnesia', name: 'Mente Inquebrável', desc: 'Sobreviva à Amnésia Fatal no Simon Arcano.', premio: 'Borracha Mágica', corPremio: '#ffffff' },
              { id: 'oraculo_cards', name: 'O Silêncio da Soberana', desc: 'Reduza os pontos de vida da Oráculo a zero no Aetheryon Battlegrounds.', premio: 'Caneta Mágica', corPremio: '#ffcc00' },
-             { id: 'faca_magica', name: 'O Extermínio Total', desc: 'Desintegre todas as pragas no nível Total Extermination do Esmaga-Minhoca.', premio: 'Faca Mágica', corPremio: '#ff0044' }
+             { id: 'faca_magica', name: 'O Extermínio Total', desc: 'Desintegre todas as pragas no nível Total Extermination do Esmaga-Minhoca.', premio: 'Faca Mágica', corPremio: '#ff0044' },
+             { id: 'divine_pillar', name: 'Dominador das Marés', desc: 'Sobreviva ao Tsunami da Morte no Water Park.', premio: 'DivinePillar', corPremio: '#00ffff' },
+            { id: 'sub_fatal', name: 'Resgate Impossível', desc: 'Salve 30 mergulhadores no Mergulho Fatal do Submarine Rescue.', premio: 'Peixe Mágico', corPremio: '#ffaa00' },
+            { id: 'bloodcrusher_massacre', name: 'Domínio Sombrio', desc: 'Derrote Karyna Blackfield no Tabuleiro do Massacre.', premio: 'Bloodcrusher', corPremio: '#ff0044' }
         ];
 
         // AUTO-INJEÇÃO DA CONQUISTA DO RIN CHAOTIC
@@ -6364,7 +6371,8 @@ window.mostrarAcessoNegado = function(mensagem) {
             'genevieve_lv1': { id: 'genevieve_lv1', nome: 'Genevieve, Transe Áureo', custoMana: 6, ataque: 3, vidaMax: 7, efeito: 'Charme: Seduze uma carta alvo (CD: 8).', imagem: 'card_genevieve1.png', borda: '#ffd700', tipo: 'Lendária', provocar: false },
             'voryss_lv1': { id: 'voryss_lv1', nome: 'Voryss, Devoradora', custoMana: 8, ataque: 5, vidaMax: 10, efeito: 'Morte Inst.: Devora o alvo na próx. rodada (CD: 20).', imagem: 'card_voryss1.png', borda: '#4b0082', tipo: 'Lendária', provocar: false },
             'elara_lv1': { id: 'elara_lv1', nome: 'Elara, Mestre das Feras', custoMana: 4, ataque: 5, vidaMax: 5, efeito: 'Feras: Seus ataques causam SANGRAMENTO (-3 Vida/turno).', imagem: 'elara.png', borda: '#228b22', tipo: 'Épica', provocar: false },
-            'darius_lv1': { id: 'darius_lv1', nome: 'Darius, A Muralha', custoMana: 6, ataque: 2, vidaMax: 18, efeito: 'Provocar. Defesa absoluta e impenetrável.', imagem: 'darius.png', borda: '#8b4513', tipo: 'Lendária', provocar: true }
+            'darius_lv1': { id: 'darius_lv1', nome: 'Darius, A Muralha', custoMana: 6, ataque: 2, vidaMax: 18, efeito: 'Provocar. Defesa absoluta e impenetrável.', imagem: 'darius.png', borda: '#8b4513', tipo: 'Lendária', provocar: true },
+            'lirya_lv1': { id: 'lirya_lv1', nome: 'Lirya, Atiradora de Elite', custoMana: 12, ataque: 12, vidaMax: 15, efeito: 'Dano Bruto da Rifle Tecnológica.', imagem: 'lirya.png', borda: '#8b4513', tipo: 'Lendária', provocar: false }
         };
 
         window.manaTurnoMax = 1; window.manaAtual = 1; window.cartaSelecionada = null;
@@ -6378,7 +6386,7 @@ window.mostrarAcessoNegado = function(mensagem) {
         // 👇 A ECONOMIA E O INVENTÁRIO ENTRAM AQUI! 👇
         window.aetheryonite = parseInt(localStorage.getItem('aetheryonAetheryonite')) || 0;
         window.chavesMagicas = parseInt(localStorage.getItem('aetheryonChaves')) || 0;
-        window.cartasDesbloqueadas = JSON.parse(localStorage.getItem('aetheryonCartasUnlocked')) || ['ashley_lv1', 'karyna_lv1', 'eryn_astral', 'lilia_lv1', 'valerya_lv1', 'ashton_lv1', 'scarlett_lv1', 'lysandre_lv1', 'ashlan_lv1', 'faelan_lv1', 'genevieve_lv1', 'voryss_lv1'];
+        window.cartasDesbloqueadas = JSON.parse(localStorage.getItem('aetheryonCartasUnlocked')) || ['ashley_lv1', 'karyna_lv1', 'eryn_astral', 'lilia_lv1', 'valerya_lv1', 'ashton_lv1', 'scarlett_lv1', 'lysandre_lv1', 'ashlan_lv1', 'faelan_lv1', 'genevieve_lv1', 'voryss_lv1', 'lirya_lv1'];
 
         // SISTEMA DE PROGRESSÃO E DUNGEON
         window.modoJogoAtual = 'oraculo'; // ou 'dungeon_rin'
@@ -6386,9 +6394,17 @@ window.mostrarAcessoNegado = function(mensagem) {
             ashley_lv1: 1, karyna_lv1: 1, eryn_astral: 1, lilia_lv1: 1, 
             valerya_lv1: 1, ashton_lv1: 1, scarlett_lv1: 1, lysandre_lv1: 1, 
             ashlan_lv1: 1, faelan_lv1: 1, genevieve_lv1: 1, voryss_lv1: 1,
-            elara_lv1: 1, darius_lv1: 1
+            elara_lv1: 1, darius_lv1: 1, lirya_lv1: 1
         };
         window.cartaSendoAprimorada = null;
+
+        // 💉 VACINA ANTI-NaN: Garante que novas cartas entrem no save de todos
+        // ================================================================
+        for (let idCarta in window.bancoDeCartas) {
+            if (!window.cartasPlayerLevel[idCarta] || isNaN(window.cartasPlayerLevel[idCarta])) {
+                window.cartasPlayerLevel[idCarta] = 1;
+            }
+        }
 
         // FUNÇÃO QUE CALCULA O TEXTO DINÂMICO DOS EFEITOS
         window.obterEfeitoLevel = function(id, level) {
@@ -7025,7 +7041,7 @@ window.mostrarAcessoNegado = function(mensagem) {
                 { id: 'demonio_vento', nome: 'Demônio do Vento', atk: 3, hp: 14, img: 'card_demoniodovento.png', prov: 'false' },
                 { id: 'sombra_elite', nome: 'Sombra Elite', atk: 4, hp: 12, img: 'card_sombradeelite.png', prov: 'false' },
                 { id: 'besta_vazio', nome: 'Besta do Vazio', atk: 5, hp: 10, img: 'card_bestadovazio.png', prov: 'false' },
-                { id: 'oraculo_shield', nome: 'Bastião Sombrio', atk: 1, hp: 20, img: 'card_bastiaosombro.png', prov: 'true' },
+                { id: 'oraculo_shield', nome: 'Bastião Sombrio', atk: 1, hp: 20, img: 'card_bastiaosombrio.png', prov: 'true' },
                 { id: 'assassino_vazio', nome: 'Assassino do Vazio', atk: 7, hp: 9, img: 'card_assassinadovazio.png', prov: 'false' }
             ];
          } else if (window.modoJogoAtual === 'dungeon_rin') {
@@ -8343,52 +8359,297 @@ function finalizarJogo(vitória, msg) {
     </div>
 </div>
 
-<div id="divinePillarOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: white; z-index: 99998; opacity: 0; transition: opacity 0.3s; pointer-events: none;"></div>
+           <style>
+    @keyframes rippleEfeito {
+        0% { width: 0px; height: 0px; opacity: 1; }
+        100% { width: 150px; height: 150px; opacity: 0; }
+    }
+    .onda-aquario {
+        position: absolute;
+        border: 3px solid rgba(0, 255, 255, 0.7);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        animation: rippleEfeito 0.6s ease-out forwards;
+        pointer-events: none;
+    }
+</style>
 
-<div id="divinePillarWidget" style="display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #001a33; border: 2px solid #00ffff; border-radius: 10px; padding: 15px; z-index: 99999; box-shadow: 0 0 20px rgba(0,255,255,0.5); text-align: center;">
-    <h3 style="color: #00ffff; margin: 0 0 10px 0;">🪄 DivinePillar</h3>
-    <button onclick="dispararOndaLuz()" style="background: #00ffff; color: #000; font-weight: bold; padding: 10px 20px; border: none; cursor: pointer; border-radius: 5px;">Disparar Onda de Luz</button>
-    <button onclick="document.getElementById('divinePillarWidget').style.display='none'" style="background: #333; color: white; border: none; padding: 10px 15px; margin-left: 10px; cursor: pointer; border-radius: 5px;">❌</button>
+<div id="aquarioOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 105, 148, 0.15); z-index: 99990; pointer-events: none; overflow: hidden; box-shadow: inset 0 0 100px rgba(0,150,255,0.3);">
+    <div id="peixeMagico" style="position: absolute; font-size: 70px; pointer-events: auto; cursor: pointer; transition: transform 0.1s; transform-origin: center; user-select: none; filter: drop-shadow(0 0 10px rgba(0,255,255,0.5));" onclick="cutucarPeixe(event)">🐟</div>
+</div>
+
+<div id="racaoCursor" style="display: none; position: fixed; pointer-events: none; z-index: 99995; transform: translate(-50%, -50%);">
+    <div id="imgRacao" style="font-size: 30px; transition: transform 0.2s; filter: drop-shadow(0 0 5px rgba(255,170,0,0.8));">🧆</div>
+</div>
+
+<div id="aquarioWidget" style="display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #001a33; border: 2px solid #3399ff; border-radius: 10px; padding: 15px; z-index: 99999; text-align: center; box-shadow: 0 0 20px rgba(0,150,255,0.5);">
+    <h3 style="color: #3399ff; margin: 0 0 10px 0; font-family: 'Cinzel', serif;">🌊 Tela Submersa</h3>
+    <button onclick="ativarRacao()" style="background: #ffaa00; font-weight: bold; padding: 10px 20px; border: none; cursor: pointer; border-radius: 5px;">🧆 Usar Ração Mágica</button>
+    <button onclick="fecharAquario()" style="background: #333; color: white; border: none; padding: 10px 15px; margin-left: 10px; cursor: pointer; border-radius: 5px;">❌ Sair</button>
 </div>
 
 <script>
-    let divinePillarUsos = 0;
+    let peixeX = window.innerWidth / 2, peixeY = window.innerHeight / 2;
+    let targetX = peixeX, targetY = peixeY;
+    let peixeEscala = 1.0;
+    let racaoAtiva = false;
+    let racaoMordidas = 0;
+    let loopPeixeAtivo = false;
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
 
+    // Rastreia o mouse
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX; mouseY = e.clientY;
+        if (racaoAtiva) {
+            let cursor = document.getElementById('racaoCursor');
+            cursor.style.left = mouseX + 'px'; cursor.style.top = mouseY + 'px';
+        }
+    });
+
+    // SISTEMA DE ACESSO NEGADO EMBUTIDO (Sem depender do resto do site)
+    function erroAquarioOraculo() {
+        let modal = document.createElement('div');
+        modal.style.cssText = "display: flex; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 9999999; justify-content: center; align-items: center; font-family: sans-serif; backdrop-filter: blur(4px);";
+        modal.innerHTML = `
+            <div style="background: #000; border: 2px solid #ff0000; border-radius: 10px; padding: 30px; text-align: center; max-width: 400px; box-shadow: 0 0 20px #ff0000; display: flex; flex-direction: column; align-items: center;">
+                <img src="oraculo.gif" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid #ff0000; box-shadow: 0 0 15px #ff0000; margin-bottom: 20px;">
+                <h2 style="color: #ff0000; font-size: 26px; text-shadow: 0 0 10px #ff0000; margin-top: 0; margin-bottom: 10px; font-family: 'Cinzel', serif;">ACESSO NEGADO</h2>
+                <p style="color: #ccc; font-style: italic; margin-bottom: 30px; font-size: 16px; line-height: 1.5;">"Vai pescar num balde! Você precisa vencer o Mergulho Fatal no Water Park pra ganhar um peixe, seu insolente!"</p>
+                <button onclick="this.parentElement.parentElement.remove()" style="background: #ff0000; color: white; border: none; padding: 12px 25px; font-weight: bold; border-radius: 5px; cursor: pointer; font-size: 16px; box-shadow: 0 0 15px #ff0000; transition: 0.2s;">PERDÃO, ORÁCULO</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    }
+
+    window.iniciarAquario = function() {
+        if (localStorage.getItem('conquistaSubmarino') === 'desbloqueada') {
+            document.getElementById('aquarioOverlay').style.display = 'block';
+            document.getElementById('aquarioWidget').style.display = 'block';
+            peixeEscala = 1.0; 
+            
+            // Oráculo reclama da água
+            let falaO = document.getElementById('oraculoFalaV2') || document.getElementById('oraculoFala');
+            if (falaO) {
+                falaO.innerText = "Vou ficar toda molhadinha assim, seu vacilão!";
+                falaO.style.display = 'block';
+                setTimeout(() => { falaO.style.display = 'none'; }, 5000);
+            }
+            
+            if (!loopPeixeAtivo) { loopPeixeAtivo = true; animarPeixe(); }
+        } else {
+            erroAquarioOraculo(); // Chama o modal vermelho que criamos aqui em cima
+        }
+    };
+
+    window.fecharAquario = function() {
+        document.getElementById('aquarioOverlay').style.display = 'none';
+        document.getElementById('aquarioWidget').style.display = 'none';
+        document.getElementById('racaoCursor').style.display = 'none';
+        loopPeixeAtivo = false; racaoAtiva = false;
+    };
+
+    window.ativarRacao = function() {
+        racaoAtiva = true; racaoMordidas = 0;
+        document.getElementById('imgRacao').style.transform = 'scale(1.0)'; 
+        document.getElementById('racaoCursor').style.display = 'block';
+    };
+
+    window.cutucarPeixe = function(e) {
+        let ripple = document.createElement('div');
+        ripple.className = 'onda-aquario';
+        ripple.style.left = e.clientX + 'px'; ripple.style.top = e.clientY + 'px';
+        document.getElementById('aquarioOverlay').appendChild(ripple);
+        setTimeout(() => ripple.remove(), 600);
+        
+        targetX = peixeX + (Math.random() > 0.5 ? 300 : -300);
+        targetY = peixeY + (Math.random() > 0.5 ? 300 : -300);
+    };
+
+    function animarPeixe() {
+        if (!loopPeixeAtivo) return;
+
+        if (racaoAtiva) {
+            targetX = mouseX; targetY = mouseY;
+            let dist = Math.hypot(targetX - peixeX, targetY - peixeY);
+            
+            if (dist < 40) { 
+                if (racaoMordidas === 0) {
+                    racaoMordidas = 1;
+                    document.getElementById('imgRacao').style.transform = 'scale(0.5)'; 
+                    peixeX += (peixeX > mouseX ? 100 : -100); 
+                } else {
+                    racaoAtiva = false;
+                    document.getElementById('racaoCursor').style.display = 'none';
+                    peixeEscala += 0.3; 
+                    targetX = peixeX + (Math.random() > 0.5 ? 200 : -200); 
+                }
+            }
+        } else {
+            if (Math.random() < 0.02) {
+                targetX = 50 + Math.random() * (window.innerWidth - 100);
+                targetY = 50 + Math.random() * (window.innerHeight - 100);
+            }
+        }
+
+        peixeX += (targetX - peixeX) * 0.04;
+        peixeY += (targetY - peixeY) * 0.04;
+
+        let flip = targetX > peixeX ? -1 : 1; // Ajustado pro emoji virar certinho
+        let imgPeixe = document.getElementById('peixeMagico');
+        imgPeixe.style.left = peixeX + 'px'; imgPeixe.style.top = peixeY + 'px';
+        imgPeixe.style.transform = `translate(-50%, -50%) scaleX(${flip}) scale(${peixeEscala})`;
+
+        requestAnimationFrame(animarPeixe);
+    }
+</script>
+
+    // ========================================================
+    // TELA DE ERRO BLINDADA DA ORÁCULO
+    // ========================================================
+    function erroArmasOraculo(mensagem) {
+        let modal = document.createElement('div');
+        modal.style.cssText = "display: flex; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 9999999; justify-content: center; align-items: center; font-family: sans-serif; backdrop-filter: blur(4px);";
+        modal.innerHTML = `
+            <div style="background: #1a0000; border: 2px solid #ff0000; border-radius: 10px; padding: 30px; text-align: center; max-width: 450px; box-shadow: 0 0 40px rgba(255,0,0,0.6); display: flex; flex-direction: column; align-items: center;">
+                <img src="oraculo.gif" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid #ff0000; box-shadow: 0 0 15px #ff0000; margin-bottom: 20px; object-fit: cover;">
+                <h2 style="color: #ff0000; font-size: 26px; text-shadow: 0 0 10px #ff0000; margin-top: 0; margin-bottom: 10px; font-family: 'Cinzel', serif;">ACESSO NEGADO</h2>
+                <p style="color: #ccc; font-style: italic; margin-bottom: 30px; font-size: 16px; line-height: 1.5;">"${mensagem}"</p>
+                <button onclick="this.parentElement.parentElement.remove()" style="background: #ff0000; color: white; border: none; padding: 12px 25px; font-weight: bold; border-radius: 5px; cursor: pointer; font-size: 16px; box-shadow: 0 0 15px #ff0000; transition: 0.2s;">DESCULPE, ORÁCULO</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    }
+
+<!-- WIDGETS DE ARMAS: BLOODCRUSHER E DIVINE PILLAR           -->
+<!-- ======================================================== -->
+
+<style>
+    @keyframes esmagarBloodcrusher {
+        0% { transform: scale(0); opacity: 0; }
+        50% { transform: scale(1.1); opacity: 1; }
+        100% { transform: scale(1); }
+    }
+</style>
+
+<!-- 2. HTML (As caixinhas das armas na tela) -->
+<!-- WIDGET DIVINE PILLAR -->
+<div id="divinePillarWidget" style="display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-150%); background: #001a33; border: 2px solid #00ffff; border-radius: 10px; padding: 15px; z-index: 99999; box-shadow: 0 0 20px rgba(0,255,255,0.5); text-align: center;">
+    <h3 style="color: #00ffff; margin: 0 0 10px 0; font-family: 'Cinzel', serif;">🪄 DivinePillar</h3>
+    <img src="divinepillartrans.png" style="height: 100px; width: auto; object-fit: contain; filter: drop-shadow(0 0 10px #00ffff); margin-bottom: 15px;"><br>
+    <button onclick="dispararOndaLuz()" style="background: #00ffff; color: #000; font-weight: bold; padding: 10px 20px; border: none; cursor: pointer; border-radius: 5px;">Disparar Onda</button>
+    <button onclick="desativarDivinePillar()" style="background: #333; color: white; border: none; padding: 10px 15px; margin-left: 10px; cursor: pointer; border-radius: 5px;">❌ Guardar</button>
+</div>
+
+<!-- WIDGET BLOODCRUSHER -->
+<h1 style="position: fixed; z-index: 99999999; color: red; font-size: 100px; top: 10px; left: 10px;">ESTOU LENDO O ARQUIVO CERTO</h1>
+<div id="bloodcrusherWidget" style="display: block; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999999; background: #1a0000; border: 5px solid red; padding: 40px; text-align: center;">
+    <h3 style="color: #ff4444; margin: 0 0 10px 0; font-family: 'Cinzel', serif;">🔨 Bloodcrusher</h3>
+    <img src="karynaweaponitem.png" style="height: 100px; object-fit: contain; filter: drop-shadow(0 0 15px #800080); margin-bottom: 5px;">
+    <p style="color:#ccc; font-size: 13px; margin-top:0;">Clique na tela para esmagar!</p>
+    <button onclick="limparTelaBloodcrusher()" style="background: #ffaa00; color: #000; font-weight: bold; padding: 10px 15px; border: none; cursor: pointer; border-radius: 5px;">🧹 Limpar Tela</button>
+    <button onclick="desativarBloodcrusher()" style="background: #333; color: white; border: none; padding: 10px 15px; margin-left: 10px; cursor: pointer; border-radius: 5px;">❌ Guardar</button>
+</div>
+
+    <script>
+    let bloodcrusherAtivo = false;
+
+    // TELA DE ERRO DA ORÁCULO
+    function erroArmasOraculo(mensagem) {
+        let modal = document.createElement('div');
+        modal.style.cssText = "display: flex; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 9999999; justify-content: center; align-items: center; font-family: sans-serif; backdrop-filter: blur(4px);";
+        modal.innerHTML = `
+            <div style="background: #1a0000; border: 2px solid #ff0000; border-radius: 10px; padding: 30px; text-align: center; max-width: 450px; box-shadow: 0 0 40px rgba(255,0,0,0.6); display: flex; flex-direction: column; align-items: center;">
+                <img src="oraculo.gif" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid #ff0000; box-shadow: 0 0 15px #ff0000; margin-bottom: 20px; object-fit: cover;">
+                <h2 style="color: #ff0000; font-size: 26px; text-shadow: 0 0 10px #ff0000; margin-top: 0; margin-bottom: 10px; font-family: 'Cinzel', serif;">ACESSO NEGADO</h2>
+                <p style="color: #ccc; font-style: italic; margin-bottom: 30px; font-size: 16px; line-height: 1.5;">"${mensagem}"</p>
+                <button onclick="this.parentElement.parentElement.remove()" style="background: #ff0000; color: white; border: none; padding: 12px 25px; font-weight: bold; border-radius: 5px; cursor: pointer; font-size: 16px; box-shadow: 0 0 15px #ff0000; transition: 0.2s;">DESCULPE, ORÁCULO</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    }
+
+    // LÓGICA DA BLOODCRUSHER
+    window.iniciarBloodcrusher = function() {
+        if (localStorage.getItem('conquistaBloodcrusher') === 'desbloqueada') {
+            bloodcrusherAtivo = true;
+            
+            // O TRUQUE: Arranca o widget de onde ele estiver e cola no topo da página
+            let caixaBlood = document.getElementById('bloodcrusherWidget');
+            document.body.appendChild(caixaBlood);
+            caixaBlood.style.display = 'block';
+            
+            document.body.style.cursor = 'crosshair';
+            if (typeof falarOraculo === 'function') falarOraculo("O que você vai fazer com isso?! Não quebre as minhas coisas!", 4000);
+        } else {
+            erroArmasOraculo("Você não tem a força necessária! Vá vencer a Karyna Blackfield no Tabuleiro do Massacre antes de tentar empunhar a Bloodcrusher, seu fraco!"); 
+        }
+    };
+
+    window.limparTelaBloodcrusher = function() {
+        document.querySelectorAll('.buraco-bloodcrusher').forEach(e => e.remove());
+    };
+
+    window.desativarBloodcrusher = function() {
+        bloodcrusherAtivo = false;
+        document.getElementById('bloodcrusherWidget').style.display = 'none';
+        document.body.style.cursor = 'default';
+        limparTelaBloodcrusher(); 
+    };
+
+    // FÍSICA BLINDADA DO MARTELO (Não quebra o menu)
+    document.addEventListener('mousedown', function(e) {
+        if (!bloodcrusherAtivo) return;
+        
+        // Protege para não quebrar a própria caixa da arma
+        if (e.target.closest('#bloodcrusherWidget') || e.target.closest('#divinePillarWidget')) return;
+        // Se no seu site tiver alguma div que NÃO DEVE ser quebrada (como a loja), coloque aqui.
+
+        let buraco = document.createElement('div');
+        buraco.className = 'buraco-bloodcrusher';
+        let size = 100 + Math.random() * 50; 
+        
+        buraco.style.cssText = `
+            position: fixed; left: ${e.clientX - size/2}px; top: ${e.clientY - size/2}px;
+            width: ${size}px; height: ${size}px; background: #000; border-radius: 50%;
+            box-shadow: inset 0 0 20px #800080, 0 0 15px 5px #ff4444, 0 0 30px 10px #8b0000;
+            z-index: 99998; pointer-events: none; animation: esmagarBloodcrusher 0.3s ease-out forwards;
+        `;
+        document.body.appendChild(buraco);
+    });
+
+    
+// LÓGICA DO DIVINE PILLAR (Com o mesmo truque por precaução)
     window.iniciarDivinePillar = function() {
         if (localStorage.getItem('conquistaDivinePillar') === 'desbloqueada') {
-            divinePillarUsos = 0;
-            document.getElementById('divinePillarWidget').style.display = 'block';
+            
+            let caixaPillar = document.getElementById('divinePillarWidget');
+            document.body.appendChild(caixaPillar);
+            caixaPillar.style.display = 'block';
+            
+            if (typeof falarOraculo === 'function') falarOraculo("O Cajado Ancestral... Cuidado com a luz cega!", 4000);
         } else {
-            // Usa o seu modal do "Acesso Negado"
-            mostrarAcessoNegado("Você precisa dominar o Tsunami da Morte no Water Park para empunhar essa arma divina, insolente!");
+            erroArmasOraculo("Apenas os que sobrevivem ao Tsunami da Morte podem erguer o DivinePillar. Volte quando for digno!"); 
         }
     };
 
     window.dispararOndaLuz = function() {
-        divinePillarUsos++;
         let overlay = document.getElementById('divinePillarOverlay');
-        
-        if (divinePillarUsos <= 3) {
-            // Efeito de flash normal
-            overlay.style.display = 'block';
-            overlay.style.opacity = '0.5';
-            setTimeout(() => { overlay.style.opacity = '0'; }, 200);
-            setTimeout(() => { overlay.style.display = 'none'; }, 500);
-        } else {
-            // Oráculo Cega (A tela fica toda branca e ela reclama)
-            overlay.style.display = 'block';
-            overlay.style.opacity = '0.9';
-            document.getElementById('divinePillarWidget').style.display = 'none';
-            
-            // Reclamação dela (adapte a função falarOraculo se o nome for diferente no seu JS)
-            if (typeof falarOraculo === 'function') {
-                falarOraculo("MEUS OLHOS! Para de piscar essa porcaria de cajado na minha cara, você me cegou!!", 5000);
-            }
-            
-            // Fade out lento do clarão
-            setTimeout(() => { overlay.style.transition = 'opacity 3s'; overlay.style.opacity = '0'; }, 3000);
-            setTimeout(() => { overlay.style.display = 'none'; overlay.style.transition = 'opacity 0.3s'; }, 6000);
+        if (!overlay) {
+            overlay = document.createElement('div'); overlay.id = 'divinePillarOverlay';
+            overlay.style.cssText = "position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #00ffff; z-index: 99997; pointer-events: none; opacity: 0; transition: opacity 0.3s, background 1s;";
+            document.body.appendChild(overlay);
         }
+        overlay.style.display = 'block';
+        setTimeout(() => { overlay.style.opacity = '0.9'; overlay.style.background = '#ffffff'; }, 50);
+        setTimeout(() => { overlay.style.opacity = '0'; overlay.style.background = '#00ffff'; }, 800);
+        setTimeout(() => { overlay.style.display = 'none'; }, 1200);
+    };
+
+    window.desativarDivinePillar = function() {
+        document.getElementById('divinePillarWidget').style.display = 'none';
+        let overlay = document.getElementById('divinePillarOverlay');
+        if(overlay) { overlay.style.display = 'none'; overlay.style.opacity = '0'; }
     };
 </script>
 

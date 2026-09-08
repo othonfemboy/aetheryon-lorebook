@@ -15,7 +15,7 @@
         .btn-loja:hover { transform: scale(1.05); }
 
         /* HUB DE ESCOLHER JOGO */
-        #hubJogos { display: flex; flex-direction: column; align-items: center; margin-top: 30px; z-index: 10; position: relative; }
+        #hubJogos { display: flex; flex-direction: column; align-items: center; margin-top: 30px; z-index: 10; position: relative; padding-bottom: 50px; }
         .game-card { background: #001a33; border: 2px solid #00ffff; border-radius: 10px; padding: 20px; margin: 10px; width: 400px; text-align: center; cursor: pointer; transition: 0.3s; }
         .game-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,255,255,0.3); }
 
@@ -29,7 +29,7 @@
         .regras-box { background: rgba(0,0,0,0.5); border: 1px dashed #aaa; padding: 15px; border-radius: 8px; width: 350px; text-align: left; margin-bottom: 20px; font-size: 14px; color: #ccc; }
 
         /* ÁREAS DOS JOGOS (CANVAS) */
-        .gameArea { display: none; flex-direction: column; align-items: center; justify-content: center; margin-top: 20px; position: relative; }
+        .gameArea { display: none; flex-direction: column; align-items: center; justify-content: center; margin-top: 20px; position: relative; padding-bottom: 50px; }
         .gameHUD { width: 90%; max-width: 800px; display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 20px; font-weight: bold; }
         .canvas-container { position: relative; max-width: 100%; overflow: hidden; }
         canvas { background: linear-gradient(180deg, #0a1128 0%, #001d3d 100%); border: 3px solid #00ffff; border-radius: 10px; box-shadow: 0 0 30px rgba(0, 255, 255, 0.3); }
@@ -42,7 +42,8 @@
         .btn-poder span { font-size: 12px; font-weight: normal; margin-top: 5px; color: #aaa; }
 
         /* MODAIS */
-        #lojaModal, #ashlanAlertModal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 100; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
+        #lojaModal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 100; justify-content: center; align-items: center; backdrop-filter: blur(4px); }        
+        #ashlanAlertModal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 999999; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
         .loja-box { background: #001a33; border: 2px solid #ffaa00; border-radius: 10px; padding: 20px; width: 90%; max-width: 600px; }
         .loja-abas { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #333; padding-bottom: 10px; }
         .btn-aba { background: transparent; color: white; border: none; font-size: 16px; cursor: pointer; padding: 5px 10px; }
@@ -60,13 +61,60 @@
         #ashlanBalao { background: white; color: black; padding: 15px; border-radius: 15px 15px 0 15px; max-width: 250px; font-size: 14px; font-weight: bold; border: 2px solid #00ffff; margin-right: 15px; margin-bottom: 80px; display: none; box-shadow: 0 0 15px rgba(255,255,255,0.5); position: relative; }
         .btn-roupa { background: #333; color: white; border: none; padding: 8px; font-size: 13px; margin: 2px; cursor: pointer; border-radius: 3px; width: 100%; transition: 0.2s; }
         .btn-roupa:hover { background: #555; }
+
+        /* ========================================= */
+        /* ESTILOS EXCLUSIVOS DO JOGO DE DAMAS       */
+        /* ========================================= */
+        .damas-layout { display: flex; gap: 30px; align-items: flex-start; margin-top: 10px; flex-wrap: wrap; justify-content: center; }
+        .damas-board { display: grid; grid-template-columns: repeat(8, 50px); grid-template-rows: repeat(8, 50px); border: 4px solid #00ffff; box-shadow: 0 0 30px rgba(0,255,255,0.3); border-radius: 5px; overflow: hidden; background: #001a33; }
+        .casa { width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; position: relative; }
+        .casa.clara { background: #0a1128; }
+        .casa.escura { background: #002244; }
+        .casa.selecionada { background: #005588 !important; }
+        .casa.destino { box-shadow: inset 0 0 15px #00ffff; cursor: pointer; }
+        
+        .peca { width: 35px; height: 35px; border-radius: 50%; box-shadow: 0 5px 10px rgba(0,0,0,0.5); border: 2px solid #fff; transition: 0.2s; z-index: 2; display: flex; justify-content: center; align-items: center; font-size: 20px; }
+        .peca.jogador { background: radial-gradient(circle, #00ffff, #005588); cursor: pointer; }
+        .peca.karyna { background: radial-gradient(circle, #ff4444, #880000); }
+        .peca.dama::after { content: '👑'; font-size: 18px; }
+        
+        /* CHÃO CORROMPIDO (MASSACRE) */
+        @keyframes tremerCorrompido { 0% { transform: scale(1); } 50% { transform: scale(0.95); } 100% { transform: scale(1); } }
+        .casa.corrompida { background: #2a0000 !important; box-shadow: inset 0 0 20px #ff0000; animation: tremerCorrompido 1s infinite; border: 1px dashed #ff4444; }
+
+        .karyna-hud { background: #111; border: 2px solid #ff4444; border-radius: 10px; padding: 15px; width: 250px; text-align: center; box-shadow: 0 0 15px rgba(255,0,0,0.3); }
+        .karyna-img { width: 100px; height: 100px; border-radius: 50%; border: 2px solid #ff4444; object-fit: cover; margin-bottom: 10px; object-position: top; }
+        .karyna-fala { color: #ccc; font-style: italic; font-size: 14px; min-height: 40px; margin-bottom: 10px; }
+        .turn-indicator { padding: 5px; font-weight: bold; border-radius: 5px; margin-top: 10px; }
+        .turn-player { background: rgba(0,255,255,0.2); color: #00ffff; }
+        .turn-karyna { background: rgba(255,0,0,0.2); color: #ff4444; }
+
+        /* ========================================= */
+        /* ADAPTAÇÃO PARA CELULAR (RESPONSIVIDADE)   */
+        /* ========================================= */
+        @media (max-width: 450px) {
+            /* Diminui o tabuleiro para caber em qualquer celular (320px) */
+            .damas-board {
+                grid-template-columns: repeat(8, 40px);
+                grid-template-rows: repeat(8, 40px);
+                border: 2px solid #00ffff;
+            }
+            .casa { width: 40px; height: 40px; }
+            .peca { width: 28px; height: 28px; font-size: 16px; }
+            .peca.dama::after { font-size: 14px; }
+            
+            /* Ajusta o HUD da Karyna pra tela menor */
+            .karyna-hud { width: 90%; max-width: 320px; box-sizing: border-box; }
+            .damas-layout { gap: 15px; }
+        }
+
     </style>
 </head>
 <body>
 
     <div id="ashlanAlertModal">
         <div id="ashlanAlertBox">
-            <img id="ashlanAlertImg" src="https://i.imgur.com/eBf27Gz.png">
+            <img id="ashlanAlertImg" src="">
             <h2 id="ashlanAlertTitle">Título</h2>
             <p id="ashlanAlertText">Mensagem aqui.</p>
             <button onclick="document.getElementById('ashlanAlertModal').style.display='none'" style="padding: 10px 25px; background: #222; color: white; border: 1px solid gray; border-radius: 5px; cursor: pointer; font-weight: bold;">ENTENDIDO</button>
@@ -93,6 +141,11 @@
             <h3 style="color: #ffaa00; margin: 0 0 10px 0;">⚓ Submarine Rescue</h3>
             <p style="color: #aaa; margin: 0; font-size: 14px;">Pilote o submarino, desvie de escombros e resgate os mergulhadores.</p>
         </div>
+
+        <div class="game-card" onclick="abrirMenuJogo('menuDamas')">
+            <h3 style="color: #ff4444; margin: 0 0 10px 0;">♟️ Damas Aquática</h3>
+            <p style="color: #aaa; margin: 0; font-size: 14px;">Enfrente Karyna Blackfield. Cuidado com o chão sombrio!</p>
+        </div>
     </div>
 
     <div id="menuOndas" class="menu-jogo">
@@ -117,6 +170,17 @@
         <button onclick="voltarHub('menuSub')" style="margin-top: 20px; background: transparent; border: none; color: gray; cursor: pointer; text-decoration: underline;">⬅ Voltar ao Parque</button>
     </div>
 
+    <div id="menuDamas" class="menu-jogo">
+        <h2 style="color: white;">Damas Aquática</h2>
+        <div class="regras-box">
+            <b style="color:#ff4444;">O Tabuleiro do Massacre:</b> A cada 10 rodadas, Karyna destruirá uma casa do tabuleiro. Se você andar pelo chão corrompido, sua peça será desintegrada imediatamente!
+        </div>
+        <button class="btn-nivel normal" onclick="iniciarDamas('normal')">Normal <br><span style="font-size:12px; color:#ccc;">IA Média | Prêmio: +20 Tickets</span></button>
+        <button class="btn-nivel tsunami" onclick="iniciarDamas('massacre')">Tabuleiro do Massacre <br><span style="font-size:12px; color:#ccc;">IA Avançada | Prêmio: +40 Tck & Bloodcrusher</span></button>
+        <button onclick="voltarHub('menuDamas')" style="margin-top: 20px; background: transparent; border: none; color: gray; cursor: pointer; text-decoration: underline;">⬅ Voltar ao Parque</button>
+    </div>
+
+
     <div id="gameAreaOndas" class="gameArea">
         <div class="gameHUD"><span id="hudTempoOndas" style="color:#ffaa00;">Tempo: 60s</span><span id="hudPopOndas" style="color:#00ffcc;">Sobreviventes: 10</span></div>
         <div class="canvas-container">
@@ -124,8 +188,9 @@
             <div id="endGameOndas" class="endGameOverlay">
                 <h1 id="endTitleOndas" style="font-size: 40px; margin-bottom: 10px;">VITÓRIA!</h1>
                 <p id="endDescOndas" style="color: #ccc; margin-bottom: 10px;">Você ganhou +X Tickets!</p>
-                <div id="recompensaTsunami" style="display: none; background: rgba(0,255,255,0.2); border: 1px dashed #00ffff; padding: 10px; margin-bottom: 20px; border-radius: 5px; color: #00ffff; font-weight: bold;">
+                <div id="recompensaTsunami" style="display: none; background: rgba(0,255,255,0.2); border: 1px dashed #00ffff; padding: 15px; margin-bottom: 20px; border-radius: 5px; color: #00ffff; font-weight: bold; flex-direction: column; align-items: center; gap: 10px;">
                     🪄 CONQUISTA: DivinePillar Desbloqueada!
+                    <img src="divinepillartrans.png" style="height: 70px; object-fit: contain; filter: drop-shadow(0 0 10px #00ffff);">
                 </div>
                 <div style="display: flex; gap: 20px;">
                     <button class="btn-nivel normal" style="width: auto; padding: 10px 20px;" onclick="tentarNovamenteOndas()">Tentar Novamente</button>
@@ -158,17 +223,71 @@
         </div>
     </div>
 
+    <div id="gameAreaDamas" class="gameArea">
+        <div class="damas-layout">
+            
+            <div class="karyna-hud">
+                <img src="karynawater.png" class="karyna-img" alt="Karyna de Praia">
+                <h3 style="color: #ff4444; margin: 5px 0;">Karyna Blackfield</h3>
+                <div class="karyna-fala" id="falaKaryna">"Achou que eu seria fácil de vencer só porque estou de biquíni?"</div>
+                <div id="indicadorTurno" class="turn-indicator turn-player">SUA VEZ (Azul)</div>
+                <div style="margin-top: 15px; display: flex; justify-content: space-between; color: #aaa; font-size: 14px;">
+                    <span>Você: <b id="placarP1" style="color:#00ffff;">12</b></span>
+                    <span>Karyna: <b id="placarP2" style="color:#ff4444;">12</b></span>
+                </div>
+                <button onclick="voltarHubDeFim('gameAreaDamas')" style="margin-top: 20px; background: transparent; border: 1px solid gray; color: gray; padding: 5px 15px; cursor: pointer;">Desistir</button>
+            </div>
+
+            <div style="position: relative;">
+                <div id="damasBoard" class="damas-board"></div>
+                <div id="endGameDamas" class="endGameOverlay" style="border-radius: 5px;">
+                    <h1 id="endTitleDamas" style="font-size: 30px; margin-bottom: 10px;">FIM DE JOGO</h1>
+                    <p id="endDescDamas" style="color: #ccc; margin-bottom: 20px;">Você ganhou +X Tickets!</p>
+
+                    <div id="recompensaMassacre" style="display: none; background: rgba(255,0,68,0.2); border: 1px dashed #ff0044; padding: 15px; margin-bottom: 20px; border-radius: 5px; color: #ff0044; font-weight: bold; flex-direction: column; align-items: center; gap: 10px;">
+                        🔨 CONQUISTA: Bloodcrusher Desbloqueada!
+                        <img src="karynaweaponitem.png" style="height: 70px; object-fit: contain; filter: drop-shadow(0 0 10px #ff0044);">
+                    </div>
+
+                    <button class="btn-nivel normal" style="width: auto; padding: 10px 20px; margin-bottom: 10px;" onclick="tentarNovamenteDamas()">Tentar Novamente</button>
+                    <button class="btn-nivel" style="border-color: gray; color: gray; width: auto; padding: 10px 20px;" onclick="voltarHubDeFim('gameAreaDamas')">Sair</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
     <div id="lojaModal">
         <div class="loja-box">
             <h2 style="color: #ffaa00; margin-top: 0;">Lojinha (🎫 <span id="lojaTickets"></span>)</h2>
             <div class="loja-abas">
                 <button class="btn-aba ativa" onclick="mudarAbaLoja(1)" id="abaBtn1">🧪 Poderes</button>
                 <button class="btn-aba" onclick="mudarAbaLoja(2)" id="abaBtn2">👕 Roupas</button>
-            </div>
-            <div id="abaPoderes">
-                <div class="loja-item"><div><b style="color: #3498db;">⏳ Slow Ondas (10s)</b></div><button class="btn-comprar" onclick="comprarItem('p1', 30)">30 Tck</button></div>
-                <div class="loja-item"><div><b style="color: #2ecc71;">🛡️ Imunidade (10s)</b></div><button class="btn-comprar" onclick="comprarItem('p2', 35)">35 Tck</button></div>
-                <div class="loja-item"><div><b style="color: #e74c3c;">💥 Super Clique (15s)</b></div><button class="btn-comprar" onclick="comprarItem('p3', 40)">40 Tck</button></div>
+            </div><div id="abaPoderes">
+                <div class="loja-item" style="align-items: flex-start;">
+                    <div style="flex: 1; padding-right: 15px;">
+                        <b style="color: #3498db; font-size: 16px;">⏳ Slow Ondas (10s)</b>
+                        <div style="font-size: 12px; color: #aaa; margin-top: 5px; line-height: 1.4;">Reduz a velocidade das ondas em 50% por 10 segundos.</div>
+                    </div>
+                    <button class="btn-comprar" onclick="comprarItem('p1', 30)" style="margin-top: 5px;">30 Tck</button>
+                </div>
+                
+                <div class="loja-item" style="align-items: flex-start;">
+                    <div style="flex: 1; padding-right: 15px;">
+                        <b style="color: #2ecc71; font-size: 16px;">🛡️ Imunidade (10s)</b>
+                        <div style="font-size: 12px; color: #aaa; margin-top: 5px; line-height: 1.4;">Protege as garotas por 10 segundos, prevenindo que elas sejam levadas pela onda.</div>
+                    </div>
+                    <button class="btn-comprar" onclick="comprarItem('p2', 35)" style="margin-top: 5px;">35 Tck</button>
+                </div>
+                
+                <div class="loja-item" style="align-items: flex-start;">
+                    <div style="flex: 1; padding-right: 15px;">
+                        <b style="color: #e74c3c; font-size: 16px;">💥 Super Clique (15s)</b>
+                        <div style="font-size: 12px; color: #aaa; margin-top: 5px; line-height: 1.4;">Apenas um clique destrói a onda! Aumenta o raio de impacto para você não precisar clicar tão perto delas.</div>
+                    </div>
+                    <button class="btn-comprar" onclick="comprarItem('p3', 40)" style="margin-top: 5px;">40 Tck</button>
+                </div>
             </div>
             <div id="abaRoupas" style="display: none;">
                 <div class="loja-item"><div><b style="color: #ff69b4;">👗 Saia Fofa</b></div><button id="btnCompraSaia" class="btn-comprar" onclick="comprarRoupa('saia', 20)">20 Tck</button></div>
@@ -214,13 +333,13 @@
         let expressaoAtual = 'padrao'; 
         
         // ==============================================
-        // COLOQUE TODOS OS LINKS DAS EXPRESSÕES AQUI!
+        // SUAS IMAGENS ORIGINAIS MANTIDAS AQUI!
         // ==============================================
         const imagensAshlan = {
             'normal_padrao': 'ashlanwater.png',
-            'normal_vermelho': 'ashlanwatervermelho1.png', // Substitua
-            'normal_sorrindo': 'ashlanwatersorrindo.png', // Substitua
-            'normal_serio': 'ashlanwaterserio.png', // Substitua
+            'normal_vermelho': 'ashlanwatervermelho1.png', 
+            'normal_sorrindo': 'ashlanwatersorrindo.png', 
+            'normal_serio': 'ashlanwaterserio.png', 
             
             'saia_padrao': 'ashlanwaterskirt.png',
             'saia_vermelho': 'ashlanwaterskirtvermelho.png',
@@ -247,7 +366,6 @@
             document.getElementById('qtdP2').innerText = inventario.p2 + 'x';
             document.getElementById('qtdP3').innerText = inventario.p3 + 'x';
             
-            // Juntando a roupa com a expressão!
             let skinExata = roupaAtual + '_' + expressaoAtual;
             document.getElementById('ashlanAvatar').src = imagensAshlan[skinExata] || imagensAshlan['normal_padrao'];
             document.getElementById('ashlanAlertImg').src = imagensAshlan[roupaAtual + '_padrao'] || imagensAshlan['normal_padrao'];
@@ -257,17 +375,29 @@
         }
 
         function mostrarAlertaAshlan(tipo, mensagem) {
-            expressaoAtual = 'padrao'; atualizarInfoGeral(); // Reseta pra padrão
+            expressaoAtual = 'padrao'; atualizarInfoGeral(); 
+            
+            // ===============================================
+            // SEUS ROSTOS ORIGINAIS MANTIDOS AQUI!
+            const imgRostoErro = "ashlanwaterface.png";
+            const imgRostoSucesso = "ashlanwaterface2.png";
+            // ===============================================
+
             let modal = document.getElementById('ashlanAlertModal');
             let box = document.getElementById('ashlanAlertBox');
+            let img = document.getElementById('ashlanAlertImg');
             let title = document.getElementById('ashlanAlertTitle');
             let text = document.getElementById('ashlanAlertText');
 
             if (tipo === 'erro') {
                 box.style.borderColor = '#ff4444'; box.style.boxShadow = '0 0 20px #ff4444'; 
+                img.style.borderColor = '#ff4444'; img.style.boxShadow = '0 0 15px #ff4444';
+                img.src = imgRostoErro; 
                 title.style.color = '#ff4444'; title.innerText = 'Ops... Faltou Ticket!';
             } else if (tipo === 'sucesso') {
                 box.style.borderColor = '#00ffcc'; box.style.boxShadow = '0 0 20px #00ffcc'; 
+                img.style.borderColor = '#00ffcc'; img.style.boxShadow = '0 0 15px #00ffcc';
+                img.src = imgRostoSucesso; 
                 title.style.color = '#00ffcc'; title.innerText = 'Parabéns!';
             }
             text.innerHTML = mensagem;
@@ -291,7 +421,7 @@
             else { mostrarAlertaAshlan('erro', 'Tickets insuficientes.'); }
         }
 
-        // === ASHLAN NPC (COM FECHAR NO CLIQUE E EXPRESSÕES) ===
+        // === ASHLAN NPC ===
         const ashlanBalao = document.getElementById('ashlanBalao');
         const ashlanTextoFala = document.getElementById('ashlanTextoFala');
         let timerFala;
@@ -308,17 +438,17 @@
                 timerFala = setTimeout(() => { 
                     ashlanBalao.style.display = 'none'; 
                     menuAshlanAberto = false; 
-                    expressaoAtual = 'padrao'; // Reseta o rosto quando termina de falar
+                    expressaoAtual = 'padrao'; 
                     atualizarInfoGeral(); 
                 }, tempo);
             }
         }
 
         function clicouAshlan() {
-            if (jogoRodando || subRodando) {
+            if (jogoRodando || subRodando || damasRodando) {
                 falarAshlan("Foque no jogo! Sobreviva!", 3000);
             } else {
-                if (menuAshlanAberto) { // SE CLICOU DE NOVO, FECHA O MENU!
+                if (menuAshlanAberto) { 
                     ashlanBalao.style.display = 'none';
                     menuAshlanAberto = false;
                     expressaoAtual = 'padrao';
@@ -345,7 +475,7 @@
             atualizarInfoGeral();
         }
 
-        function ashlanExplicar() { falarAshlan("Temos as Ondas da Morte e o Resgate de Submarino. Escolha uma atração e divirta-se!", 5000); }
+        function ashlanExplicar() { falarAshlan("Temos as Ondas da Morte, o Submarino e Damas. Escolha uma atração e divirta-se!", 5000); }
         function ashlanMostrarRoupas() {
             ashlanTextoFala.innerText = "O que eu devo vestir?";
             document.getElementById('ashlanOpcoesIniciais').style.display = 'none';
@@ -362,7 +492,7 @@
         function equiparRoupa(id) { roupaAtual = id; salvarDados(); falarAshlan("Pronto! Como estou parecendo?", 2500); }
 
         function falarInteracao(expressao, fala) {
-            expressaoAtual = expressao; // Muda o rosto mantendo a roupa!
+            expressaoAtual = expressao; 
             atualizarInfoGeral();
             falarAshlan(fala, 4000);
         }
@@ -373,6 +503,7 @@
         function voltarHubDeFim(idArea) {
             document.getElementById('endGameOndas').style.display = 'none';
             document.getElementById('endGameSub').style.display = 'none';
+            document.getElementById('endGameDamas').style.display = 'none';
             document.getElementById(idArea).style.display = 'none';
             document.getElementById('hubJogos').style.display = 'flex';
         }
@@ -444,12 +575,36 @@
             ctxOndas.strokeStyle = buffGodClick ? '#e74c3c' : '#00ffff'; ctxOndas.lineWidth = buffGodClick ? 5 : 3;
             marolas.forEach(m => { if(m.ativa) { m.raio += 4; ctxOndas.beginPath(); ctxOndas.arc(m.x, m.y, m.raio, 0, Math.PI * 2); ctxOndas.stroke(); if(m.raio > m.raioMax) m.ativa = false; }});
 
-            ctxOndas.fillStyle = 'rgba(0, 200, 255, 0.8)';
+            ctxOndas.fillStyle = 'rgba(0, 200, 255, 0.8)';          
+           // O LOOP DE ONDAS - SUPER CLIQUE INSTANTÂNEO
             ondas.forEach(onda => {
                 if(onda.ativa) {
                     onda.x += onda.speed * onda.dir * (buffSlow ? 0.5 : 1);
-                    marolas.forEach(m => { if (m.ativa && Math.abs(onda.x - m.x) < m.raio) { onda.radius -= buffGodClick ? 999 : 1.5; if (onda.radius < 5) onda.ativa = false; }});
-                    ctxOndas.beginPath(); ctxOndas.arc(onda.x, onda.y, onda.radius, Math.PI, 0); ctxOndas.fill();
+                    
+                    marolas.forEach(m => { 
+                        if (m.ativa && Math.abs(onda.x - m.x) < m.raio) { 
+                            if (buffGodClick) {
+                                // SUPER CLIQUE ATIVADO: A onda morre instantaneamente
+                                onda.radius = 0; 
+                                onda.ativa = false;
+                            } else {
+                                // CLIQUE NORMAL: A onda vai encolhendo
+                                onda.radius -= 1.5; 
+                                if (onda.radius <= 5) {
+                                    onda.radius = 0;
+                                    onda.ativa = false; 
+                                }
+                            }
+                        }
+                    });
+
+                    // Só desenha se a onda ainda existir
+                    if (onda.radius > 0) {
+                        ctxOndas.beginPath(); 
+                        ctxOndas.arc(onda.x, onda.y, onda.radius, Math.PI, 0); 
+                        ctxOndas.fill();
+                    }
+
                     if (onda.x > island.x && onda.x < island.x + island.width && onda.radius > 15) {
                         if (!buffImune) { let vitima = stickgirls.find(sg => sg.viva); if (vitima) vitima.viva = false; }
                         onda.ativa = false; atualizarHUDOndas();
@@ -472,8 +627,15 @@
                 document.getElementById('endDescOndas').innerText = `As garotas sobreviveram! Você ganhou +${ganho} Tickets!`;
                 
                 if (ultimaDificuldadeOndas === 'tsunami') {
+                    // CÓDIGO DA CONQUISTA CORRIGIDO
+                    let conquistas = JSON.parse(localStorage.getItem('aetheryonConquistas')) || [];
+                    if(!conquistas.includes('divine_pillar')) { 
+                        conquistas.push('divine_pillar'); 
+                        localStorage.setItem('aetheryonConquistas', JSON.stringify(conquistas));
+                    }
                     localStorage.setItem('conquistaDivinePillar', 'desbloqueada');
-                    document.getElementById('recompensaTsunami').style.display = 'block'; // AVISO VISUAL DA CONQUISTA!
+                    
+                    document.getElementById('recompensaTsunami').style.display = 'flex'; 
                     falarAshlan("Você sobreviveu ao Tsunami... E conseguiu o DivinePillar de recompensa!", 6000);
                 } else {
                     falarAshlan("Incrível! Mantivemos a ilha segura!", 5000);
@@ -487,7 +649,7 @@
         function tentarNovamenteOndas() { iniciarOndas(ultimaDificuldadeOndas); }
 
         // =========================================================================
-        // JOGO 2: SUBMARINE RESCUE (NOVO!)
+        // JOGO 2: SUBMARINE RESCUE 
         // =========================================================================
         const ctxSub = document.getElementById('subCanvas').getContext('2d');
         let subRodando = false, animSub, divers = [], containers = [], configSub;
@@ -497,11 +659,10 @@
         let subVidas = 3, subResgatados = 0, loopSpawnSub;
 
         const niveisSub = {
-            normal: { obj: 10, spawnRate: 1500, variando: false, premio: 5 },
-            fatal: { obj: 30, spawnRate: 800, variando: true, premio: 15 }
+            normal: { obj: 10, spawnRate: 1500, variando: false, premio: 5, subSpeed: 4 },
+            fatal: { obj: 30, spawnRate: 800, variando: true, premio: 15, subSpeed: 8.5 } 
         };
 
-        // Controles Teclado (Impede a tela de scrollar)
         window.addEventListener('keydown', e => { 
             if(chaves.hasOwnProperty(e.code)) { chaves[e.code] = true; if(subRodando) e.preventDefault(); }
         });
@@ -509,28 +670,27 @@
             if(chaves.hasOwnProperty(e.code)) chaves[e.code] = false; 
         });
 
-        function iniciarSub(nivel) {
+       function iniciarSub(nivel) {
             ultimaDificuldadeSub = nivel;
             document.getElementById('menuSub').style.display = 'none';
             document.getElementById('gameAreaSub').style.display = 'flex';
             document.getElementById('endGameSub').style.display = 'none';
             configSub = niveisSub[nivel];
             
-            sub = { x: 400, y: 300, w: 40, h: 20, speed: 4 };
+            sub = { x: 400, y: 300, w: 40, h: 20, speed: configSub.subSpeed };
+            
             divers = []; containers = [];
             subVidas = 3; subResgatados = 0;
             subRodando = true;
             atualizarHUDSub();
-            falarAshlan("Pilote o submarino! Cuidado com os contêineres e salve os mergulhadores!", 4000);
+            falarAshlan("Pilote o submarino! Cuidado com os contêineres e salve as garotas!", 4000);
 
             loopSpawnSub = setInterval(() => {
                 if(!subRodando) return;
                 let chance = Math.random();
                 if(chance > 0.4) {
-                    // Spawna Mergulhador
-                    divers.push({ x: 50 + Math.random() * 700, y: -20, vy: 1 + Math.random() * 1.5, variando: configSub.variando });
+                    divers.push({ x: 50 + Math.random() * 700, y: -20, vy: 0.5, tempoVida: 0, variando: configSub.variando });
                 } else {
-                    // Spawna Container Assassino
                     containers.push({ x: 50 + Math.random() * 700, y: -50, w: 50, h: 50, vy: 2 + Math.random() * 2 });
                 }
             }, configSub.spawnRate);
@@ -547,73 +707,69 @@
             if(!subRodando) return;
             ctxSub.clearRect(0,0,800,400);
 
-            // Fundo do Mar
             ctxSub.fillStyle = 'rgba(0, 50, 100, 0.5)';
             ctxSub.fillRect(0,0,800,400);
             
-            // Movimento do Sub
             let forcaCorrenteX = 0;
             if(chaves.ArrowUp && sub.y > 0) sub.y -= sub.speed;
             if(chaves.ArrowDown && sub.y < 380) sub.y += sub.speed;
             if(chaves.ArrowLeft && sub.x > 0) sub.x -= sub.speed;
             if(chaves.ArrowRight && sub.x < 760) sub.x += sub.speed;
 
-            // Desenha e Move Containers (Geram correntes!)
-            ctxSub.fillStyle = '#8B0000'; // Vermelho escuro
+            ctxSub.fillStyle = '#8B0000'; 
             containers.forEach(c => {
                 c.y += c.vy;
                 ctxSub.fillRect(c.x, c.y, c.w, c.h);
-                // Detalhe do container
                 ctxSub.strokeStyle = '#000'; ctxSub.strokeRect(c.x, c.y, c.w, c.h);
 
-                // Força da Corrente da água (empurra o sub)
                 if (Math.abs(c.x - sub.x) < 100 && c.y < sub.y) {
                     forcaCorrenteX += (sub.x > c.x) ? 1.5 : -1.5;
                 }
 
-                // Colisão Esmagamento (Submarino bateu no container)
                 if (sub.x < c.x + c.w && sub.x + sub.w > c.x && sub.y < c.y + c.h && sub.y + sub.h > c.y) {
                     finalizarSub(false, "O submarino foi esmagado por um contêiner!");
                 }
             });
-            sub.x += forcaCorrenteX; // Aplica corrente da água
-            if(sub.x < 0) sub.x = 0; if(sub.x > 760) sub.x = 760; // Trava nas bordas
+            sub.x += forcaCorrenteX; 
+            if(sub.x < 0) sub.x = 0; if(sub.x > 760) sub.x = 760; 
 
-            // Desenha e Move Mergulhadores
             ctxSub.fillStyle = '#00ffcc';
             for(let i = divers.length - 1; i >= 0; i--) {
                 let d = divers[i];
                 
-                // Mergulho fatal buga a velocidade
-                if (d.variando) {
-                    if (Math.random() > 0.95) d.vy = 0.5 + Math.random() * 4;
+                d.tempoVida++; 
+                
+                if (d.tempoVida > 180) {
+                    if (d.variando) {
+                        if (Math.random() > 0.90) d.vy = 1 + Math.random() * 5; 
+                    } else {
+                        if (d.vy < 3.5) d.vy += 0.1; 
+                    }
                 }
                 
                 d.y += d.vy;
-                ctxSub.beginPath(); ctxSub.arc(d.x, d.y, 6, 0, Math.PI * 2); ctxSub.fill();
+                
+                ctxSub.fillRect(d.x - 2, d.y, 4, 15); 
+                ctxSub.beginPath(); ctxSub.arc(d.x, d.y - 2, 4, 0, Math.PI * 2); ctxSub.fill(); 
 
-                // Colisão Resgate (Sub pegou mergulhador)
-                if (d.x > sub.x && d.x < sub.x + sub.w && d.y > sub.y && d.y < sub.y + sub.h) {
+                if (d.x > sub.x && d.x < sub.x + sub.w && d.y + 15 > sub.y && d.y < sub.y + sub.h) {
                     subResgatados++;
                     divers.splice(i, 1);
                     atualizarHUDSub();
                     if (subResgatados >= configSub.obj) finalizarSub(true);
                 } 
-                // Morreu no fundo do mar
                 else if (d.y > 400) {
                     subVidas--;
                     divers.splice(i, 1);
                     atualizarHUDSub();
-                    if (subVidas <= 0) finalizarSub(false, "Muitos mergulhadores se perderam no abismo...");
+                    if (subVidas <= 0) finalizarSub(false, "Muitas garotas se perderam no abismo...");
                 }
             }
 
-            // Desenha o Submarino (Corpo e Periscópio)
             ctxSub.fillStyle = '#ffaa00';
             ctxSub.beginPath(); ctxSub.ellipse(sub.x + sub.w/2, sub.y + sub.h/2, sub.w/2, sub.h/2, 0, 0, Math.PI * 2); ctxSub.fill();
             ctxSub.fillRect(sub.x + 10, sub.y - 8, 8, 10);
 
-            // Limpeza
             containers = containers.filter(c => c.y < 450);
 
             if(subRodando) animSub = requestAnimationFrame(gameLoopSub);
@@ -627,7 +783,20 @@
                 let ganho = configSub.premio; waterTickets += ganho; salvarDados();
                 document.getElementById('endTitleSub').innerText = "RESGATE CONCLUÍDO!"; document.getElementById('endTitleSub').style.color = "#00ffcc";
                 document.getElementById('endDescSub').innerText = `Você salvou todo mundo! Ganhou +${ganho} Tickets!`;
-                falarAshlan("Excelente pilotagem! O mar agradece.", 4000);
+                
+                if (ultimaDificuldadeSub === 'fatal') {
+                    // CÓDIGO DA CONQUISTA CORRIGIDO
+                    let conquistas = JSON.parse(localStorage.getItem('aetheryonConquistas')) || [];
+                    if(!conquistas.includes('sub_fatal')) { 
+                        conquistas.push('sub_fatal'); 
+                        localStorage.setItem('aetheryonConquistas', JSON.stringify(conquistas));
+                    }
+                    localStorage.setItem('conquistaSubmarino', 'desbloqueada');
+                    
+                    falarAshlan("Isso foi insano! Você resgatou todos no Mergulho Fatal e encontrou uma relíquia no fundo do mar!", 6000);
+                } else {
+                    falarAshlan("Excelente pilotagem! O mar agradece.", 4000);
+                }
             } else {
                 document.getElementById('endTitleSub').innerText = "FALHA CRÍTICA"; document.getElementById('endTitleSub').style.color = "#ff4444";
                 document.getElementById('endDescSub').innerText = msgDerrota;
@@ -635,6 +804,257 @@
             }
         }
         function tentarNovamenteSub() { iniciarSub(ultimaDificuldadeSub); }
+
+        // =========================================================================
+        // JOGO 3: DAMAS AQUÁTICA (NOVO)
+        // =========================================================================
+        let damasBoard = [], turnoDamas = 1, pecaSelecionada = null, modoDamas = 'normal';
+        let p1Pecas = 12, p2Pecas = 12, jogadasTotaisDamas = 0, damasRodando = false;
+        let corrompidas = []; 
+
+        function iniciarDamas(modo) {
+            modoDamas = modo; document.getElementById('menuDamas').style.display = 'none'; document.getElementById('gameAreaDamas').style.display = 'flex'; document.getElementById('endGameDamas').style.display = 'none';
+            p1Pecas = 12; p2Pecas = 12; jogadasTotaisDamas = 0; turnoDamas = 1; pecaSelecionada = null; corrompidas = []; damasRodando = true;
+            document.getElementById('falaKaryna').innerText = modo === 'normal' ? '"Achou que eu seria fácil só porque estou de biquíni?"' : '"Vou esmagar você e essas suas peças ridículas!"';
+            montarTabuleiroDamas(); atualizarHUDDamas();
+        }
+
+        function montarTabuleiroDamas() {
+            let container = document.getElementById('damasBoard'); container.innerHTML = ''; damasBoard = [];
+            for (let r = 0; r < 8; r++) {
+                let row = [];
+                for (let c = 0; c < 8; c++) {
+                    let isEscura = (r + c) % 2 !== 0;
+                    let val = 0; 
+                    if (isEscura && r < 3) val = 2;
+                    else if (isEscura && r > 4) val = 1;
+                    row.push(val);
+                    
+                    let div = document.createElement('div');
+                    div.className = `casa ${isEscura ? 'escura' : 'clara'}`;
+                    div.id = `c_${r}_${c}`;
+                    if(isEscura) div.onclick = () => cliqueCasaDamas(r, c);
+                    container.appendChild(div);
+                }
+                damasBoard.push(row);
+            }
+            renderDamas();
+        }
+
+        function renderDamas() {
+            for (let r = 0; r < 8; r++) {
+                for (let c = 0; c < 8; c++) {
+                    let div = document.getElementById(`c_${r}_${c}`);
+                    if(!div) continue;
+                    div.innerHTML = '';
+                    div.className = `casa ${(r+c)%2!==0 ? 'escura' : 'clara'}`;
+                    
+                    let isCorr = corrompidas.find(x => x.r === r && x.c === c);
+                    if(isCorr) div.classList.add('corrompida');
+
+                    let val = damasBoard[r][c];
+                    if (val > 0) {
+                        let p = document.createElement('div');
+                        p.className = `peca ${val === 1 || val === 3 ? 'jogador' : 'karyna'} ${val > 2 ? 'dama' : ''}`;
+                        div.appendChild(p);
+                    }
+                    if (pecaSelecionada && pecaSelecionada.r === r && pecaSelecionada.c === c) div.classList.add('selecionada');
+                }
+            }
+        }
+
+        function atualizarHUDDamas() {
+            document.getElementById('placarP1').innerText = p1Pecas; document.getElementById('placarP2').innerText = p2Pecas;
+            let ind = document.getElementById('indicadorTurno');
+            if(turnoDamas === 1) { ind.innerText = "SUA VEZ (Azul)"; ind.className = "turn-indicator turn-player"; } 
+            else { ind.innerText = "VEZ DA KARYNA (Vermelho)"; ind.className = "turn-indicator turn-karyna"; }
+        }
+
+        function cliqueCasaDamas(r, c) {
+            if(!damasRodando || turnoDamas !== 1) return;
+            let val = damasBoard[r][c];
+
+            if (val === 1 || val === 3) {
+                pecaSelecionada = {r, c}; renderDamas(); return;
+            }
+            if (val === 0 && pecaSelecionada) {
+                let moves = getMovimentos(pecaSelecionada.r, pecaSelecionada.c, 1);
+                let move = moves.find(m => m.r === r && m.c === c);
+                if (move) {
+                    executarMovimentoDamas(pecaSelecionada.r, pecaSelecionada.c, r, c, move.jump);
+                    pecaSelecionada = null;
+                }
+            }
+        }
+
+        function getMovimentos(r, c, player) {
+            let moves = []; let p = damasBoard[r][c]; let dir = player === 1 ? -1 : 1; let isKing = p > 2;
+
+            if (!isKing) {
+                // PEÇA NORMAL: Só anda pra frente, só come pra frente
+                let dirs = [[dir, -1], [dir, 1]]; 
+                for(let d of dirs) {
+                    let nr = r + d[0], nc = c + d[1];
+                    if(nr >= 0 && nr < 8 && nc >= 0 && nc < 8) {
+                        if(damasBoard[nr][nc] === 0) moves.push({r: nr, c: nc, jump: null}); 
+                        else if((player === 1 && (damasBoard[nr][nc]===2 || damasBoard[nr][nc]===4)) || (player === 2 && (damasBoard[nr][nc]===1 || damasBoard[nr][nc]===3))) {
+                            let jr = nr + d[0], jc = nc + d[1];
+                            if(jr >= 0 && jr < 8 && jc >= 0 && jc < 8 && damasBoard[jr][jc] === 0) {
+                                moves.push({r: jr, c: jc, jump: {r: nr, c: nc}});
+                            }
+                        }
+                    }
+                }
+            } else {
+                // DAMA VOADORA: Anda cruzando o mapa inteiro (Igual Bispo no Xadrez)
+                let dirs = [[-1, -1], [-1, 1], [1, -1], [1, 1]];
+                for (let d of dirs) {
+                    let step = 1;
+                    let foundEnemy = null;
+                    while (true) {
+                        let nr = r + d[0] * step, nc = c + d[1] * step;
+                        if (nr < 0 || nr >= 8 || nc < 0 || nc >= 8) break; // Bateu na parede
+                        
+                        let alvo = damasBoard[nr][nc];
+                        if (alvo === 0) {
+                            // Casa vazia, pode parar nela!
+                            if (!foundEnemy) moves.push({r: nr, c: nc, jump: null}); 
+                            else moves.push({r: nr, c: nc, jump: {r: foundEnemy.r, c: foundEnemy.c}}); // Pode parar DEPOIS de comer
+                        } else {
+                            // Encontrou uma peça
+                            if (!foundEnemy && ((player === 1 && (alvo===2 || alvo===4)) || (player === 2 && (alvo===1 || alvo===3)))) {
+                                foundEnemy = {r: nr, c: nc}; // Marca que achou inimigo e tenta ver se a casa de trás dele tá vazia
+                            } else {
+                                break; // Bateu numa peça aliada ou num segundo inimigo na mesma linha, para!
+                            }
+                        }
+                        step++;
+                    }
+                }
+            }
+            
+            // Regra universal da Dama: Comer é obrigatório!
+            let jumps = moves.filter(m => m.jump !== null);
+            return jumps.length > 0 ? jumps : moves;
+        }
+
+        function executarMovimentoDamas(r1, c1, r2, c2, jumpInfo) {
+            let p = damasBoard[r1][c1];
+            damasBoard[r1][c1] = 0; damasBoard[r2][c2] = p;
+            
+            if(p === 1 && r2 === 0) damasBoard[r2][c2] = 3;
+            if(p === 2 && r2 === 7) damasBoard[r2][c2] = 4;
+            
+            if(jumpInfo) {
+                damasBoard[jumpInfo.r][jumpInfo.c] = 0;
+                if(turnoDamas === 1) p2Pecas--; else p1Pecas--;
+            }
+            
+            renderDamas();
+            
+            let checkMorte = corrompidas.find(x => x.r === r2 && x.c === c2);
+            if(checkMorte) {
+                document.getElementById('falaKaryna').innerText = '"Hahaha! Caiu na minha armadilha, idiota!"';
+                damasBoard[r2][c2] = 0; 
+                if(turnoDamas === 1) p1Pecas--; else p2Pecas--;
+                renderDamas();
+            }
+
+            if(p1Pecas <= 0) { finalizarDamas(false, "Suas peças foram esmagadas!"); return; }
+            if(p2Pecas <= 0) { finalizarDamas(true); return; }
+
+            jogadasTotaisDamas++;
+            
+            if(turnoDamas === 1) {
+                turnoDamas = 2; atualizarHUDDamas(); setTimeout(iaJogar, 1000);
+            } else {
+                turnoDamas = 1; atualizarHUDDamas(); diminuirCorrupcao(); 
+                
+                if(modoDamas === 'massacre' && jogadasTotaisDamas % 10 === 0) {
+                    ativarEsmagamentoKaryna();
+                }
+            }
+        }
+
+        function diminuirCorrupcao() {
+            for(let i = corrompidas.length - 1; i >= 0; i--) {
+                corrompidas[i].tempo--;
+                if(corrompidas[i].tempo <= 0) corrompidas.splice(i, 1);
+            }
+            renderDamas();
+        }
+
+        function ativarEsmagamentoKaryna() {
+            document.getElementById('falaKaryna').innerText = '"Vou partir esse tabuleiro no meio!!"';
+            let vazias = [];
+            for(let r=0; r<8; r++){ for(let c=0; c<8; c++){ if((r+c)%2!==0 && damasBoard[r][c]===0) vazias.push({r,c}); }}
+            if(vazias.length > 0) {
+                let alvo = vazias[Math.floor(Math.random() * vazias.length)];
+                corrompidas.push({r: alvo.r, c: alvo.c, tempo: 2}); 
+                renderDamas();
+            }
+        }
+
+        function iaJogar() {
+            if(!damasRodando) return;
+            let allMoves = [];
+            for(let r=0; r<8; r++){
+                for(let c=0; c<8; c++){
+                    if(damasBoard[r][c]===2 || damasBoard[r][c]===4) {
+                        let moves = getMovimentos(r, c, 2);
+                        moves.forEach(m => allMoves.push({fromR: r, fromC: c, ...m}));
+                    }
+                }
+            }
+
+            if(allMoves.length === 0) { finalizarDamas(true); return; } 
+
+            // Filtra os pulos (comer é obrigatório)
+            let jumps = allMoves.filter(m => m.jump !== null);
+            let jogadasPossiveis = jumps.length > 0 ? jumps : allMoves;
+
+            // IA INTELIGENTE: Remove as jogadas que caem no buraco corrompido!
+            let safeMoves = jogadasPossiveis.filter(m => !corrompidas.find(x => x.r === m.r && x.c === m.c));
+            
+            // Só vai pra morte se for a ÚNICA jogada disponível no tabuleiro
+            if (safeMoves.length > 0) {
+                jogadasPossiveis = safeMoves;
+            }
+
+            let moveEscolhido = jogadasPossiveis[Math.floor(Math.random() * jogadasPossiveis.length)];
+
+            if (moveEscolhido.jump !== null) {
+                document.getElementById('falaKaryna').innerText = '"Tchauzinho, peça inútil!"';
+            } else {
+                document.getElementById('falaKaryna').innerText = '"Não pense que eu não estou calculando..."';
+            }
+
+            executarMovimentoDamas(moveEscolhido.fromR, moveEscolhido.fromC, moveEscolhido.r, moveEscolhido.c, moveEscolhido.jump);
+        }
+
+       function finalizarDamas(vit, msg="") {
+            damasRodando = false; document.getElementById('endGameDamas').style.display = 'flex';
+            if(vit){ 
+                let premio = modoDamas === 'normal' ? 20 : 40; waterTickets += premio; salvarDados(); 
+                document.getElementById('endTitleDamas').innerText="VITÓRIA!"; document.getElementById('endTitleDamas').style.color="#00ffcc"; document.getElementById('endDescDamas').innerText=`Ganhou +${premio} Tickets!`; 
+                
+                if(modoDamas === 'massacre') {
+                    // CÓDIGO DA CONQUISTA CORRIGIDO
+                    let conquistas = JSON.parse(localStorage.getItem('aetheryonConquistas')) || [];
+                    if(!conquistas.includes('bloodcrusher_massacre')) { 
+                        conquistas.push('bloodcrusher_massacre'); 
+                        localStorage.setItem('aetheryonConquistas', JSON.stringify(conquistas));
+                    }
+                    localStorage.setItem('conquistaBloodcrusher', 'desbloqueada');
+                    
+                    document.getElementById('falaKaryna').innerText = '"NÃO! Meu tabuleiro... Minha arma... Tsc, pegue e suma daqui!"';
+                }
+            } 
+            else { 
+                document.getElementById('endTitleDamas').innerText="DERROTA"; document.getElementById('endTitleDamas').style.color="#ff4444"; document.getElementById('endDescDamas').innerText=msg; 
+            }
+        }
+        function tentarNovamenteDamas() { iniciarDamas(modoDamas); }
 
         window.onload = () => { atualizarInfoGeral(); };
     </script>
