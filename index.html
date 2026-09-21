@@ -625,13 +625,38 @@
                 avatar: "ashlan_face.jpg",
                 quote: "\"O vento não pede permissão para destruir... e nem eu.\"",
                 faction: "💎 Diamond City", elemento: "🌪️ Vento", 
+                sexo: "MACHO",
                 stats: { forca: 5, magia: 30, agilidade: 100, inteligencia: 75, carisma: 70, physDef: 5, magDef: 90 },
                 race: "Elfo Mantra / Linhagem Real", weapon: "GaleForce",
                 weaponDetails: "Uma relíquia ancestral forjada no ápice do poder dos Lancehearth. Quando desembainhada, a pressão atmosférica do ambiente muda de forma brutal, emitindo um zumbido agudo que soa como um furacão contido prestes a dizimar o campo de batalha.",
                 weaponImage: "ashlan_weapon.jpg",
                 description: "O protagonista de Aetheryon e a ovelha negra da família Lancehearth. Com uma aparência incrivelmente delicada, traços andróginos e um porte físico que desafia os padrões brutos de seu mundo, Ashlan foi subestimado a vida inteira. Durante os seus anos na Academia Lancehearth, sofreu nas mãos da própria linhagem e da sociedade puritana por sua estética e passividade.<br><br>No entanto, a humilhação apenas forjou uma lâmina mais afiada. Ele canalizou a dor e a opressão em um domínio perfeito da magia elemental do vento. Compensando sua falta de força bruta com uma velocidade quase divina, ele humilha adversários com cortes cirúrgicos antes mesmo que eles consigam reagir.<br><br>Usando cortes de vento sônicos e criando furacões, Ashlan conquistou o 2º lugar no Grande Duelo das Nações (perdendo apenas para a força apocalíptica da sua irmã, Ashley). No combate direto, ele já derrotou seu irmão Ashton, quebrou a postura da brutal Valerya e sobreviveu contra sua própria mãe, Scarlett.",
                 extraImages: ["ashlan_batalha.gif", "ashlan_eating.png", "ashlan_eryn.jpg", "ashlan_mirror.jpg", "ashlan_fullbody.png"],
-                secret: "Apesar da postura arrogante em combate, nos bastidores Ashlan possui uma submissão quase doentia em sua vida íntima. Ele depende emocional e fisicamente de entidades dominadoras (como o deus cósmico Eryn Moonshine). Além disso, o Herdeiro do Vendaval é viciado em 'SweetHearth' — uma iguaria caríssima e obscura que ele consome em segredo, fabricada com os fluidos corporais mágicos da raça escravizada dos machos Prismari."
+                secret: "Apesar da postura arrogante em combate, nos bastidores Ashlan possui uma submissão quase doentia em sua vida íntima. Ele depende emocional e fisicamente de entidades dominadoras (como o deus cósmico Eryn Moonshine). Além disso, o Herdeiro do Vendaval é viciado em 'SweetHearth' — uma iguaria caríssima e obscura que ele consome em segredo, fabricada com os fluidos corporais mágicos da raça escravizada dos machos Prismari.",
+                skills: [
+        {
+            nome: "Projétil Cortante do Vendaval",
+            icone: "<img src='ashlanskill1.png' style='width: 35px; height: 35px; border-radius: 4px;'>",            
+            desc: "Ashlan cria projéteis de vento velozes que rasgam qualquer coisa que entrar em contato."
+        },
+        {
+            nome: "Vórtice Repulsor",
+            icone: "<img src='ashlanskill2.png' style='width: 35px; height: 35px; border-radius: 4px;'>",
+            desc: "Cria uma cúpula de ar pressurizado que repele projéteis e quebra a postura dos oponentes."
+        },
+        {
+            nome: "Tempestade Devastadora",
+            icone: "<img src='ashlanskill3.png' style='width: 35px; height: 35px; border-radius: 4px;'>",
+            desc: "Ashlan cria pequenos furacões que devastam tudo que estiver no caminho. A fonte de poder da GaleForce é ilimitada, portanto, ele tem a capacidade de invocar quantos furacões quiser."
+        },
+        {
+            nome: "GaleForce Absolute Devastation",
+            icone: "<img src='ashlanskill3.png' style='width: 35px; height: 35px; border-radius: 4px;'>",
+            desc: "Ashlan se funde com a energia da Galeforce, fazendo que o vento fique ao seu redor e aprimore suas capacidades de combate, como velocidade de movimento, velocidade de ataque e fazendo que seus ataques cortem mais profundamente. Além disso, Ashlan ganha um escudo de vento que reflete todo o dano recebido por um certo tempo.",
+            isUlt: true,
+            animacao: "ashlanultimate.mp4"
+            }
+    ]
             },
             {
                 name: "Ashley Lancehearth", title: "A Alta Sacerdotisa", role: "support", image: "ashley.jpg",
@@ -640,6 +665,7 @@
                 avatar: "ashley_face.jpg",
                 quote: "\"A luz revela todas as heresias. E o seu sangue lavará o chão da minha igreja.\"",
                 faction: "💎 Diamond City", elemento: "✨ Luz Branca", 
+                sexo: "FÊMEA",
                 stats: { forca: 1, magia: 100, agilidade: 75, inteligencia: 80, carisma: 3, physDef: 2, magDef: 100 },
                 race: "Elfa Mantra / Linhagem Real", weapon: "DivinePillar",
                 weaponDetails: "Um colossal pilar dourado que concentra a mais densa energia luminosa de Aetheryon. Capaz de desintegrar abominações sombrias e lançar raios de cura que reconstroem carne e osso num piscar de olhos.",
@@ -655,21 +681,48 @@
                 avatar: "scarlett_face.png",
                 quote: "\"O frio não teme ninguém. Ele apenas silencia.\"",
                 faction: "💎 Diamond City", elemento: "❄️ Gelo / Cryo", 
+                sexo: "FÊMEA",
                 stats: { forca: 25, magia: 55, agilidade: 100, inteligencia: 95, carisma: 40, physDef: 20, magDef: 20 },
                 race: "Elfa Mantra", weapon: "Glacial Whisper",
                 weaponDetails: "Um arco de cristal azul ancestral. Suas flechas condensam o éter no nível do Zero Absoluto, congelando as veias e a respiração do alvo antes mesmo que a ponta perfure o peito.",
                 weaponImage: "scarlett_weapon.png",
                 description: "A matriarca implacável da dinastia Lancehearth. Scarlett carrega a elegância mortal dos Elfos Mantra e um instinto materno territorial digno de um dragão de gelo. Com o falecimento precoce de sua mãe Freya na guerra, ela assumiu o manto da realeza e lidera a força militar de Diamond City de trás das linhas, orquestrando combates com uma mente analítica e fria.<br><br>O seu nome impõe um silêncio aterrorizante nos corredores do castelo. Scarlett é capaz de abaixar a temperatura de uma sala inteira apenas com um olhar, não hesitando em congelar os joelhos de lorde insolentes ou generais que ousem questionar a sua autoridade ou ameaçar a vida dos seus filhos e marido.",
                 extraImages: ["scarlett_art1.jpg", "scarlett_stand.gif", "scarlett_art2.png", "scarlett_dastan.png"],
-                secret: "Por trás da armadura de Rainha intocável e da postura de 'Morte Gélida' perante as tropas, Scarlett carrega um intenso fetiche por ser submissa na intimidade. O seu apetite por Dastan Lancehearth é selvagem e insaciável. Ela implora pela força de seu marido brutamontes nos aposentos, gerando um contraste hilário e bizarro em relação à imagem temível que os súditos têm dela."
+                secret: "Por trás da armadura de Rainha intocável e da postura de 'Morte Gélida' perante as tropas, Scarlett carrega um intenso fetiche por ser submissa na intimidade. O seu apetite por Dastan Lancehearth é selvagem e insaciável. Ela implora pela força de seu marido brutamontes nos aposentos, gerando um contraste hilário e bizarro em relação à imagem temível que os súditos têm dela.",
+                skills: [
+        {
+            nome: "Flecha da Geada Perfurante",
+            icone: "<img src='scarlettskill1.png' style='width: 35px; height: 35px; border-radius: 4px;'>",            
+            desc: "Scarlett concentra Cryo na Glacial Whisper e dispara uma flecha de gelo extremamente veloz. Ao atingir o alvo, a flecha atravessa suas defesas e espalha cristais congelantes ao redor do ponto de impacto."
+        },
+        {
+            nome: "Prisão de Cristal",
+            icone: "<img src='scarlettskill2.png' style='width: 35px; height: 35px; border-radius: 4px;'>",
+            desc: "Scarlett faz enormes cristais de gelo surgirem do solo ao redor do inimigo, aprisionando-o por alguns instantes e reduzindo drasticamente sua mobilidade."
+        },
+        {
+            nome: "Nevasca da Rainha",
+            icone: "<img src='scarlettskill3.png' style='width: 35px; height: 35px; border-radius: 4px;'>",
+            desc: "Scarlett invoca uma intensa tempestade de neve sobre uma grande área. Inimigos atingidos são constantemente feridos pelo frio e ficam progressivamente mais lentos enquanto permanecerem dentro da nevasca."
+        },
+        {
+            nome: "Absolute Zero: Reino Glacial",
+            icone: "<img src='scarlettskill4.png' style='width: 35px; height: 35px; border-radius: 4px;'>",
+            desc: "Scarlett libera todo o seu poder Cryo e transforma o campo de batalha em seu domínio congelado. A temperatura despenca instantaneamente, o solo é coberto por gelo e enormes estruturas cristalinas surgem ao redor. Durante o efeito, os ataques de Scarlett tornam-se mais poderosos e podem congelar completamente os inimigos atingidos.",
+            isUlt: true,
+            animacao: "scarlettultimate.mp4"
+            }
+    ]
+
             },
             {
                 name: "Ashton Lancehearth", title: "O Príncipe da Escuridão", role: "dps", image: "ashton.png",
                 avatar: "ashton_face.jpg",
-                model3dChar: "ashtonmodel2.glb",
+                model3dChar: "ashtonmodel.glb",
                 model3dWeapon: "ashtonweaponmodel.glb",
                 quote: "\"Vocês temem as sombras. Eu as chamo de casa.\"",
-                faction: "💎 Diamond City", elemento: "🌑 Sombra", 
+                faction: "💎 Diamond City", elemento: "🌑 Sombra",
+                sexo: "MACHO", 
                 stats: { forca: 95, magia: 70, agilidade: 30, inteligencia: 70, carisma: 30, physDef: 60, magDef: 30 },
                 race: "Humano / Linhagem Real", weapon: "DoomSpear",
                 weaponDetails: "Uma lança pesada de dois metros corrompida por magia letal. A haste de obsidiana rasga a própria luz ao redor quando brandida, sugando a esperança da linha de frente.",
@@ -681,8 +734,10 @@
             {
                 name: "Eryn Moonshine", title: "O Astral das Estrelas", role: "dps", image: "eryn.png",
                 avatar: "eryn_face.png",
+                model3dChar: "ashtonmodel.glb",
                 quote: "\"Se olhar para o Ashlan de novo, a gravidade vai esmagar seus pulmões.\"",
-                faction: "🌌 Astral Divino", elemento: "🌌 Cósmico / Gravidade", 
+                faction: "🌌 Astral Divino", elemento: "🌌 Cósmico / Gravidade",
+                sexo: "MACHO",
                 stats: { forca: 6, magia: 100, agilidade: 82, inteligencia: 90, carisma: 15, physDef: 5, magDef: 100 },
                 race: "Divindade Cósmica", weapon: "Domínio Astral",
                 weaponDetails: "Não necessita de armas físicas. Como o Astral das Estrelas, ele conjura feitiços lunares e estelares devastadores, invoca chuvas de meteoros, dispara feixes de luz estelar pura e concentrada, e manipula a gravidade cósmica para obliterar exércitos inteiros.",
@@ -696,7 +751,8 @@
                 avatar: "karyna_face.png",
                 model3dChar: "karynamodel.glb",
                 quote: "\"Vocês marcham sob a ilusão da esperança. Eu marcho sobre os cadáveres dela.\"",
-                faction: "🌑 Zenathor", elemento: "🩸 Hemomancia / Sombra", 
+                faction: "🌑 Zenathor", elemento: "🩸 Hemomancia / Sombra",
+                sexo: "FÊMEA", 
                 stats: { forca: 85, magia: 95, agilidade: 30, inteligencia: 85, carisma: 10, physDef: 90, magDef: 60 },
                 race: "Humana Corrompida", weapon: "A Maça Esmagadora (Bloodcrusher)",
                 weaponDetails: "Uma maça de guerra colossal, forjada com aço negro de Zenathor. Cada impacto brutal não só esmaga armaduras pesadas e ossos como se fossem vidro, mas também cria ondas de choque de sangue e sombras que desestabilizam batalhões inteiros.",
@@ -710,7 +766,8 @@
                 avatar: "malya_face.png",
                 model3dChar: "malyamodel.glb",
                 quote: "\"A brincadeira só acaba quando você parar de se mexer.\"",
-                faction: "🌑 Ex-Zenathor", elemento: "🧵 Matéria / Sombra", 
+                faction: "🌑 Ex-Zenathor", elemento: "🧵 Matéria / Sombra",
+                sexo: "FÊMEA",
                 stats: { forca: 2, magia: 100, agilidade: 30, inteligencia: 45, carisma: 3, physDef: 1, magDef: 70 },
                 race: "Humana", weapon: "Fios do Desespero & Bonecas",
                 weaponDetails: "Utiliza um bolso dimensional atrelado à sua própria sombra chamado 'The Toybox', de onde invoca um exército interminável de bonecas assassinas com lâminas ocultas.",
@@ -722,7 +779,8 @@
                 name: "Lyssa リサ", title: "A Açougueira Impiedosa", role: "dps", image: "lyssa.png",
                 avatar: "lyssa_face.png",
                 quote: "\"Psiu... gritar só vai fazer eu cortar mais devagar.\"",
-                faction: "🌑 Zenathor", elemento: "🩸 Sangue (Hemomancia)", 
+                faction: "🌑 Zenathor", elemento: "🩸 Sangue (Hemomancia)",
+                sexo: "FÊMEA", 
                 stats: { forca: 70, magia: 0, agilidade: 90, physDef: 15, magDef: 0 },
                 race: "Elfa Mantra", weapon: "Bloody Machete",
                 weaponDetails: "Um facão rústico, pesado e enferrujado nas laterais, mas mantido perpetuamente afiado no gume. Uma ferramenta primitiva feita unicamente para o desmembramento cirúrgico.",
@@ -735,7 +793,8 @@
                 name: "Rin", title: "O Punho da Implosão Umbral", role: "dps", image: "rin.png",
                 avatar: "rin_face.png",
                 quote: "\"Vocês riram das minhas roupas. Agora eu vou rir dos seus ossos esmagados.\"",
-                faction: "<img src='eclipserequiem.png' style='width: 18px; vertical-align: middle; margin-right: 5px;'> Eclipse Requiem", elemento: "🌑 Sombras / Impacto Físico", 
+                faction: "<img src='eclipserequiem.png' style='width: 18px; vertical-align: middle; margin-right: 5px;'> Eclipse Requiem", elemento: "🌑 Sombras / Impacto Físico",
+                sexo: "MACHO", 
                 stats: { forca: 60, magia: 60, agilidade: 95, physDef: 2, magDef: 10 },
                 race: "Humano Corrompido", weapon: "Abyssal Gauntlets",
                 weaponDetails: "Manoplas encantadas com artes sombrias. Cada soco conecta a magia ao sistema circulatório do alvo, causando uma implosão escura nos órgãos internos momentos após o impacto.",
@@ -751,7 +810,8 @@
                     { nome: "Introdução", arquivo: "voicelines/lottieintro.mp3" },
                     { nome: "Nâo vai sobrar nada", arquivo: "voicelines/lottiealma.mp3" }
                     ],
-                faction: "<img src='eclipserequiem.png' style='width: 18px; vertical-align: middle; margin-right: 5px;'> Eclipse Requiem", elemento: "🌌 Matéria Nula", 
+                faction: "<img src='eclipserequiem.png' style='width: 18px; vertical-align: middle; margin-right: 5px;'> Eclipse Requiem", elemento: "🌌 Matéria Nula",
+                sexo: "FÊMEA", 
                 stats: { forca: 3, magia: 100, agilidade: 40, physDef: 3, magDef: 80 },
                 race: "Humana Corrompida", weapon: "Magia Profana (Invocação)",
                 weaponDetails: "Magia pura sem necessidade de armas. Ela corrompe a fauna local, enchendo insetos, lobos e morcegos com Matéria Nula, transformando-os em abominações gigantes que obedecem ao seu chamado.",
@@ -762,7 +822,8 @@
                 name: "Lyra Sunfall", title: "O Chicote da Dor Eterna", role: "dps", image: "lyra.png",
                 avatar: "lyra_face.png",
                 quote: "\"O tempo nos apodrece. A minha dor nos fará imortais.\"",
-                faction: "🌑 Eclipse Requiem", elemento: "🌑 Energia Umbral", 
+                faction: "🌑 Eclipse Requiem", elemento: "🌑 Energia Umbral",
+                sexo: "FÊMEA", 
                 stats: { forca: 30, magia: 65, agilidade: 100, physDef: 7, magDef: 0 },
                 race: "Humana", weapon: "Gêmeos Umbrais",
                 weaponDetails: "Chicotes de energia gerados diretamente a partir de manoplas inseridas cirurgicamente nos ossos dos seus braços. A dor intensa ativa o feixe afiado que corta armaduras de aço como papel.",
@@ -774,8 +835,10 @@
             {
                 name: "Gaydron", title: "O Grã-Arquiteto", role: "dps", image: "gaydron.png",
                 avatar: "gaydron_face.png",
+                model3dChar: "gaydronmodel.glb",
                 quote: "\"Diplomacia é para os fracos. A matemática da guerra é absoluta.\"",
-                faction: "⚙️ Aethelgard", elemento: "⚙️ Magi-Tech", 
+                faction: "⚙️ Aethelgard", elemento: "⚙️ Magi-Tech",
+                sexo: "MACHO", 
                 stats: { forca: 85, magia: 15, agilidade: 32, physDef: 75, magDef: 75 },
                 race: "Humano MagiTech", weapon: "Manopla de Absorção e Espada de Mana",
                 weaponDetails: "Mecanismo robótico complexo no braço que serve como um buraco negro de mana. Ele absorve magias de fogo, gelo ou luz lançadas contra ele. A espada de mana tem a capacidade de penetrar defesas inimigas.",
@@ -789,7 +852,8 @@
                 model3dChar: "gaykamodel.glb",
                 model3dWeapon: "gaykaweaponmodel.glb",
                 quote: "\"Alvo biométrico travado. Você já está morto e nem sabe.\"",
-                faction: "⚙️ Aethelgard", elemento: "⚙️ Magi-Tech", 
+                faction: "⚙️ Aethelgard", elemento: "⚙️ Magi-Tech",
+                sexo: "FÊMEA", 
                 stats: { forca: 40, magia: 15, agilidade: 100, physDef: 10, magDef: 10 },
                 race: "Humana MagiTech", weapon: "Rifle Sure-Shot Mk. IV",
                 weaponDetails: "Uma arma aterrorizante de aceleração magnética. Diferente das bestas convencionais de Aetheryon, as balas de Gayka possuem micro-aletas mágicas que perseguem o calor corporal, corrigindo a trajetória no ar após o disparo.",
@@ -804,7 +868,8 @@
                 avatar: "lilia_face.png",
                 model3dChar: "liliamodel.glb",
                 quote: "\"Mesmo a terra queimada pode brotar vida se você souber escutá-la.\"",
-                faction: "🍃 Naturelands", elemento: "🍃 Natureza", 
+                faction: "🍃 Naturelands", elemento: "🍃 Natureza",
+                sexo: "ANDROFÊMEA", 
                 stats: { forca: 10, magia: 90, agilidade: 65, inteligencia: 70, carisma: 100, physDef: 4, magDef: 100 },
                 race: "Centauro", weapon: "Cajado das Raízes Ancestrais",
                 weaponDetails: "Um condutor orgânico antigo. Ao fincá-lo no chão, ela controla raízes espessas que engolem os pés e as armas dos inimigos sem feri-los fatalmente, além de soprar pólen mágico que sela feridas de batalha de seus aliados.",
@@ -818,7 +883,8 @@
                 avatar: "sylphy_face.png",
                 model3dChar: "sylphymodel.glb",
                 quote: "\"As florestas não cederão enquanto eu tiver fôlego!\"",
-                faction: "🍃 Naturelands", elemento: "🪨 Terra / Físico", 
+                faction: "🍃 Naturelands", elemento: "🪨 Terra / Físico",
+                sexo: "FÊMEA", 
                 stats: { forca: 90, magia: 0, agilidade: 85, inteligencia: 55, carisma: 100, physDef: 100, magDef: 0 },
                 race: "Centauro", weapon: "Lança Sagrada e Escudo dos Titãs",
                 weaponDetails: "Um escudo torre moldado em madeira-férrea impenetrável e cravejado com rochas antigas, combinado a uma lança pesada usada quase exclusivamente para perfuração em investidas brutais.",
@@ -832,7 +898,8 @@
                 avatar: "valerya_face.jpg",
                 model3dChar: "valeryamodel.glb",
                 quote: "\"Esses escudos fininhos de nobreza não vão segurar um impacto de meia tonelada.\"",
-                faction: "⚙️ Abberyon", elemento: "🔥 Fogo / 👊 Físico / 🪄 Mágico", 
+                faction: "⚙️ Abberyon", elemento: "🔥 Fogo / 👊 Físico / 🪄 Mágico",
+                sexo: "FÊMEA", 
                 stats: { forca: 100, magia: 15, agilidade: 60, inteligencia: 30, carisma: 50, physDef: 95, magDef: 5 },
                 race: "Humana", weapon: "Ironpulse Gloves",
                 weaponDetails: "Manoplas mágicas de metal rúnico. Cada soco acumula carga térmica do ar e explode num choque cinético que carboniza os oponentes de dentro para fora.",
@@ -853,7 +920,8 @@
                     { nome: "PT - Biologia", arquivo: "voicelines/pt_rosalindbiologia.mp3" }
                     ],
                 quote: "\"A biologia humana é apenas um rascunho deprimente. Eu sou a arte final.\"",
-                faction: "🧪 Lab. Subterrâneo", elemento: "🧪 Bio-Alquimia", 
+                faction: "🧪 Lab. Subterrâneo", elemento: "🧪 Bio-Alquimia",
+                sexo: "FÊMEA", 
                 stats: { forca: 3, magia: 5, agilidade: 80, inteligencia: 100, carisma: 85, physDef: 2, magDef: 0  },
                 race: "Humana", weapon: "Seringa Biótica Ultra",
                 weaponDetails: "Cilindros de ar comprimido abastecidos com um arco-íris de mutagênicos químicos sintéticos. No meio da guerra, ela atira ampolas estilhaçantes que curam feridas abertas ou derretem os tendões inimigos através do descontrole hormonal e dor ácida.",
@@ -865,7 +933,8 @@
                 name: "Caelis", title: "O Curandeiro Sombrio", role: "support", image: "caelis.png",
                 avatar: "caelis_face.png",
                 quote: "\"A vida sempre exige pagamento em dor. Deixe que eu sofro por você.\"",
-                faction: "🌑 Eclipse Requiem", elemento: "🌑 Sombras / Restauração", 
+                faction: "🌑 Eclipse Requiem", elemento: "🌑 Sombras / Restauração",
+                sexo: "MACHO", 
                 stats: { forca: 4, magia: 100, agilidade: 50, inteligencia: 30, carisma: 30, physDef: 0, magDef: 100 },
                 race: "Elfo Mantra", weapon: "Cajado do Eclipse Eterno",
                 weaponDetails: "Canaliza magias de ressurreição proibida. O feixe de sombra drena a força vital de quem conjura para curar as feridas mais graves dos aliados.",
@@ -879,7 +948,8 @@
                 avatar: "nyxaranyttara_face.png",
                 model3dChar: "nyxaramodel.glb",
                 quote: "\"Nós somos duas. Mas a dor que você vai sentir é uma só.\"",
-                faction: "💀 Submundo", elemento: "🌑 Necromancia", 
+                faction: "💀 Submundo", elemento: "🌑 Necromancia",
+                sexo: "FÊMEA", 
                 stats: { forca: 2, magia: 85, agilidade: 40, inteligencia: 60, carisma: 70, physDef: 4, magDef: 80 },
                 race: "Humanas Corrompidas", weapon: "Magia Caótica da Morte",
                 weaponDetails: "Nyxara canaliza feitiços enquanto sua grande amiga cabeça Nyttara oferece a ela visão e suporte. Elas trabalham como uma metralhadora arcana, lançando maldições sônicas e agulhas mortais.",
@@ -903,7 +973,8 @@
                     { nome: "Viadinho do Ashlan", arquivo: "voicelines/byakuya_viadinhoashlan.mp3" },
                     { nome: "É Prazeroso", arquivo: "voicelines/byakuya_machohumilhar.mp3" }  
                 ],
-                faction: "🏔️ Pico dos Suspiros", elemento: "🌪️ Físico / Vento Oculto", 
+                faction: "🏔️ Pico dos Suspiros", elemento: "🌪️ Físico / Vento Oculto",
+                sexo: "FÊMEA", 
                 stats: { forca: 100, magia: 40, agilidade: 90, inteligencia: 70, carisma: 20, physDef: 80, magDef: 30 },
                 race: "Elfa Mantra", weapon: "Artes Marciais do Vácuo / Lotus Swoon",
                 weaponDetails: "A mestria suprema do impacto físico alinhada à quebra das barreiras do som. Ela não precisa de metais vulcânicos; os seus calcanhares, cotovelos e punhos perfuram o ar estilhaçando a barreira sônica, afundando armaduras numa brutalidade silenciosa, e claro, sua MARAVILHOSA BUNDA.",
@@ -916,8 +987,10 @@
             {
                 name: "Elian", title: "O Servo Devoto", role: "support", image: "elian.png",
                 avatar: "elian_face.png",
+                model3dChar: "elianmodel.glb",
                 quote: "\"Servir à Princesa Ashley é a maior honra da minha vida... mesmo que ela nunca perceba o que sinto.\"",
-                faction: "💎 Diamond City", elemento: "✨ Luz Intermediária / Esgrima Leve", 
+                faction: "💎 Diamond City", elemento: "✨ Luz Intermediária / Esgrima Leve",
+                sexo: "MACHO", 
                 stats: { forca: 15, magia: 50, agilidade: 60, physDef: 5, inteligencia: 20, carisma: 90, magDef: 15 },
                 race: "Humano", weapon: "Espada de Penas, Escudo Leve & Luz",
                 weaponDetails: "Empunha um escudo resistente e uma espada fina com um elegante cabo adornado por penas. Ele combina esgrima defensiva com feitiços de luz intermediária.",
@@ -931,7 +1004,8 @@
                 avatar: "vesper_face.png",
                 model3dChar: "vespermodel.glb",
                 quote: "\"O pacote chega em dez minutos. O seu enterro, em cinco.\"",
-                faction: "🏍️ Rotas Comerciais", elemento: "🌪️ Vento / Fogo", 
+                faction: "🏍️ Rotas Comerciais", elemento: "🌪️ Vento / Fogo",
+                sexo: "FÊMEA", 
                 stats: { forca: 30, magia: 10, agilidade: 100, inteligencia: 50, carisma: 60, physDef: 5, magDef: 5 },
                 race: "Elfa Mantra", weapon: "Foice Magi-Tech e Magi-Bike",
                 weaponDetails: "Pilotagem insana a centenas de quilômetros por hora em terreno baldio. Dinâmica de Poder: 'Nível de Poder da União' Ativação: Estímulo erótico profundo.",
@@ -943,7 +1017,8 @@
                 name: "Lyra Moonfall", title: "A Roda Gélida", role: "dps", image: "lyra_moonfall.png",
                 avatar: "lyramoonfall_face.png",
                 quote: "\"Eu seguro o guidão. Você só precisa segurar o grito quando passarmos por cima deles.\"",
-                faction: "🏍️ Rotas Comerciais", elemento: "❄️ Gelo / Escudo", 
+                faction: "🏍️ Rotas Comerciais", elemento: "❄️ Gelo / Escudo",
+                sexo: "FÊMEA", 
                 stats: { forca: 10, magia: 70, agilidade: 50, inteligencia: 50, carisma: 60, physDef: 5, magDef: 30 },
                 race: "Elfa Mantra", weapon: "Transformação em Foice",
                 weaponDetails: "O corpo de Lyra se dissolve momentaneamente em pura luz azul arcana e se materializa nas mãos de Vesper como uma Foice gigantesca impulsionada por um motor semelhante ao da moto de Aethelgard.",
@@ -955,7 +1030,8 @@
                 name: "Mydra", title: "O Colecionador de Conhecimento", role: "dps", image: "mydra.png",
                 avatar: "mydra_face.png",
                 quote: "\"Por que escolher um elemento, se eu posso esmagar você com todos eles ao mesmo tempo?\"",
-                faction: "🌑 Ex-Zenathor (Andarilho)", elemento: "🌀 Maestria Elemental Suprema", 
+                faction: "🌑 Ex-Zenathor (Andarilho)", elemento: "🌀 Maestria Elemental Suprema",
+                sexo: "MACHO", 
                 stats: { forca: 5, magia: 100, agilidade: 100, inteligencia: 100, carisma: 30, physDef: 10, magDef: 100 },
                 race: "Humano", weapon: "Esferas do Cânone Elementais",
                 weaponDetails: "Mydra não usa armas físicas convencionais. Ele conjura esferas puras de múltiplos elementos simultaneamente, encadeando combos devastadores.",
@@ -968,7 +1044,8 @@
                 avatar: "lysandre_face.jpg",
                 model3dChar: "lysandremodel.glb",
                 quote: "\"Relaxa, deixa que eu curo isso... Mas, se tocarem nos meus amigos, minhas garras vão rasgar vocês em pedaços!\"",
-                faction: "🍃 Naturelands", elemento: "🍃 Magia da Natureza / Garras Mágicas", 
+                faction: "🍃 Naturelands", elemento: "🍃 Magia da Natureza / Garras Mágicas",
+                sexo: "MACHO", 
                 stats: { forca: 10, magia: 85, agilidade: 100, inteligencia: 60, carisma: 95, physDef: 6, magDef: 70 },
                 race: "Therianthrope - Felari (Garoto-Gato)", weapon: "Garras Mágicas da Natureza",
                 weaponDetails: "Além de canalizar o fluxo vital da floresta para curar ferimentos graves e dar suporte, Lysandre manifesta Garras Mágicas brilhantes e superafiadas feitas de pura energia da natureza.",
@@ -982,7 +1059,8 @@
                 model3dChar: "lennoxmodel.glb",
                 model3dWeapon: "lennoxweapon.glb",
                 quote: "\"Dinheiro é a única verdade. Se o seu olho vale mais que a sua vida, a culpa não é minha.\"",
-                faction: "💀 Mercado Negro", elemento: "⚙️ Físico / Execução", 
+                faction: "💀 Mercado Negro", elemento: "⚙️ Físico / Execução",
+                sexo: "FÊMEA", 
                 stats: { forca: 50, magia: 0, agilidade: 85, inteligencia: 50, carisma: 35, physDef: 25, magDef: 10 },
                 race: "Humana", weapon: "Facão Tático & Marca de Estase",
                 weaponDetails: "Um facão militar superafiado para decapitações cirúrgicas. Ela carrega uma 'Marca de Estase' na testa (nanotecnologia do mercado negro).",
@@ -995,7 +1073,8 @@
             name: "Elara Whisperwind", title: "A Mestra de Feras", role: "dps", image: "elara.png",
             avatar: "elara_face.png",
             quote: "\"Uma fera só respeita aquele que tem a alma mais selvagem do que a dela.\"",
-            faction: "🍃 Terras Naturais", elemento: "🍃 Natureza", 
+            faction: "🍃 Terras Naturais", elemento: "🍃 Natureza",
+            sexo: "FÊMEA", 
             stats: { forca: 20, magia: 20, agilidade: 95, inteligencia: 65, carisma: 100, physDef: 15, magDef: 15 },
             race: "Elfa Natural", weapon: "Arco Longo Selvagem & Falcão",
             weaponDetails: "Usa a sua habilidade suprema 'Eagle Eye' para abater alvos a distâncias impossíveis, lutando sempre em sincronia letal com o seu falcão e outras feras domadas.",
@@ -1015,7 +1094,8 @@
                     { nome: "English - Walk Around", arquivo: "voicelines/english_katarinawalk.mp3" }
                     ],
             quote: "\"Por favor, me chame de Senhorita Ravencroft... Ou de Kat, se você aguentar o ritmo!\"",
-            faction: "🦇 Casa Nocturne (Mournfall)", elemento: "🌑 Magia Sombria / Corte Ágil", 
+            faction: "🦇 Casa Nocturne (Mournfall)", elemento: "🌑 Magia Sombria / Corte Ágil",
+            sexo: "FÊMEA", 
             stats: { forca: 30, magia: 75, agilidade: 95, inteligencia: 40, carisma: 70, physDef: 3, magDef: 10 },
             race: "Semi-Felari", weapon: "Espadas Gêmeas Felinas",
             weaponDetails: "Em sua forma desperta, Kat abandona os grimórios e puxa espadas letais de empunhadura preta, retalhando com acrobacias tridimensionais que desafiam a gravidade.",
@@ -1029,7 +1109,8 @@
             avatar: "seddan_face.png",
             model3dChar: "seddanmodel.glb",
             quote: "\"A sombra de Crya devora qualquer luz que insiste em mentir.\"",
-            faction: "💀 Zenathor (Igreja de Crya)", elemento: "🌑 Sombra / Execução", 
+            faction: "💀 Zenathor (Igreja de Crya)", elemento: "🌑 Sombra / Execução",
+            sexo: "MACHO", 
             stats: { forca: 30, magia: 65, agilidade: 85, inteligencia: 65, carisma: 10, physDef: 10, magDef: 40 },
             race: "Humano", weapon: "Lança Anathematizer & Serpente de Sombra",
             weaponDetails: "A lendária lança Anathematizer da Igreja de Crya, canalizando magia de sombra devastadora, acompanhada por uma serpente familiar cuja visão ele compartilha em tempo real.",
@@ -1042,7 +1123,8 @@
             avatar: "aelith_face.png",
             model3dChar: "aelithmodel.glb",
             quote: "\"Nas sombras da lâmina Mortis, até a luz aprende a se curvar.\"",
-            faction: "🌑 Reino de Mournfall", elemento: "🌑 Sombra", 
+            faction: "🌑 Reino de Mournfall", elemento: "🌑 Sombra",
+            sexo: "MACHO", 
             stats: { forca: 35, magia: 50, agilidade: 95, inteligencia: 65, carisma: 75, physDef: 10, magDef: 30 },
             race: "Alabastriano / Nobreza de Mournfall", weapon: "Katana Lendária Fencer Mortis",
             weaponDetails: "Uma katana lendária imbuída com magia pura das sombras. A lâmina é incrivelmente fina, forjada para velocidade ofuscante e precisão cirúrgica em vez de força bruta.",
@@ -1055,7 +1137,8 @@
             name: "Príncipe Caelith", title: "O Guardião do Trono Sombrio", role: "support", image: "caelith.png",
             avatar: "caelith_face.png",
             quote: "\"Proteger o legado de Mournfall exige segurar a escuridão com as próprias mãos.\"",
-            faction: "🌑 Reino de Mournfall", elemento: "🛡️ Sombra / Cura Umbral", 
+            faction: "🌑 Reino de Mournfall", elemento: "🛡️ Sombra / Cura Umbral",
+            sexo: "MACHO", 
             stats: { forca: 10, magia: 95, agilidade: 65, inteligencia: 55, carisma: 90, physDef: 8, magDef: 90 },
             race: "Alabastriano / Nobreza de Mournfall", weapon: "Grimório de Mournfall",
             weaponDetails: "Um tomo ancestral que abriga magias esquecidas. Sua principal técnica é o 'Umbral Mending' (Cura Sombria), costurando feridas vitais com fios de pura escuridão e erguendo barreiras de ocultação para seus aliados. Por ser incrivelmente tímido, ele constantemente abraça este livro pesado contra o peito como um escudo físico, e imediatamente esconde seu rosto corado atrás das páginas sempre que um estranho fala com ele.",
@@ -1067,7 +1150,8 @@
             name: "Rei Astolfo Nocturne", title: "O Monarca Andrógino", role: "dps", image: "astolfo.png",
             avatar: "astolfo_face.png",
             quote: "\"A verdadeira soberania é fazer com que a própria escuridão se curve à sua beleza.\"",
-            faction: "🌑 Reino de Mournfall", elemento: "🌑 Sombra / Esgrima", 
+            faction: "🌑 Reino de Mournfall", elemento: "🌑 Sombra / Esgrima",
+            sexo: "MACHO", 
             stats: { forca: 50, magia: 75, agilidade: 90, inteligencia: 68, carisma: 80, physDef: 30, magDef: 60 },
             race: "Alabastriano / Nobreza de Mournfall", weapon: "Cajado das Sombras & Espada Real",
             weaponDetails: "Combina feitiços sombrios de amplo alcance pelo cajado com golpes de esgrima precisos e mortais da sua espada, lutando de forma grácil como se estivesse dançando.",
@@ -1081,7 +1165,8 @@
             model3dChar: "prymodel.glb",
             avatar: "prya_face.png", 
             quote: "\"O meu sonho era ser rainha. Agora, o meu único sonho é ouvir os gritos daqueles que destroem a paz... e cortar-lhes a cabeça.\"",
-            faction: "💎 Diamond City (Executora Secreta)", elemento: "🩸 Físico / Brutalidade", 
+            faction: "💎 Diamond City (Executora Secreta)", elemento: "🩸 Físico / Brutalidade",
+            sexo: "FÊMEA", 
             stats: { forca: 85, magia: 0, agilidade: 85, inteligencia: 60, carisma: 30, physDef: 6, magDef: 0 },
             race: "Humana", weapon: "Machado de Carrasco",
             weaponDetails: "Ela empunha um machado de carrasco compacto e facilmente ocultável — a mesma lâmina usada para matá-la. Seu fio é projetado para deslizar entre as vértebras cervicais e separar cabeças em um único golpe limpo.",
@@ -1094,7 +1179,8 @@
             image: "vaelor.png",
             avatar: "vaelor_face.png",
             quote: "\"Vocês chamam a nossa tecnologia de heresia... até sentirem a estrutura da sua carne desmoronar perante a nossa evolução.\"",
-            faction: "⚙️ Aethelgard (Bastião Etéreo)", elemento: "⚙️ Magi-Tech / Sônico", 
+            faction: "⚙️ Aethelgard (Bastião Etéreo)", elemento: "⚙️ Magi-Tech / Sônico",
+            sexo: "MACHO", 
             stats: { forca: 90, magia: 80, agilidade: 60, inteligencia: 20, carisma: 90, physDef: 95, magDef: 90 },
             race: "Gardys (Autômato Magi-Tech)", weapon: "Cajado do Éter & Punhos Sônicos Ocultos",
             weaponDetails: "Muda entre combate tático e assalto brutal. Na ponta de seu Cajado do Éter, dispara raios laser contínuos que cortam através de exércitos. Em combate próximo, desengata braços extras ocultos no chassis: cada soco emite frequências sônicas devastadoras que esmigalham a blindagem molecular do alvo, reduzindo a defesa do inimigo progressivamente a cada impacto.",
@@ -1107,7 +1193,8 @@
             image: "kieran.png",
             avatar: "kieran_face.png",
             quote: "\"Vocês criam deuses de metal, mas os corpos de vocês continuam patéticos e frágeis. Ainda bem que me têm aqui para consertá-los.\"",
-            faction: "⚙️ Aethelgard (Bastião Etéreo)", elemento: "🧬 Bio-Tech / Medicina Letal", 
+            faction: "⚙️ Aethelgard (Bastião Etéreo)", elemento: "🧬 Bio-Tech / Medicina Letal",
+            sexo: "MACHO", 
             stats: { forca: 15, magia: 85, agilidade: 80, inteligencia: 95, carisma: 4, physDef: 25, magDef: 60 },
             race: "Humano", weapon: "Pistola V.I.P.E.R.",
             weaponDetails: "A V.I.P.E.R. (Vital Injector & Paralytic Emitter Ray) é uma pistola de dupla função criada pelo próprio Kieran. Seu disparo biótico primário cura feridas de aliados em segundos. Seu disparo secundário atira projéteis que penetram a carne inimiga, liberando uma toxina que atrofia os músculos instantaneamente (inútil contra autômatos).",
@@ -1120,7 +1207,8 @@
                 model3dChar: "voryssmodel.glb",
                 avatar: "voryss_face.png",
                 quote: "\"Vocês chamam de monstruoso aquilo que simplesmente não conseguem compreender.\"",
-                faction: "🌑 Underworld / Submundo", elemento: "🌑 Caos Sombrio / Energia Vital", 
+                faction: "🌑 Underworld / Submundo", elemento: "🌑 Caos Sombrio / Energia Vital",
+                sexo: "ANDROFÊMEA", 
                 stats: { forca: 40, magia: 95, agilidade: 80, inteligencia: 80, carisma: 10, physDef: 90, magDef: 100 },
                 race: "Demonborn", weapon: "Adaga Ritualística \"Eclipse Voraz\"",
                 weaponDetails: "Uma lâmina de ritual que catalisa seus feitiços sombrios. No entanto, o seu verdadeiro trunfo é a 'Forma do Eclipse', a sua transformação máxima. Quando ativada, as suas asas aumentam drasticamente, a armadura de obsidiana funde-se completamente ao corpo e a sua magia deixa de parecer uma técnica para se tornar a manifestação do próprio Caos. Poucos guerreiros sobreviveram para contar como é enfrentar essa forma.",
@@ -1137,7 +1225,8 @@
                 image: "eva.png",
                 avatar: "eva_face.png",
                 quote: "\"Ameaça aos criadores detectada. Redirecionando 100% da Guardel Energy para a lâmina. O seu sangue vermelho vai manchar o meu aço, e o meu aço vai queimar a sua alma.\"",
-                faction: "⚙️ Aethelgard", 
+                faction: "⚙️ Aethelgard",
+                sexo: "FÊMEA", 
                 elemento: "🔵 Guardel Energy", 
                 stats: { forca: 75, magia: 10, agilidade: 100, inteligencia: 70, carisma: 90, physDef: 70, magDef: 10 },
                 race: "Gardys (Robô Autônomo)", 
@@ -1157,7 +1246,8 @@
                 image: "sion.png",
                 avatar: "sion_face.png",
                 quote: "\"Dano estrutural detectado nos tecidos moles orgânicos. Suspirando internamente. Aplicando soro biótico. Tentem não ser estripados novamente.\"",
-                faction: "⚙️ Aethelgard", 
+                faction: "⚙️ Aethelgard",
+                sexo: "FÊMEA", 
                 elemento: "🧬 Bio-Tech", 
                 stats: { forca: 30, magia: 10, agilidade: 75, inteligencia: 100, carisma: 40, physDef: 60, magDef: 10 },
                 race: "Gardys Médico (Magi-Tech)", 
@@ -1170,11 +1260,13 @@
             {
                 name: "Darius Kondesse",
                 title: "O Bastião Dourado",
+                model3dChar: "dariusmodel.glb",
                 role: "tank",
                 image: "darius.png",
                 avatar: "darius_face.png",
                 quote: "\"Minha lâmina julga os indignos. Meu escudo silencia o caos. Diante deste portão, ninguém passa sem se curvar.\"",
                 faction: "👑 Coroa do Norte",
+                sexo: "MACHO", 
                 elemento: "☀️ Luz Solar / Cinética Pesada",
                 stats: { forca: 100, magia: 50, agilidade: 40, inteligencia: 70, carisma: 30, physDef: 100, magDef: 75 },
                 race: "Humano (Nobreza Marcial do Norte)",
@@ -1193,6 +1285,7 @@
                 avatar: "genevieve_face.png",
                 quote: "\"Governar não exige esforço quando todos os homens e mulheres do reino rastejam para beijar a barra do meu vestido... implorando por mais.\"",
                 faction: "👑 Coroa do Norte",
+                sexo: "FÊMEA",
                 elemento: "✨ Fios de Éter Dourado / Dominação Sensorial",
                 stats: { forca: 20, magia: 100, agilidade: 40, inteligencia: 30, carisma: 80, physDef: 15, magDef: 95 },
                 race: "Elfa Mantra (Linhagem Áurea)",
@@ -1210,6 +1303,7 @@
                 avatar: "faelan_face.png",
                 quote: "\"Eu prometo que vou pegar leve... Mas se você piscar, minhas garras já terão rasgado a sua guarda em cem pedacinhos!\"",
                 faction: "🍃 Naturelands",
+                sexo: "MACHO",
                 elemento: "🍃 Vento da Selva / Garras Mágicas",
                 stats: { forca: 25, magia: 25, agilidade: 100, inteligencia: 80, carisma: 100, physDef: 10, magDef: 20 },
                 race: "Felari (Garoto-Gato)",
@@ -1228,6 +1322,7 @@
     avatar: "kiyomi_face.png",
     quote: "\"Rosalind pode ter mudado meu corpo quando eu era criança, mas quem esculpiu minha coragem e meu futuro fui eu mesma!\"",
     faction: "🧭 Aventureiros de Aetheryon",
+    sexo: "ANDROFÊMEA",
     elemento: "⚡ Éter Cinético / Dança das Lâminas",
     stats: { forca: 50, magia: 0, agilidade: 82, inteligencia: 72, carisma: 85, physDef: 30, magDef: 0 },
     race: "Humana (Mutação Alquímica de Infância)",
@@ -1246,6 +1341,7 @@
     avatar: "clarissa_face.png",
     quote: "\"Nossos machos deram suas vidas para que nós pudéssemos existir. Agora, cada gota de força e vida no meu corpo pertence ao futuro do meu povo!\"",
     faction: "🌿 Naturelands",
+    sexo: "FÊMEA",
     elemento: "🌾 Éter Terrestre / Dança da Espada",
     stats: { forca: 50, magia: 40, agilidade: 84, inteligencia: 50, carisma: 100, physDef: 45, magDef: 35 },
     race: "Cowari (Matriarca / Líder da Raça)",
@@ -1264,6 +1360,7 @@
     avatar: "thalia_face.png",
     quote: "\"Minha irmã usou a ciência para quebrar almas e alimentar devaneios vis. Eu uso o mesmo conhecimento para que nenhuma vida seja apagada de Aetheryon.\"",
     faction: "🌿 Naturelands",
+    sexo: "FÊMEA",
     elemento: "🍃 Botânica Curativa & Alquimia Vital",
     stats: { forca: 32, magia: 40, agilidade: 50, inteligencia: 100, carisma: 92, physDef: 20, magDef: 20 },
     race: "Humana",
@@ -1281,7 +1378,8 @@
     avatar: "mimi_face.png",
     model3dChar: "mimimodel.glb",
     quote: "\"Pode vir com tudo... Eu e a Sora adoramos sentir a sua força se chocando contra nós.\"",
-    faction: "🍃 Naturelands", 
+    faction: "🍃 Naturelands",
+    sexo: "FÊMEA", 
     elemento: "🍃 Natureza / 🛡️ Espiritual", 
     stats: { forca: 35, magia: 85, agilidade: 75, inteligencia: 50, carisma: 100, physDef: 90, magDef: 85 },
     race: "Foxeri (Humana-Raposa)", 
@@ -1300,7 +1398,8 @@
                 image: "lynn.png",
                 avatar: "lynn_face.png",
                 quote: "\"Guarde suas ordens para os seus soldados, Scarlett. No meu castelo, a única regra que dita o ritmo é a minha lâmina.\"",
-                faction: "💎 Castelo Lynn (Diamond City)", 
+                faction: "💎 Castelo Lynn (Diamond City)",
+                sexo: "FÊMEA", 
                 elemento: "🔥 Fogo / Lâmina Mágica", 
                 stats: { forca: 35, magia: 65, agilidade: 90, inteligencia: 75, carisma: 75, physDef: 30, magDef: 40 },
                 race: "Elfa Mantra", 
@@ -1318,7 +1417,8 @@
                 image: "lorian.png",
                 avatar: "lorian_face.png",
                 quote: "\"Enquanto minha esposa queima a linha de frente e nossa filha cobre a retaguarda, eu garanto que nossa família seja intocável.\"",
-                faction: "💎 Castelo Lynn (Diamond City)", 
+                faction: "💎 Castelo Lynn (Diamond City)",
+                sexo: "MACHO", 
                 elemento: "🔮 Cristal / Encantamento", 
                 stats: { forca: 15, magia: 85, agilidade: 70, inteligencia: 95, carisma: 100, physDef: 20, magDef: 80 },
                 race: "Humano", 
@@ -1335,7 +1435,8 @@
                 image: "devon.png",
                 avatar: "devon_face.png",
                 quote: "\"Vestidos limitam o movimento, e a hesitação limita a vida. Eu prefiro a minha besta e um alvo limpo.\"",
-                faction: "💎 Castelo Lynn (Diamond City)", 
+                faction: "💎 Castelo Lynn (Diamond City)",
+                sexo: "FÊMEA", 
                 elemento: "⚙️ Aço / Precisão", 
                 stats: { forca: 40, magia: 10, agilidade: 95, inteligencia: 80, carisma: 65, physDef: 35, magDef: 5 },
                 race: "Humana", 
@@ -1353,7 +1454,8 @@
                 image: "aqua_astral.png",
                 avatar: "aqua_face.png",
                 quote: "\"Cada gota de chuva, cada lágrima e cada oceano deste mundo nascem e evaporam com o meu respirar.\"",
-                faction: "🏔️ Montanha dos Astrais", 
+                faction: "🏔️ Montanha dos Astrais",
+                sexo: "FÊMEA", 
                 elemento: "💧 Água Pura / Hidromancia Cósmica", 
                 stats: { forca: 10, magia: 100, agilidade: 85, inteligencia: 100, carisma: 95, physDef: 20, magDef: 100 },
                 race: "Divindade Cósmica (Astral)", 
@@ -1373,6 +1475,7 @@
     avatar: "lilith_face.png",
     quote: "\"Governei sobre cinzas e ergui muralhas de mentiras. Se o destino deste mundo é sangrar eternamente, eu mesma irei arrancar os deuses do trono e reescrever a existência.\"",
     faction: "👑 Ex-Vondale / Renegada (Busca pelo Reino Proibido)",
+    sexo: "FÊMEA",
     elemento: "🌀 Maestria Elemental Arcana / Vazio Nihil",
     stats: { forca: 20, magia: 100, agilidade: 70, inteligencia: 98, carisma: 65, physDef: 30, magDef: 100 },
     race: "Humana (Portadora do Fragmento do Gênesis)",
@@ -1391,6 +1494,7 @@
     avatar: "corvin_face.png",
     quote: "\"Demônios não temem a morte porque acham que sua essência sempre retorna ao Caos. Eu existo para mostrar que até a alma de vocês pode ser triturada até não sobrar nada.\"",
     faction: "🍃 Naturelands (Herege Renegado)",
+    sexo: "FÊMEA",
     elemento: "💀 Ruptura de Alma / Morte Espiritual",
     stats: { forca: 55, magia: 60, agilidade: 65, inteligencia: 80, carisma: 35, physDef: 92, magDef: 80 },
     race: "Humano",
@@ -1410,6 +1514,7 @@
             avatar: "koharu_face.png",
             quote: "\"Guerreiros do continente ainda batem ferro bruto em bigornas. Minhas espadas não apenas cortam: elas desestabilizam as ligações atômicas do alvo a cada estocada.\"",
             faction: "⚙️ Aethelgard",
+            sexo: "FÊMEA",
             elemento: "⚙️ Magi-Tech",
             stats: { forca: 60, magia: 75, agilidade: 95, inteligencia: 90, carisma: 70, physDef: 45, magDef: 60 },
             race: "Elfa Mantra MagiTech",
@@ -1429,6 +1534,7 @@
             avatar: "mana_face.png",
             quote: "\"Foque apenas no seu corte, Koharu. Nenhuma lâmina ou feitiço inimigo tocará você enquanto a corda do meu arco estiver tensa.\"",
             faction: "⚙️ Aethelgard",
+            sexo: "FÊMEA",
             elemento: "⚙️ Magi-Tech / Luz Etérea",
             stats: { forca: 45, magia: 50, agilidade: 100, inteligencia: 100, carisma: 85, physDef: 35, magDef: 25 },
             race: "Elfa Mantra MagiTech",
@@ -1447,6 +1553,7 @@
             avatar: "seiya_face.png",
             quote: "\"I-irmã, por favor, manda eles levantarem do chão! Eu só queria treinar um pouco de vento, não precisa colocar ninguém pra lamber meus pés!\"",
             faction: "🏔️ Pico dos Suspiros",
+            sexo: "MACHO",
             elemento: "🌪️ Vento / Artes Marciais (Em Treinamento)",
             stats: { forca: 75, magia: 55, agilidade: 95, inteligencia: 80, carisma: 90, physDef: 30, magDef: 35 },
             race: "Elfo Mantra",
@@ -1464,6 +1571,7 @@
             avatar: "dastan_face.png",
             quote: "\"Sobrevivi às trincheiras da Grande Guerra e a exércitos inteiros de monstros... mas nada neste mundo testa mais a coragem de um homem do que tentar colocar ordem nessa família.\"",
             faction: "💎 Diamond City",
+            sexo: "MACHO",
             elemento: "🔥 Fogo Lendário / Chamas Solares",
             stats: { forca: 94, magia: 65, agilidade: 55, inteligencia: 85, carisma: 90, physDef: 96, magDef: 75 },
             race: "Humano / Patriarca Real",
@@ -1484,6 +1592,7 @@
             avatar: "lirya_face.png",
             quote: "\"Inteligência não serve apenas para governar palácios; serve para prever cada passo seu, desarmar a sua guarda e fazer você implorar antes mesmo de eu puxar o gatilho.\"",
             faction: "💎 Diamond City (Casa Ravenshire)",
+            sexo: "FÊMEA",
             elemento: "⚙️ Magi-Tech / Frequência Sonora",
             stats: { forca: 25, magia: 15, agilidade: 100, inteligencia: 100, carisma: 100, physDef: 10, magDef: 5 },
             race: "Humana / Nobreza do Extremo Norte",
@@ -1503,6 +1612,7 @@
             avatar: "cassian_face.png",
             quote: "\"Atravessei as fendas glaciais de Isenfall e domei o gelo vivo com as próprias mãos. Acha mesmo que a traição de cortesãos ou o aço de um invasor vão me fazer recuar?\"",
             faction: "💎 Diamond City (Casa Ravenshire)",
+            sexo: "MACHO",
             elemento: "❄️ Gelo Boreal / Puro Aço",
             stats: { forca: 92, magia: 60, agilidade: 58, inteligencia: 88, carisma: 82, physDef: 97, magDef: 80 },
             race: "Humano / Aristocracia do Norte",
@@ -1523,6 +1633,7 @@
     avatar: "mielle_face.png",
     quote: "\"Senhorita Lirya disse que eu só precisava apertar este botão... Ela não mencionou que metade da sala iria explodir.\"",
     faction: "💎 Diamond City (Casa Ravenshire)",
+    sexo: "MACHO",
     elemento: "🔊 Ressonância Magi-Tech / Vento",
     stats: { forca: 30, magia: 30, agilidade: 100, inteligencia: 90, carisma: 100, physDef: 10, magDef: 15 },
     race: "Semi-Felari / Humano Felinizado",
@@ -1543,6 +1654,7 @@
     model3dWeapon: "arielweaponmodel.glb",
     quote: "\"Se eu puder ajudar sem machucar ninguém... então já é o bastante.\"",
     faction: "🌹 Raw Lust Village",
+    sexo: "MACHO",
     elemento: "✨ Luz / Encanto",
     stats: { forca: 10, magia: 80, agilidade: 40, inteligencia: 40, carisma: 100, physDef: 10, magDef: 55 },
     race: "Humano",
@@ -1563,6 +1675,7 @@
     model3dWeapon: "aureliaweaponmodel.glb",
     quote: "\"A delicadeza é uma bênção. A obediência... uma virtude ainda maior.\"",
     faction: "🌹 Raw Lust Village",
+    sexo: "FÊMEA",
     elemento: "✨ Luz Sagrada",
     stats: { forca: 20, magia: 80, agilidade: 30, inteligencia: 80, carisma: 70, physDef: 10, magDef: 45 },
     race: "Humana",
@@ -1581,6 +1694,7 @@
     avatar: "kael_face.png",
     quote: "\"Se ainda está se mexendo, é porque eu ainda não lancei mísseis suficientes.\"",
     faction: "⚙️ Aethelgard",
+    sexo: "MACHO",
     elemento: "⚙️ Magi-Tech",
     stats: { forca: 50, magia: 45, agilidade: 40, inteligencia: 80, carisma: 80, physDef: 60, magDef: 25 },
     race: "Humano",
@@ -1599,6 +1713,7 @@
     avatar: "veyra_face.png",
     quote: "\"Fique atrás de mim. Enquanto este escudo permanecer de pé, você também permanecerá.\"",
     faction: "⚙️ Aethelgard",
+    sexo: "FÊMEA",
     elemento: "⚙️ Magi-Tech",
     stats: { forca: 90, magia: 60, agilidade: 40, inteligencia: 100, carisma: 70, physDef: 1000, magDef: 45 },
     race: "Humana",
@@ -1618,6 +1733,7 @@
     avatar: "yuren_face.png",
     quote: "\"Força não é o quanto seu corpo parece poderoso. É o quanto dele você consegue usar de uma só vez.\"",
     faction: "💎 Diamond City / Lancehearth Academy",
+    sexo: "MACHO",
     elemento: "💥 Força Cinética / Combate Corporal",
     stats: { forca: 1000, magia: 15, agilidade: 95, inteligencia: 88, carisma: 90, physDef: 95, magDef: 35 },
     race: "Humano",
@@ -1637,6 +1753,7 @@ description: "Yuren é professor de Educação Física, biomecânica e condicion
     avatar: "sylmira_face.png",
     quote: "\"A terra sempre responde. O problema é que a maioria das pessoas nunca aprendeu a escutar.\"",
     faction: "💎 Diamond City / Lancehearth Academy",
+    sexo: "FÊMEA",
     elemento: "🌍 Terra / Geomancia",
     stats: { forca: 20, magia: 100, agilidade: 55, inteligencia: 100, carisma: 90, physDef: 10, magDef: 100 },
     race: "Elfa Mantra",
@@ -1656,6 +1773,7 @@ description: "Yuren é professor de Educação Física, biomecânica e condicion
     avatar: "nixye_face.png",
     quote: "\"Sombras não gritam. Elas apenas terminam o que começaram.\"",
     faction: "🌑 Zenathor / 🌘 Eclipse Requiem",
+    sexo: "FÊMEA",
     elemento: "🌑 Sombras / Energia Umbral",
     stats: { forca: 40, magia: 60, agilidade: 100, inteligencia: 90, carisma: 40, physDef: 20, magDef: 30 },
     race: "Humana",
@@ -1675,6 +1793,7 @@ description: "Yuren é professor de Educação Física, biomecânica e condicion
     avatar: "nadya_face.png",
     quote: "\"Corra se quiser. Só torna a caçada mais divertida.\"",
     faction: "🌑 Zenathor",
+    sexo: "FÊMEA",
     elemento: "🌑 Sombras / Energia Umbral",
     stats: { forca: 40, magia: 50, agilidade: 100, inteligencia: 90, carisma: 60, physDef: 68, magDef: 35 },
     race: "Humana",
@@ -1694,6 +1813,7 @@ image: "evelyn.png",
 avatar: "evelyn_face.png",
 quote: "Se meu corpo pode alimentar uma vida a mais, então não existe excesso. Existe propósito.",
 faction: "💎 Diamond City",
+sexo: "FÊMEA",
 elemento: "🧬 Bio-Regeneração Lactária",
 stats: { forca: 30, magia: 0, agilidade: 32, inteligencia: 90, carisma: 100, physDef: 38, magDef: 0 },
 race: "Humana",
@@ -1711,6 +1831,7 @@ image: "lucen.png",
 avatar: "lucen_face.png",
 quote: "Isso não é coisa que fêmeas fazem?! Por que eu, um menino, produzo leite?!",
 faction: "💎 Diamond City",
+sexo: "GINOMACHO",
 elemento: "🧬 Bio-Alquimia Lactogênica",
 stats: { forca: 15, magia: 0, agilidade: 70, inteligencia: 68, carisma: 90, physDef: 10, magDef: 0 },
 race: "Humano",
@@ -1729,6 +1850,7 @@ secret: "Análises realizadas em Diamond City revelaram que Rosalind não simple
     avatar: "jennifer_face.png",
     quote: "\"Conhecimento constrói civilizações. Nas mãos erradas, também é capaz de destruí-las.\"",
     faction: "💎 Diamond City / Lancehearth Academy",
+    sexo: "FÊMEA",
     elemento: "⚗️ Teoria Arcana / Alquimia",
     stats: { forca: 55, magia: 100, agilidade: 62, inteligencia: 1000, carisma: 82, physDef: 78, magDef: 100 },
     race: "Humana",
@@ -1747,6 +1869,7 @@ secret: "Análises realizadas em Diamond City revelaram que Rosalind não simple
     avatar: "calysthe_face.png",
     quote: "\"Você continua olhando para mim como se ainda tivesse escolha. Que adorável.\"",
     faction: "🔥 Underworld",
+    sexo: "FÊMEA",
     elemento: "❤️ Lascivia / Energia Vital / Ilusão",
     stats: { forca: 55, magia: 100, agilidade: 82, inteligencia: 92, carisma: 1000, physDef: 48, magDef: 95 },
     race: "Demonborn",
@@ -1761,11 +1884,13 @@ secret: "Análises realizadas em Diamond City revelaram que Rosalind não simple
     name: "Braska ブラスカ",
     title: "A Ruína Risonha",
     model3dChar: "braskamodel.glb",
+    model3dWeapon: "braskaweaponmodel.glb",
     role: "dps",
     image: "braska.png",
     avatar: "braska_face.png",
     quote: "\"Se estava tão bonito assim, por que fizeram tão fácil de quebrar?\"",
     faction: "🔥 Underworld",
+    sexo: "FÊMEA",
     elemento: "💥 Rebeldia / Caos Estrutural",
     stats: { forca: 95, magia: 82, agilidade: 90, inteligencia: 78, carisma: 88, physDef: 82, magDef: 68 },
     race: "Demonborn",
@@ -1775,7 +1900,69 @@ secret: "Análises realizadas em Diamond City revelaram que Rosalind não simple
     description: "Braska é uma <b>Demonborn da categoria Rebeldia</b>, originária do Underworld localizado abaixo de Zenathor. Enquanto integrantes de Aniquilação como Voryss possuem uma natureza voltada diretamente para a morte e criaturas de Lascivia como Calysthe exploram desejo e energia vital, os Demonborn de Rebeldia possuem uma obsessão muito diferente: <b>destruir aquilo que foi organizado, construído ou cuidadosamente preservado.</b><br><br><b>Categoria Rebeldia:</b> Esses demônios demonstram um impulso quase instintivo de quebrar estruturas, destruir monumentos, derrubar construções, devastar plantações, arrancar árvores e transformar locais organizados em completo caos. Para eles, uma torre perfeitamente construída não representa uma obra admirável. Representa algo esperando para cair.<br><br>Diferentemente dos Demonborn de Aniquilação, criaturas de Rebeldia normalmente não sentem necessidade de matar seres vivos. Muitas sequer demonstram interesse particular por pessoas enquanto possuem alguma construção, floresta cultivada ou estrutura artificial próxima para destruir.<br><br>Isso não significa que sejam inofensivos. O comportamento deles pode transformar cidades inteiras em ruínas, destruir fontes de alimento, contaminar rios e provocar desastres capazes de matar inúmeras pessoas indiretamente.<br><br><b>Aparência Humana:</b> Braska possui uma das Formas Humanas mais convincentes entre os Demonborn conhecidos. Sua aparência lembra a de uma jovem adulta extremamente rebelde: cabelos negros muito longos com grandes mechas prateadas, olhos verdes intensos, boné escuro e roupas urbanas negras marcadas por pequenos detalhes roxos.<br><br>Ela utiliza constantemente uma jaqueta oversized aberta, cropped preto, shorts rasgados, cintos, tiras presas às pernas, luvas sem dedos e suas enormes Riot Stompers. A combinação faz com que Braska pareça muito mais uma arruaceira de alguma cidade moderna do que uma criatura nascida no Underworld.<br><br><b>Personalidade:</b> Braska é impulsiva, debochada, energética e quase incapaz de levar autoridade a sério. Ela possui o hábito de responder ameaças com piadas, apelidos ou gargalhadas e parece sentir prazer genuíno quando alguém extremamente sério perde a paciência por causa dela.<br><br>Braska gosta de pirulitos e frequentemente aparece chupando um enquanto observa o resultado de alguma destruição que acabou de causar. Para ela, sentar sobre uma estátua recém-destruída ou caminhar sobre os restos de um monumento é praticamente uma forma de descanso.<br><br><b>Obsessão por Destruição:</b> Construções especialmente bonitas despertam nela uma curiosidade imediata. Quanto mais complexa, antiga ou cuidadosamente preservada uma estrutura parecer, maior será a vontade de descobrir exatamente como ela se comportaria ao desmoronar.<br><br>Braska já passou longos períodos observando prédios apenas para identificar qual coluna, parede ou ponto de apoio produziria o colapso mais interessante caso fosse destruído primeiro.<br><br>Essa característica demonstra que sua natureza não é simplesmente irracional. Apesar de agir como uma arruaceira impulsiva, Braska possui excelente compreensão espacial e uma capacidade quase intuitiva de perceber distribuição de peso, tensão estrutural e pontos frágeis.<br><br><b>Caos Estrutural:</b> Sua magia Demonborn permite interferir diretamente com a estabilidade de matéria sólida. Ao canalizar energia através de golpes, Braska pode ampliar pequenas rachaduras, enfraquecer conexões entre materiais e fazer estruturas anteriormente estáveis começarem a se romper.<br><br>Ela não consegue simplesmente olhar para uma cidade e fazê-la desaparecer. O poder exige contato ou proximidade física e funciona muito melhor quando Braska compreende onde aplicar a força inicial.<br><br><b>Natureza e Rebeldia:</b> Demonborn de sua categoria não limitam sua destruição apenas a construções artificiais. Florestas, plantações e rios também podem tornar-se alvos. Alguns membros de Rebeldia sentem prazer particular em destruir lugares considerados belos ou intocados justamente porque representam ordem natural e equilíbrio.<br><br>Braska possui uma preferência maior por construções artificiais, especialmente monumentos e prédios grandes, mas não demonstra qualquer reverência especial pela natureza. Se uma árvore gigantesca estiver exatamente no lugar onde ela deseja provocar um desmoronamento, provavelmente irá derrubá-la sem pensar duas vezes.<br><br><b>Relação com Seres Vivos:</b> Braska normalmente não caça humanos, elfos ou outras raças. Se encontrar uma cidade abandonada e uma cidade habitada com construções igualmente interessantes, provavelmente considerará ambas alvos perfeitamente aceitáveis.<br><br>Ela pode inclusive avisar habitantes para saírem antes de começar a destruição simplesmente porque prefere concentrar-se na arquitetura em vez de perder tempo enfrentando guardas.<br><br>Entretanto, alguém que tente impedi-la pode rapidamente descobrir que essa relativa falta de interesse em matar não significa misericórdia. Braska reage a resistência com enorme violência e não hesita em utilizar a mesma força capaz de demolir uma muralha contra quem permanecer no caminho.<br><br><b>Mobilidade:</b> Apesar das botas enormes, Braska é extremamente ágil. Ela utiliza impulsos de Caos Estrutural contra o próprio chão para acelerar movimentos, realizar saltos enormes e alterar a própria trajetória no ar. Isso permite que atravesse ruínas e terrenos destruídos com facilidade muito maior que a maioria dos perseguidores.<br><br><b>Forma Avançada:</b> Braska também possui uma verdadeira forma Demonborn que raramente utiliza na superfície. Quando liberada, chifres escuros surgem de sua cabeça, marcas roxas percorrem braços e pernas e uma longa cauda demoníaca aparece atrás dela. Seus olhos verdes tornam-se extremamente luminosos e as Riot Stompers passam a liberar energia caótica constantemente.<br><br>Nessa forma, cada passo pode provocar pequenas rachaduras no solo. Braska torna-se fisicamente mais forte e sua capacidade de detectar vulnerabilidades estruturais aumenta drasticamente, permitindo que identifique quase instantaneamente quais pontos precisam ser destruídos para provocar o colapso de uma construção.<br><br><b>Underworld:</b> Assim como Voryss e Calysthe, Braska não possui qualquer lealdade a Zenathor. Os necromantes responsáveis pelas passagens subterrâneas podem controlar parcialmente quem entra no Underworld, mas não controlam os Demonborn que recebem permissão para atravessar em direção à superfície.<br><br>Braska considera particularmente engraçada a ideia de alguém tentar lhe dar ordens. Existem relatos de necromantes que tentaram orientá-la sobre quais estruturas poderia ou não destruir e descobriram rapidamente que dizer a uma Demonborn de Rebeldia que algo é proibido constitui provavelmente a maneira mais rápida de transformá-lo em seu próximo alvo.<br><br><b>Relação com Outros Demonborn:</b> Braska não possui um senso natural de solidariedade com outras categorias. Pode conversar tranquilamente com outros Demonborn, provocar uma discussão ou simplesmente ignorá-los. A raça compartilha origem, mas não necessariamente objetivos, cultura ou autoridade centralizada.<br><br>Ela considera Voryss excessivamente séria e Demonborn de Lascivia excessivamente interessados em brincar com mortais. Na opinião de Braska, um prédio de quinze andares oferecendo milhares de maneiras diferentes de cair é muito mais interessante.<br><br><b>Presença na Superfície:</b> Quando Braska aparece em uma região habitada, o maior indício normalmente não são cadáveres, mas destruição inexplicável. Estátuas aparecem sem cabeça, torres apresentam enormes rachaduras, pontes desabam durante a madrugada e monumentos inteiros podem ser encontrados reduzidos a pedras.<br><br>E em algum lugar próximo, frequentemente existe uma garota de boné, sentada sobre os escombros, terminando tranquilamente um pirulito.",
     extraImages: ["braska_art1.png", "braska_art2.png", "braska_avancado.jpg", "braska_demon.png"],
     secret: "Braska possui uma técnica extremamente perigosa chamada <b>Perfect Collapse</b>. Ao tocar uma construção e permanecer alguns segundos completamente imóvel, ela consegue utilizar Caos Estrutural para sentir como forças e tensões estão distribuídas através de praticamente toda a estrutura.<br><br>Quando encontra o ponto exato que mantém o equilíbrio geral, Braska marca aquele local com uma pequena quantidade de energia Demonborn. Um único impacto posterior nesse ponto pode provocar uma reação em cadeia, fazendo diferentes partes da construção perderem sustentação em sequência.<br><br>Com estruturas pequenas, o efeito é praticamente instantâneo. Em construções gigantescas, rachaduras podem levar vários segundos para se espalhar antes do colapso completo.<br><br>Braska raramente utiliza Perfect Collapse imediatamente depois de encontrar um ponto vulnerável. Ela prefere afastar-se, escolher algum lugar confortável, colocar outro pirulito na boca e observar o prédio inteiro cair de uma vez.<br><br>Segundo ela, destruir é divertido. Mas <b>destruir com estilo</b> é muito melhor."
+        },
+        {
+    name: "Seraphine Vesperayne", title: "A Dama da Lua Carmesim", role: "dps", image: "seraphine.png",
+    model3dChar: "seraphinemodel.glb",
+    avatar: "seraphine_face.png",
+    quote: "\"Existem muitas coisas que estou disposta a negociar. Minha irmã não é uma delas.\"",
+    faction: "🌙 Mournfall", elemento: "🌑 Sangue Lunar",
+    sexo: "FÊMEA",
+    stats: { forca: 30, magia: 95, agilidade: 65, inteligencia: 90, carisma: 85, physDef: 45, magDef: 85 },
+    race: "Humana / Linhagem Nobre Vesperayne", weapon: "Sangue Lunar",
+    weaponDetails: "Seraphine não depende de uma arma física convencional. Seu próprio domínio do Sangue Lunar funciona como sua principal ferramenta de combate. Ela condensa energia carmesim em lâminas semicirculares, fios mágicos, selos lunares e estruturas cortantes capazes de prender, ferir e controlar adversários. Apesar do nome, a técnica não utiliza necessariamente sangue físico; sua denominação surgiu devido à coloração vermelho-escura da energia e à antiga ligação da Casa Vesperayne com os ciclos lunares de Mournfall.",
+    weaponImage: "seraphine_weapon.png",
+    description: "Seraphine Vesperayne é a filha mais velha da antiga <b>Casa Vesperayne</b>, uma das linhagens aristocráticas mais tradicionais de Mournfall. Alta, extremamente elegante e dona de uma presença naturalmente intimidadora, possui pele muito clara, longos cabelos negros levemente ondulados, olhos vermelho-vinho e uma figura curvilínea marcada por um busto volumoso. Sua aparência é completada por um vestido gótico negro de corte aristocrático, com corpete estruturado, mangas de renda e tecidos internos em vermelho profundo. Diferente de muitos nobres, Seraphine evita correntes, joias chamativas e acessórios excessivos, preferindo uma aparência limpa e sofisticada.<br><br>Desde criança, foi preparada para representar a Casa Vesperayne diante da aristocracia e eventualmente assumir sua liderança. Aprendeu política, etiqueta, administração, história e magia desde muito jovem, tornando-se uma mulher extremamente controlada e difícil de intimidar. Seraphine raramente levanta a voz; sua postura, expressão e maneira de falar normalmente são suficientes para impor respeito.<br><br>A Casa Vesperayne possui uma função peculiar dentro de Mournfall. Além de sua influência política, a família tradicionalmente protege criptas nobres, documentos ancestrais, relíquias funerárias e antigos pactos mágicos relacionados à história da região. Por causa disso, os Vesperayne são vistos como guardiões de segredos que remontam às primeiras eras de Mournfall.<br><br>Seraphine possui domínio sobre uma rara vertente de magia conhecida como <b>Sangue Lunar</b>. Ela consegue transformar energia carmesim em lâminas, ondas cortantes, fios mágicos e selos capazes de limitar os movimentos dos inimigos. Seu estilo de combate favorece controle de campo, precisão e ataques calculados, evitando confrontos físicos desnecessários.<br><br>Sua relação com sua irmã mais nova, <b>Lilienne Vesperayne</b>, sempre foi extremamente intensa. As duas cresceram praticamente inseparáveis e encontravam conforto uma na outra diante das rígidas exigências da nobreza. Quando adultas, essa ligação evoluiu para uma relação romântica mantida em segredo da maior parte da sociedade de Mournfall.<br><br>Quando luta ao lado de Lilienne, Seraphine consegue utilizar a técnica conjunta <b>Eclipse Carmesim</b>. A Névoa Fúnebre de Lilienne se mistura ao Sangue Lunar, cobrindo o campo de batalha com uma névoa violeta iluminada por uma lua carmesim artificial. Dentro dessa área, inimigos perdem percepção espacial enquanto Seraphine consegue atacar através da névoa com precisão quase absoluta.<br><br>Fora das responsabilidades políticas, Seraphine aprecia noites silenciosas, livros antigos e vinho tinto. Seus aposentos possuem enormes janelas góticas voltadas para as torres de Mournfall, onde frequentemente permanece acordada até altas horas observando a cidade.",
+    extraImages: ["seraphine_art1.png", "seraphine_art2.png", "seraphine_art3.png", "seraphine_bedroom.jpg", "seraphine_fullbody.png"],
+    secret: "Seraphine mantém em segredo sua relação romântica com sua própria irmã, Lilienne Vesperayne. Apenas algumas pessoas extremamente próximas da Casa Vesperayne conhecem a verdadeira natureza da relação entre as duas. A possibilidade de um casamento político é uma das poucas coisas capazes de perturbar seriamente sua habitual serenidade, pois Seraphine não possui qualquer intenção de abandonar Lilienne para satisfazer interesses diplomáticos da aristocracia."
 },
+{
+    name: "Lilienne Vesperayne", title: "A Princesa da Névoa Violeta", role: "support", image: "lilienne.png",
+    model3dChar: "liliennemodel.glb",
+    avatar: "lilienne_face.png",
+    quote: "\"Não preciso de um trono. Já tenho exatamente onde quero estar.\"",
+    faction: "🌙 Mournfall", elemento: "🥶 Névoa Fúnebre",
+    sexo: "FÊMEA",
+    stats: { forca: 20, magia: 90, agilidade: 80, inteligencia: 85, carisma: 95, physDef: 35, magDef: 90 },
+    race: "Humana / Linhagem Nobre Vesperayne", weapon: "Névoa Fúnebre",
+    weaponDetails: "Lilienne utiliza sua própria Névoa Fúnebre como principal instrumento de combate. Trata-se de uma manifestação de energia espiritual violeta capaz de envolver grandes áreas, obscurecer a visão, distorcer a percepção de distância e produzir ilusões extremamente convincentes. A névoa também pode envolver aliados como um manto espiritual, reduzindo o impacto de determinados ataques mágicos e permitindo que Lilienne manipule completamente o ritmo de uma batalha.",
+    weaponImage: "lilienne_weapon.jpg",
+    description: "Lilienne Vesperayne é a filha mais nova da Casa Vesperayne e a irmã de Seraphine. Possui pele muito clara, olhos violeta intensos e cabelos extremamente longos de coloração branco-prateada, normalmente ondulados e parcialmente trançados. Assim como sua irmã, possui uma figura curvilínea e busto volumoso. Sua vestimenta segue a estética tradicional da família: vestido gótico negro, corpete ajustado, mangas de renda e uma longa saia com tecidos internos em vermelho profundo. Lilienne utiliza poucos acessórios, normalmente limitados a uma pequena coroa ou ornamento negro no cabelo.<br><br>Por ser a segunda filha da família, Lilienne cresceu com menos responsabilidades políticas diretas do que Seraphine. Isso permitiu que desenvolvesse uma personalidade consideravelmente mais livre, espontânea e provocadora. Embora domine perfeitamente a etiqueta aristocrática, raramente demonstra interesse em seguir suas regras quando não existe necessidade real.<br><br>Lilienne é brincalhona, afetuosa e extremamente observadora. Possui facilidade em perceber mentiras, inseguranças e intenções escondidas durante conversas. Sua aparência despreocupada frequentemente faz com que adversários políticos subestimem sua inteligência, algo que ela utiliza deliberadamente em benefício próprio.<br><br>Seu poder é conhecido como <b>Névoa Fúnebre</b>, uma manifestação espiritual capaz de cobrir grandes áreas com uma névoa violeta sobrenatural. Dentro dela, Lilienne pode distorcer sons, alterar a percepção de distância, criar duplicatas ilusórias e esconder completamente a movimentação de aliados. Também consegue concentrar a névoa ao redor de uma pessoa para formar uma proteção espiritual temporária.<br><br>Seu estilo de combate é focado principalmente em suporte, manipulação de campo e desorientação. Lilienne raramente enfrenta inimigos através de força bruta. Em vez disso, transforma o ambiente em uma enorme armadilha psicológica onde apenas seus aliados conseguem compreender perfeitamente o que está acontecendo.<br><br>Lilienne e Seraphine cresceram praticamente inseparáveis. Durante a infância, frequentemente escapavam juntas das cerimônias formais da família para explorar corredores, bibliotecas e criptas antigas da propriedade Vesperayne. Quando adultas, a ligação entre as duas acabou se transformando em uma relação romântica.<br><br>Ao contrário de Seraphine, Lilienne demonstra muito menos preocupação com o possível escândalo causado pela relação. Sua maior preocupação é a possibilidade de Seraphine ser obrigada a aceitar algum casamento político. Por esse motivo, Lilienne adquiriu o divertido hábito de atormentar possíveis pretendentes da irmã até que eles próprios desistam.<br><br>Quando luta junto de Seraphine, Lilienne participa da técnica combinada <b>Eclipse Carmesim</b>, espalhando sua Névoa Fúnebre pelo campo enquanto a irmã manifesta uma lua carmesim acima da batalha. A combinação das duas magias transforma percepção e visibilidade em armas, tornando extremamente difícil enfrentar as irmãs simultaneamente.",
+    extraImages: ["lilienne_art1.png", "lilienne_comic.jpg", "lilienne_throne.jpg", "lilienne_fullbody.png"],
+    secret: "Por trás de sua personalidade despreocupada, Lilienne é extremamente possessiva em relação a Seraphine. Ela odeia a ideia de que sua irmã seja utilizada em um casamento político e frequentemente interfere discretamente nas tentativas da aristocracia de encontrar pretendentes para ela. Lilienne também costuma entrar nos aposentos de Seraphine sem bater, roubar pequenas quantidades de seu vinho e dormir abraçada à irmã sempre que permanece no quarto dela."
+        },
+        {
+    name: "Rinka Kagurazaka", title: "A Lâmina Viva de Aethelgard", role: "dps", image: "rinkaofficial.png",
+    model3dChar: "rinkamodel.glb",
+    model3dWeapon: "rinkaweaponmodel.glb",
+    avatar: "rinka_face.png",
+    quote: "\"Nós sobrevivemos quando esperavam que quebrássemos. Agora escolhemos por quem lutar.\"",
+    faction: "⚙️ Aethelgard", elemento: "🧬 VR-VIRUS",
+    sexo: "FÊMEA",
+    stats: { forca: 35, magia: 45, agilidade: 90, inteligencia: 90, carisma: 75, physDef: 300, magDef: 30 },
+    race: "Humana / Hospedeira do VR-VIRUS", weapon: "Arsenal Vivo Adaptativo",
+    weaponDetails: "Rinka é portadora do <b>VR-VIRUS</b>, uma arma biotecnológica criada pelos cientistas de Aethelgard durante a Grande Guerra. O vírus permite que todo o seu organismo seja temporariamente reorganizado em uma arma viva capaz de ser empunhada por outra pessoa. A forma assumida não é fixa: dependendo das necessidades do combate, Rinka pode manifestar lâminas, armas pesadas, equipamentos defensivos ou sistemas de disparo. Quando luta ao lado de Ranka, as duas conseguem inverter seus papéis livremente, decidindo em segundos qual delas será transformada e qual permanecerá em forma humana para empunhá-la.",
+    weaponImage: "rinka_weapon.png",
+    description: "Rinka Kagurazaka é a irmã mais velha de <b>Ranka Kagurazaka</b> e uma das combatentes experimentais mais poderosas de Aethelgard. De aparência jovem, porém adulta, Rinka possui longos cabelos escuros, olhos violeta e uma postura normalmente mais serena e disciplinada que a de sua irmã. Seu uniforme mistura elementos tradicionais de vestimentas escolares de Aethelgard com detalhes tecnológicos discretos, sendo reconhecida principalmente pela gravata azul-violeta que utiliza.<br><br>A infância das irmãs Kagurazaka foi marcada por uma profunda crueldade. Ainda muito jovens, Rinka e Ranka foram vendidas pelos próprios pais para instituições científicas de Aethelgard, onde passaram a ser utilizadas como cobaias em uma série de experimentos biológicos e tecnológicos. Durante esse período, Rinka assumiu naturalmente o papel de irmã protetora, tentando preservar Ranka emocionalmente mesmo enquanto ambas eram tratadas como simples material de laboratório.<br><br>A situação das meninas começou a mudar graças a <b>Gayka</b>. Ao descobrir as condições em que elas viviam, Gayka se recusou a aceitar que duas crianças passassem toda a existência como objetos de pesquisa. Ela convenceu seu irmão <b>Gaydron</b> de que uma vida de cobaia não poderia ser considerada uma vida digna em Aetheryon. A partir desse momento, Rinka e Ranka receberam abrigo, educação, treinamento e finalmente a oportunidade de viver como pessoas, embora continuassem carregando as consequências dos experimentos anteriores.<br><br>Durante a <b>Grande Guerra</b>, a situação de Aethelgard tornou-se desesperadora. Gaydron e Gayka pressionaram os cientistas da nação a desenvolver algum método capaz de aumentar rapidamente o poder de combate de suas tropas. Sem tempo suficiente para criar uma tecnologia completamente segura, os pesquisadores desenvolveram uma substância biológica experimental conhecida como <b>VR-VIRUS</b>.<br><br>Rinka e Ranka acabaram sendo escolhidas como as primeiras cobaias capazes de suportar o experimento. O VR-VIRUS alterou permanentemente seus organismos e concedeu a ambas uma capacidade extraordinária: transformar seus próprios corpos em armas vivas que podem ser empunhadas por outra pessoa. O experimento foi militarmente bem-sucedido, mas os cientistas descobriram tarde demais que não sabiam como remover o vírus. Até hoje, pesquisadores de Aethelgard continuam procurando uma maneira segura de curá-las.<br><br>O caso das irmãs Kagurazaka é ainda mais extraordinário do que o de outros indivíduos ligados à tecnologia de transformação em armas, como <b>Vesper Vence</b> e <b>Lyra Moonfall</b>. O VR-VIRUS das duas atingiu um estado de adaptação praticamente simétrico. Rinka pode ser a arma enquanto Ranka luta em forma humana ou Ranka pode assumir a forma de arma enquanto Rinka a empunha. Nenhuma delas possui um papel permanentemente definido.<br><br>A transformação conjunta é iniciada através de um beijo entre as irmãs, funcionando como um gatilho de sincronização para o VR-VIRUS. Durante os poucos segundos seguintes, ambas decidem intuitivamente qual delas permanecerá humana e qual organismo será convertido na arma necessária para aquela situação. Essa característica permite que assumam funções ofensivas, defensivas ou de suporte praticamente instantaneamente.<br><br>Rinka é a mais estratégica das duas. Em batalha, analisa terreno, comportamento dos inimigos e possíveis rotas antes de decidir qual configuração utilizar. Quando empunha Ranka, prefere movimentos precisos, contra-ataques e aproveitamento de pontos fracos. Quando assume a forma de arma, seu organismo tende a produzir configurações tecnológicas refinadas e altamente estáveis.<br><br>Apesar de serem irmãs de sangue, Rinka e Ranka também desenvolveram durante a vida adulta uma relação romântica extremamente intensa. As duas compartilham uma intimidade profunda e praticamente não conseguem imaginar suas vidas separadas. Para elas, a confiança necessária para utilizar o VR-VIRUS não é apenas uma técnica militar, mas uma extensão física do vínculo que construíram durante toda a vida.<br><br>Rinka não esqueceu o que aconteceu nos laboratórios, mas decidiu não permitir que seu passado determinasse aquilo que ela se tornaria. Ao lado de Ranka, luta para garantir que a paz conquistada após a Grande Guerra permaneça absoluta e para impedir que outras pessoas sejam reduzidas a cobaias como elas foram.",
+    extraImages: ["rinka_art1.png", "rinka_art2.png", "rinka_art3.png", "rinka_aethelgard.jpg", "rinka_fullbody.png"],
+    secret: "Rinka ainda guarda registros pessoais dos experimentos realizados nela e em Ranka durante a infância. Embora demonstre respeito por Gaydron, jamais esqueceu que o desespero militar de Aethelgard levou à criação do VR-VIRUS. Sua relação com Gayka é muito diferente: Rinka possui por ela uma gratidão profunda, pois sabe que foi sua intervenção que permitiu que as duas deixassem de ser tratadas como simples cobaias. Seu maior medo não é morrer em combate, mas descobrir que o VR-VIRUS pode algum dia evoluir de uma maneira que a faça perder permanentemente a capacidade de retornar à forma humana."
+},
+{
+    name: "Ranka Kagurazaka", title: "A Fera Rubra do VR-VIRUS", role: "dps", image: "rankaofficial.png",
+    model3dChar: "rankamodel.glb",
+    model3dWeapon: "rankaweaponmodel.glb",
+    avatar: "ranka_face.png",
+    quote: "\"Eu não sou uma cobaia. Sou a arma que escolheu continuar lutando.\"",
+    faction: "⚙️ Aethelgard", elemento: "🧬 VR-VIRUS",
+    sexo: "FÊMEA",
+    stats: { forca: 60, magia: 35, agilidade: 95, inteligencia: 75, carisma: 85, physDef: 40, magDef: 20 },
+    race: "Humana / Hospedeira do VR-VIRUS", weapon: "Arsenal Vivo Adaptativo",
+    weaponDetails: "Assim como sua irmã Rinka, Ranka possui o <b>VR-VIRUS</b> integrado permanentemente ao organismo. Quando ativado, o vírus reorganiza tecidos, ossos e estruturas biotecnológicas em segundos, permitindo que ela assuma diferentes formas de arma. Ranka demonstra uma tendência maior a configurações ofensivas, incluindo grandes lâminas, armas de impacto e sistemas de disparo de alta potência. Entretanto, o caráter adaptativo do vírus permite que ela também manifeste configurações defensivas ou de suporte. Rinka e Ranka podem trocar de função livremente durante cada confronto.",
+    weaponImage: "ranka_weapon.png",
+    description: "Ranka Kagurazaka é a irmã mais nova de <b>Rinka Kagurazaka</b> e uma combatente de elite de Aethelgard. Adulta, energética e extremamente competitiva, possui longos cabelos escuros, olhos violeta e uma aparência imediatamente reconhecível por suas meias listradas em vermelho e preto, botas altas e uniforme estilizado. Enquanto Rinka normalmente demonstra maior contenção, Ranka possui uma personalidade muito mais explosiva, provocadora e emocionalmente transparente.<br><br>Ranka passou a infância ao lado da irmã dentro dos laboratórios de Aethelgard após ambas terem sido vendidas pelos próprios pais para utilização em pesquisas experimentais. Por ser a mais nova, Ranka dependia profundamente de Rinka durante esse período. A presença constante da irmã tornou-se sua principal fonte de segurança em um ambiente onde praticamente todos ao redor as enxergavam como objetos científicos.<br><br>A intervenção de <b>Gayka</b> mudou completamente suas vidas. Horrorizada com a ideia de crianças crescerem permanentemente como cobaias, Gayka convenceu <b>Gaydron</b> a permitir que as irmãs recebessem uma vida digna fora das instalações experimentais. Mesmo carregando traumas e alterações causadas por pesquisas anteriores, Ranka finalmente recebeu educação, treinamento e liberdade suficiente para construir sua própria identidade.<br><br>Anos depois, durante a Grande Guerra, o avanço dos conflitos colocou Aethelgard sob enorme pressão. Gaydron e Gayka exigiram dos cientistas uma solução capaz de auxiliar rapidamente as forças do reino. O resultado desesperado foi a criação do <b>VR-VIRUS</b>, uma tecnologia biológica experimental capaz de transformar um organismo humano em uma arma viva.<br><br>Sem tempo para extensos testes e graças à resistência desenvolvida durante anos de experimentos anteriores, Rinka e Ranka foram utilizadas como hospedeiras. Ambas sobreviveram ao procedimento, mas o vírus tornou-se permanentemente integrado aos seus corpos. Nenhum método conhecido é capaz de removê-lo sem colocar suas vidas em risco, motivo pelo qual pesquisadores de Aethelgard continuam trabalhando em uma possível cura.<br><br>O VR-VIRUS concedeu às duas uma característica praticamente inédita: <b>intercambialidade completa</b>. Ranka pode lutar utilizando Rinka como arma ou transformar-se para ser empunhada pela irmã. A escolha é feita instantaneamente conforme a situação do campo de batalha.<br><br>A ativação sincronizada ocorre através de um beijo entre as duas irmãs. O contato funciona como um gatilho para que o VR-VIRUS reconheça a intenção compartilhada e determine qual organismo será convertido. Por causa da compatibilidade extraordinária entre ambas, o processo acontece em poucos segundos e pode produzir diferentes tipos de arma conforme a necessidade.<br><br>Ranka tende a utilizar o sistema de maneira muito mais agressiva que Rinka. Quando permanece humana, prefere atacar diretamente e manter enorme pressão sobre o adversário. Sua velocidade, força física e capacidade de improvisação tornam seus movimentos difíceis de prever. Quando assume forma de arma, o vírus costuma responder ao seu temperamento produzindo configurações de grande poder destrutivo.<br><br>Apesar de seu comportamento explosivo, Ranka demonstra enorme carinho por Rinka. Durante a vida adulta, a dependência e a confiança que construíram desde a infância evoluíram para um relacionamento romântico intenso. As duas são irmãs de sangue, amantes e parceiras de combate, mantendo uma intimidade praticamente absoluta entre si.<br><br>Para Ranka, sua relação com Rinka representa a maior prova de que os laboratórios fracassaram em transformar as duas em simples ferramentas. Elas podem possuir corpos capazes de se transformar literalmente em armas, mas são elas próprias que escolhem quando, como e por quem serão empunhadas.<br><br>Após o fim da Grande Guerra, Ranka decidiu permanecer como combatente de elite ao lado da irmã. Seu objetivo não é conquistar novos territórios, mas garantir que a paz de Aetheryon seja protegida e que nenhuma outra criança seja submetida ao mesmo destino que elas sofreram.",
+    extraImages: ["ranka_art2.png", "ranka_art3.png", "ranka_battle.jpg", "ranka_aethelgard.jpg", "ranka_fullbody.png"],
+    secret: "Ranka possui um ressentimento muito mais evidente contra os responsáveis pelos experimentos de sua infância do que Rinka. Ela considera Gayka uma das poucas pessoas de Aethelgard que enxergou as duas como seres humanos antes de enxergá-las como armas. Apesar da confiança que demonstra em combate, Ranka teme silenciosamente a possibilidade de o VR-VIRUS eventualmente sofrer uma mutação irreversível. Também é extremamente protetora e ciumenta em relação a Rinka, e sua atitude normalmente brincalhona desaparece imediatamente quando acredita que alguém está tentando utilizar ou machucar sua irmã."
+}
         ];
 
         // ==========================================
@@ -2552,6 +2739,26 @@ const falasLocais = [
             });
         }
 
+        function tocarAnimacaoSkill(videoUrl) {
+    // Cria um fundo escuro que cobre a tela toda
+    const telaFundo = document.createElement('div');
+    telaFundo.style.cssText = "position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); display: flex; justify-content: center; align-items: center; z-index: 99999; cursor: pointer;";
+    
+    // Cria o tocador de vídeo
+    const video = document.createElement('video');
+    video.src = videoUrl;
+    video.autoplay = true; // Já começa tocando sozinho
+    video.loop = true;     // Fica repetindo pra pessoa ver os detalhes
+    video.style.cssText = "max-width: 80%; max-height: 80%; border: 3px solid #ffcc00; border-radius: 10px; box-shadow: 0 0 30px #ffcc00;";
+    
+    // Se a pessoa clicar na tela preta, fecha o vídeo
+    telaFundo.onclick = () => document.body.removeChild(telaFundo);
+    
+    // Bota tudo na tela
+    telaFundo.appendChild(video);
+    document.body.appendChild(telaFundo);
+}
+
         function renderRaces() {
             const container = document.getElementById('racesGrid');
             container.innerHTML = ''; 
@@ -2789,6 +2996,33 @@ const falasLocais = [
 
                 <p><strong>Raça:</strong> ${hero.race}</p>
                 <p><strong>Poder Dominante:</strong> ${hero.elemento}</p>
+                <p><strong>Sexo:</strong> ${hero.sexo || ''}</p>
+
+                ${hero.skills && hero.skills.length > 0 ? `
+<div style="margin-bottom: 20px; padding: 15px; border: 1px solid #333; border-radius: 8px; background: #0a0a0a;">
+    <h4 style="color: #e5e4e2; margin: 0 0 12px 0; font-family: 'Cinzel', serif;">✨ Habilidades</h4>
+    ${hero.skills.map(s => {
+        /* Verifica se é a Ult para dar o brilho Dourado, senão fica Platina */
+        let estiloBorda = s.isUlt ? 'border: 2px solid #ffcc00; box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);' : 'border-left: 4px solid #e5e4e2;';
+        
+        /* Se tem animação, vira o dedinho de clicar. Se não tem, o mouse fica normal */
+        let cursorClicavel = s.animacao ? 'cursor: pointer;' : 'cursor: default;';
+        
+        /* Adiciona a função de clique só se existir um arquivo de animação */
+        let acaoClique = s.animacao ? `onclick="tocarAnimacaoSkill('${s.animacao}')"` : '';
+        
+        return `
+        <div ${acaoClique} onmouseover="this.style.transform=this.style.cursor=='pointer'?'scale(1.02)':'scale(1)'" onmouseout="this.style.transform='scale(1)'" style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px; padding: 10px; background: #111; border-radius: 4px; ${estiloBorda}${cursorClicavel} transition: 0.2s;">
+            <div style="font-size: 28px; width: 35px; text-align: center;">${s.icone || '✨'}</div>
+            <div>
+                <strong style="color: ${s.isUlt ? '#ffcc00' : '#e5e4e2'}; display: block; font-size: 15px;">${s.isUlt ? '👑 ' : ''}${s.nome}</strong>
+                <span style="color: #aaa; font-size: 13px;">${s.desc}</span>
+            </div>
+        </div>
+        `;
+    }).join('')}
+</div>
+` : ''}
                 
                 <div class="weapon-box" style="margin-bottom: 20px;">
                     <h3 class="weapon-title">⚔️ Arsenal: ${hero.weapon || 'Nenhum'}</h3>
