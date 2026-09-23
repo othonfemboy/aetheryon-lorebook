@@ -31,6 +31,79 @@
     .personagem-retrato { position: relative; z-index: 2; max-height: 85%; max-width: 90%; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8)); }
     .hud-afinidade { position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); z-index: 10; text-align: center; background: rgba(10, 15, 30, 0.75); padding: 12px 20px; border-radius: 15px; border: 1px solid rgba(0, 255, 255, 0.3); backdrop-filter: blur(8px); }
     .coracoes { color: #ff4757; font-size: 22px; letter-spacing: 3px; margin-bottom: 8px; }
+
+    /* =======================================================
+       ADAPTAÇÃO EXCLUSIVA PARA CELULAR (RESPONSIVIDADE)
+       ======================================================= */
+    @media (max-width: 850px) {
+      .messenger-app {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+        border: none;
+        display: flex;
+        flex-direction: column;
+      }
+      /* Transforma a barra lateral num menu de topo rolável */
+      .sidebar {
+        display: flex;
+        overflow-x: auto;
+        padding: 10px;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .sidebar h3 {
+        display: none; /* Esconde o título para poupar espaço */
+      }
+      .contact {
+        flex: 0 0 auto; /* Impede os botões de esmagarem uns aos outros */
+        margin-bottom: 0;
+        margin-right: 10px;
+        padding: 8px 15px;
+      }
+      /* Reduz a área da imagem para o topo e deixa o chat embaixo */
+      .model-area {
+        height: 28vh;
+        border-left: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        order: -1; /* Joga a imagem pra cima do chat */
+      }
+      .personagem-retrato {
+        height: 120%; /* Dá um zoom no rosto */
+        object-fit: cover;
+        object-position: top;
+      }
+      .hud-afinidade {
+        bottom: 5px;
+        padding: 5px 15px;
+      }
+      .coracoes {
+        font-size: 16px;
+        margin-bottom: 0;
+      }
+      /* Ajusta o chat para caber os botões e texto direito */
+      .chat-area {
+        height: auto;
+        flex: 1;
+        padding: 15px;
+      }
+      .chat-input-container {
+        flex-wrap: wrap;
+      }
+      .chat-input-container input {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+      .btn-enviar {
+        width: 100%;
+        padding: 15px;
+      }
+      /* Faz os botões de Beijar/Flertar quebrarem a linha organizados */
+      .chat-area > div[style*="display: flex"] {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
   </style>
 </head>
 <body>
@@ -59,9 +132,12 @@
     </aside>
 
     <main class="chat-area">
-      <div class="chat-header">
-        <h2 id="nome-personagem" style="color: #fff;">Byakuya</h2>
-        <div id="relacionamento-label" style="font-size: 0.9em; color: #94a3b8; margin-top: 5px;">Relacionamento: Amiga</div>
+      <div class="chat-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <h2 id="nome-personagem" style="color: #fff;">Byakuya</h2>
+          <div id="relacionamento-label" style="font-size: 0.9em; color: #94a3b8; margin-top: 5px;">Relacionamento: Amiga</div>
+        </div>
+        <button onclick="limparHistorico()" style="background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid #ef4444; padding: 8px 12px; border-radius: 6px; cursor: pointer; transition: 0.2s;">🗑️ Limpar Chat</button>
       </div>
       
       <div class="chat-history" id="chat-box"></div>
@@ -317,10 +393,17 @@ EXEMPLOS:
       document.getElementById('imagem-personagem').src = db.imagem;
       document.getElementById('coracoes-display').innerText = db.coracoes;
       
-      // Limpa o chat
-      chatBox.innerHTML = "";
       document.querySelectorAll('.contact').forEach(btn => btn.classList.remove('active'));
       document.getElementById(`btn-${id}`).classList.add('active');
+
+      // CARREGA O HISTÓRICO SALVO DO NAVEGADOR
+      const historicoSalvo = localStorage.getItem('chat_aetheryon_' + id);
+      if (historicoSalvo) {
+        chatBox.innerHTML = historicoSalvo;
+      } else {
+        chatBox.innerHTML = "";
+      }
+      chatBox.scrollTop = chatBox.scrollHeight;
     }
 
     function verificarEnter(e) {
@@ -426,7 +509,21 @@ EXEMPLOS:
       div.innerText = texto;
       chatBox.appendChild(div);
       chatBox.scrollTop = chatBox.scrollHeight;
+
+      // SALVA A CONVERSA NA MEMÓRIA DO NAVEGADOR
+      localStorage.setItem('chat_aetheryon_' + personagemAtual, chatBox.innerHTML);
     }
+
+    function limparHistorico() {
+      if (confirm(`Tem certeza que deseja apagar a conversa com ${bancoDePersonagens[personagemAtual].nome}?`)) {
+        // Remove da memória e limpa a tela
+        localStorage.removeItem('chat_aetheryon_' + personagemAtual);
+        chatBox.innerHTML = "";
+      }
+    }
+
+    // Inicializa o chat carregando a Byakuya e o histórico dela logo que a página abre
+    mudarPersonagem('byakuya');
   </script>
 </body>
 </html>
