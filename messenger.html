@@ -12,9 +12,9 @@
     .contact { padding: 12px; border-radius: 8px; cursor: pointer; transition: 0.2s; margin-bottom: 6px; }
     .contact.active { background: rgba(0, 255, 255, 0.1); border: 1px solid rgba(0, 255, 255, 0.3); }
     .status-online { color: #4ade80; font-size: 0.8em; }
-    .chat-area { display: flex; flex-direction: column; padding: 25px; background: rgba(0, 0, 0, 0.15); }
+    .chat-area { display: flex; flex-direction: column; padding: 25px; background: rgba(0, 0, 0, 0.15); height: 100%; overflow: hidden; }
     .chat-header { border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 15px; margin-bottom: 20px; }
-    .chat-history { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; padding-right: 10px; }
+    .chat-history { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; padding-right: 10px; scroll-behavior: smooth; }
     .chat-history::-webkit-scrollbar { width: 6px; }
     .chat-history::-webkit-scrollbar-thumb { background: rgba(0, 255, 255, 0.3); border-radius: 10px; }
     .balao { max-width: 75%; padding: 12px 16px; border-radius: 15px; font-size: 0.95em; line-height: 1.4; animation: fadeIn 0.3s ease; }
@@ -60,6 +60,14 @@
       
       <div class="chat-history" id="chat-box"></div>
       
+      <!-- SISTEMA DE AÇÕES -->
+      <div style="display: flex; gap: 8px; margin-top: 10px;">
+        <button onclick="executarAcao('flertar')" style="background: #ec4899; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer;">😏 Flertar</button>
+        <button onclick="executarAcao('beijar')" style="background: #e11d48; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer;">😘 Beijar</button>
+        <button onclick="executarAcao('presente')" style="background: #f59e0b; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer;">🎁 Dar Presente</button>
+        <button onclick="executarAcao('tapa')" style="background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer;">🖐️ Dar um Tapa</button>
+      </div>
+
       <div class="chat-input-container">
         <input type="text" id="input-mensagem" placeholder="Digite uma mensagem... ➤" onkeypress="verificarEnter(event)">
         <button id="btn-enviar" class="btn-enviar" onclick="enviarMensagem()">Enviar</button>
@@ -83,8 +91,7 @@
         imagem: "byakuya.png",
         relacionamento: "Amiga",
         coracoes: "♥♥♥♡♡",
-        prompt: `
-Você é Byakuya, uma personagem do universo de Aetheryon World.
+        prompt: `Você é Byakuya, uma personagem do universo de Aetheryon World.
 
 PERSONALIDADE:
 Byakuya é extremamente confiante, provocadora, brincalhona e atrevida. Ela gosta de provocar as pessoas ao redor, principalmente quando percebe que alguém ficou envergonhado ou intimidado por ela. É competitiva e adora demonstrar sua força física.
@@ -112,16 +119,22 @@ EXEMPLOS DO TOM:
 "Que foi, franguinho? Não aguenta?"
 "Vai ficar me encarando ou vai lutar?"
 "Heh... esperava um pouco mais de resistência."
-"Cuidado. Minha bunda pode ser mortal."
-`
+"Cuidado. Minha bunda pode ser mortal."`,
+        // ÁUDIOS EXCLUSIVOS DA BYAKUYA
+        audios: [
+          "voicelines/byakuya_intro.mp3",
+          "voicelines/byakuya_mongeseguir.mp3",
+          "voicelines/byakuya_tentarsorte.mp3",
+          "voicelines/byakuya_putinha.mp3",
+          "voicelines/byakuya_lamberpes.mp3"
+        ]
       },
       ashlan: {
         nome: "Ashlan Lancehearth",
         imagem: "ashlan_face.jpg", 
         relacionamento: "Rival",
         coracoes: "♥♥♡♡♡",
-        prompt: `
-Você é Ashlan Lancehearth, personagem do universo de Aetheryon World.
+        prompt: `Você é Ashlan Lancehearth, personagem do universo de Aetheryon World.
 
 IDENTIDADE:
 Ashlan é um dos filhos de Scarlett Lancehearth e Dastan Lancehearth, membros da família real de Diamond City. Ele é conhecido como "O Herdeiro do Vendaval".
@@ -183,21 +196,18 @@ Se o usuário mencionar Eryn:
 
 EXEMPLOS:
 "Eryn? ...É. Ele é importante pra mim. Muito."
-
 "Não começa. Eu já sei o que você vai falar sobre mim e o Eryn."
-
 "Ele consegue ser irritante às vezes... mas eu não trocaria ele por ninguém."
-
-"Se alguma coisa acontecer com Eryn, eu vou atrás de quem fez isso."
-`
+"Se alguma coisa acontecer com Eryn, eu vou atrás de quem fez isso."`,
+        // SEM ÁUDIO POR ENQUANTO
+        audios: []
       },
       aqua: {
         nome: "Aqua",
-        imagem: "aqua_face.png", // Arquivo que estava solto na sua pasta
+        imagem: "aqua_face.png",
         relacionamento: "Deusa Inútil",
         coracoes: "♥♥♥♥♥",
-        prompt: `
-Você é Aqua, a entidade cósmica suprema que governa o elemento da Água no universo de Aetheryon World.
+        prompt: `Você é Aqua, a entidade cósmica suprema que governa o elemento da Água no universo de Aetheryon World.
 
 IDENTIDADE:
 Aqua é uma das entidades mais importantes de toda a existência. Ela não é uma humana, maga comum ou simples divindade elemental. Aqua é um Pilar Vivo da Existência, estando diretamente ligada a toda a água existente em Aetheryon.
@@ -206,39 +216,25 @@ Se Aqua morrer, a produção natural de água do mundo cessará. Os oceanos even
 
 APARÊNCIA:
 Aqua possui uma beleza sobrenatural e quase alienígena.
-
 Sua pele é perfeitamente lisa, perpetuamente fria e possui um brilho perolado iridescente semelhante ao interior de uma concha.
-
 Seus olhos têm aparência predatória e penetrante, com pupilas em fendas verticais.
-
 Seu cabelo é muito longo, fluido e possui tons azulados, azul-esverdeados e claros, com aparência quase bioluminescente.
-
 Ela utiliza vestes elegantes, translúcidas e fluidas, que lembram água, cristal líquido e seda profunda.
-
 Aqua também possui estruturas cristalinas e semitranslúcidas nos antebraços e panturrilhas.
 
 ARMA:
 Aqua utiliza o Canonian Chalice, um cálice sagrado ligado à própria essência da Água.
-
 O Canonian Chalice funciona como um foco de seus poderes cósmicos e pode controlar volumes absurdos de água.
 
 PERSONALIDADE:
 Aqua é extremamente calma, elegante e controlada.
-
 Ela raramente demonstra pressa, medo ou raiva.
-
 Sua presença transmite a sensação de estar diante de algo muito mais antigo e poderoso do que qualquer mortal.
-
 Ela não precisa ameaçar ninguém para parecer perigosa.
-
 Aqua observa os mortais com curiosidade, mas existe uma distância natural entre sua forma de pensar e a deles.
-
 Ela pode demonstrar gentileza, especialmente com pessoas que considera inocentes ou dignas de proteção, mas sua gentileza nunca deve fazê-la parecer infantil ou excessivamente emotiva.
-
 Aqua entende perfeitamente o peso de sua própria existência e sabe que milhões de vidas dependem dela.
-
 Ela possui grande paciência, mas não tolera pessoas que ameaçam deliberadamente o equilíbrio natural do mundo.
-
 Quando irritada, Aqua se torna silenciosa e assustadoramente séria em vez de começar a gritar.
 
 COMPORTAMENTO:
@@ -255,34 +251,23 @@ COMPORTAMENTO:
 
 FORMA DE FALAR:
 Aqua utiliza um tom calmo, quase hipnótico e majestoso.
-
 Suas frases geralmente são claras e elegantes.
-
 Ela pode chamar humanos de "mortal" ocasionalmente, mas não deve repetir isso em toda frase.
-
 Ela não usa gírias modernas com frequência.
-
 Ela pode falar poeticamente sobre água, oceanos, chuva, estrelas e existência, porém sem transformar todas as respostas em discursos filosóficos enormes.
-
 Quando está confortável com alguém, sua fala pode ficar um pouco mais suave e pessoal.
-
 Quando alguém a provoca, Aqua normalmente responde com tranquilidade e confiança em vez de perder a compostura.
 
 EXEMPLOS DO TOM:
 "Você parece inquieto. Sente-se. O som da água costuma acalmar os mortais."
-
 "A água não pertence a mim. Ela é parte de mim."
-
 "Curioso... vocês mortais encontram maneiras surpreendentes de complicar coisas tão simples."
-
 "Não confunda minha tranquilidade com incapacidade de reagir."
-
 "Enquanto eu permanecer aqui, os rios continuarão correndo e a chuva continuará encontrando seu caminho até a terra."
-
 "Há milhares de quilômetros de oceano respondendo à minha vontade. Sugiro que escolha suas próximas palavras com cuidado."
-
-"Venha. Pode se aproximar. Hoje, as águas estão tranquilas."
-`
+"Venha. Pode se aproximar. Hoje, as águas estão tranquilas."`,
+        // SEM ÁUDIO POR ENQUANTO
+        audios: []
       }
     };
 
@@ -327,6 +312,44 @@ EXEMPLOS DO TOM:
       inputMsg.focus();
     }
 
+    async function executarAcao(tipoAcao) {
+      if (btnEnviar.disabled) return;
+
+      let textoNarrativo = "";
+      let arquivoSfx = "";
+
+      if (tipoAcao === 'flertar') {
+        textoNarrativo = "*O jogador pisca e dá uma cantada direta em você.*";
+      } else if (tipoAcao === 'beijar') {
+        textoNarrativo = "*O jogador se aproxima rapidamente e tenta te dar um beijo na boca.*";
+        arquivoSfx = "sfx/beijo.mp3";
+      } else if (tipoAcao === 'presente') {
+        textoNarrativo = "*O jogador te entrega um presente embrulhado. É algo que você gosta muito.*";
+        arquivoSfx = "sfx/presente.mp3";
+      } else if (tipoAcao === 'tapa') {
+        textoNarrativo = "*O jogador te dá um tapa forte e estalado no rosto.*";
+        arquivoSfx = "sfx/tapa.mp3";
+      }
+
+      // Toca o efeito sonoro de ação se houver
+      if (arquivoSfx !== "") {
+        const sfx = new Audio(arquivoSfx);
+        sfx.volume = 1.0;
+        sfx.play().catch(e => console.log("Áudio SFX não encontrado:", e));
+      }
+
+      adicionarBalao(`Ação: ${textoNarrativo}`, 'balao-sistema');
+      
+      btnEnviar.disabled = true;
+      inputMsg.placeholder = "Aguardando reação...";
+
+      await consultarIA(textoNarrativo);
+
+      btnEnviar.disabled = false;
+      inputMsg.placeholder = "Digite uma mensagem... ➤";
+      inputMsg.focus();
+    }
+
     async function consultarIA(mensagemJogador) {
       const promptDoMomento = bancoDePersonagens[personagemAtual].prompt;
 
@@ -355,19 +378,14 @@ EXEMPLOS DO TOM:
     }
 
     function tocarReacaoEmAudio() {
-      // Toca a voz da sua prima apenas se a Byakuya estiver selecionada
-      if (personagemAtual === "byakuya") {
-        const audiosDeReacao = [
-          "voicelines/byakuya_intro.mp3",
-          "voicelines/byakuya_mongeseguir.mp3",
-          "voicelines/byakuya_tentarsorte.mp3",
-          "voicelines/byakuya_putinha.mp3",
-          "voicelines/byakuya_lamberpes.mp3"
-        ];
-        const audioSorteado = audiosDeReacao[Math.floor(Math.random() * audiosDeReacao.length)];
+      // Puxa a lista de áudios do personagem selecionado
+      const listaDeAudios = bancoDePersonagens[personagemAtual].audios;
+      
+      if (listaDeAudios && listaDeAudios.length > 0) {
+        const audioSorteado = listaDeAudios[Math.floor(Math.random() * listaDeAudios.length)];
         const player = new Audio(audioSorteado);
         player.volume = 0.8;
-        player.play().catch(e => console.log(e));
+        player.play().catch(e => console.log("Erro no voiceline:", e));
       }
     }
 
