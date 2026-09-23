@@ -2,7 +2,7 @@ export default async function handler(req, res) {
   const apiKey = process.env.GEMINI_API_KEY;
   const { mensagem, promptPersonalidade } = req.body; 
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${apiKey}`;
   
   const promptFinal = `${promptPersonalidade}\n\nMensagem do jogador: "${mensagem}"`;
 
@@ -11,7 +11,14 @@ export default async function handler(req, res) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        contents: [{ parts: [{ text: promptFinal }] }]
+        contents: [{ parts: [{ text: promptFinal }] }],
+        // ISTO AQUI DESLIGA A CENSURA DA GOOGLE:
+        safetySettings: [
+          { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
+          { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
+          { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" },
+          { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" }
+        ]
       })
     });
 
