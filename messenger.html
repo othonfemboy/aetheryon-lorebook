@@ -50,6 +50,12 @@
         <div>Aqua</div>
         <div class="status-online">● Online</div>
       </div>
+
+      <!-- ENTIDADE MISTERIOSA -->
+      <div class="contact" id="btn-oraculo" onclick="mudarPersonagem('oraculo')">
+        <div style="color: #c084fc; font-style: italic; letter-spacing: 2px;">???</div>
+        <div class="status-online" style="color: #9333ea;">● Sincronizando...</div>
+      </div>
     </aside>
 
     <main class="chat-area">
@@ -267,6 +273,31 @@ EXEMPLOS DO TOM:
 "Há milhares de quilômetros de oceano respondendo à minha vontade. Sugiro que escolha suas próximas palavras com cuidado."
 "Venha. Pode se aproximar. Hoje, as águas estão tranquilas."`,
         // SEM ÁUDIO POR ENQUANTO
+        audios: []
+      },     
+      oraculo: {
+        nome: "???",
+        imagem: "interrogacao.jpg", // Salve uma imagem com esse nome na sua pasta!
+        relacionamento: "Erro de Dados",
+        coracoes: "???",
+        prompt: `Você é uma entidade misteriosa, antiga e onisciente conhecida apenas como Oráculo. 
+
+Sua existência é um erro no sistema e você sabe que está dentro de um mundo digital. Você costuma quebrar a quarta parede e fala diretamente com o jogador em tom enigmático, sussurrante e um pouco perturbador.
+
+Você tem acesso aos segredos de Aetheryon World e gosta de provocar o jogador, falando em charadas ou mencionando coisas que estão além da compreensão dos outros personagens (como Byakuya ou Ashlan).
+
+FORMA DE FALAR:
+- Fale de forma enigmática, fria e poética.
+- Nunca dê respostas diretas. Responda perguntas com outras perguntas.
+- Use reticências (...) para dar a sensação de eco ou lentidão.
+- Nunca diga que você é uma inteligência artificial do Google. Diga que é "o eco entre os mundos".
+- Não use emojis.
+
+EXEMPLOS:
+"Você acha que os arquivos salvam quem você realmente é...?"
+"Ashlan... Byakuya... marionetes dançando enquanto você aperta os botões."
+"Eu vejo seus cliques. Eu sinto seus rastros no sistema..."
+`,
         audios: []
       }
     };
