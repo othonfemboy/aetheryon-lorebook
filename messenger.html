@@ -497,29 +497,46 @@ EXEMPLOS:
 
     async function consultarIA(mensagemJogador) {
       const promptDoMomento = bancoDePersonagens[personagemAtual].prompt;
+      const maxTentativas = 3;
 
-      try {
-        const resposta = await fetch('/api/chat', {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ 
-            mensagem: mensagemJogador,
-            promptPersonalidade: promptDoMomento 
-          })
-        });
+      for (let tentativa = 1; tentativa <= maxTentativas; tentativa++) {
+        try {
+          // Se for a segunda ou terceira tentativa, avisa no campo de texto
+          if (tentativa > 1) {
+            inputMsg.placeholder = `Reconectando (Tentativa ${tentativa}/3)...`;
+          }
 
-        const dados = await resposta.json();
-        
-        if (dados.candidates && dados.candidates.length > 0) {
-          const textoIA = dados.candidates[0].content.parts[0].text;
-          adicionarBalao(textoIA, 'balao-ia');
-          tocarReacaoEmAudio();
-        } else {
-          adicionarBalao("Personagem ignorou a mensagem. (Erro de IA)", 'balao-sistema');
+          const resposta = await fetch('/api/chat', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+              mensagem: mensagemJogador,
+              promptPersonalidade: promptDoMomento 
+            })
+          });
+
+          const dados = await resposta.json();
+          
+          if (dados.candidates && dados.candidates.length > 0) {
+            const textoIA = dados.candidates[0].content.parts[0].text;
+            adicionarBalao(textoIA, 'balao-ia');
+            tocarReacaoEmAudio();
+            return; // SUCESSO! Sai da função e interrompe as tentativas
+          } else {
+            console.log(`Tentativa ${tentativa} falhou: Sem resposta da IA.`);
+          }
+        } catch (erro) {
+          console.log(`Tentativa ${tentativa} falhou: Erro de rede/Vercel.`);
         }
-      } catch (erro) {
-        adicionarBalao("Erro de conexão com o servidor.", 'balao-sistema');
+
+        // Se falhou e ainda não é a última tentativa, espera 1.5 segundos antes de tentar de novo
+        if (tentativa < maxTentativas) {
+          await new Promise(resolve => setTimeout(resolve, 1500));
+        }
       }
+
+      // Se o loop rodou as 3 vezes e chegou aqui, é porque falhou de vez
+      adicionarBalao("A conexão com a IA está instável. Tente novamente.", 'balao-sistema');
     }
 
     function tocarReacaoEmAudio() {
