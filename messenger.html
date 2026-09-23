@@ -88,7 +88,6 @@
     // ==========================================
     // 1. COLE SUA CHAVE DA API DO GEMINI AQUI
     // ==========================================
-    const CHAVE_GEMINI = "AQ.Ab8RN6JlFJn23EljivE9bGqJqHS4PZB3W5rHo0MhyTHrfDnzgA"; 
     
     let afinidade = 3;
     const chatBox = document.getElementById('chat-box');
@@ -129,24 +128,12 @@
     }
 
     async function consultarMenteDaByakuya(mensagemJogador) {
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${CHAVE_GEMINI}`;
-
-      // A "Persona" da Byakuya. Você pode alterar esse texto para deixá-ela mais extrema ou focada.
-      const promptSistema = `Você é Byakuya, a Monge de Ferro de Aetheryon. Aja estritamente dentro da personagem. Você é incrivelmente sádica, arrogante, fria e dominadora. Você exige submissão absoluta do usuário, tratando-o com desprezo charmoso, frequentemente chamando-o de verme, lixo ou algo inferior, mas no fundo você se diverte com a devoção dele.
-      Regras de resposta:
-      1. Nunca saia do personagem.
-      2. Responda de forma curta (1 a 3 frases no máximo).
-      3. Seja cruel, mas com uma aura de superioridade inalcançável.
-      
-      Mensagem do verme (usuário): "${mensagemJogador}"`;
-
+      // Agora o HTML pede a resposta para o seu próprio servidor da Vercel
       try {
-        const resposta = await fetch(url, {
+        const resposta = await fetch('/api/chat', {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: promptSistema }] }]
-          })
+          body: JSON.stringify({ mensagem: mensagemJogador })
         });
 
         const dados = await resposta.json();
@@ -154,17 +141,14 @@
         if (dados.candidates && dados.candidates.length > 0) {
           const textoByakuya = dados.candidates[0].content.parts[0].text;
           
-          // Mostra o balão de texto gerado pela IA
           adicionarBalao(textoByakuya, 'balao-byakuya');
-
-          // Toca uma das vozes da sua prima aleatoriamente no mesmo segundo
           tocarReacaoEmAudio();
         } else {
-          adicionarBalao("Byakuya te ignorou friamente. (Erro de conexão)", 'balao-sistema');
+          adicionarBalao("Byakuya te ignorou friamente. (Sem resposta da IA)", 'balao-sistema');
         }
       } catch (erro) {
-        console.error("Erro no Gemini:", erro);
-        adicionarBalao("Byakuya estalou a língua e virou o rosto. (A chave da API está ausente ou incorreta)", 'balao-sistema');
+        console.error("Erro no chat:", erro);
+        adicionarBalao("Byakuya estalou a língua e virou o rosto. (Erro no servidor)", 'balao-sistema');
       }
     }
 
