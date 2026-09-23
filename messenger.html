@@ -32,6 +32,25 @@
     .hud-afinidade { position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); z-index: 10; text-align: center; background: rgba(10, 15, 30, 0.75); padding: 12px 20px; border-radius: 15px; border: 1px solid rgba(0, 255, 255, 0.3); backdrop-filter: blur(8px); }
     .coracoes { color: #ff4757; font-size: 22px; letter-spacing: 3px; margin-bottom: 8px; }
 
+    /* MODAL DE CONFIRMAÇÃO */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px);
+      display: none; justify-content: center; align-items: center; z-index: 10000;
+    }
+    .modal-box {
+      background: #1e1b4b; border: 1px solid #ef4444; border-radius: 15px;
+      padding: 25px; width: 90%; max-width: 350px; text-align: center;
+      box-shadow: 0 0 30px rgba(239, 68, 68, 0.3); animation: fadeIn 0.3s ease;
+    }
+    .modal-title { color: #fff; margin-bottom: 10px; font-size: 1.3em; letter-spacing: 1px; }
+    .modal-texto { color: #94a3b8; margin-bottom: 25px; font-size: 0.95em; line-height: 1.5; }
+    .modal-botoes { display: flex; gap: 15px; justify-content: center; }
+    .btn-modal-cancelar { background: #334155; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; flex: 1; transition: 0.2s; }
+    .btn-modal-cancelar:hover { background: #475569; }
+    .btn-modal-confirmar { background: #ef4444; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; flex: 1; font-weight: bold; transition: 0.2s; }
+    .btn-modal-confirmar:hover { background: #dc2626; box-shadow: 0 0 15px rgba(239, 68, 68, 0.5); }
+
     /* =======================================================
        ADAPTAÇÃO EXCLUSIVA PARA CELULAR (RESPONSIVIDADE)
        ======================================================= */
@@ -107,6 +126,18 @@
   </style>
 </head>
 <body>
+
+  <!-- MODAL DE CONFIRMAÇÃO (Fica invisível até ser chamado) -->
+  <div class="modal-overlay" id="modal-limpar">
+    <div class="modal-box">
+      <h3 class="modal-title">⚠️ Apagar Memórias?</h3>
+      <p class="modal-texto" id="modal-desc">Tem certeza que deseja apagar todo o histórico de conversa? Isso não pode ser desfeito.</p>
+      <div class="modal-botoes">
+        <button class="btn-modal-cancelar" onclick="fecharModal()">Cancelar</button>
+        <button class="btn-modal-confirmar" onclick="confirmarLimpeza()">Apagar Tudo</button>
+      </div>
+    </div>
+  </div>
 
   <div class="messenger-app">
     <aside class="sidebar">
@@ -515,13 +546,25 @@ EXEMPLOS:
     }
 
     function limparHistorico() {
-      if (confirm(`Tem certeza que deseja apagar a conversa com ${bancoDePersonagens[personagemAtual].nome}?`)) {
-        // Remove da memória e limpa a tela
-        localStorage.removeItem('chat_aetheryon_' + personagemAtual);
-        chatBox.innerHTML = "";
-      }
+      // Pega o nome do personagem atual para colocar na mensagem
+      const nomePersonagem = bancoDePersonagens[personagemAtual].nome;
+      document.getElementById('modal-desc').innerText = `Tem certeza que deseja apagar todo o histórico de conversa com ${nomePersonagem}? Isso não pode ser desfeito.`;
+      
+      // Faz a janela customizada aparecer
+      document.getElementById('modal-limpar').style.display = 'flex';
     }
 
+    function fecharModal() {
+      // Esconde a janela se o jogador desistir
+      document.getElementById('modal-limpar').style.display = 'none';
+    }
+
+    function confirmarLimpeza() {
+      // Apaga o histórico de verdade e fecha a janela
+      localStorage.removeItem('chat_aetheryon_' + personagemAtual);
+      chatBox.innerHTML = "";
+      fecharModal();
+    }
     // Inicializa o chat carregando a Byakuya e o histórico dela logo que a página abre
     mudarPersonagem('byakuya');
   </script>
