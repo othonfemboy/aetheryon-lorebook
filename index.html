@@ -437,6 +437,55 @@
     }
 }
 
+    .btn-aetheryon-messenger {
+  position: fixed;
+  bottom: 120px;
+  right: 30px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  background: rgba(20, 20, 30, 0.8);
+  border: 1px solid rgba(100, 150, 255, 0.3);
+  border-radius: 30px;
+  color: #fff;
+  text-decoration: none;
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  z-index: 9999999;
+  overflow: hidden;
+}
+
+.btn-aetheryon-messenger:hover {
+  transform: translateY(-5px);
+  border-color: rgba(100, 150, 255, 0.8);
+  box-shadow: 0 8px 25px rgba(100, 150, 255, 0.4);
+}
+
+.messenger-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, rgba(100,150,255,0.4) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  transition: width 0.4s, height 0.4s;
+}
+
+.btn-aetheryon-messenger:hover .messenger-glow {
+  width: 200px;
+  height: 200px;
+}
+
+.messenger-text, .messenger-icon {
+  position: relative;
+  z-index: 2;
+}
+
     </style>
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -877,6 +926,12 @@
                 model3dChar: "gaykamodel.glb",
                 model3dWeapon: "gaykaweaponmodel.glb",
                 quote: "\"Alvo biométrico travado. Você já está morto e nem sabe.\"",
+                 voicelines: [
+                    { nome: "PT - Intro", arquivo: "voicelines/gayka_intro.mp3" },
+                    { nome: "English - Intro", arquivo: "voicelines/gayka_introEN.mp3" },
+                    { nome: "PT - Melhor Engenheira", arquivo: "voicelines/gayka_engenheira.mp3" },
+                    { nome: "English - Melhor Engenheira", arquivo: "voicelines/gayka_engenheiraEN.mp3" },
+                ],
                 faction: "⚙️ Aethelgard", elemento: "⚙️ Magi-Tech",
                 sexo: "FÊMEA", 
                 stats: { forca: 40, magia: 15, agilidade: 100, physDef: 10, magDef: 10 },
@@ -893,6 +948,16 @@
                 avatar: "lilia_face.png",
                 model3dChar: "liliamodel.glb",
                 quote: "\"Mesmo a terra queimada pode brotar vida se você souber escutá-la.\"",
+                voicelines: [
+                    { nome: "PT - Intro", arquivo: "voicelines/lilia_intro.mp3" },
+                    { nome: "English - Intro", arquivo: "voicelines/lilia_introEN.mp3" },
+                    { nome: "Uma Curinha", arquivo: "voicelines/lilia_cabeca.mp3" },
+                    { nome: "English - Uma Curinha", arquivo: "voicelines/lilia_cabecaEN.mp3" },
+                    { nome: "Você me acha fofa", arquivo: "voicelines/lilia_fofa.mp3" },
+                    { nome: "English - Você me acha fofa", arquivo: "voicelines/lilia_fofaEN.mp3" },
+                    { nome: "Ninguém vai morrer", arquivo: "voicelines/lilia_perto.mp3" },
+                    { nome: "English - Ninguém vai morrer", arquivo: "voicelines/lilia_pertoEN.mp3" }
+                ],
                 faction: "🍃 Naturelands", elemento: "🍃 Natureza",
                 sexo: "ANDROFÊMEA", 
                 stats: { forca: 10, magia: 90, agilidade: 65, inteligencia: 70, carisma: 100, physDef: 4, magDef: 100 },
@@ -923,6 +988,14 @@
                 avatar: "valerya_face.jpg",
                 model3dChar: "valeryamodel.glb",
                 quote: "\"Esses escudos fininhos de nobreza não vão segurar um impacto de meia tonelada.\"",
+                voicelines: [
+                    { nome: "PT - Intro", arquivo: "voicelines/valerya_intro.mp3" },
+                    { nome: "English - Intro", arquivo: "voicelines/valerya_introEN.mp3" },
+                    { nome: "PT - Esses Músculos", arquivo: "voicelines/valerya_musculos.mp3" },
+                    { nome: "English - Esses Músculos", arquivo: "voicelines/valerya_musculosEN.mp3" },
+                    { nome: "PT - Tudo Quebra Fácil", arquivo: "voicelines/valerya_quebra.mp3" },
+                    { nome: "English - Tudo Quebra Fácil", arquivo: "voicelines/valerya_quebraEN.mp3" }
+                ],
                 faction: "⚙️ Abberyon", elemento: "🔥 Fogo / 👊 Físico / 🪄 Mágico",
                 sexo: "FÊMEA", 
                 stats: { forca: 100, magia: 15, agilidade: 60, inteligencia: 30, carisma: 50, physDef: 95, magDef: 5 },
@@ -936,13 +1009,18 @@
             {
                 name: "Dra. Rosalind Mercer", title: "A Escultora da Luxúria", role: "support", image: "rosalind.png",
                 avatar: "rosalind_face.png",
+                model3dChar: "rosalindmodel.glb",
                 voicelines: [
                     { nome: "English - Intro", arquivo: "voicelines/english_rosalindintro.mp3" },
                     { nome: "PT - Intro", arquivo: "voicelines/pt_rosalindintro.mp3" },
                     { nome: "PT - Transformar - Dual Wield", arquivo: "voicelines/pt_rosalindvaginapenis.mp3" },
                     { nome: "English - Transformar", arquivo: "voicelines/english_rosalindvaginapenis.mp3" },
                     { nome: "English - Biologia", arquivo: "voicelines/english_rosalindbiology.mp3" },
-                    { nome: "PT - Biologia", arquivo: "voicelines/pt_rosalindbiologia.mp3" }
+                    { nome: "PT - Biologia", arquivo: "voicelines/pt_rosalindbiologia.mp3" },
+                    { nome: "PT - Muitas Cobaias", arquivo: "voicelines/rosalind_cobaia.mp3" },
+                    { nome: "English - Muitas Cobaias", arquivo: "voicelines/rosalind_cobaiaEN.mp3" },
+                    { nome: "PT - Luxúria", arquivo: "voicelines/rosalind_luxuria.mp3" },
+                    { nome: "English - Luxúria", arquivo: "voicelines/rosalind_luxuriaEN.mp3" }
                     ],
                 quote: "\"A biologia humana é apenas um rascunho deprimente. Eu sou a arte final.\"",
                 faction: "🧪 Lab. Subterrâneo", elemento: "🧪 Bio-Alquimia",
@@ -996,7 +1074,9 @@
                     { nome: "Putinha", arquivo: "voicelines/byakuya_putinha.mp3" },
                     { nome: "Tentar a sorte", arquivo: "voicelines/byakuya_tentarsorte.mp3" },
                     { nome: "Viadinho do Ashlan", arquivo: "voicelines/byakuya_viadinhoashlan.mp3" },
-                    { nome: "É Prazeroso", arquivo: "voicelines/byakuya_machohumilhar.mp3" }  
+                    { nome: "É Prazeroso", arquivo: "voicelines/byakuya_machohumilhar.mp3" },
+                    { nome: "Masculinidade", arquivo: "voicelines/byakuya_masculinidade.mp3" },
+                    { nome: "Não é minha culpa", arquivo: "voicelines/byakuya_marido.mp3" }  
                 ],
                 faction: "🏔️ Pico dos Suspiros", elemento: "🌪️ Físico / Vento Oculto",
                 sexo: "FÊMEA", 
@@ -2014,7 +2094,23 @@ secret: "Análises realizadas em Diamond City revelaram que Rosalind não simple
     description: "Ranka Kagurazaka é a irmã mais nova de <b>Rinka Kagurazaka</b> e uma combatente de elite de Aethelgard. Adulta, energética e extremamente competitiva, possui longos cabelos escuros, olhos violeta e uma aparência imediatamente reconhecível por suas meias listradas em vermelho e preto, botas altas e uniforme estilizado. Enquanto Rinka normalmente demonstra maior contenção, Ranka possui uma personalidade muito mais explosiva, provocadora e emocionalmente transparente.<br><br>Ranka passou a infância ao lado da irmã dentro dos laboratórios de Aethelgard após ambas terem sido vendidas pelos próprios pais para utilização em pesquisas experimentais. Por ser a mais nova, Ranka dependia profundamente de Rinka durante esse período. A presença constante da irmã tornou-se sua principal fonte de segurança em um ambiente onde praticamente todos ao redor as enxergavam como objetos científicos.<br><br>A intervenção de <b>Gayka</b> mudou completamente suas vidas. Horrorizada com a ideia de crianças crescerem permanentemente como cobaias, Gayka convenceu <b>Gaydron</b> a permitir que as irmãs recebessem uma vida digna fora das instalações experimentais. Mesmo carregando traumas e alterações causadas por pesquisas anteriores, Ranka finalmente recebeu educação, treinamento e liberdade suficiente para construir sua própria identidade.<br><br>Anos depois, durante a Grande Guerra, o avanço dos conflitos colocou Aethelgard sob enorme pressão. Gaydron e Gayka exigiram dos cientistas uma solução capaz de auxiliar rapidamente as forças do reino. O resultado desesperado foi a criação do <b>VR-VIRUS</b>, uma tecnologia biológica experimental capaz de transformar um organismo humano em uma arma viva.<br><br>Sem tempo para extensos testes e graças à resistência desenvolvida durante anos de experimentos anteriores, Rinka e Ranka foram utilizadas como hospedeiras. Ambas sobreviveram ao procedimento, mas o vírus tornou-se permanentemente integrado aos seus corpos. Nenhum método conhecido é capaz de removê-lo sem colocar suas vidas em risco, motivo pelo qual pesquisadores de Aethelgard continuam trabalhando em uma possível cura.<br><br>O VR-VIRUS concedeu às duas uma característica praticamente inédita: <b>intercambialidade completa</b>. Ranka pode lutar utilizando Rinka como arma ou transformar-se para ser empunhada pela irmã. A escolha é feita instantaneamente conforme a situação do campo de batalha.<br><br>A ativação sincronizada ocorre através de um beijo entre as duas irmãs. O contato funciona como um gatilho para que o VR-VIRUS reconheça a intenção compartilhada e determine qual organismo será convertido. Por causa da compatibilidade extraordinária entre ambas, o processo acontece em poucos segundos e pode produzir diferentes tipos de arma conforme a necessidade.<br><br>Ranka tende a utilizar o sistema de maneira muito mais agressiva que Rinka. Quando permanece humana, prefere atacar diretamente e manter enorme pressão sobre o adversário. Sua velocidade, força física e capacidade de improvisação tornam seus movimentos difíceis de prever. Quando assume forma de arma, o vírus costuma responder ao seu temperamento produzindo configurações de grande poder destrutivo.<br><br>Apesar de seu comportamento explosivo, Ranka demonstra enorme carinho por Rinka. Durante a vida adulta, a dependência e a confiança que construíram desde a infância evoluíram para um relacionamento romântico intenso. As duas são irmãs de sangue, amantes e parceiras de combate, mantendo uma intimidade praticamente absoluta entre si.<br><br>Para Ranka, sua relação com Rinka representa a maior prova de que os laboratórios fracassaram em transformar as duas em simples ferramentas. Elas podem possuir corpos capazes de se transformar literalmente em armas, mas são elas próprias que escolhem quando, como e por quem serão empunhadas.<br><br>Após o fim da Grande Guerra, Ranka decidiu permanecer como combatente de elite ao lado da irmã. Seu objetivo não é conquistar novos territórios, mas garantir que a paz de Aetheryon seja protegida e que nenhuma outra criança seja submetida ao mesmo destino que elas sofreram.",
     extraImages: ["ranka_art2.png", "ranka_art3.png", "ranka_battle.jpg", "ranka_aethelgard.jpg", "ranka_fullbody.png"],
     secret: "Ranka possui um ressentimento muito mais evidente contra os responsáveis pelos experimentos de sua infância do que Rinka. Ela considera Gayka uma das poucas pessoas de Aethelgard que enxergou as duas como seres humanos antes de enxergá-las como armas. Apesar da confiança que demonstra em combate, Ranka teme silenciosamente a possibilidade de o VR-VIRUS eventualmente sofrer uma mutação irreversível. Também é extremamente protetora e ciumenta em relação a Rinka, e sua atitude normalmente brincalhona desaparece imediatamente quando acredita que alguém está tentando utilizar ou machucar sua irmã."
-}
+        },
+        {
+    name: "Mireva Sollen", title: "A Cirurgiã do Sapinho", role: "support", image: "mireva.png",
+model3dChar: "mirevamodel.glb",
+model3dWeapon: "mirevaweaponmodel.glb",
+avatar: "mireva_face.png",
+quote: "\"Só uma picadinha~ Se começar a doer, é porque está funcionando.\"",
+faction: "🧪 Laboratório Mercer", elemento: "🧬 Bio-Alquimia",
+sexo: "FÊMEA",
+stats: { forca: 25, magia: 0, agilidade: 70, inteligencia: 100, carisma: 90, physDef: 25, magDef: 0 },
+race: "Humana / Bio-Alquimista", weapon: "Frogger Injector",
+weaponDetails: "O <b>Frogger Injector</b> é um dispositivo bio-alquímico modular desenvolvido para Mireva Sollen dentro do Laboratório Mercer. Embora se assemelhe a uma seringa avançada, sua estrutura possui múltiplos compartimentos internos capazes de armazenar compostos mutagênicos, neurotoxinas, catalisadores metabólicos e agentes regenerativos. Mireva consegue alternar rapidamente entre diferentes fórmulas durante o combate, utilizando o equipamento tanto para enfraquecer inimigos quanto para amplificar os efeitos de Bio-Alquimia em aliados.<br><br>O nome aparentemente infantil do equipamento foi escolhido pela própria Mireva por causa de sua obsessão com sapos e da presilha que carrega desde a infância. Pequenos detalhes em formato de sapinho foram incorporados ao design do dispositivo, algo que contrasta de maneira quase absurda com a violência dos compostos armazenados dentro dele.<br><br>Algumas das substâncias utilizadas pelo Frogger Injector são derivadas diretamente de pesquisas conduzidas pela Dra. Rosalind Mercer. Entre elas existem compostos capazes de causar desorientação, enfraquecimento muscular, instabilidade celular temporária e alterações metabólicas severas. Mireva costuma modificar suas fórmulas constantemente, o que torna extremamente difícil prever qual efeito será provocado por cada aplicação.",
+weaponImage: "mireva_weapon.png",
+description: "Mireva Sollen, conhecida como <b>“A Cirurgiã do Sapinho”</b>, é a assistente pessoal e uma das colaboradoras mais leais da <b>Dra. Rosalind Mercer</b>. Especialista em Bio-Alquimia, Mireva auxilia diretamente na preparação de compostos, manutenção de cobaias, coleta de amostras, contenção de sujeitos experimentais e execução de procedimentos considerados perigosos demais até mesmo por outros pesquisadores.<br><br>Apesar de possuir uma aparência delicada, comportamento brincalhão e sorriso quase permanente, Mireva é profundamente sádica e demonstra pouquíssimos limites morais. Ela consegue conversar alegremente com uma cobaia enquanto prepara um procedimento doloroso, tratando mutações, deformações e respostas fisiológicas extremas como oportunidades fascinantes de observação científica.<br><br>Diferente da postura fria e metódica de Rosalind, Mireva é impulsiva, curiosa e emocionalmente entusiasmada com cada experimento. Para ela, o sofrimento de uma cobaia raramente representa um problema moral. Na maioria das vezes, significa apenas que o procedimento está provocando algum tipo de reação interessante.<br><br>Sua característica visual mais marcante é uma pequena <b>presilha em formato de sapinho</b> que utiliza constantemente sobre o cabelo. O acessório foi um presente dado por sua mãe durante a infância e permanece como um dos poucos objetos pelos quais Mireva demonstra verdadeiro apego emocional.<br><br>Esse vínculo, porém, nunca impediu Mireva de entregar a própria mãe para servir como cobaia após uma solicitação de Rosalind. Mireva participou pessoalmente de uma extensa sequência de procedimentos bio-alquímicos que provocaram crescimento corporal descontrolado, deformações fisiológicas severas e alterações extremas nas características sexuais da mulher.<br><br>O resultado tornou-se conhecido dentro do Laboratório Mercer como <b>Projeto Matriz</b>, uma aberração bio-alquímica ainda biologicamente ativa e considerada extremamente valiosa para pesquisas futuras. Durante os estágios iniciais do experimento, o crescimento da criatura tornou sua contenção praticamente impossível. Rosalind e Mireva desenvolveram então um procedimento capaz de reduzir parcialmente suas dimensões, permitindo que ela fosse transferida para uma cela especializada.<br><br>Projeto Matriz permanece atualmente confinada na <b>Ala de Isolamento</b> do Laboratório Mercer. A criatura é mantida viva através de injeções nutritivas, estabilizadores metabólicos e substâncias responsáveis por limitar temporariamente novas mutações. Nenhuma tentativa real de restaurar sua forma original é realizada, pois Rosalind considera seu organismo um recurso científico valioso demais para ser desperdiçado.<br><br>O objetivo final do projeto é descobrir uma forma de controlar suas alterações e transformar a criatura em uma <b>arma biológica viva</b>. Mireva demonstra grande entusiasmo com essa possibilidade e continua participando das pesquisas relacionadas à mãe sem demonstrar culpa significativa pelo que aconteceu.<br><br>Mesmo após tudo isso, Mireva continua visitando sua mãe regularmente na Ala de Isolamento. Ela coleta amostras, administra compostos e conversa com a criatura de maneira surpreendentemente carinhosa, ainda chamando-a simplesmente de <b>“mamãe”</b>. Para Mireva, a presilha de sapinho que utiliza diariamente não representa arrependimento. Representa apenas uma lembrança afetuosa da pessoa que sua mãe um dia foi.<br><br>Sua relação com Rosalind é marcada por uma lealdade praticamente absoluta. Mireva admira profundamente a inteligência e a ambição científica da doutora e demonstra disposição para executar praticamente qualquer ordem sem hesitação. Enquanto Rosalind representa o lado calculista da Bio-Alquimia, Mireva representa seu lado mais caótico, impulsivo e experimental.<br><br>Em combate, Mireva prefere manipular biologicamente os adversários em vez de enfrentá-los diretamente. Utilizando o Frogger Injector, ela aplica toxinas, mutágenos, catalisadores e agentes de desorientação capazes de reduzir resistência, comprometer movimentos e aumentar a vulnerabilidade dos inimigos. Sua especialidade é transformar lentamente uma batalha em um experimento vivo, observando cada reação com o mesmo sorriso divertido que utiliza dentro do laboratório.",
+extraImages: ["rosalindassistant.jpg", "rosalindassistant2.jpg", "rosalindassistant3.jpg", "rosalindassistant4.jpg", "rosalindassistant5.jpg", "mireva_art1.png", "mireva_art2.png", "mireva_mom.png", "mireva_mom2.png", "mireva_mom3.png", "mireva_mom4.png", "mireva_mom5.png", "mireva_mom6.png"],
+secret: "Mireva conserva escondido um pequeno conjunto de registros antigos pertencentes à mãe antes de sua transformação. Entre eles existem fotografias, anotações e objetos pessoais que Rosalind considera completamente inúteis para pesquisa. Mireva jamais destruiu esse material, embora nunca admita sentir culpa. Ela visita Projeto Matriz com muito mais frequência do que o necessário e, ocasionalmente, permanece longos períodos simplesmente conversando com a criatura mesmo quando não existe nenhum experimento planejado. Apesar de seu comportamento sádico e aparentemente despreocupado, existe uma pequena possibilidade de que Mireva ainda preserve algum vínculo emocional verdadeiro com a mãe, embora esse sentimento esteja completamente distorcido pela obsessão que desenvolveu pela Bio-Alquimia e por sua devoção à Rosalind."
+        }
         ];
 
         // ==========================================
@@ -9245,6 +9341,22 @@ function finalizarJogo(vitória, msg) {
         assinatura.innerText = "Projeto feito por Othon Joseph";
         document.body.appendChild(assinatura);
     }, 1500); // Espera 1.5s pra ter certeza que a tela já carregou
+</script>
+
+      <script>
+    setTimeout(() => {
+        let btnMessenger = document.createElement('a');
+        btnMessenger.href = "messenger.html";
+        btnMessenger.target = "_blank";
+        btnMessenger.innerHTML = "💬 AETHERYON CHAT";
+        btnMessenger.style.cssText = "position: fixed; bottom: 160px; right: 30px; background: #0f172a; border: 2px solid #00ffff; color: #fff; padding: 12px 25px; border-radius: 30px; font-family: 'Cinzel', serif; font-weight: bold; font-size: 14px; text-decoration: none; z-index: 99999999; box-shadow: 0 0 15px rgba(0,255,255,0.5); transition: 0.2s;";
+        
+        // Efeito de hover direto no JS
+        btnMessenger.onmouseover = () => btnMessenger.style.transform = "scale(1.05)";
+        btnMessenger.onmouseout = () => btnMessenger.style.transform = "scale(1)";
+        
+        document.body.appendChild(btnMessenger);
+    }, 2000); // Aparece 2 segundos depois de carregar a página
 </script>
 
 </body>
