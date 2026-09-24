@@ -51,6 +51,21 @@
     .btn-modal-confirmar { background: #ef4444; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; flex: 1; font-weight: bold; transition: 0.2s; }
     .btn-modal-confirmar:hover { background: #dc2626; box-shadow: 0 0 15px rgba(239, 68, 68, 0.5); }
 
+    /* MODAL AVISO +18 */
+    .modal-18-overlay {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh;
+      background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(15px);
+      display: none; justify-content: center; align-items: center; z-index: 99999; /* Z-index altíssimo para cobrir tudo */
+    }
+    .modal-18-box {
+      background: #000; border: 2px solid #ef4444; border-radius: 15px;
+      padding: 30px; width: 90%; max-width: 450px; text-align: center;
+      box-shadow: 0 0 50px rgba(239, 68, 68, 0.4); animation: piscarBorda 2s infinite alternate;
+    }
+    .modal-18-title { color: #ef4444; margin-bottom: 15px; font-size: 1.4em; letter-spacing: 2px; font-weight: bold; }
+    .modal-18-texto { color: #e2e8f0; margin-bottom: 30px; font-size: 0.95em; line-height: 1.6; font-weight: 500; }
+    @keyframes piscarBorda { from { box-shadow: 0 0 20px rgba(239, 68, 68, 0.2); } to { box-shadow: 0 0 60px rgba(239, 68, 68, 0.6); } }
+
     /* =======================================================
        ADAPTAÇÃO EXCLUSIVA PARA CELULAR (RESPONSIVIDADE)
        ======================================================= */
@@ -127,6 +142,23 @@
 </head>
 <body>
 
+  <!-- AVISO DE CONTEÚDO +18 -->
+  <div class="modal-18-overlay" id="aviso-18">
+    <div class="modal-18-box">
+      <h3 class="modal-18-title">⚠️ AVISO DE CONTEÚDO</h3>
+      <p class="modal-18-texto">
+        EM PARTES, CONTÉM CONTEÚDO SEXUAL EXPLÍCITO, VIOLÊNCIA EXTREMA E TEMAS PERTURBADORES.<br><br>
+        RECOMENDADO APENAS PARA MAIORES DE 18 ANOS.<br><br>
+        TEM CERTEZA DE QUE DESEJA PROSSEGUIR?
+      </p>
+      <div class="modal-botoes">
+        <!-- Reutilizamos as classes de botões do outro modal -->
+        <button class="btn-modal-cancelar" onclick="recusar18()">NÃO</button>
+        <button class="btn-modal-confirmar" onclick="aceitar18()">SIM</button>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL DE CONFIRMAÇÃO (Fica invisível até ser chamado) -->
   <div class="modal-overlay" id="modal-limpar">
     <div class="modal-box">
@@ -185,6 +217,11 @@
         <input type="text" id="input-mensagem" placeholder="Digite uma mensagem... ➤" onkeypress="verificarEnter(event)">
         <button id="btn-enviar" class="btn-enviar" onclick="enviarMensagem()">Enviar</button>
       </div>
+
+      <div style="text-align: center; color: #f59e0b; font-size: 0.8em; margin-top: 12px; font-style: italic; opacity: 0.8;">
+        ⚠️ Essa função utiliza IA e está em fase de teste, podendo ter instabilidades.
+      </div>
+
     </main>
 
     <section class="model-area">
