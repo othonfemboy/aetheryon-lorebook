@@ -486,6 +486,75 @@
   z-index: 2;
 }
 
+/* ========================================== */
+        /* EFEITOS DE PODER NA TELA                   */
+        /* ========================================== */
+        
+        /* A tela invisível que fica por cima de tudo */
+        .power-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 9999999; display: none;
+        }
+
+        /* Efeito de Cura/Raízes da Natureza */
+        .power-natureza {
+            background: radial-gradient(circle, transparent 20%, rgba(21, 128, 61, 0.4) 80%, rgba(20, 83, 45, 0.9) 100%);
+            box-shadow: inset 0 0 150px rgba(34, 197, 94, 0.8);
+            animation: pulseNatureza 2.5s ease-out forwards;
+        }
+        @keyframes pulseNatureza {
+            0% { opacity: 0; filter: brightness(1); }
+            10% { opacity: 1; filter: brightness(1.5); box-shadow: inset 0 0 250px rgba(34, 197, 94, 1); }
+            50% { opacity: 1; background-color: rgba(34, 197, 94, 0.2); }
+            100% { opacity: 0; filter: brightness(1); }
+        }
+
+        /* Efeito de Trevas/Sangue da Karyna */
+        .power-trevas {
+            background: radial-gradient(circle, transparent 10%, rgba(139, 0, 0, 0.6) 70%, rgba(0, 0, 0, 0.95) 100%);
+            box-shadow: inset 0 0 250px rgba(139, 0, 0, 1);
+            animation: pulseTrevas 2.5s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+        }
+        @keyframes pulseTrevas {
+            0% { opacity: 0; transform: scale(1.05); }
+            10% { opacity: 1; transform: scale(1); filter: contrast(2) saturate(2); }
+            30% { opacity: 1; background-color: rgba(139, 0, 0, 0.4); }
+            100% { opacity: 0; transform: scale(1.1); }
+        }
+
+        /* Botões de Invocar Poder */
+        .btn-skill-effect {
+            margin-top: 20px; padding: 15px; font-family: 'Cinzel', serif; font-weight: bold; font-size: 16px;
+            border-radius: 8px; cursor: pointer; border: none; width: 100%; transition: 0.3s; text-transform: uppercase;
+        }
+        .btn-natureza { background: #15803d; color: white; box-shadow: 0 0 15px rgba(21,128,61,0.6); }
+        .btn-natureza:hover { background: #166534; box-shadow: 0 0 30px rgba(34,197,94,1); letter-spacing: 1px; }
+        
+        .btn-trevas { background: #7f1d1d; color: white; box-shadow: 0 0 15px rgba(127,29,29,0.6); }
+        .btn-trevas:hover { background: #450a0a; box-shadow: 0 0 30px rgba(220,38,38,1); letter-spacing: 1px; }
+
+        /* EFEITOS BLINDADOS DA TELA */
+        #tela-explosao-magia {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 99999999; display: none; opacity: 0;
+        }
+        .magia-natureza {
+            background: radial-gradient(circle, transparent 20%, rgba(21, 128, 61, 0.4) 80%, rgba(20, 83, 45, 0.95) 100%);
+            box-shadow: inset 0 0 200px rgba(34, 197, 94, 0.9);
+            animation: pulsarMagia 2.5s ease-out forwards;
+        }
+        .magia-trevas {
+            background: radial-gradient(circle, transparent 10%, rgba(139, 0, 0, 0.6) 70%, rgba(0, 0, 0, 0.98) 100%);
+            box-shadow: inset 0 0 250px rgba(139, 0, 0, 1);
+            animation: pulsarMagia 2.5s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+        }
+        @keyframes pulsarMagia {
+            0% { opacity: 0; filter: brightness(1) contrast(1); }
+            10% { opacity: 1; filter: brightness(1.5) contrast(1.5); }
+            50% { opacity: 0.8; }
+            100% { opacity: 0; filter: brightness(1) contrast(1); }
+        }
+
     </style>
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -598,6 +667,7 @@
             <select id="musicSelector" onchange="trocarMusicaListada()" class="tab-btn" style="margin: 0; background-color: #111; border-color: #888; color: #aaa; cursor: pointer; font-family: 'Cinzel', serif; font-weight: bold;">
     <option value="heromusic.mp3">🎵 Música: Padrão</option>
     <option value="maintheme.mp3">🎸 Música: Padrão 2</option>
+    <option value="requiem2.mp3">🎵 Música: Padrão 3</option>
     <option value="wintermusic.mp3">❄️ Música: Inverno</option>
     <option value="windmusic.mp3">🌪️ Música: Vento</option>
     <option value="aguamusic.mp3">🌊 Música: Água</option>
@@ -617,6 +687,7 @@
     <option value="residentevil7.mp3">☢︎ Música: Resident Evil 7</option>
     <option value="eldenringmain.mp3">🎵 Música: Elden Ring</option>
     <option value="endofragnarok.mp3">🎵 Música: End of Ragnarok</option>
+    <option value="requiem3.mp3">🎵 Música: Re Requiem RPD</option>
 </select>
 <div style="display: flex; align-items: center; gap: 5px; background: #111; padding: 0 15px; border: 2px solid #444; border-radius: 5px; height: 42px; margin: 0;">
     <span style="color: #aaa; font-size: 12px; font-weight: bold; font-family: 'Cinzel', serif;">🔉 VOL:</span>
@@ -899,6 +970,7 @@
             {
                 name: "Karyna Blackfield", title: "A Tirana de Sangue", role: "tank", image: "karyna.png",
                 avatar: "karyna_face.png",
+                skillEffect: { text: "SINTA O DESESPERO DAS TREVAS!", type: "trevas" },
                 model3dChar: "karynamodel.glb",
                 quote: "\"Vocês marcham sob a ilusão da esperança. Eu marcho sobre os cadáveres dela.\"",
                 faction: "🌑 Zenathor", elemento: "🩸 Hemomancia / Sombra",
@@ -1022,6 +1094,7 @@
             {
                 name: "Lilia", title: "A Druida da Natureza", role: "support", image: "lilia.png",
                 avatar: "lilia_face.png",
+                skillEffect: { text: "ME MOSTRE O PODER DA NATUREZA!", type: "natureza" },
                 model3dChar: "liliamodel.glb",
                 quote: "\"Mesmo a terra queimada pode brotar vida se você souber escutá-la.\"",
                 voicelines: [
@@ -1165,6 +1238,7 @@
                 name: "Byakuya 白夜", title: "A Monge de Ferro", role: "dps", image: "byakuya.png",
                 avatar: "byakuya_face.png",
                 model3dChar: "byakuyamodel.glb",
+                videoOrigem: "byakuyashort.mp4",
                 quote: "\"Se ajoelhe, verme. Ser pisado por mim é uma Bênção Espiritual.\"",
                 voicelines: [
                     { nome: "Introdução", arquivo: "voicelines/byakuya_intro.mp3" },
@@ -2278,6 +2352,23 @@ secret: "Mireva conserva escondido um pequeno conjunto de registros antigos pert
     description: "Niel Aster, conhecido como <b>“O Lírio das Rotas”</b>, é o irmão de <b>Noa Aster</b> e trabalha principalmente com logística, negociação e organização de rotas comerciais em Diamond City.<br><br>Assim como Noa, Niel nasceu em uma família comum ligada ao transporte de mercadorias. Entretanto, enquanto sua irmã demonstrava desde cedo enorme interesse por exploração, viagens e atividades físicas, Niel preferia permanecer próximo dos comerciantes, observando contratos, organizando estoques e aprendendo como diferentes rotas poderiam ser utilizadas de maneira mais eficiente.<br><br>Durante a Grande Guerra, a destruição de inúmeras estradas obrigou a família Aster a adaptar completamente sua forma de trabalhar. Enquanto Noa começou a explorar caminhos alternativos e atuar como mensageira, Niel assumiu a tarefa de registrar informações, calcular riscos e organizar quais mercadorias poderiam atravessar cada região com segurança.<br><br>Com o passar do tempo, os dois desenvolveram uma parceria extremamente eficiente. Noa percorre as rotas fisicamente, identifica perigos e descobre novos caminhos. Niel transforma essas informações em mapas, registros e planos comerciais que podem ser utilizados por viajantes e comerciantes.<br><br>Após o fim da guerra, Niel continuou trabalhando como coordenador logístico e intermediário comercial. Ele negocia contratos, organiza pequenas caravanas, administra informações de viagem e ajuda comerciantes a escolher rotas adequadas para cada tipo de carga.<br><br>Niel possui uma personalidade muito diferente da irmã. É sociável, expressivo, educado e possui enorme facilidade para conversar com desconhecidos. Enquanto Noa tende a responder perguntas com poucas palavras, Niel consegue manter uma negociação durante horas sem demonstrar cansaço.<br><br>Sua aparência é uma das características mais marcantes. Niel possui rosto extremamente delicado, corpo esguio, cintura fina, peito completamente liso e cabelo claro cuidadosamente arrumado. Ele prefere roupas tradicionalmente femininas, utilizando frequentemente suéteres, saias, thigh highs, chokers e outros acessórios delicados.<br><br>Niel não considera suas escolhas de roupa algo particularmente extraordinário. Ele simplesmente utiliza aquilo que considera bonito e confortável e raramente demonstra qualquer preocupação com a opinião de outras pessoas.<br><br>Por causa de sua aparência extremamente feminina, Niel é constantemente confundido com uma garota. A situação torna-se ainda mais engraçada quando ele está ao lado de Noa, cuja aparência andrógina e roupas masculinas fazem com que muitas pessoas cheguem exatamente à conclusão oposta sobre ela.<br><br>Não é incomum que desconhecidos presumam que <b>Niel é a irmã e Noa é o irmão</b>. Os dois estão tão acostumados com essa situação que raramente se preocupam em corrigir imediatamente o erro.<br><br>Noa normalmente reage à confusão com completo desinteresse. Niel, por outro lado, frequentemente acha divertido observar quanto tempo uma pessoa demora para perceber que interpretou os dois irmãos ao contrário.<br><br>Apesar de sua aparência delicada, Niel está longe de ser indefeso. Possui conhecimentos básicos de magia de suporte e utiliza o <b>Wayfarer's Ledger</b> para produzir pequenas barreiras, sinais mágicos, marcações de localização e efeitos capazes de reduzir a fadiga de aliados.<br><br>Ele evita combate direto sempre que possível e prefere resolver conflitos através de negociação ou planejamento. Quando uma luta realmente acontece, Niel permanece atrás dos combatentes, oferecendo suporte e garantindo que ninguém fique isolado.<br><br>Niel também possui enorme carinho por Noa. Embora frequentemente provoque a irmã sobre sua aparência e comportamento masculino, é uma das poucas pessoas capazes de perceber rapidamente quando ela está cansada, preocupada ou escondendo algum problema.<br><br>Juntos, os irmãos Aster representam duas partes da mesma profissão. Noa domina o caminho através da experiência física; Niel domina o caminho através da informação. Um encontra a rota. O outro garante que ela possa realmente ser utilizada.",
     extraImages: ["niel_art1.png", "niel_art2.png", "niel_art3.png", "niel_art4.png", "niel_art5.jpg"],
     secret: "Niel acha extremamente engraçado ser confundido com uma garota e raramente corrige alguém imediatamente quando isso acontece. Em algumas situações, ele deliberadamente permite que a pessoa continue acreditando nisso apenas para observar sua reação quando descobrir a verdade.<br><br>Ele mantém uma coleção muito maior de roupas do que admite e possui especial preferência por saias, thigh highs e roupas de verão delicadas. Noa frequentemente reclama da quantidade de espaço que as roupas do irmão ocupam quando os dois precisam viajar juntos.<br><br>Apesar de parecer muito mais delicado que Noa, Niel é emocionalmente bastante estável e costuma funcionar como o equilíbrio da irmã. Quando Noa transforma algo irrelevante em uma competição, normalmente é Niel quem precisa convencê-la de que nem todo percurso precisa se tornar um novo recorde pessoal."
+        },
+        {
+    name: "Kiriya Voss", title: "O Mestre do Passo Silencioso", role: "dps", image: "kiriya.png",
+    model3dChar: "kiriyamodel.glb",
+    model3dWeapon: "kiriyaweaponmodel.glb",
+    avatar: "kiriya_face.png",
+    quote: "\"Se eles perceberam que você estava lá, você já cometeu seu primeiro erro.\"",
+    faction: "💎 Diamond City / 🎓 Lancehearth Academy", elemento: "🌑 Shadow / Físico",
+    sexo: "MACHO",
+    stats: { forca: 72, magia: 45, agilidade: 98, inteligencia: 94, carisma: 76, physDef: 58, magDef: 52 },
+    race: "Humano",
+    weapon: "Silent Fang Array",
+    weaponDetails: "O <b>Silent Fang Array</b> é um conjunto de kunais negras desenvolvidas e balanceadas especificamente para Kiriya Voss. Embora visualmente simples, cada lâmina possui peso, centro de gravidade e aerodinâmica cuidadosamente ajustados para permitir lançamentos extremamente precisos em diferentes distâncias.<br><br>Kiriya carrega duas pequenas bainhas diretamente na parte interna de sua jaqueta, permitindo que saque uma kunai praticamente sem movimento perceptível. Ele também é capaz de utilizar facas, shurikens, agulhas, dardos, fios metálicos e praticamente qualquer objeto com potencial para ser arremessado.<br><br>Para Kiriya, uma arma não precisa ser poderosa; precisa apenas estar no lugar correto no momento correto. Sua precisão é tão extrema que consegue interceptar projéteis no ar, atingir pequenos alvos em movimento e alterar deliberadamente o ângulo de ricochete de determinadas lâminas.",
+    weaponImage: "kiriya_weapon.png",
+    description: "Kiriya Voss, conhecido como <b>“O Mestre do Passo Silencioso”</b>, é professor da <b>Lancehearth Academy</b> e responsável pelo treinamento de Técnicas de Assassinato, Furtividade, Infiltração e Combate Oculto.<br><br>Apesar do nome intimidador de sua disciplina, Kiriya deixa claro desde a primeira aula que assassinato não significa simplesmente matar alguém. Para ele, a verdadeira essência da arte está em controlar completamente uma situação antes que o adversário perceba que existe uma ameaça.<br><br>Kiriya nasceu em Diamond City e demonstrou desde jovem uma coordenação motora extraordinária. Enquanto outras crianças treinavam espada ou magia, ele conseguia acertar pequenos objetos a dezenas de metros utilizando pedras, moedas ou qualquer coisa que pudesse ser lançada.<br><br>Durante sua juventude, passou anos estudando diferentes estilos de combate furtivo, infiltração, rastreamento, contraemboscada e utilização de armas leves. Em vez de dedicar-se exclusivamente a uma tradição específica, Kiriya absorveu técnicas de diferentes regiões de Aetheryon e desenvolveu seu próprio método.<br><br>Kunais tornaram-se sua especialidade. Kiriya considera a arma praticamente perfeita: simples, resistente, silenciosa, fácil de transportar e útil tanto como arma quanto como ferramenta. Ele consegue utilizá-las para combate corpo a corpo, arremesso, escalada, corte de cordas, criação de armadilhas e inúmeras outras aplicações improvisadas.<br><br>Sua habilidade com armas de arremesso tornou-se lendária entre alguns combatentes de Diamond City. Kiriya é capaz de capturar uma kunai lançada contra ele utilizando apenas os dedos indicador e médio, alterar sua direção imediatamente e devolvê-la ao atacante antes que o adversário consiga reagir.<br><br>Entretanto, ele não limita seu treinamento às kunais. Kiriya domina shurikens, facas, agulhas, dardos, fios metálicos, pequenas lâminas e diversas armas improvisadas. Em suas próprias palavras, <b>“qualquer objeto possui uma trajetória; basta saber onde ela termina.”</b><br><br>Durante a Grande Guerra, Kiriya trabalhou principalmente em operações de reconhecimento, infiltração e sabotagem. Em diversas ocasiões, sua função não era eliminar inimigos, mas atravessar posições hostis sem ser detectado, coletar informações e retornar antes que alguém percebesse sua presença.<br><br>Essa experiência moldou profundamente sua filosofia. Para Kiriya, um confronto frontal representa frequentemente uma falha de planejamento. Ele prefere evitar batalhas desnecessárias, remover ameaças silenciosamente e utilizar o ambiente para controlar completamente o ritmo de uma operação.<br><br>Após o fim da guerra, sua experiência chamou a atenção da Lancehearth Academy. Kiriya recebeu uma posição como professor para ensinar jovens combatentes a reconhecer emboscadas, mover-se silenciosamente, utilizar cobertura, compreender pontos cegos e sobreviver contra adversários especializados em assassinato.<br><br>Suas aulas são famosas por serem imprevisíveis. Kiriya frequentemente entra na sala sem produzir qualquer som, aparece atrás de alunos distraídos ou lança objetos inofensivos para testar seus reflexos. Um estudante pode passar uma aula inteira acreditando estar realizando um exercício comum apenas para descobrir no final que estava sendo observado e avaliado desde o primeiro minuto.<br><br>Apesar disso, Kiriya não é cruel com seus alunos. Ele possui comportamento calmo, educado e até levemente provocador. Quase sempre mantém um pequeno sorriso no rosto e raramente levanta a voz. Sua tranquilidade, entretanto, costuma tornar suas ameaças muito mais assustadoras.<br><br>Kiriya também possui conhecimentos limitados de magia Shadow, mas utiliza essa afinidade exclusivamente para complementar suas capacidades físicas. Ele consegue reduzir temporariamente o som produzido por seus movimentos, diminuir reflexos de luz sobre equipamentos e enfraquecer sua própria presença mágica, tornando-se extremamente difícil de localizar.<br><br>Ele deliberadamente evita técnicas de invisibilidade completa. Segundo Kiriya, depender de invisibilidade ensina maus hábitos. Seu objetivo é conseguir atravessar uma sala cheia de inimigos mesmo quando nada sobrenatural está escondendo seu corpo.<br><br>Em combate direto, sua velocidade e precisão fazem dele um adversário extremamente perigoso. Kiriya evita golpes excessivamente fortes e prefere ataques pequenos, rápidos e cuidadosamente posicionados. Articulações, mãos, armas e pontos de equilíbrio são seus alvos favoritos.<br><br>Fora da Academy, Kiriya mantém uma vida surpreendentemente tranquila. Gosta de caminhar por regiões naturais próximas a Diamond City e frequentemente pesca utilizando métodos pouco convencionais. Sua precisão é tão absurda que já foi visto acertando peixes em movimento com kunais, algo que insiste em chamar de <b>“treinamento de coordenação”</b> quando questionado.",
+    extraImages: ["kiriya_art1.png", "kiriya_art2.png", "kiriya_river.png", "kiriya_training.png", "kiriya_fullbody.png"],
+    secret: "Kiriya mantém registros detalhados das capacidades de praticamente todos os estudantes que passaram por suas aulas. Esses registros incluem hábitos de movimento, pontos cegos, velocidade de reação e comportamentos apresentados quando estão sob pressão.<br><br>Embora pareça uma prática extremamente suspeita, Kiriya utiliza essas informações principalmente para adaptar o treinamento individual de cada aluno. Ainda assim, ele admite com um sorriso que saber exatamente como seus antigos estudantes lutam seria extremamente conveniente caso algum deles algum dia se tornasse inimigo de Diamond City.<br><br>Outra curiosidade é que Kiriya raramente utiliza toda a sua precisão durante demonstrações. Ele acredita que estudantes aprendem melhor quando conseguem imaginar que ainda existe alguma possibilidade de superar o professor. Até hoje, ninguém na Lancehearth Academy sabe exatamente qual é o limite real da pontaria dele."
 }
         ];
 
@@ -2525,7 +2616,7 @@ secret: "Mireva conserva escondido um pequeno conjunto de registros antigos pert
     description: "Os <b>Demonborn</b> são seres originários do <b>Underworld</b>, um domínio subterrâneo localizado muito abaixo das terras congeladas de Zenathor. Apesar de frequentemente serem chamados simplesmente de 'demônios' pelos mortais, Demonborn não constituem uma única cultura, reino ou exército. O termo descreve uma enorme variedade de criaturas nascidas de uma mesma essência infernal, cada uma moldada por impulsos, poderes e características extremamente diferentes.<br><br><b>O Underworld:</b> O Underworld permanece separado da superfície por antigas passagens e estruturas necromânticas. Os poderosos necromantes de Zenathor conseguem abrir, fechar e proteger algumas dessas entradas, impedindo que mortais comuns atravessem livremente. Entretanto, existe uma diferença fundamental: <b>os necromantes controlam as portas, mas não controlam aquilo que existe atrás delas.</b> Nenhum reino de Aetheryon conseguiu subjugar os Demonborn como espécie. Nem mesmo Zenathor, apesar de possuir acesso direto ao Underworld, considera essas criaturas parte de seus exércitos.<br><br><b>Núcleo Infernal:</b> Todo Demonborn nasce possuindo um Núcleo Infernal, uma concentração de energia sobrenatural que funciona simultaneamente como fonte de mana, centro biológico e âncora espiritual. Esse núcleo determina grande parte da fisiologia da criatura e explica por que dois Demonborn podem possuir aparências completamente diferentes e ainda pertencer à mesma raça.<br><br><b>Diversidade Física:</b> Alguns Demonborn parecem monstros desde o nascimento, enquanto outros possuem aparência quase perfeitamente humana. Existem indivíduos com chifres, asas, caudas, pele incomum, múltiplos olhos, garras, armaduras naturais, anatomia monstruosa ou praticamente nenhuma característica demoníaca visível. Não existe um corpo Demonborn padrão.<br><br><b>Forma Humana:</b> Algumas linhagens conseguem desenvolver uma Forma Humana, permitindo que o Demonborn esconda grande parte de sua verdadeira anatomia. Essa transformação não é necessariamente uma ilusão: o próprio corpo reorganiza temporariamente sua estrutura através do Núcleo Infernal. Asas, chifres, caudas e marcas podem desaparecer completamente. Calysthe e Braska são exemplos de Demonborn capazes de circular entre mortais com aparência praticamente humana.<br><br><b>Forma Avançada:</b> Demonborn que possuem Forma Humana frequentemente também possuem uma Forma Avançada, na qual libertam uma parcela muito maior do poder armazenado no Núcleo Infernal. Durante essa transformação podem surgir asas, caudas, chifres, garras, marcas brilhantes, alterações nos olhos, armaduras naturais, aumento de tamanho ou mutações específicas de sua essência. A Forma Avançada é individual e não precisa ser idêntica entre membros da mesma categoria.<br><br><b>Impulso Primordial:</b> Os Demonborn são classificados de acordo com aquilo que estudiosos chamam de Impulso Primordial. Esse impulso representa a tendência mais profunda do Núcleo Infernal de um indivíduo. Não é uma profissão, facção ou escolha política. É uma característica incorporada à própria existência do demônio.<br><br><b>Categoria — Aniquilação:</b> Demonborn de Aniquilação possuem forte impulso voltado à morte e destruição de seres vivos. Isso não significa necessariamente sadismo. Alguns simplesmente consideram matar tão natural quanto um predador considera caçar. Outros consomem energia vital, perseguem criaturas específicas ou podem destruir populações inteiras quando sua natureza se manifesta sem restrições. <b>Voryss Vhal'Zyra</b> pertence a essa categoria.<br><br><b>Categoria — Lascivia:</b> Demonborn de Lascivia possuem uma essência ligada ao desejo, prazer, atração, intimidade, fascinação e consumo de energia vital através dessas emoções. Sua aparência humana frequentemente é extremamente atraente e muitos possuem capacidades de manipulação emocional, ilusões sensoriais e drenagem energética. Algumas linhagens também possuem métodos próprios de perpetuar a espécie através da mistura de essência Demonborn com outras formas de vida. <b>Calysthe</b> pertence a essa categoria.<br><br><b>Categoria — Rebeldia:</b> Demonborn de Rebeldia possuem uma compulsão profundamente ligada à quebra da ordem. Eles sentem prazer em destruir edifícios, monumentos, muralhas, pontes, plantações, florestas, rios, máquinas e qualquer outra estrutura considerada estável, organizada ou cuidadosamente preservada. Muitos Demonborn de Rebeldia não demonstram interesse especial em matar pessoas, mas suas ações podem provocar catástrofes enormes de maneira indireta. <b>Braska</b> pertence a essa categoria.<br><br><b>Categoria não significa Personalidade:</b> Dois Demonborn do mesmo Impulso Primordial podem apresentar personalidades completamente diferentes. Um membro de Aniquilação pode ser silencioso e calculista enquanto outro é bestial e agressivo. Um membro de Rebeldia pode destruir coisas gargalhando enquanto outro pode tratar destruição como uma forma de arte. O Impulso Primordial influencia aquilo que o Demonborn deseja fazer, mas não determina como ele pensa.<br><br><b>Inteligência:</b> Um erro comum entre habitantes da superfície é considerar Demonborn monstros irracionais. Muitos são extremamente inteligentes. Alguns acumulam conhecimentos avançados sobre magia, guerra, arquitetura, biologia, comportamento ou manipulação emocional. Uma criatura poderosa já representa uma ameaça; uma criatura poderosa capaz de estudar seu adversário antes de agir representa algo muito pior.<br><br><b>Sociedade do Underworld:</b> O Underworld não possui um governo universal reconhecido por todos os Demonborn. Não existe um único rei demoníaco governando toda a raça. Comunidades, territórios, linhagens e alianças existem, mas a independência individual é extremamente valorizada. Algumas regiões são dominadas por Demonborn tão poderosos que outras criaturas simplesmente evitam atravessar seus territórios.<br><br><b>Relações entre Demonborn:</b> Pertencer à mesma raça não cria automaticamente solidariedade. Demonborn podem cooperar, competir, formar vínculos, ignorar uns aos outros, lutar ou até caçar membros da própria espécie. Uma criatura de Aniquilação não necessariamente poupará outra apenas porque ambas nasceram no Underworld.<br><br><b>Relação com Zenathor:</b> Existe uma crença comum fora do extremo norte de que os Demonborn pertencem a Zenathor. Isso é incorreto. Zenathor simplesmente ocupa o território acima de algumas das passagens mais importantes para o Underworld. Seus necromantes aprenderam a manipular os selos dessas entradas e normalmente impedem mortais comuns de atravessá-las. Por razões próprias, permitem que certos Demonborn alcancem a superfície, mas permitir passagem não significa controlar.<br><br><b>Relação com Karyna Blackfield:</b> Os Demonborn não reconhecem Karyna Blackfield como sua soberana. Alguns podem negociar com Zenathor ou colaborar temporariamente quando objetivos coincidem, mas não existe qualquer juramento racial de lealdade à Tirana de Sangue. Para muitos Demonborn, Karyna é simplesmente uma mortal extremamente poderosa vivendo próxima a uma das entradas de seu mundo.<br><br><b>Presença na Superfície:</b> Demonborn atravessam para a superfície por razões extremamente diferentes. Alguns procuram alimento, outros buscam curiosidade, experiências, diversão ou simplesmente oportunidades para exercer seu Impulso Primordial. Por essa razão, descobrir a categoria de um Demonborn costuma ser muito mais importante do que simplesmente saber que ele veio do Underworld.<br><br><b>Alimentação:</b> O metabolismo Demonborn varia enormemente. Alguns conseguem consumir alimentos convencionais, enquanto outros dependem de mana, energia vital, emoções, matéria mágica ou outras fontes sobrenaturais. Certas linhagens conseguem sobreviver por períodos prolongados sem sua fonte preferida de energia, mas tornam-se progressivamente mais fracas ou instáveis.<br><br><b>Reprodução:</b> Não existe um único método reprodutivo entre Demonborn. Algumas linhagens reproduzem-se biologicamente, enquanto outras utilizam ovos, fragmentação de essência, Núcleos Infernais, transformação, mistura de linhagens ou processos exclusivos de determinadas categorias. Essa variedade é uma das principais razões para a enorme diversidade anatômica encontrada no Underworld.<br><br><b>Crescimento e Longevidade:</b> Demonborn geralmente amadurecem fisicamente de maneira relativamente rápida, mas após alcançarem a maturidade o envelhecimento pode tornar-se extremamente lento. A expectativa de vida varia muito entre linhagens. Alguns vivem alguns séculos, enquanto outros podem existir por períodos tão longos que nenhum registro mortal preserva informações confiáveis sobre seu nascimento.<br><br><b>Regeneração:</b> Destruir o corpo de um Demonborn nem sempre significa destruí-lo imediatamente. Enquanto o Núcleo Infernal permanecer intacto, algumas linhagens conseguem regenerar grandes quantidades de tecido e sobreviver a ferimentos que seriam fatais para humanos. Demonborn particularmente poderosos podem apresentar uma regeneração extraordinária.<br><br><b>Morte Definitiva:</b> Apesar de sua resistência, Demonborn não são imortais. A destruição completa do Núcleo Infernal normalmente causa morte definitiva, impedindo que o corpo reconstrua sua essência.<br><br><b>Fraqueza à Luz Divina:</b> Uma das poucas vulnerabilidades relativamente comuns entre Demonborn é a energia sagrada. Magias de Luz Divina capazes de interferir diretamente com essência espiritual podem desestabilizar o Núcleo Infernal. Dependendo do indivíduo, isso pode reduzir regeneração, enfraquecer poderes, provocar grandes danos ou impedir temporariamente o uso da Forma Avançada.<br><br><b>Emoções:</b> Apesar de sua origem infernal, Demonborn são capazes de sentir dor, medo, raiva, desejo, prazer, curiosidade, apego e outras emoções complexas. Alguns podem inclusive desenvolver vínculos genuínos com mortais. O problema é que esses sentimentos podem coexistir com Impulsos Primordiais completamente incompatíveis com a sociedade da superfície.<br><br><b>Ausência de Moral Universal:</b> Demonborn não compartilham uma única moral ou filosofia. Eles não são automaticamente aliados de Zenathor, não são automaticamente aliados uns dos outros e não necessariamente interpretam seus próprios comportamentos como cruéis. Para <b>Voryss</b>, consumir energia vital faz parte do ciclo do Caos. Para <b>Calysthe</b>, desejo representa uma fonte de energia. Para <b>Braska</b>, uma construção intacta representa apenas uma oportunidade de destruição ainda não aproveitada.<br><br><b>Perigo do Underworld:</b> Essa diversidade é justamente aquilo que torna o Underworld tão perigoso. Não existe uma regra simples capaz de explicar todas as criaturas que vivem naquele domínio. Encontrar um Demonborn não significa apenas perguntar o que ele é. A pergunta realmente importante é: <b>qual Demonborn está diante de você?</b>",
     extraImages: ["braska_avancado.jpg", "voryss_art1.png", "demonborn_braska.png", "demonborn_underworld.png"],
     secret: "Entre estudiosos de magia e necromantes existe uma teoria considerada particularmente inquietante: o <b>Impulso Primordial</b> talvez não seja uma simples característica biológica dos Demonborn.<br><br>Alguns registros antigos sugerem que o próprio Underworld possui uma espécie de consciência ou mecanismo natural capaz de gerar criaturas destinadas a expressar diferentes aspectos do caos existente no mundo.<br><br>Se essa hipótese estiver correta, categorias como <b>Aniquilação, Lascivia e Rebeldia</b> não seriam apenas classificações criadas por estudiosos. Elas seriam funções reais dentro de um ecossistema infernal muito maior.<br><br>Isso também significa que as três categorias conhecidas podem representar apenas uma pequena parcela dos Impulsos Primordiais existentes. Existem relatos fragmentados de Demonborn cuja natureza não corresponde a nenhuma classificação atualmente registrada.<br><br>Os necromantes de Zenathor evitam discutir esses registros publicamente por um motivo simples: ninguém sabe quantas categorias existem nas regiões mais profundas do Underworld — nem quais criaturas ainda jamais tentaram alcançar a superfície."
-},
+        }
         ];
 
         // ==========================================
@@ -3227,10 +3318,40 @@ const falasLocais = [
                 extraImagesHTML += '</div>';
             }
 
+            // CÓDIGO NOVO: BOTÃO DE PODER BLINDADO
+            let skillBtnHTML = '';
+            if (hero.skillEffect) {
+                let corFundo = hero.skillEffect.type === 'natureza' ? '#15803d' : '#7f1d1d';
+                let corBrilho = hero.skillEffect.type === 'natureza' ? '#22c55e' : '#ef4444';
+                let icon = hero.skillEffect.type === 'natureza' ? '🌿' : '🩸';
+                
+                skillBtnHTML = `
+                    <button style="margin-top: 15px; padding: 15px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; border: 2px solid ${corBrilho}; background-color: ${corFundo}; color: white; font-family: 'Cinzel', serif; font-size: 16px; box-shadow: 0 0 15px ${corFundo}; text-transform: uppercase; transition: 0.3s;" 
+                    onclick="window.dispararMagia('${hero.skillEffect.type}')"
+                    onmouseover="this.style.boxShadow='0 0 30px ${corBrilho}'"
+                    onmouseout="this.style.boxShadow='0 0 15px ${corFundo}'">
+                        ${icon} ${hero.skillEffect.text} ${icon}
+                    </button>
+                `;
+            }
+
             let secretHTML = '';
             if (hero.secret) {
                 secretHTML = `<button class="secret-btn" onclick="document.getElementById('secretText').style.display='block'">⚠️ Desbloquear Dossiê Confidencial</button>
                               <div id="secretText" class="secret-text"><strong>CLASSIFICADO:</strong><br><br>${hero.secret}</div>`;
+            }
+
+            let videoOrigemHTML = '';
+            if (hero.videoOrigem) {
+                videoOrigemHTML = `
+                    <div style="margin-top: 30px; border-top: 1px dashed #444; padding-top: 20px;">
+                        <h3 class="extra-gallery-title" style="color: #ff4500; text-align: center; margin-top: 0;">🎥 História de Origem</h3>
+                        <video controls style="width: 100%; border: 2px solid #ff4500; border-radius: 8px; box-shadow: 0 0 20px rgba(255, 69, 0, 0.4); outline: none;">
+                            <source src="${hero.videoOrigem}" type="video/mp4">
+                            Seu navegador não suporta vídeos.
+                        </video>
+                    </div>
+                `;
             }
 
             const forca = hero.stats.forca || 0;
@@ -3348,11 +3469,13 @@ const falasLocais = [
 
                 ${btn3DChar}
                 ${btn3DWeapon}
+                ${skillBtnHTML}
 
                 <p style="margin-bottom: 20px;"><strong>Lore Oficial:</strong><br><br> ${hero.description}</p>
                 
                 ${secretHTML}
                 ${extraImagesHTML}
+                ${videoOrigemHTML}
             `;
             
             document.getElementById('heroModal').style.display = 'flex';
@@ -9526,6 +9649,131 @@ function finalizarJogo(vitória, msg) {
         document.body.appendChild(btnMessenger);
     }, 2000); // Aparece 2 segundos depois de carregar a página
 </script>
+
+      <!-- SCRIPT DO EFEITO DE MAGIA GLOBAL -->
+    <script>
+        window.dispararEfeito = function(tipo) {
+            let overlay = document.getElementById('tela-efeito');
+            if (!overlay) {
+                overlay = document.createElement('div');
+                overlay.id = 'tela-efeito';
+                document.body.appendChild(overlay);
+            }
+            
+            overlay.className = 'power-overlay';
+            void overlay.offsetWidth; 
+            
+            overlay.classList.add('power-' + tipo);
+            overlay.style.display = 'block';
+
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                overlay.className = 'power-overlay';
+            }, 2500);
+        };
+    </script>
+
+    <!-- DIV DA MAGIA E SCRIPT -->
+    <div id="tela-explosao-magia"></div>
+
+  <script>
+        window.dispararMagia = function(tipo) {
+            // Remove qualquer efeito anterior que tenha ficado no ecrã
+            var velha = document.getElementById('efeito-magia-avancado');
+            if(velha) velha.remove();
+
+            // Cria o contentor principal invisível que cobre o ecrã
+            var container = document.createElement('div');
+            container.id = 'efeito-magia-avancado';
+            container.style.position = 'fixed';
+            container.style.top = '0';
+            container.style.left = '0';
+            container.style.width = '100vw';
+            container.style.height = '100vh';
+            container.style.pointerEvents = 'none';
+            container.style.zIndex = '2147483647';
+
+            if(tipo === 'natureza') {
+                // SVG com raízes a crescer e as linhas tracejadas do seu TCG
+                container.innerHTML = `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%" style="position:absolute; top:0; left:0; filter: drop-shadow(0 0 8px #22c55e);">
+                        <style>
+                            .raiz {
+                                fill: none;
+                                stroke: #16a34a; /* Verde escuro */
+                                stroke-width: 1.5;
+                                stroke-dasharray: 200;
+                                stroke-dashoffset: 200;
+                                animation: crescerRaiz 1.5s ease-out forwards;
+                                stroke-linecap: round;
+                            }
+                            .raiz-tcg {
+                                fill: none;
+                                stroke: #4ade80; /* Verde néon brilhante */
+                                stroke-width: 0.5;
+                                stroke-dasharray: 3 3; /* O mesmo tracejado do jogo de cartas */
+                                animation: moverTracejado 0.5s linear infinite, sumir 2s forwards;
+                            }
+                            @keyframes crescerRaiz { to { stroke-dashoffset: 0; } }
+                            @keyframes moverTracejado { to { stroke-dashoffset: -6; } }
+                            @keyframes sumir { 80% { opacity: 1; } 100% { opacity: 0; } }
+                        </style>
+                        <!-- Linhas orgânicas (Raízes grossas) -->
+                        <path class="raiz" d="M -10,110 Q 20,80 10,50 T 40,-10" />
+                        <path class="raiz" d="M 110,110 Q 80,70 90,40 T 60,-10" />
+                        <path class="raiz" d="M -10,40 Q 30,50 60,30 T 110,10" />
+                        
+                        <!-- Linhas geométricas (Estilo de mira do TCG) -->
+                        <path class="raiz-tcg" d="M 0,100 L 50,50 L 100,100" />
+                        <path class="raiz-tcg" d="M 0,0 L 50,50 L 100,0" />
+                        <circle cx="50" cy="50" r="10" class="raiz-tcg" />
+                    </svg>
+                    <!-- Clarão sutil no fundo -->
+                    <div style="position:absolute; top:0; left:0; width:100%; height:100%; background: radial-gradient(circle, transparent 40%, rgba(21,128,61,0.2) 100%); animation: sumir 2s forwards;"></div>
+                `;
+            } else if (tipo === 'trevas') {
+                // Adaptação macabra para a Karyna
+                container.innerHTML = `
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%" style="position:absolute; top:0; left:0; filter: drop-shadow(0 0 10px #dc2626);">
+                        <style>
+                            .veia {
+                                fill: none;
+                                stroke: #7f1d1d; /* Vermelho sangue profundo */
+                                stroke-width: 2;
+                                stroke-dasharray: 200;
+                                stroke-dashoffset: 200;
+                                animation: crescerRaiz 1.5s ease-in forwards;
+                            }
+                            .onda-choque {
+                                fill: none;
+                                stroke: #ef4444;
+                                stroke-width: 0.5;
+                                stroke-dasharray: 5 5;
+                                animation: moverTracejado 0.3s linear infinite, sumir 2s forwards;
+                            }
+                            @keyframes crescerRaiz { to { stroke-dashoffset: 0; } }
+                            @keyframes moverTracejado { to { stroke-dashoffset: 10; } }
+                            @keyframes sumir { 80% { opacity: 1; } 100% { opacity: 0; } }
+                        </style>
+                        <!-- Veias a rasgar o ecrã -->
+                        <path class="veia" d="M 50,50 L 10, -10 M 50,50 L 110, 20 M 50,50 L 80, 110 M 50,50 L -10, 80" />
+                        <path class="veia" d="M 0,0 Q 50,50 100,100 M 0,100 Q 50,50 100,0" />
+                        <!-- Efeito de corte tracejado -->
+                        <circle cx="50" cy="50" r="40" class="onda-choque" />
+                        <circle cx="50" cy="50" r="20" class="onda-choque" style="animation-direction: reverse;" />
+                    </svg>
+                    <div style="position:absolute; top:0; left:0; width:100%; height:100%; background: radial-gradient(circle, transparent 30%, rgba(139,0,0,0.4) 100%); animation: sumir 2s forwards;"></div>
+                `;
+            }
+
+            document.body.appendChild(container);
+
+            // Remove os elementos automaticamente após a animação concluir
+            setTimeout(function() {
+                container.remove();
+            }, 2000);
+        };
+    </script>
 
 </body>
 </html>
