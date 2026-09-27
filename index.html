@@ -555,6 +555,119 @@
             100% { opacity: 0; filter: brightness(1) contrast(1); }
         }
 
+        /* ========================================== */
+        /* REDE SOCIAL DE AETHERYON (AETHERNET)       */
+        /* ========================================== */
+        #feedGrid {
+            display: none; /* Começa escondido, como as outras abas */
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            padding: 20px;
+            max-width: 600px; /* Mais estreito para parecer feed de celular */
+            margin: 0 auto;
+        }
+
+        .post-container {
+            background-color: var(--bg-panel);
+            border: 1px solid #333;
+            border-radius: 12px;
+            width: 100%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.8);
+            overflow: hidden;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        /* Cabeçalho do Post */
+        .post-header {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #222;
+        }
+        .post-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold);
+            margin-right: 15px;
+        }
+        .post-user-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .post-author {
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin: 0;
+            font-family: 'Cinzel', serif;
+        }
+        .post-location {
+            color: #888;
+            font-size: 0.8rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Conteúdo do Post */
+        .post-content {
+            padding: 15px;
+            color: #ccc;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+        .post-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-top: 1px solid #222;
+            border-bottom: 1px solid #222;
+        }
+
+        /* Botões de Ação (Like) */
+        .post-actions {
+            padding: 10px 15px;
+            display: flex;
+            gap: 15px;
+            border-bottom: 1px solid #222;
+        }
+        .action-btn {
+            background: transparent;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: 0.2s;
+        }
+        .action-btn:hover { color: var(--crimson); transform: scale(1.1); }
+        .action-btn.liked { color: var(--crimson); }
+
+        /* Comentários (A cereja do bolo!) */
+        .post-comments {
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.4);
+        }
+        .comment {
+            display: flex;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+        .comment:last-child { margin-bottom: 0; }
+        .comment-author {
+            color: var(--gold);
+            font-weight: bold;
+            margin-right: 8px;
+            white-space: nowrap;
+        }
+        .comment-text { color: #aaa; }
+
     </style>
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -570,6 +683,70 @@
 
 </head>
 <body>
+
+    <!-- ========================================== -->
+    <!-- TELA DE BOAS-VINDAS / ESCOLHA DO JOGADOR   -->
+    <!-- ========================================== -->
+    <div id="welcomeScreen" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 10000000; justify-content: center; align-items: center; flex-direction: column; backdrop-filter: blur(10px); padding: 20px; box-sizing: border-box; text-align: center; font-family: 'Cinzel', serif;">
+        
+        <h1 style="color: #ffcc00; font-size: 3rem; margin-bottom: 10px; text-shadow: 0 0 20px #ffcc00;">Bem-vindo a Aetheryon</h1>
+        <p style="color: #ccc; font-family: 'Roboto', sans-serif; font-size: 1.1rem; max-width: 600px; margin-bottom: 40px;">
+            O éter registra a presença de todos que pisam nestas terras. Como você deseja ser lembrado nos registros do AetherNet?
+        </p>
+
+        <div style="display: flex; gap: 30px; flex-wrap: wrap; justify-content: center;">
+            
+            <!-- OPÇÃO 1: OFFLINE / ANÔNIMO -->
+            <div style="background: #111; border: 2px solid #555; border-radius: 10px; padding: 30px; width: 280px; transition: 0.3s; box-shadow: 0 0 15px rgba(0,0,0,0.8);" onmouseover="this.style.borderColor='#888'; this.style.transform='scale(1.05)'" onmouseout="this.style.borderColor='#555'; this.style.transform='scale(1)'">
+                <div style="font-size: 3rem; margin-bottom: 15px;">👻</div>
+                <h2 style="color: #aaa; margin-top: 0;">Caminhar nas Sombras</h2>
+                <p style="color: #888; font-family: 'Roboto', sans-serif; font-size: 0.9rem; margin-bottom: 20px;">Modo Offline. Você será um visitante anônimo. Seus comentários ficam salvos apenas no seu dispositivo e ninguém mais poderá vê-los.</p>
+                <button onclick="escolherModo('offline')" style="width: 100%; padding: 12px; background: #333; color: #fff; border: 1px solid #555; border-radius: 5px; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif;">Ser Anônimo</button>
+            </div>
+
+            <!-- OPÇÃO 2: ONLINE / CRIAR PERFIL -->
+            <div style="background: #111; border: 2px solid #00ffcc; border-radius: 10px; padding: 30px; width: 280px; transition: 0.3s; box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);" onmouseover="this.style.borderColor='#fff'; this.style.transform='scale(1.05)'; this.style.boxShadow='0 0 30px rgba(0,255,204,0.6)'" onmouseout="this.style.borderColor='#00ffcc'; this.style.transform='scale(1)'; this.style.boxShadow='0 0 20px rgba(0,255,204,0.3)'">
+                <div style="font-size: 3rem; margin-bottom: 15px;">✨</div>
+                <h2 style="color: #00ffcc; margin-top: 0;">Forjar Presença</h2>
+                <p style="color: #ccc; font-family: 'Roboto', sans-serif; font-size: 0.9rem; margin-bottom: 20px;">Modo Online. Crie sua identidade. Seus comentários serão vistos por outros viajantes e os heróis poderão reagir à sua personalidade.</p>
+                <button onclick="abrirCriacaoPerfil()" style="width: 100%; padding: 12px; background: #00ffcc; color: #000; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif;">Criar Perfil</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- TELA DE PREENCHER O PERFIL ONLINE -->
+    <div id="profileCreatorScreen" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 10000001; justify-content: center; align-items: center; flex-direction: column; backdrop-filter: blur(10px); padding: 20px; box-sizing: border-box; font-family: 'Cinzel', serif;">
+        <div style="background: #111; border: 2px solid #00ffcc; padding: 30px; border-radius: 10px; width: 100%; max-width: 400px; box-shadow: 0 0 30px rgba(0, 255, 204, 0.3);">
+            <h2 style="color: #00ffcc; text-align: center; margin-top: 0;">Sua Identidade</h2>
+            
+            <!-- FOTO DE PERFIL -->
+            <div style="text-align: center; margin-bottom: 20px;">
+                <img id="previewAvatarVisitante" src="https://via.placeholder.com/100/333/00ffcc?text=U" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 2px solid #00ffcc; margin-bottom: 10px;">
+                <input type="file" accept="image/*" onchange="previewAvatar(event)" style="display: block; margin: 0 auto; color: #aaa; font-family: 'Roboto', sans-serif; font-size: 0.8rem;">
+            </div>
+
+            <!-- NOME -->
+            <input type="text" id="inputNomeVisitante" placeholder="Seu Nome de Viajante..." style="width: 100%; padding: 12px; margin-bottom: 15px; background: #222; border: 1px solid #444; color: #fff; border-radius: 5px; font-family: 'Roboto', sans-serif; box-sizing: border-box; outline: none;">
+            
+            <!-- PERSONALIDADE -->
+            <p style="color: #aaa; font-size: 0.9rem; margin-bottom: 5px; font-family: 'Roboto', sans-serif;">Qual é a sua Personalidade?</p>
+            <select id="inputPersonalidadeVisitante" style="width: 100%; padding: 12px; margin-bottom: 25px; background: #222; border: 1px solid #444; color: #fff; border-radius: 5px; font-family: 'Roboto', sans-serif; box-sizing: border-box; outline: none;">
+                <option value="Aventureiro Corajoso">Aventureiro Corajoso</option>
+                <option value="Sábio e Calmo">Sábio e Calmo</option>
+                <option value="Arrogante e Provocador">Arrogante e Provocador</option>
+                <option value="Tímido e Dócil">Tímido e Dócil</option>
+                <option value="Caótico e Piadista">Caótico e Piadista</option>
+            </select>
+
+            <!-- BOTÕES DA TELA DE PERFIL -->
+            <button onclick="salvarPerfilOnline()" style="width: 100%; padding: 12px; background: #00ffcc; color: #000; border: none; font-weight: bold; cursor: pointer; border-radius: 5px; font-family: 'Cinzel', serif; font-size: 1.1rem; box-shadow: 0 0 15px rgba(0,255,204,0.4);">Salvar Identidade</button>
+            
+            <button onclick="voltarModoFantasma()" style="width: 100%; margin-top: 10px; padding: 12px; background: #222; color: #aaa; border: 1px solid #555; cursor: pointer; border-radius: 5px; font-family: 'Roboto', sans-serif; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.background='#333'" onmouseout="this.style.background='#222'">👻 Quero ser Anônimo (Offline)</button>
+            
+            <button onclick="document.getElementById('profileCreatorScreen').style.display='none'" style="width: 100%; margin-top: 10px; padding: 10px; background: transparent; color: #666; border: 1px dashed #444; cursor: pointer; border-radius: 5px; font-family: 'Roboto', sans-serif; font-size: 0.8rem;">Fechar sem salvar</button>
+        </div>
+    </div>
 
     <!-- ========================================== -->
 <!-- AVISO DE CONTEÚDO +18 (BLINDADO)           -->
@@ -650,8 +827,8 @@
     <div id="particles"></div>
 
     <header>
-        <h1>Aetheryon Lore Book</h1>
-        <p class="subtitle">Selecione seu Campeão. Explore os Arquivos Confidenciais.</p>
+        <h1>Aetheryon Main Hall</h1>
+        <p class="subtitle">Hora de explorar esse mundo de fantasia sem limites.</p>
         
         <div class="filters">
             <button class="filter-btn active" onclick="filterHeroes('all', this)">Todos</button>
@@ -709,6 +886,7 @@
         <button id="btnHeroes" class="tab-btn active" onclick="switchTab('heroes')">👤 Lendas de Aetheryon</button>
         <button id="btnLocations" class="tab-btn" onclick="switchTab('locations')">🌍 Mapa e Regiões</button>
         <button id="btnRaces" class="tab-btn" onclick="switchTab('races')">🧬 Raças & Biologia</button>
+        <button id="btnFeed" class="tab-btn" onclick="switchTab('feed')" style="color: #a855f7; border-color: #a855f7;">📱 AetherNet (Feed)</button>
         <button style="background: #111; color: #00ffcc; border: 1px solid #00ffcc; padding: 10px 20px; font-family: 'Cinzel', serif; cursor: pointer; border-radius: 5px; margin-left: 10px;" onclick="window.open('mapa.html', '_blank')">🌍 MAPA MÚNDI</button>
         <button style="background: #111; color: #ffd700; border: 1px solid #ffd700; padding: 10px 20px; font-family: 'Cinzel', serif; cursor: pointer; border-radius: 5px; margin-left: 10px;" onclick="window.open('grimorio.html', '_blank')">📖 GRIMÓRIO (HISTÓRIA)</button>
         <button style="background: #111; color: #ff00ff; border: 1px solid #ff00ff; padding: 10px 20px; font-family: 'Cinzel', serif; cursor: pointer; border-radius: 5px; margin-left: 10px;" onclick="window.open('comics.html', '_blank')">📚 COMICS</button>
@@ -717,6 +895,138 @@
     <div class="gallery" id="gallery"></div>
     <div class="gallery" id="locationsGrid" style="display: none;"></div>
     <div class="gallery" id="racesGrid" style="display: none;"></div>
+
+    <!-- ========================================== -->
+    <!-- FEED AETHERNET - VERSÃO CORRIGIDA          -->
+    <!-- ========================================== -->
+    <div id="feedGrid" style="display: none; flex-direction: column; align-items: center; gap: 30px; padding: 20px; max-width: 600px; margin: 0 auto;">
+        
+   <!-- CONTADOR DE TICKETS E PERFIL NO FEED -->
+        <div style="background: #111; border: 1px solid #00ffcc; padding: 15px 20px; border-radius: 8px; color: #fff; font-family: 'Cinzel', serif; font-weight: bold; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 0 15px rgba(0, 255, 204, 0.2); width: 100%; box-sizing: border-box;">
+            <div style="text-align: left;">
+                🎟️ Aetheryon Tickets: <span id="feedTicketsCount" style="color: #00ffcc; font-size: 1.4rem;">0</span>
+                <div style="font-size: 0.85rem; color: #aaa; margin-top: 5px; font-family: 'Roboto', sans-serif; text-transform: none; letter-spacing: normal;">Leia a Lore dos heróis por 1 minuto para ganhar Tickets e comentar!</div>
+            </div>
+            
+            <!-- BOTAO DE EDITAR O PERFIL / SAIR DO MODO ANÔNIMO -->
+            <button onclick="document.getElementById('profileCreatorScreen').style.display='flex'" style="background: #222; color: #00ffcc; border: 1px dashed #00ffcc; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-family: 'Cinzel', serif; font-weight: bold; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.background='#00ffcc'; this.style.color='#000';" onmouseout="this.style.background='#222'; this.style.color='#00ffcc';">
+                ⚙️ Meu Perfil
+            </button>
+        </div>
+
+       <!-- ============================== -->
+        <!-- POST EXEMPLO COM IMAGEM E LIKE POLIDO -->
+        <!-- ============================== -->
+        <div class="post-container" data-personagem="Ashlan" style="background-color: #111; border: 1px solid #333; border-radius: 12px; width: 100%; box-shadow: 0 5px 15px rgba(0,0,0,0.8); overflow: hidden; font-family: 'Roboto', sans-serif;">
+            
+            <!-- CABEÇALHO (O mesmo de antes) -->
+            <div class="post-header" style="display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #222;">
+                <img src="ashlan_face.jpg" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #d4af37; margin-right: 15px;">
+                <div style="display: flex; flex-direction: column; text-align: left;">
+                    <p style="color: #fff; font-weight: bold; font-size: 1.1rem; margin: 0; font-family: 'Cinzel', serif;">Ashlan Lancehearth</p>
+                    <p style="color: #888; font-size: 0.8rem; margin: 0; display: flex; align-items: center; gap: 5px;">📍 Taverna do Javali, Diamond City</p>
+                </div>
+            </div>
+            
+            <!-- TEXTO DO POST -->
+            <div class="post-content" style="padding: 15px; color: #ccc; line-height: 1.5; font-size: 0.95rem; text-align: left;">
+                Aquele Lorde Vane achou que podia colocar a mão em mim. Acabei de usar a GaleForce pra baixar as calças dele na frente de todo mundo na taverna. Ups! 🌪️💅
+            </div>
+            
+            <!-- AÇÕES (BOTÃO LIKE REDESENHADO) -->
+            <div class="post-actions" style="padding: 12px 15px; display: flex; gap: 15px; border-bottom: 1px solid #222; background: #161616;">
+                <button class="action-btn" onclick="toggleLike(this)" style="background: rgba(255, 255, 255, 0.05); border: 1px solid #444; border-radius: 20px; padding: 6px 15px; color: #888; cursor: pointer; font-size: 0.95rem; font-weight: bold; display: flex; align-items: center; gap: 8px; transition: all 0.2s ease-in-out; box-shadow: 0 2px 5px rgba(0,0,0,0.5);" onmouseover="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.borderColor='#666';" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.borderColor=this.classList.contains('liked') ? '#e11d48' : '#444';">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="pointer-events: none;">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                    <span>142</span>
+                </button>
+            </div>
+            
+            <!-- Comentários com Avatares -->
+            <div class="post-comments" style="padding: 15px; background: rgba(0, 0, 0, 0.4); text-align: left; border-top: 1px solid #222;">
+                
+                <!-- Comentário 1 (Ashley) -->
+                <div style="display: flex; margin-bottom: 15px; align-items: flex-start;">
+                    <!-- Troque o src pela foto da Ashley -->
+                    <img src="ashley_face.jpg" onerror="this.src='https://via.placeholder.com/30'" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid #d4af37; margin-right: 12px; flex-shrink: 0;">
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="color: #d4af37; font-weight: bold; font-size: 0.9rem; margin-bottom: 3px;">Ashley Lancehearth</span>
+                        <span style="color: #aaa; font-size: 0.9rem; line-height: 1.4;">Apague isso imediatamente! Você é uma vergonha para a purificação desta família. E suba já para os seus aposentos!</span>
+                    </div>
+                </div>
+
+                <!-- Comentário 2 (Ashton) -->
+                <div style="display: flex; align-items: flex-start;">
+                    <!-- Troque o src pela foto do Ashton -->
+                    <img src="ashton_face.jpg" onerror="this.src='https://via.placeholder.com/30'" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid #d4af37; margin-right: 12px; flex-shrink: 0;">
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="color: #d4af37; font-weight: bold; font-size: 0.9rem; margin-bottom: 3px;">Ashton Lancehearth</span>
+                        <span style="color: #aaa; font-size: 0.9rem; line-height: 1.4;">HAHAHAH, eu pagava ouro pra ver a cara daquele nobre babaca. Boa, pirralho!</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================== -->
+        <!-- POST EXEMPLO 2 (BYAKUYA)       -->
+        <!-- ============================== -->
+        <div class="post-container" data-personagem="Byakuya" style="background-color: #111; border: 1px solid #333; border-radius: 12px; width: 100%; box-shadow: 0 5px 15px rgba(0,0,0,0.8); overflow: hidden; font-family: 'Roboto', sans-serif;">
+            
+            <div class="post-header" style="display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #222;">
+                <!-- Aqui você precisa colocar o nome da imagem da Byakuya que está na sua pasta -->
+                <img src="byakuya_face.png" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #d4af37; margin-right: 15px;">
+                <div style="display: flex; flex-direction: column; text-align: left;">
+                    <p style="color: #fff; font-weight: bold; font-size: 1.1rem; margin: 0; font-family: 'Cinzel', serif;">Byakuya 白夜</p>
+                    <p style="color: #888; font-size: 0.8rem; margin: 0; display: flex; align-items: center; gap: 5px;">📍 Pico dos Suspiros</p>
+                </div>
+            </div>
+            
+            <div class="post-content" style="padding: 15px; color: #ccc; line-height: 1.5; font-size: 0.95rem; text-align: left;">
+                Fracos. Todos vocês. O treinamento de hoje consistiu em quebrar três costelas de novatos. Se ajoelhem ou sejam pisados. 🪷
+            </div>
+
+              <div class="post-image-container" style="width: 100%; background: #000; border-top: 1px solid #222; border-bottom: 1px solid #222;">
+                <img src="byakuyaskill4.png" alt="Foto do Post" onerror="this.style.display='none'" style="width: 100%; max-height: 400px; object-fit: contain; display: block;">
+            </div>
+       
+           <div class="post-actions" style="padding: 12px 15px; display: flex; gap: 15px; border-bottom: 1px solid #222; background: #161616;">
+                <button class="action-btn" onclick="toggleLike(this)" style="background: rgba(255, 255, 255, 0.05); border: 1px solid #444; border-radius: 20px; padding: 6px 15px; color: #888; cursor: pointer; font-size: 0.95rem; font-weight: bold; display: flex; align-items: center; gap: 8px; transition: all 0.2s ease-in-out; box-shadow: 0 2px 5px rgba(0,0,0,0.5);" onmouseover="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.borderColor='#666';" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.borderColor=this.classList.contains('liked') ? '#e11d48' : '#444';">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="pointer-events: none;">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                    <span>142</span>
+                </button>
+            </div>
+            
+            <div class="post-comments" style="padding: 15px; background: rgba(0, 0, 0, 0.4); text-align: left;">
+
+                 <div style="display: flex; align-items: flex-start;">
+                    <!-- Troque o src pela foto do Ashton -->
+                    <img src="lilia_face.png" onerror="this.src='https://via.placeholder.com/30'" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid #d4af37; margin-right: 12px; flex-shrink:0;">
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="color: #d4af37; font-weight: bold; font-size: 0.9rem; margin-bottom: 3px;">Lilia</span>
+                        <span style="color: #aaa; font-size: 0.9rem; line-height: 1.4;">A violência desnecessária machuca o equilíbrio da terra... 🌿😢</span>
+                </div>
+             </div>
+           
+                <div style="display: flex; align-items: flex-start;">
+                    <img src="byakuya_face.png" onerror="this.src='https://via.placeholder.com/30'" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid #d4af37; margin-right: 12px; flex-shrink:0;">
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="color: #d4af37; font-weight: bold; font-size: 0.9rem; margin-bottom: 3px;">Lilia</span>
+                        <span style="color: #aaa; font-size: 0.9rem; line-height: 1.4;">Cala a boca, herbívora.</span>
+                </div>
+
+                <!-- CAIXA DE INTERAÇÃO DO JOGADOR -->
+            <div style="padding: 15px; border-top: 1px solid #222; background: #111; display: flex; gap: 10px; align-items: center;">
+                <img src="https://via.placeholder.com/30/333/00ffcc?text=U" style="width: 30px; height: 30px; border-radius: 50%; border: 1px solid #00ffcc; flex-shrink: 0;">
+                <input type="text" placeholder="Adicione um comentário..." onkeypress="enviarComentarioFalso(event, this)" style="flex: 1; background: #222; border: 1px solid #444; color: #fff; padding: 8px 12px; border-radius: 20px; outline: none; font-size: 0.9rem;">
+            </div>
+
+            </div>
+        </div>
+     </div>
+  </div>
 
     <div class="modal" id="heroModal">
         <div class="modal-content">
@@ -746,6 +1056,9 @@
     <audio id="soundCute1"><source src="somfofo.mp3" type="audio/mpeg"></audio>
     <audio id="soundCute2"><source src="somfofo2.mp3" type="audio/mpeg"></audio>
     <audio id="somDaBola"><source src="ballclick.mp3" type="audio/mpeg"></audio>
+    <audio id="somTicket">
+        <source src="ticket.mp3" type="audio/mpeg">
+    </audio>
 
 <div id="oracle-float-btn" style="position: fixed; bottom: 30px; right: 30px; z-index: 2000; cursor: pointer; text-align: center; transition: transform 0.2s;">
         <img src="oraculo.gif" alt="A Garota do Oráculo" style="width: 75px; height: 75px; border-radius: 50%; border: 3px solid #8a2be2; box-shadow: 0 0 20px #8a2be2; object-fit: cover;">
@@ -1202,7 +1515,7 @@
                 stats: { forca: 3, magia: 5, agilidade: 80, inteligencia: 100, carisma: 85, physDef: 2, magDef: 0  },
                 race: "Humana", weapon: "Seringa Biótica Ultra",
                 weaponDetails: "Cilindros de ar comprimido abastecidos com um arco-íris de mutagênicos químicos sintéticos. No meio da guerra, ela atira ampolas estilhaçantes que curam feridas abertas ou derretem os tendões inimigos através do descontrole hormonal e dor ácida.",
-                description: "O maior prodígio e monstro que a Academia de Medicina Arcanista de Diamond City já despejou no mundo. Uma ninfomaníaca extrema, Rosalind se tornou tão obcecada por sexo que o ato comum deixou de satisfazê-la. Ela possui uma profunda alienação moral, não sentindo empatia ou sadismo comum; para ela, a dor, o trauma psicológico e as febres hormonais de suas vítimas são apenas 'efeitos colaterais fascinantes' do progresso biológico.<br><br>Seu laboratório clandestino foi construído nos subterrâneos além das fronteiras de Diamond City. Seu nível de obsessão é tão doentio que ela se trancou no laboratório por semanas e simplesmente 'esqueceu' que tinha duas filhas pequenas. As crianças foram resgatadas pelo Lancehearth Child Care Center (Orfanato fundado pela família Lancehearth).<br><br>Troca e Inversão Genital: Conseguiu remover completamente pênis e testículos de machos, substituindo-os por vaginas totalmente funcionais. De forma similar, concedeu a fêmeas humanas genitália masculina completa e de tamanho considerável (como no caso de sua ex-cobaia, a herdeira Melina Kollin).<br><br>Projeto Hipersensibilidade: Alterou a estrutura nervosa das vítimas (focando nos mamilos para os machos e em todos os seios para as fêmeas). A sensibilidade é tão absurdamente amplificada que o alvo alcança orgasmos debilitantes quase que imediatamente ao ser tocado.<br><br>Auto-Experimentação Alfa-Inversa: Alterou o próprio corpo para criar genitália masculina e usou uma mulher como cobaia. Rosalind concluiu com sucesso que espermatozoides vivos e funcionais foram criados (engravidando a cobaia) e provou que a mente feminina automaticamente se adapta para processar a explosão de dopamina e o prazer da ejaculação masculina.<br><br>○As Irmãs Centauros: Foi responsável por capturar Lilia e Sylphy. Torturou e mutilou o corpo de Sylphy (Cobaia 42) apenas para 'brincar de Deus', enquanto considerou Lilia um experimento 'defeituoso' por não conseguir corromper sua alma gentil.",
+                description: "O maior prodígio e monstro que a Academia de Medicina Arcanista de Diamond City já despejou no mundo. Uma ninfomaníaca extrema, Rosalind se tornou tão obcecada por sexo que o ato comum deixou de satisfazê-la. Ela possui uma profunda alienação moral, não sentindo empatia ou sadismo comum; para ela, a dor, o trauma psicológico e as febres hormonais de suas vítimas são apenas 'efeitos colaterais fascinantes' do progresso biológico.<br><br>Seu laboratório clandestino foi construído nos subterrâneos além das fronteiras de Diamond City. Seu nível de obsessão é tão doentio que ela se trancou no laboratório por semanas e simplesmente 'esqueceu' que tinha duas filhas pequenas. As crianças foram resgatadas pelo Lancehearth Child Care Center (Orfanato fundado pela família Lancehearth).<br><br>Troca e Inversão Genital: Conseguiu remover completamente pênis e testículos de machos, substituindo-os por vaginas totalmente funcionais. De forma similar, concedeu a fêmeas humanas genitália masculina completa e de tamanho considerável (como no caso de sua ex-cobaia, a herdeira Melina Kollin).<br><br>Projeto Hipersensibilidade: Alterou a estrutura nervosa das vítimas (focando nos mamilos para os machos e em todos os seios para as fêmeas). A sensibilidade é tão absurdamente amplificada que o alvo alcança orgasmos debilitantes quase que imediatamente ao ser tocado.<br><br>Auto-Experimentação Alfa-Inversa: Alterou o próprio corpo para criar genitália masculina e usou uma mulher como cobaia. Rosalind concluiu com sucesso que espermatozoides vivos e funcionais foram criados (engravidando a cobaia) e provou que a mente feminina automaticamente se adapta para processar a explosão de dopamina e o prazer da ejaculação masculina.<br><br>○As Irmãs Centauros: Foi responsável por capturar Lilia e Sylphy. Torturou e mutilou o corpo de Sylphy (Cobaia 42) apenas para 'brincar de Deus', enquanto considerou Lilia um experimento 'defeituoso' por não conseguir corromper sua alma gentil.<br><br><strong>Passado e Legado Médico:</strong><br><br>Antes de se tornar uma das cientistas mais perigosas de Aetheryon, <strong>Dra. Rosalind Mercer</strong> foi considerada um dos maiores prodígios da medicina arcanista de Diamond City.<br><br>Durante sua carreira inicial no <strong>World Medical Research Center</strong>, Rosalind revolucionou os estudos sobre genética, anatomia e sistemas reprodutivos. Foi ela quem desenvolveu o primeiro método seguro de <strong>transição biológica completa</strong>, inicialmente compatível apenas com Humanos e Elfos Mantra.<br><br>Rosalind também criou as classificações médicas <strong>Androfêmea</strong> e <strong>Ginomacho</strong>.<br><br><strong>Androfêmea:</strong> indivíduo nascido com sistema reprodutivo feminino que posteriormente recebeu um sistema reprodutivo masculino plenamente funcional.<br><br><strong>Ginomacho:</strong> indivíduo nascido com sistema reprodutivo masculino que posteriormente recebeu um sistema reprodutivo feminino plenamente funcional.<br><br>Seus procedimentos permitiram que pessoas transgênero que desejassem uma transição biológica completa pudessem realizá-la de forma segura, sem redução significativa da expectativa de vida ou complicações permanentes quando o processo fosse realizado corretamente.<br><br>Mais tarde, sua irmã, <strong>Thalia Mercer</strong>, continuaria seus estudos e adaptaria o procedimento para as demais raças de Aetheryon.<br><br>Apesar de o World Medical Research Center atualmente rejeitar qualquer nova pesquisa ou colaboração de Rosalind devido às suas práticas antiéticas, suas descobertas iniciais continuam reconhecidas como alguns dos maiores avanços médicos da história moderna de Aetheryon.<br><br>Uma pequena estátua de Rosalind ainda permanece em frente ao centro em homenagem à cientista que ela um dia foi.<br><br>O problema é que, em algum momento, a curiosidade de Rosalind deixou de ser guiada pelo desejo de melhorar vidas.<br><br><strong>Ela começou a se perguntar até onde um corpo poderia ser alterado.<br>E nunca mais parou.</strong>",
                 extraImages: ["rosalind_art1.png", "rosalind_art2.png", "rosalind_comic.png", "rosalind_art3.png", "rosalind_comic3.png"],
                 secret: "Além de insensível, a sua inteligência brilhante é turvada por uma ninfomania extrema, sádica e pervertida. Ela tortura e reescreve a anatomia sexual de suas vítimas e guardas do laboratório não pelo progresso científico puro, mas simplesmente para criar 'fórmulas imortais de prazer' enquanto os humilha brutalmente. Rosalind mantém o seu próprio harém de aberrações exóticas presas no subsolo, saciando os seus instintos obscenos com monstros criados pelas suas próprias seringas."
             },
@@ -1671,7 +1984,7 @@
     race: "Humana",
     weapon: "Bisturi de Cristal Esmeralda & Ampolas Vivas",
     weaponDetails: "Um conjunto de lâminas cirúrgicas purificadas com essência de éter vegetal combinadas a frascos de vidro temperado. Em combate, Thalia quebra catalisadores botânicos no solo que liberam névoas de regeneração celular acelerada, estancam hemorragias massivas e aumentam a resistência física e mágica de toda a vanguarda.",
-    description: "Irmã biológica mais nova da infame Dra. Rosalind Mercer, Thalia sempre compartilhou da mesma genialidade acadêmica e domínio sobre a bio-química, mas seguiu um caminho moral completamente oposto.<br><br>Enquanto Rosalind transformava seu laboratório subterrâneo em Diamond City em um antro de mutilações e devaneios hedonistas, Thalia abandonou a corte e se refugiou no coração verdejante de Naturelands, dedicando seu intelecto ao estudo de ervas medicinais, raízes antigas e feitiços botânicos de restauração celular.<br><br>Durante o ápice da Grande Guerra, ao testemunhar o massacre devastador dos machos Cowari e o desespero de uma raça inteira à beira do esquecimento, Thalia tomou uma decisão drástica: infiltrou-se no complexo clandestino da irmã e surrupiou os dossiês secretos de modificação gonadal. Isolada em seu santuário florestal, ela expurgou os componentes cruéis da fórmula original de Rosalind e reprogramou o composto com extratos vitais de seiva de Naturelands. A aplicação bem-sucedida do tratamento nas fêmeas Cowari salvou a espécie da aniquilação e consolidou Thalia como uma das figuras mais reverenciadas de todo o santuário selvagem.<br><br>Hoje, atua como médica-chefe e conselheira biológica entre as vilas periféricas, mantendo uma rede de distribuição de antídotos que protege os povos das feras venenosas e dos miasmas corrompidos de Diamond City e Zenathor.",
+    description: "Irmã biológica mais nova da infame Dra. Rosalind Mercer, Thalia sempre compartilhou da mesma genialidade acadêmica e domínio sobre a bio-química, mas seguiu um caminho moral completamente oposto.<br><br>Enquanto Rosalind transformava seu laboratório subterrâneo em Diamond City em um antro de mutilações e devaneios hedonistas, Thalia abandonou a corte e se refugiou no coração verdejante de Naturelands, dedicando seu intelecto ao estudo de ervas medicinais, raízes antigas e feitiços botânicos de restauração celular.<br><br>Durante o ápice da Grande Guerra, ao testemunhar o massacre devastador dos machos Cowari e o desespero de uma raça inteira à beira do esquecimento, Thalia tomou uma decisão drástica: infiltrou-se no complexo clandestino da irmã e surrupiou os dossiês secretos de modificação gonadal. Isolada em seu santuário florestal, ela expurgou os componentes cruéis da fórmula original de Rosalind e reprogramou o composto com extratos vitais de seiva de Naturelands. A aplicação bem-sucedida do tratamento nas fêmeas Cowari salvou a espécie da aniquilação e consolidou Thalia como uma das figuras mais reverenciadas de todo o santuário selvagem.<br><br>Hoje, atua como médica-chefe e conselheira biológica entre as vilas periféricas, mantendo uma rede de distribuição de antídotos que protege os povos das feras venenosas e dos miasmas corrompidos de Diamond City e Zenathor.<br><br><strong>Legado de Rosalind e Expansão da Transição Biológica:</strong><br><br>Thalia Mercer sempre reconheceu a genialidade da irmã mais velha, <strong>Dra. Rosalind Mercer</strong>, mesmo após passar a desprezar profundamente aquilo em que Rosalind se transformou. Durante os anos em que Rosalind ainda trabalhava de forma ética ao lado do <strong>World Medical Research Center</strong>, ela desenvolveu o primeiro processo seguro de transição biológica completa e criou as classificações médicas <strong>Androfêmea</strong> e <strong>Ginomacho</strong>.<br><br>Entretanto, os primeiros procedimentos de Rosalind haviam sido desenvolvidos exclusivamente para <strong>Humanos e Elfos Mantra</strong>, cujas anatomias e estruturas genéticas eram as mais estudadas em Diamond City na época.<br><br>Após Rosalind abandonar os princípios que haviam guiado suas primeiras pesquisas e mergulhar em experimentações biológicas cada vez mais extremas, Thalia decidiu continuar o trabalho que sua irmã deixou para trás. Utilizando os fundamentos originais da pesquisa Mercer, ela passou anos estudando as particularidades anatômicas, genéticas e reprodutivas das diferentes raças de Aetheryon.<br><br>Seu maior feito foi adaptar o procedimento de transição biológica para todas as raças compatíveis do mundo, garantindo que indivíduos de diferentes povos pudessem passar pelo processo com a mesma segurança oferecida originalmente aos Humanos e Elfos Mantra.<br><br>Thalia nunca tentou apagar o nome de Rosalind dos estudos. Pelo contrário: apesar de odiar as práticas atuais da irmã, ela considera desonesto ignorar o impacto positivo de suas antigas descobertas. Para Thalia, a queda moral de Rosalind não apaga as vidas que seu trabalho anterior ajudou a transformar.<br><br>Graças às duas irmãs Mercer, pessoas transgênero de diferentes raças de Aetheryon podem atualmente escolher realizar uma transição biológica completa caso desejem. <strong>Rosalind criou o impossível. Thalia tornou esse impossível acessível ao mundo inteiro.</strong>",
     extraImages: ["thalia_art1.png", "thalia_herbs.jpg"],
     secret: "Apesar do ódio visceral pelos métodos de Rosalind, Thalia guarda um sentimento de culpa por ter recorrido às anotações da irmã para salvar as Cowari. Ela mantém um frasco com o composto seminal lactógeno de elite Cowari sempre consigo, consumindo doses diárias que garantem imunidade total contra os venenos hormonais e gases paralisantes desenvolvidos por sua irmã."
         },
@@ -2233,7 +2546,7 @@ secret: "Análises realizadas em Diamond City revelaram que Rosalind não simple
     stats: { forca: 20, magia: 90, agilidade: 80, inteligencia: 85, carisma: 95, physDef: 35, magDef: 90 },
     race: "Humana / Linhagem Nobre Vesperayne", weapon: "Névoa Fúnebre",
     weaponDetails: "Lilienne utiliza sua própria Névoa Fúnebre como principal instrumento de combate. Trata-se de uma manifestação de energia espiritual violeta capaz de envolver grandes áreas, obscurecer a visão, distorcer a percepção de distância e produzir ilusões extremamente convincentes. A névoa também pode envolver aliados como um manto espiritual, reduzindo o impacto de determinados ataques mágicos e permitindo que Lilienne manipule completamente o ritmo de uma batalha.",
-    weaponImage: "lilienne_weapon.jpg",
+    weaponImage: "lilienne_weapon.png",
     description: "Lilienne Vesperayne é a filha mais nova da Casa Vesperayne e a irmã de Seraphine. Possui pele muito clara, olhos violeta intensos e cabelos extremamente longos de coloração branco-prateada, normalmente ondulados e parcialmente trançados. Assim como sua irmã, possui uma figura curvilínea e busto volumoso. Sua vestimenta segue a estética tradicional da família: vestido gótico negro, corpete ajustado, mangas de renda e uma longa saia com tecidos internos em vermelho profundo. Lilienne utiliza poucos acessórios, normalmente limitados a uma pequena coroa ou ornamento negro no cabelo.<br><br>Por ser a segunda filha da família, Lilienne cresceu com menos responsabilidades políticas diretas do que Seraphine. Isso permitiu que desenvolvesse uma personalidade consideravelmente mais livre, espontânea e provocadora. Embora domine perfeitamente a etiqueta aristocrática, raramente demonstra interesse em seguir suas regras quando não existe necessidade real.<br><br>Lilienne é brincalhona, afetuosa e extremamente observadora. Possui facilidade em perceber mentiras, inseguranças e intenções escondidas durante conversas. Sua aparência despreocupada frequentemente faz com que adversários políticos subestimem sua inteligência, algo que ela utiliza deliberadamente em benefício próprio.<br><br>Seu poder é conhecido como <b>Névoa Fúnebre</b>, uma manifestação espiritual capaz de cobrir grandes áreas com uma névoa violeta sobrenatural. Dentro dela, Lilienne pode distorcer sons, alterar a percepção de distância, criar duplicatas ilusórias e esconder completamente a movimentação de aliados. Também consegue concentrar a névoa ao redor de uma pessoa para formar uma proteção espiritual temporária.<br><br>Seu estilo de combate é focado principalmente em suporte, manipulação de campo e desorientação. Lilienne raramente enfrenta inimigos através de força bruta. Em vez disso, transforma o ambiente em uma enorme armadilha psicológica onde apenas seus aliados conseguem compreender perfeitamente o que está acontecendo.<br><br>Lilienne e Seraphine cresceram praticamente inseparáveis. Durante a infância, frequentemente escapavam juntas das cerimônias formais da família para explorar corredores, bibliotecas e criptas antigas da propriedade Vesperayne. Quando adultas, a ligação entre as duas acabou se transformando em uma relação romântica.<br><br>Ao contrário de Seraphine, Lilienne demonstra muito menos preocupação com o possível escândalo causado pela relação. Sua maior preocupação é a possibilidade de Seraphine ser obrigada a aceitar algum casamento político. Por esse motivo, Lilienne adquiriu o divertido hábito de atormentar possíveis pretendentes da irmã até que eles próprios desistam.<br><br>Quando luta junto de Seraphine, Lilienne participa da técnica combinada <b>Eclipse Carmesim</b>, espalhando sua Névoa Fúnebre pelo campo enquanto a irmã manifesta uma lua carmesim acima da batalha. A combinação das duas magias transforma percepção e visibilidade em armas, tornando extremamente difícil enfrentar as irmãs simultaneamente.",
     extraImages: ["lilienne_art1.png", "lilienne_comic.jpg", "lilienne_throne.jpg", "lilienne_fullbody.png"],
     secret: "Por trás de sua personalidade despreocupada, Lilienne é extremamente possessiva em relação a Seraphine. Ela odeia a ideia de que sua irmã seja utilizada em um casamento político e frequentemente interfere discretamente nas tentativas da aristocracia de encontrar pretendentes para ela. Lilienne também costuma entrar nos aposentos de Seraphine sem bater, roubar pequenas quantidades de seu vinho e dormir abraçada à irmã sempre que permanece no quarto dela."
@@ -2300,7 +2613,7 @@ secret: "Mireva conserva escondido um pequeno conjunto de registros antigos pert
     weaponImage: "kanata_weapon.png",
     description: "Kanata Viremont, conhecida como <b>“A Arquiteta do Comércio”</b>, é uma empresária extremamente influente de Diamond City e fundadora da famosa <b>Kanata Akusesari!</b>, companhia especializada em acessórios tecnológicos desenvolvidos em parceria direta com Aethelgard.<br><br>Kanata nasceu em uma família extremamente rica, embora os Viremont nunca tenham vivido como aristocratas tradicionais. Apesar da enorme fortuna, a família mantinha uma residência confortável porém comum em Diamond City, preferindo investir seu patrimônio em comércio, propriedades e oportunidades econômicas.<br><br>Durante a Grande Guerra, sua família decidiu abandonar Diamond City e tentar chegar até Aethelgard, acreditando que o território tecnologicamente avançado ofereceria maior segurança. A decisão acabou sendo fatal. O grupo foi dizimado durante a viagem, deixando Kanata como única sobrevivente e herdeira de toda a fortuna familiar.<br><br>Em vez de simplesmente viver do dinheiro herdado, Kanata utilizou o patrimônio como base para construir seu próprio império comercial. Percebendo que grande parte da tecnologia de Aethelgard permanecia restrita a aplicações militares e científicas, ela propôs uma parceria: forneceria grandes investimentos em troca de acesso a tecnologia capaz de ser adaptada para utilização cotidiana.<br><br>Assim nasceu a <b>Kanata Akusesari!</b>, empresa responsável por acessórios como sapatos tecnológicos, mochilas inteligentes, coletes, dispositivos domésticos, sistemas de localização, produtos recreativos e inúmeros outros itens destinados a facilitar a vida cotidiana em Aetheryon.<br><br>Com o crescimento da companhia, Kanata abriu uma unidade de produção próxima a Diamond City, onde funcionários locais utilizam tecnologia importada de Aethelgard para fabricar produtos destinados ao mercado civil.<br><br>Apesar da enorme riqueza, Kanata continua trabalhando intensamente. Ela acompanha contratos, produção, desenvolvimento de produtos e decisões financeiras pessoalmente. Sua personalidade é marcada por uma expressão quase permanentemente cansada e indiferente. Mesmo diante de situações absurdas, Kanata raramente demonstra surpresa, entusiasmo ou medo.<br><br>Seu comportamento extremamente seco fez com que o silêncio e a expressão <b>“...”</b> praticamente se tornassem marcas registradas da personagem. Kanata não é emocionalmente vazia; ela simplesmente possui pouquíssima paciência para dramatizações e prefere resolver qualquer problema da maneira mais eficiente possível.<br><br>Kanata mantém uma relação próxima com Aethelgard e tornou-se uma importante ponte econômica entre o território tecnológico e Diamond City. Sua determinação e inteligência fizeram com que figuras como <b>Ashlan Lancehearth</b> desenvolvessem grande respeito por ela.<br><br>Em determinado momento, o enorme estresse causado pela administração da empresa levou Kanata a procurar a <b>Dra. Rosalind Mercer</b>. Utilizando um dispositivo avançado de rastreamento, Kanata conseguiu localizar o laboratório secreto de Rosalind e apareceu pessoalmente no local sem demonstrar praticamente nenhum medo diante das experiências que encontrou.<br><br>Durante a visita, Kanata comentou sobre sua constante exaustão e dificuldade em relaxar. Rosalind, auxiliada por <b>Mireva Sollen</b>, realizou voluntariamente uma alteração bio-alquímica permanente em seu organismo, modificando profundamente sua fisiologia sexual e hormonal. O procedimento aumentou drasticamente sua libido e sensibilidade e fez Kanata desenvolver <b>um pênis e testículos plenamente funcionais</b>, preservando o restante de sua aparência feminina.<br><br>Kanata reagiu ao procedimento com a mesma expressão indiferente de sempre. <br><br>A modificação tornou-se permanente. Ela permaneceu identificada e socialmente reconhecida como mulher, porém passou a possuir uma anatomia sexual híbrida criada artificialmente pela Bio-Alquimia de Rosalind. A reação de Kanata ao procedimento foi quase cômica: após confirmar que tudo funcionava, simplesmente agradeceu às duas cientistas e voltou para casa com a mesma expressão indiferente de sempre.<br><br>Publicamente, absolutamente nada mudou. Kanata continua sendo conhecida como uma empresária brilhante, disciplinada e responsável por uma das companhias mais importantes do comércio tecnológico de Aetheryon. Pouquíssimas pessoas sabem que ela possui qualquer relação pessoal com Rosalind Mercer ou que sua anatomia foi artificialmente modificada.<br><br> ARTISTA : ENBUDO (ENBU) -- HISTÓRIA : OTHON.",
     extraImages: ["kanata_art1.png", "kanata_art2.png", "kanata_company.jpg", "kanata_office.png", "kanata_fullbody.png", "kanata_art3.png", "kanata_art4.png", "kanata_art5.png", "kanata_art6.png", "kanata_art7.png", "kanata_art8.png", "kanata_art9.png", "kanata_art10.png", "kanata_art11.png", "kanata_art12.png",],
-    secret: "Kanata mantém uma parte extremamente sombria de sua vida privada escondida de absolutamente todos. Após sua visita ao Laboratório Mercer, Rosalind enviou para sua residência um <b>Incubus adulto</b> que havia sido mantido como cobaia. Rosalind submeteu o demônio a uma transformação corporal e hormonal extrema, tornando sua aparência profundamente feminina e remodelando características típicas de Incubus para características semelhantes às de uma Succubus. Os experimentos e o confinamento deixaram sua mente profundamente fragilizada.<br><br>Atualmente ele vive escondido na residência de Kanata e permanece completamente subordinado a ela. Kanata o utiliza como meio privado de aliviar a tensão sexual e o estresse acumulado pelo trabalho, tratando sua existência como um segredo absoluto. A relação nasceu de coerção e abuso realizados inicialmente por Rosalind, e o estado psicológico do demônio torna impossível tratar sua submissão atual como uma relação comum ou saudável.<br><br>Nenhum dos funcionários da Kanata Akusesari!, parceiros de Aethelgard ou conhecidos de Diamond City sabe que ele existe. Ashlan Lancehearth, que respeita profundamente Kanata por sua inteligência e contribuição para a economia, também desconhece completamente esse lado de sua vida. Caso esse segredo fosse revelado, a reputação de Kanata poderia ser destruída."
+    secret: "Kanata mantém uma parte extremamente sombria de sua vida privada escondida de absolutamente todos. Após sua visita ao Laboratório Mercer, Rosalind enviou para sua residência um <b>Incubus adulto</b> que havia sido mantido como cobaia. Rosalind submeteu o demônio a uma transformação corporal e hormonal extrema, tornando sua aparência profundamente feminina e remodelando características típicas de Incubus para características semelhantes às de uma Succubus. Os experimentos e o confinamento deixaram sua mente profundamente fragilizada.<br><br>Atualmente ele vive escondido na residência de Kanata e permanece completamente subordinado a ela. Kanata o utiliza como meio privado de aliviar a tensão sexual e o estresse acumulado pelo trabalho, tratando sua existência como um segredo absoluto. A relação nasceu de coerção e abuso realizados inicialmente por Rosalind, e o estado psicológico do demônio torna impossível tratar sua submissão atual como uma relação comum ou saudável. Ela não hesita em usar o garoto como seu brinquedo sexual.<br><br>Nenhum dos funcionários da Kanata Akusesari!, parceiros de Aethelgard ou conhecidos de Diamond City sabe que ele existe. Ashlan Lancehearth, que respeita profundamente Kanata por sua inteligência e contribuição para a economia, também desconhece completamente esse lado de sua vida. Caso esse segredo fosse revelado, a reputação de Kanata poderia ser destruída."
         },
         {
     name: "Hime Noctis 姫", title: "A Boneca do Silêncio", role: "support", image: "hime.jpg",
@@ -2314,9 +2627,9 @@ secret: "Mireva conserva escondido um pequeno conjunto de registros antigos pert
     race: "Demonborn da Lascívia / Succubus Artificial",
     weapon: "Essência Demoníaca Remodelada",
     weaponDetails: "Hime não utiliza uma arma convencional. Seu principal recurso é a própria <b>Essência Demoníaca Remodelada</b>, uma combinação entre a energia natural dos Demonborn da Lascívia e as alterações bio-alquímicas realizadas pela Dra. Rosalind Mercer.<br><br>Antes de sua captura, Hime utilizava sua essência principalmente para sedução, reprodução e propagação demoníaca. Após os experimentos, sua energia foi profundamente reprogramada, permitindo que ele absorva vigor, enfraqueça a resistência emocional de adversários e converta energia drenada em suporte para aliados.<br><br>Rosalind transformou a própria fisiologia de Hime em uma espécie de catalisador vivo. Quanto maior a quantidade de energia emocional e vital presente ao redor dele, maior sua capacidade de manipulação e recuperação.",
-    weaponImage: "himeessence.png",
+    weaponImage: "hime_weapon.png",
     description: "Hime Noctis, conhecido como <b>“A Boneca do Silêncio”</b>, é um Demonborn da Lascívia que atualmente vive escondido na residência de <b>Kanata Viremont</b>, em Diamond City. Sua aparência extremamente feminina e comportamento dócil escondem uma origem muito mais perigosa.<br><br>Antes de chegar a Aetheryon, Hime fazia parte de uma linhagem demoníaca conhecida como <b>Demonborn da Lascívia</b>, criaturas cuja biologia e magia são profundamente ligadas a desejo, sedução, reprodução e propagação de essência demoníaca.<br><br>Hime participou de uma incursão ao mundo de Aetheryon com o objetivo de espalhar sua essência através de relações reprodutivas e gerar descendentes capazes de ampliar a presença de sua raça. Diferente de demônios que buscavam apenas destruição direta, Hime atuava como um agente de expansão biológica e espiritual.<br><br>Sua invasão acabou fracassando. Hime foi capturado antes de conseguir estabelecer uma presença significativa em Aetheryon e posteriormente transferido para instalações associadas à <b>Dra. Rosalind Mercer</b>.<br><br>Rosalind rapidamente percebeu que a fisiologia de um Demonborn da Lascívia apresentava uma capacidade extraordinária de adaptação hormonal, regeneração e resposta a estímulos bio-alquímicos. Para ela, Hime tornou-se uma cobaia praticamente perfeita.<br><br>Os experimentos foram extremos. Rosalind submeteu Hime a uma combinação de Bio-Alquimia, terapia hormonal feminilizante pesada e remodelação fisiológica destinada a inverter grande parte das características masculinas de seu corpo.<br><br>O processo alterou profundamente sua aparência, distribuição corporal, voz, metabolismo e funcionamento hormonal. Ao final dos procedimentos, Hime passou a apresentar uma forma extremamente feminina, próxima daquilo que normalmente seria reconhecido como uma <b>Succubus</b>, embora sua origem continue sendo de um Demonborn masculino da Lascívia.<br><br>De acordo com a classificação sexual utilizada em Aetheryon, Hime passou a ser considerado uma <b>Androfêmea</b>: possui aparência e fisiologia predominantemente femininas, mas mantém genitália masculina funcional.<br><br>A transformação física, entretanto, foi apenas uma parte do que aconteceu. O confinamento, os experimentos repetidos e a manipulação psicológica realizada dentro do laboratório deixaram Hime emocionalmente fragilizado e profundamente condicionado à obediência.<br><br>Por fora, ele frequentemente demonstra um comportamento doce, educado e até sedutor. Fala de maneira suave, sorri com facilidade e raramente confronta diretamente alguém que considera possuir autoridade sobre ele. Grande parte desse comportamento, porém, não nasceu naturalmente: foi construído durante o período de cativeiro.<br><br>Pequenos momentos revelam que sua antiga personalidade ainda não desapareceu completamente. Hime pode hesitar antes de obedecer, permanecer longos períodos em silêncio ou demonstrar medo repentino quando algo lembra os procedimentos realizados no Laboratório Mercer.<br><br>Após concluir grande parte dos experimentos, Rosalind decidiu entregar Hime para <b>Kanata Viremont</b>. A empresária mantém sua existência completamente escondida do público, funcionários e parceiros comerciais.<br><br>Dentro da residência de Kanata, Hime tornou-se uma presença permanente e extremamente privada. Sua submissão à empresária é consequência direta do condicionamento e da fragilidade psicológica deixados por Rosalind, tornando a dinâmica entre os dois profundamente desigual.<br><br>Existe uma ironia cruel em seu destino: originalmente Hime chegou a Aetheryon pretendendo utilizar sua natureza demoníaca para dominar sexualmente outras pessoas e espalhar sua essência. Depois de capturado, foi ele quem perdeu o controle sobre o próprio corpo, identidade e liberdade.<br><br>Em combate, Hime atua principalmente como <b>Support</b>. Sua essência demoníaca permite enfraquecer adversários, drenar energia e redirecionar parte desse vigor para aliados. Diferente da maioria dos Demonborn da Lascívia, Hime raramente utiliza seus poderes de maneira agressivamente predatória após sua transformação.",
-    extraImages: ["hime_art2.png", "hime_home.png", "hime_lab.jpg", "hime_fullbody.png", "hime_kanata.png"],
+    extraImages: ["hime_art2.png", "hime_art1.png", "hime_lab.jpg", "hime_fullbody.png", "hime_kanata.png"],
     secret: "Apesar de agir como alguém totalmente submisso e emocionalmente quebrado, Hime ainda preserva fragmentos de sua personalidade original. Em raros momentos, principalmente quando está completamente sozinho, sua expressão muda e traços do antigo Demonborn da Lascívia retornam. Ele se lembra de sua missão original, de sua captura e de tudo que Rosalind fez com seu corpo.<br><br>Hime também possui sentimentos extremamente contraditórios em relação a Kanata. Parte dele a associa a segurança porque a residência dela é muito menos brutal que o Laboratório Mercer. Outra parte entende que sua vida atual ainda não representa liberdade real.<br><br>Ninguém sabe se Hime algum dia recuperará autonomia suficiente para fugir, confrontar Rosalind ou decidir por conta própria que tipo de criatura deseja ser. Rosalind considera essa incerteza particularmente interessante."
         },
         {
@@ -2373,7 +2686,7 @@ secret: "Mireva conserva escondido um pequeno conjunto de registros antigos pert
         {
 name: "Maevra Shadowclaw",
 title: "A Peregrina dos Mil Encantos",
-role: "Maga Multi-Elemental / Suporte",
+role: "dps",
 image: "maevra.png",
 model3dChar: "maevramodel.glb",
 avatar: "maevra_face.png",
@@ -2389,7 +2702,48 @@ weaponImage: "",
 description: "Maevra Shadowclaw nasceu em Zenathor e é a irmã mais velha de Mydra. Desde jovem, foi uma das poucas pessoas que enxergavam o prodígio não como uma futura arma da Casa Shadowclaw, mas simplesmente como seu irmão mais novo.<br><br>Antes da deserção de Mydra, foi Maevra quem lhe deu o enorme moletom rosa pastel e felpudo que ele ainda utiliza. Quando Mydra revelou que pretendia abandonar Zenathor, ela afirmou que permaneceria ao lado dos pais.<br><br>Porém, Maevra também deixou Zenathor algum tempo depois.<br><br>Sem saber o paradeiro do irmão, percorreu Aetheryon durante anos com o objetivo de aprender o maior número possível de formas de magia. Visitou templos, ruínas, bibliotecas, aldeias e diferentes civilizações, aprendendo tanto com grandes estudiosos quanto com pessoas comuns.<br><br>Seu talento e dedicação transformaram Maevra em uma das magas mais versáteis de Aetheryon. Mesmo possuindo um poder imenso e um repertório mágico extraordinário, ela reconhece que Mydra acumulou conhecimentos e capacidades que ainda estão além de seu alcance.<br><br>Maevra nunca sentiu inveja disso. Pelo contrário, sente enorme orgulho do irmão e continua tratando o lendário The All-Knowing como o mesmo irmãozinho de sua infância.<br><br>Seu objetivo original era adquirir poder suficiente para retornar a Zenathor e retirar seus pais de lá. Entretanto, ao testemunhar diferentes conflitos durante sua jornada, percebeu que salvar apenas sua própria família não seria suficiente.<br><br>Maevra passou a dedicar sua força e conhecimento à busca por uma paz duradoura em Aetheryon. Ela acredita que somente quando os conflitos entre reinos e facções terminarem poderá cumprir sua promessa e levar seus pais para um lugar onde nunca mais precisem viver sob o medo da guerra.<br><br>Calma, gentil, curiosa e muito mais sociável que Mydra, Maevra gosta de aprender diretamente com os habitantes das regiões por onde passa. Apesar de sua aparência elegante e comportamento amigável, torna-se extremamente determinada quando sua família ou pessoas inocentes estão em perigo.",
 extraImages: ["maevra_art1.png", "maevra_art2.png", "maevra_3.png"],
 secret: "Durante anos, Mydra acreditou que Maevra ainda estivesse em Zenathor ao lado dos pais. O reencontro aconteceu por acaso durante uma de suas jornadas por Aetheryon. Mydra reconheceu uma antiga técnica defensiva utilizada pela irmã quando ambos eram mais jovens e seguiu o fluxo de mana até encontrá-la.<br><br>Ao vê-lo novamente, Maevra percebeu imediatamente que ele ainda utilizava o moletom que havia lhe dado antes da separação.<br><br>\"Você ainda usa aquele moletom?\"<br><br>Mydra permaneceu imóvel por alguns segundos antes de responder:<br><br>\"Você disse que ficaria em Zenathor.\"<br><br>Maevra apenas sorriu.<br><br>\"Eu menti.\"<br><br>Apesar de ser conhecido como The All-Knowing, Mydra não conseguiu pensar em absolutamente nada para responder naquele momento."
-}
+        },
+        {
+    name: "Denise Halvern デニーズ e Vixelle",
+    title: "A Necromante Errante & A Prismari Rebelde",
+    role: "support",
+    image: "denise.png",
+    model3dChar: "denisemodel.glb",
+    model3dWeapon: "nielweaponmodel.glb",
+    avatar: "denise_face.png",
+    quote: "\"Vixelle: Eu não vou viajar no meio desse enchimento ridículo aí que você chama de seios. — Denise: A única coisa que vai cheia aqui é a sua cara de cicatriz.\"",
+    faction: "⚫ Independentes / Ex-Zenathor",
+    elemento: "💀 Necromancia / Almas",
+    sexo: "MACHO",
+    stats: { forca: 12, magia: 100, agilidade: 55, inteligencia: 95, carisma: 65, physDef: 20, magDef: 95 },
+    race: "Humana (Denise) / Prismari (Vixelle)",
+    weapon: "Pulseira Colecionadora de Almas",
+    weaponDetails: "Uma poderosa relíquia espiritual construída pelo pai de Denise. A pulseira consegue capturar e preservar determinadas almas antes que atravessem definitivamente para o misterioso reino dos mortos. Denise pode interagir com essas almas, impedir temporariamente sua passagem, utilizar energia espiritual armazenada e, em condições adequadas, transferir uma alma para outro recipiente. É também através de seus conhecimentos sobre manipulação espiritual que Denise mantém Vixelle vinculada a si.",
+    weaponImage: "denise_weapon.png",
+    description: "Denise Halvern é uma mulher trans humana e uma das necromantes mais poderosas conhecidas de Aetheryon. Nascida em uma família extremamente leal a Zenathor, demonstrou desde jovem um talento excepcional para necromancia, invocação de mortos-vivos, manipulação espiritual e detecção de inimigos invisíveis. Durante seus anos como estudante de Zenathor, Denise ainda possuía aparência masculina, utilizava roupas masculinas e era reconhecida socialmente como homem.<br><br>O assassinato de Kevin Blackfield e a ascensão brutal de Karyna Blackfield fizeram Denise perceber que não desejava continuar servindo ao reino. Poucas horas depois da morte de Kevin, antes que Zenathor fechasse completamente suas fronteiras, Denise fugiu. Seus próprios pais interpretaram sua deserção como traição e posteriormente enviaram assassinos para eliminá-la. O problema é que Denise recebeu exatamente o mesmo tipo de treinamento utilizado por esses agentes e sabe reconhecer emboscadas, técnicas furtivas e inimigos invisíveis antes que eles consigam se aproximar.<br><br>Durante sua jornada procurando um novo lar, Denise encontrou por acaso o laboratório da Dra. Rosalind Mercer. Sua primeira intenção foi matar a cientista, mas Rosalind descobriu um desejo que Denise carregava havia muitos anos: ela queria possuir uma aparência feminina e viver socialmente como mulher. Mesmo conhecendo os riscos envolvidos em aceitar qualquer tratamento realizado por Rosalind, Denise concordou com a proposta. Ela passou por terapia hormonal feminilizante, vaginoplastia e implantes mamários. Surpreendentemente, Rosalind ordenou que nenhuma modificação experimental, mutação ou alteração desnecessária fosse realizada nela. Até Mireva Sollen estranhou a decisão da mestra, mas simplesmente obedeceu.<br><br>Atualmente Denise possui cabelos pretos muito longos e lisos, franja cortina e duas mechas frontais moldando o rosto. Seu estilo é extremamente feminino e mistura moda casual com influência gótica de Zenathor. Ela prefere cropped shirts, shorts ou calças de cintura alta, jaquetas escuras e botas pesadas. Em cada orelha utiliza apenas uma argola preta simples, sem ornamentos adicionais. Denise evita propositalmente mantos, símbolos, uniformes ou qualquer vestimenta típica de necromantes de Zenathor, já que utilizar esse tipo de roupa facilitaria demais sua identificação pelos agentes que ainda a procuram.<br><br>Durante uma de suas viagens, Denise encontrou uma pequena Prismari chamada Vixelle capturada por uma mulher em uma floresta. Acreditando estar presenciando uma crueldade injustificável, Denise interferiu e matou a agressora utilizando métodos extremamente brutais aprendidos em Zenathor. Somente depois descobriu que Vixelle não era uma vítima completamente inocente. A fada era uma fugitiva problemática de Diamond City que havia causado diversos conflitos e defendia radicalmente a criação de uma cidade exclusiva para os Prismari.<br><br>Percebendo que havia condenado alguém à morte antes de compreender completamente a situação, Denise utilizou imediatamente sua Pulseira Colecionadora de Almas para impedir que a alma da mulher seguisse para o misterioso plano dos mortos. Denise prometeu que, algum dia, encontrará um recipiente adequado e devolverá aquela mulher à vida.<br><br>Vixelle, entretanto, também não recebeu liberdade. Denise considerou a Prismari perigosa demais para simplesmente soltá-la e utilizou seus conhecimentos espirituais para estabelecer um vínculo entre as duas. Desde então, Vixelle permanece como sua mascote, companheira e prisioneira extremamente involuntária. O vínculo não modificou sua personalidade: Vixelle continua rebelde, insolente, extremamente boca-suja e constantemente procura maneiras de escapar ou irritar Denise.<br><br>A relação das duas é marcada por ameaças, provocações e discussões constantes. Vixelle descobriu rapidamente que os seios de Denise possuem implantes e passou a utilizar 'fake tits' como um de seus insultos favoritos. A situação piorou quando Denise decidiu que o local mais seguro e conveniente para transportar uma criatura do tamanho de uma Prismari durante viagens seria junto ao peito, protegida pelas roupas. Vixelle considera esse método de transporte quente, apertado, humilhante e indigno de uma fada. Denise considera as reclamações completamente irrelevantes.<br><br>Apesar da relação caótica, as duas formam uma dupla extremamente perigosa em combate. Denise consegue invocar guerreiros mortos, animais reanimados, espíritos e outras criaturas ligadas ao mundo dos mortos. Sua montaria mais característica é um enorme lobo morto-vivo utilizado tanto para transporte quanto para combate. Quanto mais cadáveres existem em uma região, maior pode se tornar o exército disponível para Denise.<br><br>Vixelle complementa a necromante utilizando a mobilidade, percepção e magia natural dos Prismari. Sua pequena dimensão permite alcançar locais inacessíveis para Denise, observar inimigos à distância e fornecer suporte enquanto a necromante controla suas invocações. Embora frequentemente reclame e tente contrariar ordens, Vixelle sabe que viajar com Denise também significa possuir a proteção de uma das necromantes mais perigosas de Aetheryon.<br><br>Denise não reconhece autoridade absoluta de nenhum reino. Ela deseja derrubar definitivamente as ameaças representadas por Zenathor sob Karyna Blackfield, mas também não pretende simplesmente trocar sua antiga lealdade por outra bandeira. Sua condição de ex-estudante de Zenathor, desertora procurada, manipuladora de almas e necromante independente inevitavelmente chama a atenção de organizações extremamente perigosas, incluindo Eclipse Requiem.<br><br>Apesar de seu enorme poder, Denise não deseja permanecer uma necromante errante para sempre. Depois que as principais ameaças de Aetheryon forem eliminadas e uma paz realmente definitiva for estabelecida, ela pretende abandonar a vida de fugitiva e completar integralmente sua transição biológica, tornando-se uma Ginomacho — Ginomale em inglês. Seu maior sonho não envolve poder, tronos ou imortalidade. Denise simplesmente deseja viver como uma mulher comum, possuir uma casa, ter uma rotina tranquila e finalmente acordar sem precisar verificar se existe algum assassino esperando do lado de fora.<br><br> - PERSONAGEM TRANS 🏳️‍⚧️.",
+    extraImages: ["denise_art1.png", "denise_art2.png", "denise_art3.png", "denise_art4.jpg", "denise_art5.png"],
+    secret: "Denise possui um conflito interno que raramente admite: embora tenha fugido de Zenathor justamente por rejeitar a crueldade do reino, grande parte de sua maneira de resolver problemas ainda foi moldada pelos métodos que aprendeu ali. Quando está furiosa ou acredita estar punindo alguém perigoso, Denise pode reagir com uma brutalidade que posteriormente reconhece como excessiva. A morte da mulher que havia capturado Vixelle foi o exemplo mais marcante disso e é justamente por esse motivo que Denise preserva sua alma e pretende ressuscitá-la.<br><br>O segundo segredo é muito mais simples. Denise não deseja tornar-se uma figura lendária, governante ou entidade imortal. Quando Aetheryon finalmente estiver em paz, ela pretende completar sua transição biológica, tornar-se uma Ginomacho e desaparecer praticamente por completo da vida militar. Seu sonho é absurdamente comum: casa própria, trabalho tranquilo, roupas bonitas e nenhuma guerra.<br><br>Vixelle ainda não percebeu completamente que, nos planos de aposentadoria de Denise, aparentemente existe espaço reservado para uma pequena Prismari extremamente irritante continuar vivendo ao lado dela."
+        },
+        {
+    name: "Ranny Hackfield ラニー",
+    title: "A Arquiteta da Reprodução",
+    role: "support",
+    image: "ranny.png",
+    model3dChar: "rannymodel.glb",
+    avatar: "ranny_face.png",
+    quote: "\"A ciência da vida é simples: se algo não funciona, modifique até funcionar. Se começar a morder... anote o resultado.\"",
+    faction: "💎 Diamond City / Independente",
+    elemento: "🧬 Biogenética / Reprodução",
+    sexo: "FÊMEA",
+    stats: { forca: 5, magia: 0, agilidade: 25, inteligencia: 100, carisma: 70, physDef: 5, magDef: 0 },
+    race: "Humana",
+    weapon: "Biocápsulas de Incubação",
+    weaponDetails: "Um conjunto de recipientes de vidro reforçado, cápsulas de cultura e equipamentos desenvolvidos pela própria Ranny para criar, armazenar e transportar organismos geneticamente modificados. Cada recipiente recebe uma classificação conforme comportamento, estabilidade e risco. Entre suas criações existem variantes dóceis, agressivas, instáveis e os chamados Female Seekers. Devido à quantidade de organismos experimentais perigosos mantidos em seu laboratório, suas pesquisas podem facilmente ser utilizadas como uma forma de arma biológica.",
+    weaponImage: "ranny_biocapsules.png",
+    description: "Ranny Hackfield é uma médica formada de Aetheryon e uma especialista excepcional em reprodução, genética, fertilidade, desenvolvimento embrionário e saúde de bebês e crianças. Publicamente, ela continua exercendo medicina normalmente e possui conhecimento suficiente para lidar com gestações complicadas, doenças hereditárias, problemas neonatais e diversas condições pediátricas. Para a maioria das pessoas, Ranny é apenas uma médica extremamente inteligente, excêntrica e dedicada à pesquisa.<br><br>Ranny perdeu os pais durante a Grande Guerra. A tragédia marcou profundamente sua vida e acabou contribuindo para sua obsessão em compreender a reprodução e os mecanismos responsáveis pela criação e sobrevivência da vida. Durante muitos anos, ela foi uma das melhores amigas da Dra. Rosalind Mercer. As duas compartilhavam grande interesse por genética e modificação biológica, embora tenham seguido especializações diferentes: Rosalind direcionou suas pesquisas principalmente para transformação corporal e procedimentos médicos extremos, enquanto Ranny concentrou-se em fertilidade, gametas, hereditariedade e organismos derivados de material reprodutivo.<br><br>Com o passar dos anos, a curiosidade de Ranny deixou de possuir limites éticos. Em algum lugar secreto nos arredores de Diamond City, ela construiu um laboratório clandestino no qual realiza experiências genéticas que jamais seriam aprovadas por qualquer instituição médica. Apenas um pequeno grupo de amigos sabe que o laboratório existe. Eles não denunciam Ranny principalmente por medo, pois sabem que pessoas próximas demais de suas pesquisas podem acabar sendo utilizadas como cobaias.<br><br>Seu projeto mais famoso começou quando Ranny decidiu descobrir se seria possível ampliar artificialmente células reprodutivas sem destruir completamente sua função biológica. Utilizando material genético obtido de cobaias masculinas e diversas alterações experimentais, ela conseguiu criar organismos semelhantes a espermatozoides com aproximadamente cinco a oito centímetros de comprimento. As primeiras linhagens morriam rapidamente, mas novas ondas de experimentos produziram espécimes capazes de sobreviver por períodos maiores e se movimentar independentemente.<br><br>Algumas variantes desenvolveram mobilidade extrema e comportamento semelhante ao de pequenos animais. Uma dessas linhagens demonstrou capacidade de distinguir biologicamente indivíduos masculinos e femininos e apresentava comportamento de busca direcionado exclusivamente para indivíduos femininos. Ranny classificou esses espécimes como Female Seekers. Outra linhagem desenvolveu uma abertura circular semelhante a uma boca, acompanhada por pequenos dentes. Os primeiros espécimes desse grupo eram extremamente agressivos e um deles chegou a atacar Ranny, obrigando-a a destruir toda aquela geração experimental.<br><br>Experimentos posteriores produziram organismos com a mesma estrutura bucal, porém com comportamento completamente diferente. Esses espécimes tornaram-se dóceis, aprenderam a consumir pequenas porções de frutas e começaram a demonstrar respostas sociais semelhantes às de pequenos animais domésticos. Alguns procuram contato com Ranny e chegam a permanecer próximos ao seu pescoço ou ombros. Ranny considera essa variante um de seus maiores sucessos e passou a estudar seriamente a possibilidade de seus organismos serem domesticados.<br><br>Uma antiga amiga de Ranny conhece a existência do laboratório porque foi levada até lá e utilizada como cobaia durante um de seus experimentos. Quando teve oportunidade, ela fugiu imediatamente. Apesar de saber exatamente onde algumas das experiências acontecem, nunca revelou nada às autoridades por medo de ser capturada novamente. Essa mulher continua vivendo com a certeza de que denunciar Ranny pode fazê-la desaparecer.<br><br>A irmã de Ranny, Hanna Hackfield, também desapareceu misteriosamente. Diversas pessoas ainda procuram por Hanna e existem inúmeras teorias sobre o que aconteceu com ela. A verdade é muito mais sombria: Hanna nunca deixou a região. Ranny mantém a própria irmã viva e confinada dentro do laboratório, utilizando-a como cobaia em seus estudos mais extremos. Hanna já tentou ameaçar e confrontar Ranny diversas vezes, mas permanece presa enquanto a irmã continua registrando novos resultados.<br><br>Ranny afirma que pretende libertar Hanna depois de concluir um último conjunto de testes. Entretanto, suas próprias anotações demonstram que cada experimento fracassado simplesmente gera uma nova hipótese e outra tentativa. Isso torna impossível saber se Ranny realmente pretende cumprir sua promessa ou se Hanna será permanentemente transformada em parte de sua pesquisa.<br><br>Atualmente, o laboratório contém dezenas de grandes recipientes identificados com classificações como DÓCIL, AGRESSIVO, FEMALE SEEKER, INSTÁVEL e diversas outras categorias criadas pela própria Ranny. Algumas cápsulas permanecem isoladas atrás de várias camadas de vidro reforçado porque nem mesmo ela considera seguro libertar os organismos mantidos dentro delas. Se determinadas linhagens escapassem do complexo, o incidente poderia facilmente se transformar em uma emergência biológica nos arredores de Diamond City.<br><br>Apesar de tudo isso, Ranny continua enxergando a si mesma como médica. Ela realmente possui conhecimento extraordinário e é perfeitamente capaz de salvar a vida de pacientes, mães, bebês e crianças. Essa é justamente uma das características mais perturbadoras de sua personalidade: Ranny não é uma impostora ou pesquisadora incompetente. Ela sabe exatamente o que está fazendo. O problema é que sua obsessão científica se tornou mais importante para ela do que consentimento, liberdade ou segurança.<br><br>Fora do laboratório, Ranny costuma se comportar de maneira calma, educada e quase maternal. Ela consegue conversar normalmente com pacientes, amigos e outros médicos sem levantar suspeitas. Quando fala sobre suas criaturas, entretanto, demonstra entusiasmo genuíno e parece não compreender completamente por que outras pessoas considerariam seus experimentos monstruosos. Para Ranny, suas criações não são aberrações. São apenas novas formas de vida que ainda não receberam uma classificação adequada.",
+    extraImages: ["ranny_art1.png", "ranny_art2.png", "ranny_art3.png", "ranny_art4.png", "ranny_art5.jpg", "ranny_art6.png"],
+    secret: "A maior mentira na vida de Ranny Hackfield é o desaparecimento de sua irmã. Hanna Hackfield está viva e permanece escondida dentro do laboratório clandestino, onde é mantida como cobaia involuntária. Ranny insiste que irá libertá-la quando seus experimentos terminarem, mas nenhuma de suas pesquisas parece possuir um ponto final verdadeiro.<br><br>A antiga amiga que conseguiu fugir também conhece parte da verdade sobre o laboratório, mas permanece em silêncio por puro medo. O mesmo acontece com os poucos amigos de Ranny que sabem de suas atividades clandestinas. Todos compreenderam que denunciar a médica pode significar se tornar o próximo nome em uma ficha de experimento.<br><br>O segredo mais perigoso, porém, não é apenas Hanna. Ranny já possui diversas linhagens de organismos vivos capazes de comportamento autônomo, adaptação e agressividade. Algumas são tão instáveis que permanecem isoladas mesmo da própria cientista. Caso o laboratório seja invadido, sabotado ou destruído sem cuidado, as criaturas de Ranny podem transformar um simples escândalo médico em uma verdadeira emergência biológica para Diamond City."
+},
         ];
 
         // ==========================================
@@ -2959,7 +3313,7 @@ const falasLocais = [
         ];
 
         const falasSomFofoGosta = [
-            "Hmm... até que esse som é bonitinho.",
+            "Sério... até que esse som é bonitinho.",
             "Olha só... você até que tem um gosto razoável.",
             "Achei fofo. Não me acostuma mal não, idiota."
         ];
@@ -3117,19 +3471,24 @@ const falasLocais = [
         }
 
         function switchTab(tab) {
-        // GATILHO DA VOZ:
+            // GATILHO DA VOZ:
             if (tab === 'races') speakOracle(falasRacas);
             else if (tab === 'locations') speakOracle(falasLocais);
 
+            // Tira o 'active' de todos os botões
             document.getElementById('btnHeroes').classList.remove('active');
             document.getElementById('btnLocations').classList.remove('active');
             document.getElementById('btnRaces').classList.remove('active'); 
+            if(document.getElementById('btnFeed')) document.getElementById('btnFeed').classList.remove('active');
             
+            // Esconde todas as abas e os filtros
             document.getElementById('gallery').style.display = 'none';
             document.getElementById('locationsGrid').style.display = 'none';
             document.getElementById('racesGrid').style.display = 'none';
+            if(document.getElementById('feedGrid')) document.getElementById('feedGrid').style.display = 'none';
             document.querySelector('.filters').style.display = 'none'; 
 
+            // Mostra a aba correta
             if (tab === 'heroes') {
                 document.getElementById('btnHeroes').classList.add('active');
                 document.getElementById('gallery').style.display = 'flex';
@@ -3143,6 +3502,9 @@ const falasLocais = [
                 document.getElementById('btnRaces').classList.add('active');
                 document.getElementById('racesGrid').style.display = 'flex';
                 renderRaces();
+            } else if (tab === 'feed') {
+                document.getElementById('btnFeed').classList.add('active');
+                document.getElementById('feedGrid').style.display = 'flex';
             }
         }
         
@@ -4418,7 +4780,7 @@ Responda como o Oráculo de Aetheryon.
             <!-- SCRIPT DO FIREBASE ATUALIZADO COM FIRESTORE -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-  import { getFirestore, doc, setDoc, getDoc, updateDoc, increment, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+  import { getFirestore, doc, setDoc, getDoc, updateDoc, increment, collection, getDocs, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCmAkdBLKuoegQOpILl7isbmblPZMQ6huk",
@@ -4442,6 +4804,8 @@ Responda como o Oráculo de Aetheryon.
   window.increment = increment;
   window.collection = collection;
   window.getDocs = getDocs;
+  window.addDoc = addDoc;
+  window.onSnapshot = onSnapshot;
 </script>
 
 <script>
@@ -9793,6 +10157,451 @@ function finalizarJogo(vitória, msg) {
                 container.remove();
             }, 2000);
         };
+    </script>
+
+   <script>
+        // Função de Like com a voz da Oráculo
+        function toggleLike(btn) {
+            let numSpan = btn.querySelector('span');
+            let num = parseInt(numSpan.innerText);
+            
+            if(btn.classList.contains('liked')) {
+                // Tira o Like
+                btn.classList.remove('liked');
+                numSpan.innerText = num - 1;
+                btn.style.color = '#888';
+                btn.style.borderColor = '#444';
+            } else {
+                // Dá o Like
+                btn.classList.add('liked');
+                numSpan.innerText = num + 1;
+                btn.style.color = '#e11d48'; // Fica vermelho vivo
+                btn.style.borderColor = '#e11d48';
+                
+                // Dispara a voz da Oráculo (Verifica se a voz está ligada no seu sistema)
+                // Assumindo que a sua função de voz se chama speakOracle e recebe o texto
+                if (typeof speakOracle === 'function') {
+                    speakOracle(["Já tá ficando viciado nessa rede social? Patético."]);
+                }
+            }
+        }
+    </script>
+
+    <script>
+        // Função para criar a ilusão de comentário no AetherNet
+        function enviarComentarioFalso(event, inputElement) {
+            // Se a tecla apertada for o "Enter" e o campo não estiver vazio...
+            if (event.key === 'Enter' && inputElement.value.trim() !== '') {
+                const texto = inputElement.value.trim();
+                const areaComentarios = inputElement.closest('.post-container').querySelector('.post-comments');
+                
+                // Cria a nova "div" com o comentário do jogador
+                const novoComentario = document.createElement('div');
+                novoComentario.style.cssText = "display: flex; align-items: flex-start; animation: fadeIn 0.3s;";
+                novoComentario.innerHTML = `
+                    <img src="https://via.placeholder.com/30/333/00ffcc?text=U" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid #00ffcc; margin-right: 12px; flex-shrink: 0;">
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="color: #00ffcc; font-weight: bold; font-size: 0.9rem; margin-bottom: 3px;">Visitante</span>
+                        <span style="color: #ccc; font-size: 0.9rem; line-height: 1.4;">${texto}</span>
+                    </div>
+                `;
+                
+                // Joga o comentário na tela e limpa a caixinha
+                areaComentarios.appendChild(novoComentario);
+                inputElement.value = '';
+                
+                // Roleta de deboche da Oráculo quando você tenta interagir
+                const falasInteracao = [
+                    "Sério que você perdeu tempo digitando isso? Patético.",
+                    "Sua opinião é tão inútil quanto a sua existência.",
+                    "Digitando na tela como um primata. Eu adoro.",
+                    "Acha mesmo que alguém liga pro que você comenta?"
+                ];
+                
+                if (typeof speakOracle === 'function') {
+                    let falaSorteada = falasInteracao[Math.floor(Math.random() * falasInteracao.length)];
+                    speakOracle([falaSorteada]);
+                }
+            }
+        }
+    </script>
+
+    <!-- ========================================== -->
+    <!-- SISTEMA DE AETHERYON TICKETS E IA DO FEED  -->
+    <!-- ========================================== -->
+    <script>
+        // 1. Variável global de Tickets (salva no localStorage)
+        window.aetheryonTickets = parseInt(localStorage.getItem('aetheryonTickets')) || 0;
+        let timerTickets = null;
+        window.tempoLendoLore = window.tempoLendoLore || 0; 
+
+        // 2. Atualiza o visual dos Tickets na tela
+        window.atualizarTicketsUI = function() {
+            let painelLobby = document.getElementById('lobbyTickets');
+            if (painelLobby) painelLobby.innerText = window.aetheryonTickets;
+            
+            let painelFeed = document.getElementById('feedTicketsCount');
+            if (painelFeed) painelFeed.innerText = window.aetheryonTickets;
+        };
+
+        setTimeout(() => window.atualizarTicketsUI(), 300);
+
+        // 3. O cronômetro que ganha os Tickets (Acumula segundos)
+        if (typeof window.openModal === 'function') {
+            const openModalOriginal = window.openModal; 
+            window.openModal = function(index) {        
+                openModalOriginal(index);
+
+        // Conta de 1 em 1 segundo em vez de esperar 60s direto
+                clearInterval(timerTickets); 
+                timerTickets = setInterval(() => {
+                    const modalElement = document.getElementById('heroModal');
+                    if (modalElement && modalElement.style.display !== 'none') {
+                        window.tempoLendoLore++; 
+                        
+                        // Bateu 60 segundos acumulados? Dá o Ticket!
+                        if (window.tempoLendoLore >= 60) {
+                            window.tempoLendoLore = 0; // Zera a contagem de tempo
+                            window.aetheryonTickets++;
+                            localStorage.setItem('aetheryonTickets', window.aetheryonTickets);
+                            window.atualizarTicketsUI();
+                            
+                            // ===============================================
+                            // NOVO AVISO VISUAL (POP-UP NO CANTO DIREITO)
+                            // ===============================================
+                            let avisoTicket = document.createElement('div');
+                            avisoTicket.innerHTML = "🎟️ +1 Aetheryon Ticket!";
+                            avisoTicket.style.cssText = "position: fixed; bottom: -50px; right: 20px; background: #111; color: #00ffcc; border: 2px solid #00ffcc; padding: 15px 25px; border-radius: 8px; font-family: 'Cinzel', serif; font-weight: bold; font-size: 1.1rem; box-shadow: 0 0 20px rgba(0, 255, 204, 0.5); z-index: 99999999; transition: all 0.5s ease-out; opacity: 0;";
+                            document.body.appendChild(avisoTicket);
+                            
+                            // Animação de subir
+                            setTimeout(() => {
+                                avisoTicket.style.bottom = "30px";
+                                avisoTicket.style.opacity = "1";
+                            }, 50);
+
+                            // Animação de descer e sumir após 3 segundos
+                            setTimeout(() => {
+                                avisoTicket.style.opacity = "0";
+                                avisoTicket.style.bottom = "-50px";
+                                setTimeout(() => avisoTicket.remove(), 500);
+                            }, 3000);
+                            
+                            // ===============================================
+                            // TROQUE O SOM AQUI (Mude 'somTicket' para a sua nova tag)
+                            // ===============================================
+                            const somMoeda = document.getElementById('somTicket'); 
+                            if (somMoeda) { somMoeda.currentTime = 0; somMoeda.play().catch(e=>{}); }
+                        }
+                    } else {
+                        clearInterval(timerTickets); 
+                    }
+                }, 1000);
+            };
+        }               
+                
+        if (typeof window.closeModal === 'function') {
+            const closeModalOriginal = window.closeModal;
+            window.closeModal = function() {
+                closeModalOriginal(); 
+                clearInterval(timerTickets); 
+            };
+        }
+
+        // 5. Função da Caixa de Comentário (Memória Fantasma + Lixeira + Firebase)
+        async function enviarComentarioFalso(event, inputElement) {
+            if (event.key === 'Enter' && inputElement.value.trim() !== '') {
+                const textoJogador = inputElement.value.trim();
+                
+                // --- VERIFICAÇÃO DE TICKETS ---
+                if (window.aetheryonTickets <= 0) {
+                    inputElement.value = '';
+                    inputElement.placeholder = "Sem Tickets! Leia a Lore.";
+                    inputElement.style.borderColor = '#ff4444';
+                    setTimeout(() => {
+                        inputElement.placeholder = "Adicione um comentário...";
+                        inputElement.style.borderColor = '#444';
+                    }, 2000);
+                    return;
+                }
+
+                window.aetheryonTickets--;
+                localStorage.setItem('aetheryonTickets', window.aetheryonTickets);
+                window.atualizarTicketsUI();
+
+                const containerPost = inputElement.closest('.post-container');
+                const areaComentarios = containerPost.querySelector('.post-comments');
+                const donoDoPost = containerPost.dataset.personagem || "Herói de Aetheryon";
+                
+                let perfilJogador = JSON.parse(localStorage.getItem('aetheryonVisitorProfile')) || { nome: "Visitante Anônimo", avatar: "https://via.placeholder.com/30/333/555?text=?", personalidade: "Silencioso" };
+                let modoJogador = localStorage.getItem('aetheryonVisitorMode') || 'offline';
+                
+                // Cria um ID único para esse comentário poder ser apagado depois
+                const comentarioId = "msg_" + Date.now();
+                const horaAtual = new Date().getTime();
+
+                // Trava o input
+                inputElement.value = '';
+                inputElement.disabled = true;
+                inputElement.placeholder = `${donoDoPost} está digitando...`;
+                inputElement.style.borderColor = '#d4af37';
+                
+                // --- CHAMA A IA ---
+                const promptSecreto = `Aja EXATAMENTE como a personagem ${donoDoPost} do universo Aetheryon. O mortal que comentou se chama "${perfilJogador.nome}" e tem a personalidade "${perfilJogador.personalidade}". Ele fez o seguinte comentário no seu perfil da rede social: "${textoJogador}". Responda diretamente a esse comentário em até duas frases. Não saia do personagem. Aja como alguém digitando uma resposta rápida na internet e reaja à atitude/personalidade dele. NÃO use asteriscos para descrever ações.`;
+                let respostaFinalIA = "";
+
+                try {
+                    const response = await fetch('/api/oraculo', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ contents: [{ parts: [{ text: promptSecreto }] }] })
+                    });
+                    if (!response.ok) throw new Error("Falha arcana.");
+                    const data = await response.json();
+                    respostaFinalIA = data.candidates[0].content.parts[0].text;
+                } catch (error) {
+                    respostaFinalIA = "O silêncio ecoou pelas trevas.";
+                }
+
+                // O PACOTE DE DADOS DO COMENTÁRIO
+                const pacoteComentario = {
+                    id: comentarioId,
+                    postId: donoDoPost,
+                    jogadorNome: perfilJogador.nome,
+                    jogadorAvatar: perfilJogador.avatar,
+                    jogadorPersonalidade: perfilJogador.personalidade,
+                    comentarioTexto: textoJogador,
+                    respostaIA: respostaFinalIA,
+                    timestamp: horaAtual,
+                    meuComentario: true // Marcador crucial para saber de quem é a Lixeira
+                };
+
+                // --- SALVANDO O COMENTÁRIO ---
+                if (modoJogador === 'online' && typeof window.addDoc === 'function') {
+                    // Manda pra nuvem (Firebase)
+                    try {
+                        // Importante: No online, o Firebase gera um ID de documento diferente, 
+                        // precisamos salvar o ID dele para podermos apagar depois se precisarmos (não no escopo básico, mas útil).
+                        const comentariosRef = window.collection(window.db, "aethernet_posts");
+                        await window.addDoc(comentariosRef, pacoteComentario); 
+                    } catch (e) { console.error("Erro Nuvem:", e); }
+                } else {
+                    // Manda para o Diário Fantasma (localStorage)
+                    let memoriaOffline = JSON.parse(localStorage.getItem('aethernetFantasma')) || [];
+                    memoriaOffline.push(pacoteComentario);
+                    localStorage.setItem('aethernetFantasma', JSON.stringify(memoriaOffline));
+                }
+
+                // --- PINTA NA TELA IMEDIATAMENTE ---
+                window.desenharComentarioNaTela(pacoteComentario, areaComentarios);
+
+                // Destrava o input
+                inputElement.disabled = false;
+                inputElement.placeholder = "Adicione um comentário...";
+                inputElement.style.borderColor = '#444';
+                inputElement.focus();
+            }
+        }
+ 
+        // 6. Função Mestra para Desenhar Comentários (com Lixeira 🗑️)
+        window.desenharComentarioNaTela = function(dados, areaComentarios) {
+            const divGrupo = document.createElement('div');
+            divGrupo.className = 'comentario-de-jogador-online'; // Facilita limpar a tela depois
+            divGrupo.id = dados.id; // Dá o ID ao grupo
+            divGrupo.style.cssText = "display: flex; flex-direction: column; margin-top: 15px; animation: fadeIn 0.3s; position: relative;";
+            
+            let htmlGrupo = `
+                <!-- FALA DO JOGADOR -->
+                <div style="display: flex; align-items: flex-start; width: 100%;">
+                    <img src="${dados.jogadorAvatar}" title="Personalidade: ${dados.jogadorPersonalidade}" onerror="this.src='https://via.placeholder.com/30/333/00ffcc?text=U'" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid #00ffcc; margin-right: 12px; flex-shrink: 0; cursor: help;">
+                    <div style="display: flex; flex-direction: column; flex: 1;">
+                        <span style="color: #00ffcc; font-weight: bold; font-size: 0.9rem; margin-bottom: 3px;">
+                            ${dados.jogadorNome}
+                            ${dados.meuComentario ? `<span onclick="apagarComentario('${dados.id}', '${dados.postId}')" style="cursor: pointer; float: right; font-size: 0.9rem;" title="Apagar meu eco">🗑️</span>` : ''}
+                        </span>
+                        <span style="color: #ccc; font-size: 0.9rem; line-height: 1.4;">${dados.comentarioTexto}</span>
+                    </div>
+                </div>
+            `;
+
+            // SE A IA RESPONDEU
+            if (dados.respostaIA && dados.respostaIA.trim() !== "") {
+                let imgSrc = "https://via.placeholder.com/30/333/d4af37?text=H";
+                const heroData = typeof heroes !== 'undefined' ? heroes.find(h => h.name.includes(dados.postId)) : null;
+                if (heroData) imgSrc = heroData.avatar || heroData.image;
+
+                htmlGrupo += `
+                    <!-- RESPOSTA DA IA -->
+                    <div style="display: flex; align-items: flex-start; padding-left: 20px; border-left: 2px solid #555; margin-top: 10px;">
+                        <img src="${imgSrc}" onerror="this.src='https://via.placeholder.com/30'" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid #d4af37; margin-right: 12px; flex-shrink: 0;">
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="color: #d4af37; font-weight: bold; font-size: 0.9rem; margin-bottom: 3px;">${dados.postId}</span>
+                            <span style="color: #aaa; font-size: 0.9rem; line-height: 1.4;">${dados.respostaIA.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</span>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            divGrupo.innerHTML = htmlGrupo;
+            areaComentarios.appendChild(divGrupo);
+        };
+
+        // 7. A Função da Lixeira (Apaga do Offline)
+        // (Apagar do Firebase exige um ID específico do Firebase, então no nível 1 focamos no Fantasma)
+        window.apagarComentario = function(idComentario, postId) {
+            // Remove da tela
+            const elemento = document.getElementById(idComentario);
+            if(elemento) elemento.remove();
+
+            // Tenta remover do Diário Fantasma (Offline)
+            let memoriaOffline = JSON.parse(localStorage.getItem('aethernetFantasma')) || [];
+            memoriaOffline = memoriaOffline.filter(coment => coment.id !== idComentario);
+            localStorage.setItem('aethernetFantasma', JSON.stringify(memoriaOffline));
+            
+            // Se você quiser implementar o delete no Firebase depois, colocamos aqui!
+        };
+
+    </script>
+
+    <script>
+        // ==========================================
+        // SISTEMA DE VISITANTE (OFFLINE / ONLINE)
+        // ==========================================
+        
+        // Verifica se o jogador já tem um "Modo" salvo
+        window.addEventListener('DOMContentLoaded', () => {
+            const modoVisitante = localStorage.getItem('aetheryonVisitorMode');
+            if (!modoVisitante) {
+                // Se não tem, abre a tela de boas-vindas
+                document.getElementById('welcomeScreen').style.display = 'flex';
+            }
+        });
+
+        // Função para Escolher o Modo Offline (Anônimo)
+        function escolherModo(modo) {
+            if (modo === 'offline') {
+                localStorage.setItem('aetheryonVisitorMode', 'offline');
+                // Cria um perfil genérico fantasma
+                const perfilFantasma = {
+                    nome: "Visitante Anônimo",
+                    avatar: "https://via.placeholder.com/30/333/555?text=?",
+                    personalidade: "Silencioso"
+                };
+                localStorage.setItem('aetheryonVisitorProfile', JSON.stringify(perfilFantasma));
+                document.getElementById('welcomeScreen').style.display = 'none';
+                if (typeof speakOracle === 'function') speakOracle(["Hmph. Um covarde que prefere se esconder nas sombras. Típico."]);
+            }
+        }
+
+        // Abre a tela para preencher o perfil
+        function abrirCriacaoPerfil() {
+            document.getElementById('welcomeScreen').style.display = 'none';
+            document.getElementById('profileCreatorScreen').style.display = 'flex';
+        }
+
+        // Pré-visualiza a imagem de perfil que o jogador subiu
+        function previewAvatar(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('previewAvatarVisitante').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Salva o Perfil Online no navegador (Pronto para o Firebase depois)
+        function salvarPerfilOnline() {
+            const nome = document.getElementById('inputNomeVisitante').value.trim() || "Viajante Desconhecido";
+            const avatar = document.getElementById('previewAvatarVisitante').src;
+            const personalidade = document.getElementById('inputPersonalidadeVisitante').value;
+
+            const perfilOnline = {
+                nome: nome,
+                avatar: avatar,
+                personalidade: personalidade
+            };
+
+            localStorage.setItem('aetheryonVisitorMode', 'online');
+            localStorage.setItem('aetheryonVisitorProfile', JSON.stringify(perfilOnline));
+
+            document.getElementById('profileCreatorScreen').style.display = 'none';
+            
+            if (typeof speakOracle === 'function') speakOracle([`Então seu nome é ${nome}... Vamos ver quanto tempo você sobrevive por aqui.`]);
+        }
+
+        // Apaga a identidade e volta para o Modo Offline
+        function voltarModoFantasma() {
+            localStorage.setItem('aetheryonVisitorMode', 'offline');
+            const perfilFantasma = {
+                nome: "Visitante Anônimo",
+                avatar: "https://via.placeholder.com/30/333/555?text=?",
+                personalidade: "Silencioso"
+            };
+            localStorage.setItem('aetheryonVisitorProfile', JSON.stringify(perfilFantasma));
+            
+            document.getElementById('profileCreatorScreen').style.display = 'none';
+            
+            if (typeof speakOracle === 'function') speakOracle(["Voltando para a escuridão. Ninguém sentirá sua falta."]);
+        }
+
+       // ===============================================
+        // OUVINTE MÁGICO (AETHERNET EM TEMPO REAL)
+        // ===============================================
+        window.escutaAethernetAtiva = false; // Controle para não abrir dois túneis
+
+        async function iniciarOuvinteGlobal() {
+            if (typeof window.onSnapshot !== 'function' || typeof window.collection !== 'function' || !window.db) {
+                console.log("Aguardando os deuses do Firebase para o tempo real...");
+                setTimeout(iniciarOuvinteGlobal, 2000);
+                return;
+            }
+
+            if (window.escutaAethernetAtiva) return; // Se já está escutando, ignora
+            window.escutaAethernetAtiva = true;
+
+            const colecaoPosts = window.collection(window.db, "aethernet_posts");
+
+            // Abre o túnel (Sempre que a nuvem mudar, essa função roda sozinha)
+            window.onSnapshot(colecaoPosts, (snapshot) => {
+                let todosComentarios = [];
+                
+                // 1. Puxa os dados atualizados da Nuvem
+                snapshot.forEach((doc) => { 
+                    let dados = doc.data();
+                    dados.idFirebase = doc.id; // Guarda o ID real da nuvem (útil para o futuro)
+                    todosComentarios.push(dados); 
+                });
+
+                // 2. Puxa a Memória Fantasma (Offline)
+                let memoriaOffline = JSON.parse(localStorage.getItem('aethernetFantasma')) || [];
+                todosComentarios = todosComentarios.concat(memoriaOffline);
+
+                // 3. Ordena tudo cronologicamente
+                todosComentarios.sort((a, b) => a.timestamp - b.timestamp);
+
+                // 4. Limpa a tela
+                document.querySelectorAll('.comentario-de-jogador-online').forEach(el => el.remove());
+
+                // 5. Redesenha a tela
+                todosComentarios.forEach(dados => {
+                    const postCerto = document.querySelector(`.post-container[data-personagem="${dados.postId}"]`);
+                    if (postCerto) {
+                        const areaComentarios = postCerto.querySelector('.post-comments');
+                        window.desenharComentarioNaTela(dados, areaComentarios);
+                    }
+                });
+                
+                console.log("Os ecos de Aetheryon ressoaram em tempo real.");
+            }, (erro) => {
+                console.error("Erro na escuta da Aethernet:", erro);
+                window.escutaAethernetAtiva = false; // Permite tentar de novo se a conexão cair
+            });
+        }
+
+        // Troca a chamada antiga para a nova!
+        setTimeout(iniciarOuvinteGlobal, 3000);
+
     </script>
 
 </body>
