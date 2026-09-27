@@ -668,6 +668,10 @@
         }
         .comment-text { color: #aaa; }
 
+        .post-container {
+    margin-bottom: 40px !important;
+}
+
     </style>
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -917,7 +921,7 @@
        <!-- ============================== -->
         <!-- POST EXEMPLO COM IMAGEM E LIKE POLIDO -->
         <!-- ============================== -->
-        <div class="post-container" data-personagem="Ashlan" style="background-color: #111; border: 1px solid #333; border-radius: 12px; width: 100%; box-shadow: 0 5px 15px rgba(0,0,0,0.8); overflow: hidden; font-family: 'Roboto', sans-serif;">
+        <div class="post-container" data-personagem="Ashlan" style="margin-bottom: 40px; background-color: #111; border: 1px solid #333; border-radius: 12px; width: 100%; box-shadow: 0 5px 15px rgba(0,0,0,0.8); overflow: hidden; font-family: 'Roboto', sans-serif;">
             
             <!-- CABEÇALHO (O mesmo de antes) -->
             <div class="post-header" style="display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #222;">
@@ -969,57 +973,112 @@
         </div>
 
         <!-- ============================== -->
-        <!-- POST EXEMPLO 2 (BYAKUYA)       -->
+        <!-- POST CORRIGIDO (BYAKUYA)       -->
         <!-- ============================== -->
-        <div class="post-container" data-personagem="Byakuya" style="background-color: #111; border: 1px solid #333; border-radius: 12px; width: 100%; box-shadow: 0 5px 15px rgba(0,0,0,0.8); overflow: hidden; font-family: 'Roboto', sans-serif;">
+        <div class="post-container" data-personagem="Byakuya" style="margin-bottom: 20px; background-color: #111; border: 1px solid #333; border-radius: 12px; width: 100%; box-shadow: 0 5px 15px rgba(0,0,0,0.8); overflow: hidden; font-family: 'Roboto', sans-serif;">
             
+            <!-- 1. CABEÇALHO -->
             <div class="post-header" style="display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #222;">
-                <!-- Aqui você precisa colocar o nome da imagem da Byakuya que está na sua pasta -->
-                <img src="byakuya_face.png" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #d4af37; margin-right: 15px;">
+                <img src="byakuya_face.png" onerror="this.src='https://ui-avatars.com/api/?name=B&background=111&color=d4af37'" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #d4af37; margin-right: 15px;">
                 <div style="display: flex; flex-direction: column; text-align: left;">
                     <p style="color: #fff; font-weight: bold; font-size: 1.1rem; margin: 0; font-family: 'Cinzel', serif;">Byakuya 白夜</p>
                     <p style="color: #888; font-size: 0.8rem; margin: 0; display: flex; align-items: center; gap: 5px;">📍 Pico dos Suspiros</p>
                 </div>
             </div>
             
+            <!-- 2. TEXTO E FOTO -->
             <div class="post-content" style="padding: 15px; color: #ccc; line-height: 1.5; font-size: 0.95rem; text-align: left;">
                 Fracos. Todos vocês. O treinamento de hoje consistiu em quebrar três costelas de novatos. Se ajoelhem ou sejam pisados. 🪷
             </div>
-
-              <div class="post-image-container" style="width: 100%; background: #000; border-top: 1px solid #222; border-bottom: 1px solid #222;">
+            <div class="post-image-container" style="width: 100%; background: #000; border-top: 1px solid #222; border-bottom: 1px solid #222;">
                 <img src="byakuyaskill4.png" alt="Foto do Post" onerror="this.style.display='none'" style="width: 100%; max-height: 400px; object-fit: contain; display: block;">
             </div>
-       
-           <div class="post-actions" style="padding: 12px 15px; display: flex; gap: 15px; border-bottom: 1px solid #222; background: #161616;">
-                <button class="action-btn" onclick="toggleLike(this)" style="background: rgba(255, 255, 255, 0.05); border: 1px solid #444; border-radius: 20px; padding: 6px 15px; color: #888; cursor: pointer; font-size: 0.95rem; font-weight: bold; display: flex; align-items: center; gap: 8px; transition: all 0.2s ease-in-out; box-shadow: 0 2px 5px rgba(0,0,0,0.5);" onmouseover="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.borderColor='#666';" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.borderColor=this.classList.contains('liked') ? '#e11d48' : '#444';">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="pointer-events: none;">
-                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                    </svg>
+            
+            <div class="post-actions" style="padding: 12px 15px; display: flex; gap: 15px; border-bottom: 1px solid #222; background: #161616;">
+                <button class="action-btn" onclick="toggleLike(this)" style="background: rgba(255, 255, 255, 0.05); border: 1px solid #444; border-radius: 20px; padding: 6px 15px; color: #888; cursor: pointer; font-size: 0.95rem; font-weight: bold; display: flex; align-items: center; gap: 8px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="pointer-events: none;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                     <span>142</span>
                 </button>
             </div>
             
-            <div class="post-comments" style="padding: 15px; background: rgba(0, 0, 0, 0.4); text-align: left;">
-
-                 <div style="display: flex; align-items: flex-start;">
-                    <!-- Troque o src pela foto do Ashton -->
-                    <img src="lilia_face.png" onerror="this.src='https://via.placeholder.com/30'" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid #d4af37; margin-right: 12px; flex-shrink:0;">
-                    <div style="display: flex; flex-direction: column;">
-                        <span style="color: #d4af37; font-weight: bold; font-size: 0.9rem; margin-bottom: 3px;">Lilia</span>
-                        <span style="color: #aaa; font-size: 0.9rem; line-height: 1.4;">A violência desnecessária machuca o equilíbrio da terra... 🌿😢</span>
-                </div>
-             </div>
-           
+            <!-- 3. ZONA DE COMENTÁRIOS DA HISTÓRIA -->
+            <div class="post-comments" style="padding: 15px; background: rgba(0, 0, 0, 0.4); text-align: left; display: flex; flex-direction: column; gap: 15px;">
                 <div style="display: flex; align-items: flex-start;">
-                    <img src="byakuya_face.png" onerror="this.src='https://via.placeholder.com/30'" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid #d4af37; margin-right: 12px; flex-shrink:0;">
+                    <img src="lilia_face.png" onerror="this.src='https://ui-avatars.com/api/?name=L&background=111&color=32cd32'" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid #32cd32; margin-right: 12px; flex-shrink:0;">
                     <div style="display: flex; flex-direction: column;">
-                        <span style="color: #d4af37; font-weight: bold; font-size: 0.9rem; margin-bottom: 3px;">Lilia</span>
-                        <span style="color: #aaa; font-size: 0.9rem; line-height: 1.4;">Cala a boca, herbívora.</span>
+                        <span style="color: #32cd32; font-weight: bold; font-size: 0.9rem; margin-bottom: 3px;">Lilia</span>
+                        <span style="color: #aaa; font-size: 0.9rem; line-height: 1.4;">A violência desnecessária machuca o equilíbrio da terra... 🌿😢</span>
+                    </div>
                 </div>
+                <div style="display: flex; align-items: flex-start;">
+                    <img src="byakuya_face.png" onerror="this.src='https://ui-avatars.com/api/?name=B&background=111&color=d4af37'" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid #d4af37; margin-right: 12px; flex-shrink:0;">
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="color: #d4af37; font-weight: bold; font-size: 0.9rem; margin-bottom: 3px;">Byakuya 白夜</span>
+                        <span style="color: #aaa; font-size: 0.9rem; line-height: 1.4;">Cala a boca, herbívora.</span>
+                    </div>
+                </div>
+            </div> <!-- FIM DA ZONA DE COMENTÁRIOS -->
 
-                <!-- CAIXA DE INTERAÇÃO DO JOGADOR -->
+            <!-- 4. CAIXA DO JOGADOR (FICA ABAIXO DOS COMENTÁRIOS, ISOLADA!) -->
             <div style="padding: 15px; border-top: 1px solid #222; background: #111; display: flex; gap: 10px; align-items: center;">
-                <img src="https://via.placeholder.com/30/333/00ffcc?text=U" style="width: 30px; height: 30px; border-radius: 50%; border: 1px solid #00ffcc; flex-shrink: 0;">
+                <img src="https://ui-avatars.com/api/?name=V&background=111&color=00ffcc" style="width: 30px; height: 30px; border-radius: 50%; border: 1px solid #00ffcc; flex-shrink: 0;">
+                <input type="text" placeholder="Adicione um comentário..." onkeypress="enviarComentarioFalso(event, this)" style="flex: 1; background: #222; border: 1px solid #444; color: #fff; padding: 8px 12p>x; border-radius: 20px; outline: none; font-size: 0.9rem;">
+            </div>
+
+       </div>
+
+            <div style="height: 20px; width: 100%; background: transparent; clear: both;"></div>
+
+            <!-- ============================== -->
+        <!-- POST RANNY  -->
+        <!-- ============================== -->
+        <div class="post-container" data-personagem="Ranny" style="margin-bottom: 40px; background-color: #111; border: 1px solid #333; border-radius: 12px; width: 100%; box-shadow: 0 5px 15px rgba(0,0,0,0.8); overflow: hidden; font-family: 'Roboto', sans-serif;">
+            
+            <!-- 1. CABEÇALHO -->
+            <div class="post-header" style="display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #222;">
+                <img src="ranny_face.png" onerror="this.src='https://ui-avatars.com/api/?name=B&background=111&color=d4af37'" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #d4af37; margin-right: 15px;">
+                <div style="display: flex; flex-direction: column; text-align: left;">
+                    <p style="color: #fff; font-weight: bold; font-size: 1.1rem; margin: 0; font-family: 'Cinzel', serif;">Ranny</p>
+                    <p style="color: #888; font-size: 0.8rem; margin: 0; display: flex; align-items: center; gap: 5px;">🥼 Laboratório Especial</p>
+                </div>
+            </div>
+            
+            <!-- 2. TEXTO E FOTO -->
+            <div class="post-content" style="padding: 15px; color: #ccc; line-height: 1.5; font-size: 0.95rem; text-align: left;">
+                Eu amo a medicina. Sério, são tantas coisas que você poderia fazer se tiver experiência médica! 🥼
+            </div>
+            <div class="post-image-container" style="width: 100%; background: #000; border-top: 1px solid #222; border-bottom: 1px solid #222;">
+                <img src="ranny_art3.png" alt="Foto do Post" onerror="this.style.display='none'" style="width: 100%; max-height: 400px; object-fit: contain; display: block;">
+            </div>
+            
+            <div class="post-actions" style="padding: 12px 15px; display: flex; gap: 15px; border-bottom: 1px solid #222; background: #161616;">
+                <button class="action-btn" onclick="toggleLike(this)" style="background: rgba(255, 255, 255, 0.05); border: 1px solid #444; border-radius: 20px; padding: 6px 15px; color: #888; cursor: pointer; font-size: 0.95rem; font-weight: bold; display: flex; align-items: center; gap: 8px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="pointer-events: none;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                    <span>142</span>
+                </button>
+            </div>
+            
+            <!-- 3. ZONA DE COMENTÁRIOS DA HISTÓRIA -->
+            <div class="post-comments" style="padding: 15px; background: rgba(0, 0, 0, 0.4); text-align: left; display: flex; flex-direction: column; gap: 15px;">
+                <div style="display: flex; align-items: flex-start;">
+                    <img src="rosalind_face.png" onerror="this.src='https://ui-avatars.com/api/?name=L&background=111&color=32cd32'" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid #32cd32; margin-right: 12px; flex-shrink:0;">
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="color: #32cd32; font-weight: bold; font-size: 0.9rem; margin-bottom: 3px;">Rosalind Mercer</span>
+                        <span style="color: #aaa; font-size: 0.9rem; line-height: 1.4;">Por quê você não me ajuda aqui no meu laborátior, hmm?</span>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: flex-start;">
+                    <img src="ashley_face.jpg" onerror="this.src='https://ui-avatars.com/api/?name=B&background=111&color=d4af37'" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid #d4af37; margin-right: 12px; flex-shrink:0;">
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="color: #d4af37; font-weight: bold; font-size: 0.9rem; margin-bottom: 3px;">Ashley</span>
+                        <span style="color: #aaa; font-size: 0.9rem; line-height: 1.4;">Aposto que tá pensando em levar algum macho aí pro seu laboratório com essa cara.</span>
+                    </div>
+                </div>
+            </div> <!-- FIM DA ZONA DE COMENTÁRIOS -->
+
+            <!-- 4. CAIXA DO JOGADOR (FICA ABAIXO DOS COMENTÁRIOS, ISOLADA!) -->
+            <div style="padding: 15px; border-top: 1px solid #222; background: #111; display: flex; gap: 10px; align-items: center;">
+                <img src="https://ui-avatars.com/api/?name=V&background=111&color=00ffcc" style="width: 30px; height: 30px; border-radius: 50%; border: 1px solid #00ffcc; flex-shrink: 0;">
                 <input type="text" placeholder="Adicione um comentário..." onkeypress="enviarComentarioFalso(event, this)" style="flex: 1; background: #222; border: 1px solid #444; color: #fff; padding: 8px 12px; border-radius: 20px; outline: none; font-size: 0.9rem;">
             </div>
 
@@ -2709,7 +2768,7 @@ secret: "Durante anos, Mydra acreditou que Maevra ainda estivesse em Zenathor ao
     role: "support",
     image: "denise.png",
     model3dChar: "denisemodel.glb",
-    model3dWeapon: "nielweaponmodel.glb",
+    model3dWeapon: "deniseweaponmodel.glb",
     avatar: "denise_face.png",
     quote: "\"Vixelle: Eu não vou viajar no meio desse enchimento ridículo aí que você chama de seios. — Denise: A única coisa que vai cheia aqui é a sua cara de cicatriz.\"",
     faction: "⚫ Independentes / Ex-Zenathor",
@@ -2739,7 +2798,6 @@ secret: "Durante anos, Mydra acreditou que Maevra ainda estivesse em Zenathor ao
     race: "Humana",
     weapon: "Biocápsulas de Incubação",
     weaponDetails: "Um conjunto de recipientes de vidro reforçado, cápsulas de cultura e equipamentos desenvolvidos pela própria Ranny para criar, armazenar e transportar organismos geneticamente modificados. Cada recipiente recebe uma classificação conforme comportamento, estabilidade e risco. Entre suas criações existem variantes dóceis, agressivas, instáveis e os chamados Female Seekers. Devido à quantidade de organismos experimentais perigosos mantidos em seu laboratório, suas pesquisas podem facilmente ser utilizadas como uma forma de arma biológica.",
-    weaponImage: "ranny_biocapsules.png",
     description: "Ranny Hackfield é uma médica formada de Aetheryon e uma especialista excepcional em reprodução, genética, fertilidade, desenvolvimento embrionário e saúde de bebês e crianças. Publicamente, ela continua exercendo medicina normalmente e possui conhecimento suficiente para lidar com gestações complicadas, doenças hereditárias, problemas neonatais e diversas condições pediátricas. Para a maioria das pessoas, Ranny é apenas uma médica extremamente inteligente, excêntrica e dedicada à pesquisa.<br><br>Ranny perdeu os pais durante a Grande Guerra. A tragédia marcou profundamente sua vida e acabou contribuindo para sua obsessão em compreender a reprodução e os mecanismos responsáveis pela criação e sobrevivência da vida. Durante muitos anos, ela foi uma das melhores amigas da Dra. Rosalind Mercer. As duas compartilhavam grande interesse por genética e modificação biológica, embora tenham seguido especializações diferentes: Rosalind direcionou suas pesquisas principalmente para transformação corporal e procedimentos médicos extremos, enquanto Ranny concentrou-se em fertilidade, gametas, hereditariedade e organismos derivados de material reprodutivo.<br><br>Com o passar dos anos, a curiosidade de Ranny deixou de possuir limites éticos. Em algum lugar secreto nos arredores de Diamond City, ela construiu um laboratório clandestino no qual realiza experiências genéticas que jamais seriam aprovadas por qualquer instituição médica. Apenas um pequeno grupo de amigos sabe que o laboratório existe. Eles não denunciam Ranny principalmente por medo, pois sabem que pessoas próximas demais de suas pesquisas podem acabar sendo utilizadas como cobaias.<br><br>Seu projeto mais famoso começou quando Ranny decidiu descobrir se seria possível ampliar artificialmente células reprodutivas sem destruir completamente sua função biológica. Utilizando material genético obtido de cobaias masculinas e diversas alterações experimentais, ela conseguiu criar organismos semelhantes a espermatozoides com aproximadamente cinco a oito centímetros de comprimento. As primeiras linhagens morriam rapidamente, mas novas ondas de experimentos produziram espécimes capazes de sobreviver por períodos maiores e se movimentar independentemente.<br><br>Algumas variantes desenvolveram mobilidade extrema e comportamento semelhante ao de pequenos animais. Uma dessas linhagens demonstrou capacidade de distinguir biologicamente indivíduos masculinos e femininos e apresentava comportamento de busca direcionado exclusivamente para indivíduos femininos. Ranny classificou esses espécimes como Female Seekers. Outra linhagem desenvolveu uma abertura circular semelhante a uma boca, acompanhada por pequenos dentes. Os primeiros espécimes desse grupo eram extremamente agressivos e um deles chegou a atacar Ranny, obrigando-a a destruir toda aquela geração experimental.<br><br>Experimentos posteriores produziram organismos com a mesma estrutura bucal, porém com comportamento completamente diferente. Esses espécimes tornaram-se dóceis, aprenderam a consumir pequenas porções de frutas e começaram a demonstrar respostas sociais semelhantes às de pequenos animais domésticos. Alguns procuram contato com Ranny e chegam a permanecer próximos ao seu pescoço ou ombros. Ranny considera essa variante um de seus maiores sucessos e passou a estudar seriamente a possibilidade de seus organismos serem domesticados.<br><br>Uma antiga amiga de Ranny conhece a existência do laboratório porque foi levada até lá e utilizada como cobaia durante um de seus experimentos. Quando teve oportunidade, ela fugiu imediatamente. Apesar de saber exatamente onde algumas das experiências acontecem, nunca revelou nada às autoridades por medo de ser capturada novamente. Essa mulher continua vivendo com a certeza de que denunciar Ranny pode fazê-la desaparecer.<br><br>A irmã de Ranny, Hanna Hackfield, também desapareceu misteriosamente. Diversas pessoas ainda procuram por Hanna e existem inúmeras teorias sobre o que aconteceu com ela. A verdade é muito mais sombria: Hanna nunca deixou a região. Ranny mantém a própria irmã viva e confinada dentro do laboratório, utilizando-a como cobaia em seus estudos mais extremos. Hanna já tentou ameaçar e confrontar Ranny diversas vezes, mas permanece presa enquanto a irmã continua registrando novos resultados.<br><br>Ranny afirma que pretende libertar Hanna depois de concluir um último conjunto de testes. Entretanto, suas próprias anotações demonstram que cada experimento fracassado simplesmente gera uma nova hipótese e outra tentativa. Isso torna impossível saber se Ranny realmente pretende cumprir sua promessa ou se Hanna será permanentemente transformada em parte de sua pesquisa.<br><br>Atualmente, o laboratório contém dezenas de grandes recipientes identificados com classificações como DÓCIL, AGRESSIVO, FEMALE SEEKER, INSTÁVEL e diversas outras categorias criadas pela própria Ranny. Algumas cápsulas permanecem isoladas atrás de várias camadas de vidro reforçado porque nem mesmo ela considera seguro libertar os organismos mantidos dentro delas. Se determinadas linhagens escapassem do complexo, o incidente poderia facilmente se transformar em uma emergência biológica nos arredores de Diamond City.<br><br>Apesar de tudo isso, Ranny continua enxergando a si mesma como médica. Ela realmente possui conhecimento extraordinário e é perfeitamente capaz de salvar a vida de pacientes, mães, bebês e crianças. Essa é justamente uma das características mais perturbadoras de sua personalidade: Ranny não é uma impostora ou pesquisadora incompetente. Ela sabe exatamente o que está fazendo. O problema é que sua obsessão científica se tornou mais importante para ela do que consentimento, liberdade ou segurança.<br><br>Fora do laboratório, Ranny costuma se comportar de maneira calma, educada e quase maternal. Ela consegue conversar normalmente com pacientes, amigos e outros médicos sem levantar suspeitas. Quando fala sobre suas criaturas, entretanto, demonstra entusiasmo genuíno e parece não compreender completamente por que outras pessoas considerariam seus experimentos monstruosos. Para Ranny, suas criações não são aberrações. São apenas novas formas de vida que ainda não receberam uma classificação adequada.",
     extraImages: ["ranny_art1.png", "ranny_art2.png", "ranny_art3.png", "ranny_art4.png", "ranny_art5.jpg", "ranny_art6.png"],
     secret: "A maior mentira na vida de Ranny Hackfield é o desaparecimento de sua irmã. Hanna Hackfield está viva e permanece escondida dentro do laboratório clandestino, onde é mantida como cobaia involuntária. Ranny insiste que irá libertá-la quando seus experimentos terminarem, mas nenhuma de suas pesquisas parece possuir um ponto final verdadeiro.<br><br>A antiga amiga que conseguiu fugir também conhece parte da verdade sobre o laboratório, mas permanece em silêncio por puro medo. O mesmo acontece com os poucos amigos de Ranny que sabem de suas atividades clandestinas. Todos compreenderam que denunciar a médica pode significar se tornar o próximo nome em uma ficha de experimento.<br><br>O segredo mais perigoso, porém, não é apenas Hanna. Ranny já possui diversas linhagens de organismos vivos capazes de comportamento autônomo, adaptação e agressividade. Algumas são tão instáveis que permanecem isoladas mesmo da própria cientista. Caso o laboratório seja invadido, sabotado ou destruído sem cuidado, as criaturas de Ranny podem transformar um simples escândalo médico em uma verdadeira emergência biológica para Diamond City."
@@ -3325,7 +3383,7 @@ const falasLocais = [
         ];
 
         const falasDoce = [
-    "Hmm... SweetHearth? Tá achando que eu sou o viadinho do Áshilân?",
+    "Eita... SweetHearth? Tá achando que eu sou o viadinho do Áshilân?",
     "Me dando doce fabricado por machos Prismari? Você é doente... Mas eu vou comer.",
     "Acha que pode comprar meu favor com açúcar? ...Me dá isso aqui logo."
         ];
@@ -10308,15 +10366,14 @@ function finalizarJogo(vitória, msg) {
             };
         }
 
-        // 5. Função da Caixa de Comentário (Memória Fantasma + Lixeira + Firebase)
+        // 5. Função da Caixa de Comentário (Fim da Duplicação)
         async function enviarComentarioFalso(event, inputElement) {
             if (event.key === 'Enter' && inputElement.value.trim() !== '') {
                 const textoJogador = inputElement.value.trim();
                 
-                // --- VERIFICAÇÃO DE TICKETS ---
                 if (window.aetheryonTickets <= 0) {
                     inputElement.value = '';
-                    inputElement.placeholder = "Sem Tickets! Leia a Lore.";
+                    inputElement.placeholder = "Sem Tickets!";
                     inputElement.style.borderColor = '#ff4444';
                     setTimeout(() => {
                         inputElement.placeholder = "Adicione um comentário...";
@@ -10333,21 +10390,31 @@ function finalizarJogo(vitória, msg) {
                 const areaComentarios = containerPost.querySelector('.post-comments');
                 const donoDoPost = containerPost.dataset.personagem || "Herói de Aetheryon";
                 
-                let perfilJogador = JSON.parse(localStorage.getItem('aetheryonVisitorProfile')) || { nome: "Visitante Anônimo", avatar: "https://via.placeholder.com/30/333/555?text=?", personalidade: "Silencioso" };
+                // Mudei o avatar padrão para um que não quebra no seu navegador
+                let perfilJogador = JSON.parse(localStorage.getItem('aetheryonVisitorProfile')) || { nome: "Visitante", avatar: "https://ui-avatars.com/api/?name=V&background=111&color=00ffcc", personalidade: "Silencioso" };
                 let modoJogador = localStorage.getItem('aetheryonVisitorMode') || 'offline';
-                
-                // Cria um ID único para esse comentário poder ser apagado depois
                 const comentarioId = "msg_" + Date.now();
-                const horaAtual = new Date().getTime();
 
-                // Trava o input
+                // --- 1. AVISO DE CARREGAMENTO TEMPORÁRIO ---
+                // Adicionamos a etiqueta 'comentario-de-jogador-online' para o Firebase saber apagar isto quando trouxer o real!
+                const divTemporaria = document.createElement('div');
+                divTemporaria.className = 'comentario-de-jogador-online'; 
+                divTemporaria.style.cssText = "display: flex; margin-top: 15px; align-items: flex-start; opacity: 0.6;";
+                divTemporaria.innerHTML = `
+                    <img src="${perfilJogador.avatar}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid #00ffcc; margin-right: 12px; flex-shrink: 0;">
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="color: #00ffcc; font-weight: bold; font-size: 0.9rem; margin-bottom: 3px;">${perfilJogador.nome}</span>
+                        <span style="color: #ccc; font-size: 0.9rem; line-height: 1.4;">${textoJogador}</span>
+                        <span style="color: #d4af37; font-size: 0.8rem; margin-top: 5px; font-style: italic;">${donoDoPost} está digitando...</span>
+                    </div>
+                `;
+                areaComentarios.appendChild(divTemporaria);
+
                 inputElement.value = '';
                 inputElement.disabled = true;
-                inputElement.placeholder = `${donoDoPost} está digitando...`;
-                inputElement.style.borderColor = '#d4af37';
-                
-                // --- CHAMA A IA ---
-                const promptSecreto = `Aja EXATAMENTE como a personagem ${donoDoPost} do universo Aetheryon. O mortal que comentou se chama "${perfilJogador.nome}" e tem a personalidade "${perfilJogador.personalidade}". Ele fez o seguinte comentário no seu perfil da rede social: "${textoJogador}". Responda diretamente a esse comentário em até duas frases. Não saia do personagem. Aja como alguém digitando uma resposta rápida na internet e reaja à atitude/personalidade dele. NÃO use asteriscos para descrever ações.`;
+
+                // --- 2. CHAMA A IA ---
+                const promptSecreto = `Aja EXATAMENTE como a personagem ${donoDoPost} do universo Aetheryon. O mortal que comentou se chama "${perfilJogador.nome}" e tem a personalidade "${perfilJogador.personalidade}". Ele fez o seguinte comentário: "${textoJogador}". Responda em até duas frases. Reaja à atitude dele. NÃO use asteriscos.`;
                 let respostaFinalIA = "";
 
                 try {
@@ -10363,7 +10430,7 @@ function finalizarJogo(vitória, msg) {
                     respostaFinalIA = "O silêncio ecoou pelas trevas.";
                 }
 
-                // O PACOTE DE DADOS DO COMENTÁRIO
+                // --- 3. PACOTE FINAL E SALVAMENTO ---
                 const pacoteComentario = {
                     id: comentarioId,
                     postId: donoDoPost,
@@ -10372,33 +10439,30 @@ function finalizarJogo(vitória, msg) {
                     jogadorPersonalidade: perfilJogador.personalidade,
                     comentarioTexto: textoJogador,
                     respostaIA: respostaFinalIA,
-                    timestamp: horaAtual,
-                    meuComentario: true // Marcador crucial para saber de quem é a Lixeira
+                    timestamp: new Date().getTime(),
+                    meuComentario: true
                 };
 
-                // --- SALVANDO O COMENTÁRIO ---
-                if (modoJogador === 'online' && typeof window.addDoc === 'function') {
-                    // Manda pra nuvem (Firebase)
-                    try {
-                        // Importante: No online, o Firebase gera um ID de documento diferente, 
-                        // precisamos salvar o ID dele para podermos apagar depois se precisarmos (não no escopo básico, mas útil).
-                        const comentariosRef = window.collection(window.db, "aethernet_posts");
-                        await window.addDoc(comentariosRef, pacoteComentario); 
-                    } catch (e) { console.error("Erro Nuvem:", e); }
-                } else {
-                    // Manda para o Diário Fantasma (localStorage)
+                // Removemos o aviso temporário. A Nuvem ou o Fantasma vão desenhar o oficial a seguir.
+                divTemporaria.remove(); 
+
+                if (modoJogador !== 'online' || typeof window.addDoc !== 'function') {
+                    // Modo Fantasma (Salva e desenha manualmente, já que a Nuvem não o fará)
                     let memoriaOffline = JSON.parse(localStorage.getItem('aethernetFantasma')) || [];
                     memoriaOffline.push(pacoteComentario);
                     localStorage.setItem('aethernetFantasma', JSON.stringify(memoriaOffline));
+                    
+                    window.desenharComentarioNaTela(pacoteComentario, areaComentarios);
+                } else {
+                    // Modo Online: Só mandamos para a nuvem. O 'onSnapshot' cuidará de pintar tudo sozinho!
+                    try {
+                        const comentariosRef = window.collection(window.db, "aethernet_posts");
+                        await window.addDoc(comentariosRef, pacoteComentario);
+                    } catch (e) { console.error("Erro Nuvem:", e); }
                 }
 
-                // --- PINTA NA TELA IMEDIATAMENTE ---
-                window.desenharComentarioNaTela(pacoteComentario, areaComentarios);
-
-                // Destrava o input
                 inputElement.disabled = false;
                 inputElement.placeholder = "Adicione um comentário...";
-                inputElement.style.borderColor = '#444';
                 inputElement.focus();
             }
         }
