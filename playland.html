@@ -386,6 +386,40 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        // =========================================
+        // MOTOR DO DOMINÓ MULTIPLAYER
+        // =========================================
+        
+        function gerarPecasMultiplayer() {
+            let monte = [];
+            for (let i = 0; i <= 6; i++) {
+                for (let j = i; j <= 6; j++) { monte.push({v1: i, v2: j}); }
+            }
+            return monte;
+        }
+
+        function embaralharMultiplayer(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function quemComecaMultiplayer(mao1, mao2) {
+            let maior1 = -1, maior2 = -1;
+            for (let p of mao1) { if (p.v1 === p.v2 && p.v1 > maior1) maior1 = p.v1; }
+            for (let p of mao2) { if (p.v1 === p.v2 && p.v1 > maior2) maior2 = p.v1; }
+            
+            if (maior1 > maior2) return 'jogador1';
+            if (maior2 > maior1) return 'jogador2';
+            
+            let soma1 = 0, soma2 = 0;
+            for (let p of mao1) { if (p.v1 + p.v2 > soma1) soma1 = p.v1 + p.v2; }
+            for (let p of mao2) { if (p.v1 + p.v2 > soma2) soma2 = p.v1 + p.v2; }
+            return soma1 >= soma2 ? 'jogador1' : 'jogador2';
+        }
+
         let salaAtualID = null;
         let meuPapel = null;
         let unscribeSala = null;
@@ -524,11 +558,53 @@
         function ouvirMudancasDaSala(codigoSala) {
             const salaRef = doc(db, "lobbies_domino", codigoSala);
             
-            unscribeSala = onSnapshot(salaRef, (docSnap) => {
+            unscribeSala = onSnapshot(salaRef, async (docSnap) => {
                 if (docSnap.exists()) {
                     const dados = docSnap.data();
+                    
+                    // 1. O HOST CRIA A PARTIDA E JOGA PRO BANCO
                     if (dados.status === "iniciando" && meuPapel === 'jogador1') {
-                         console.log("Iniciando distribuição de peças via Host!");
+                        let todas = embaralharMultiplayer(gerarPecasMultiplayer());
+                        let mao1 = todas.slice(0, 7);
+                        let mao2 = todas.slice(7, 14);
+                        let monte = todas.slice(14, 28);
+                        
+                        let quemInicia = quemComecaMultiplayer(mao1, mao2);
+
+                        await updateDoc(salaRef, {
+                            status: "jogando",
+                            maoJogador1: mao1,
+                            maoJogador2: mao2,
+                            monte: monte,
+                            turnoAtual: quemInicia
+                        });
+                    }
+
+                    // 2. A PARTIDA COMEÇA PARA OS DOIS (TRANSFORMA A TELA)
+                    if (dados.status === "jogando") {
+                        // Esconde o Lobby e Mostra a Mesa
+                        document.getElementById('lobby-screen').style.display = 'none';
+                        document.getElementById('domino-arena').style.display = 'flex';
+                        
+                        // Troca a identidade da Oráculo para um "Adversário" humano
+                        document.querySelector('.oraculo-foto').src = "https://ui-avatars.com/api/?name=Oponente&background=111&color=00ffcc&rounded=true";
+                        document.querySelector('.oraculo-header h3').innerText = "Adversário (Online)";
+                        document.querySelector('.oraculo-header h3').style.color = "#00ffcc";
+                        document.getElementById('fala-oraculo').innerText = `"Mesa sincronizada! Que vença o melhor."`;
+                        
+                        // Renderiza quem joga agora
+                        const statusTurno = document.getElementById('status-turno');
+                        if (dados.turnoAtual === meuPapel) {
+                            statusTurno.innerText = "Sua Vez!";
+                            statusTurno.style.color = "#00ffcc";
+                        } else {
+                            statusTurno.innerText = "Turno do Adversário...";
+                            statusTurno.style.color = "#ff4444";
+                        }
+
+                        // AQUI VAMOS RENDERIZAR AS PEÇAS NO PRÓXIMO PASSO!
+                        console.log("Mesa aberta! Meu papel é: " + meuPapel);
+                        console.log("Minha mão: ", meuPapel === 'jogador1' ? dados.maoJogador1 : dados.maoJogador2);
                     }
                 }
             });
