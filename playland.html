@@ -302,6 +302,7 @@
         <div style="display: flex; gap: 10px; width: 100%;">
             <button onclick="criarSala(true)" class="btn-criar" style="flex: 1; font-size: 0.9rem; padding: 10px;">Forjar Mesa Pública</button>
             <button onclick="criarSala(false)" class="btn-criar" style="flex: 1; font-size: 0.9rem; padding: 10px; background: #333; border-color: #555;">Forjar Sala Fechada</button>
+            <button onclick="iniciarJogoOffline()" class="btn-criar" style="background: linear-gradient(45deg, #0055ff, #00aaff); margin-top: 15px;">Treinar contra a Oráculo (Offline)</button>
         </div>
         
         <div class="divisor">Mesas Abertas</div>
@@ -368,7 +369,7 @@
     </div>
 
     <!-- ========================================= -->
-    <!-- FIREBASE MULTIPLAYER COM LISTA PÚBLICA    -->
+    <!-- FIREBASE E MOTOR UNIFICADO DO DOMINÓ      -->
     <!-- ========================================= -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -387,256 +388,41 @@
         const db = getFirestore(app);
 
         // =========================================
-        // MOTOR DO DOMINÓ MULTIPLAYER
+        // ESTADO GLOBAL DO JOGO
         // =========================================
+        let modoJogo = null; // 'offline' (contra Oráculo) ou 'online'
         
-        function gerarPecasMultiplayer() {
-            let monte = [];
-            for (let i = 0; i <= 6; i++) {
-                for (let j = i; j <= 6; j++) { monte.push({v1: i, v2: j}); }
-            }
-            return monte;
-        }
-
-        function embaralharMultiplayer(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
-
-        function quemComecaMultiplayer(mao1, mao2) {
-            let maior1 = -1, maior2 = -1;
-            for (let p of mao1) { if (p.v1 === p.v2 && p.v1 > maior1) maior1 = p.v1; }
-            for (let p of mao2) { if (p.v1 === p.v2 && p.v1 > maior2) maior2 = p.v1; }
-            
-            if (maior1 > maior2) return 'jogador1';
-            if (maior2 > maior1) return 'jogador2';
-            
-            let soma1 = 0, soma2 = 0;
-            for (let p of mao1) { if (p.v1 + p.v2 > soma1) soma1 = p.v1 + p.v2; }
-            for (let p of mao2) { if (p.v1 + p.v2 > soma2) soma2 = p.v1 + p.v2; }
-            return soma1 >= soma2 ? 'jogador1' : 'jogador2';
-        }
+        let pontaEsquerdaMesa = null;
+        let pontaDireitaMesa = null;
+        let mesaVazia = true;
+        let turnoDoJogador = false;
+        let monteDeCompras = []; 
+        let jogadorPassouTurno = false;
+        let botPassouTurno = false;
 
         let salaAtualID = null;
         let meuPapel = null;
         let unscribeSala = null;
         let unscribeListaSalas = null;
 
-        function gerarCodigoSala() {
-            const caracteres = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-            let resultado = '';
-            for (let i = 0; i < 5; i++) {
-                resultado += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
-            }
-            return resultado;
-        }
-
-        // Função principal para criar sala (Pública ou Privada)
-        window.criarSala = async function(isPublica) {
-            const statusText = document.getElementById('lobby-status');
-            statusText.innerText = "Forjando mesa...";
-            statusText.style.color = "#a855f7";
-            
-            const novoCodigo = gerarCodigoSala();
-            const nomeCriador = "Anônimo"; // Podemos puxar o nome do jogador da AetherNet depois!
-            
-            try {
-                await setDoc(doc(db, "lobbies_domino", novoCodigo), {
-                    criador: nomeCriador,
-                    publica: isPublica, // true = aparece na lista, false = precisa de código
-                    status: "aguardando", 
-                    hostPronto: true,
-                    convidadoPronto: false,
-                    turnoAtual: "", 
-                    pontaEsquerda: null,
-                    pontaDireita: null,
-                    mesaVazia: true,
-                    mesaPecas: [], 
-                    monte: [],
-                    maoJogador1: [],
-                    maoJogador2: [],
-                    timestamp: new Date() // Para limpar salas antigas no futuro
-                });
-
-                salaAtualID = novoCodigo;
-                meuPapel = 'jogador1';
-                
-                let msg = isPublica ? `Mesa Pública forjada! Aguardando oponentes...` : `Sala Privada! O código secreto é: <span style="color: #fff; font-size: 1.5rem;">${novoCodigo}</span><br>Envie para um aliado.`;
-                statusText.innerHTML = msg;
-                
-                ouvirMudancasDaSala(novoCodigo);
-
-            } catch (error) {
-                console.error("Erro ao criar:", error);
-                statusText.innerText = "Erro ao forjar a mesa.";
-                statusText.style.color = "#ff4444";
-            }
-        };
-
-        // Entrar clicando na lista ou digitando código usa a mesma base
-        window.entrarNaSalaPeloCodigo = function() {
-            const codigo = document.getElementById('codigo-sala').value.toUpperCase().trim();
-            entrarNaSalaGlobal(codigo);
-        }
+        // =========================================
+        // MOTOR LÓGICO E VISUAL BASE
+        // =========================================
         
-        window.entrarNaSalaLista = function(codigo) {
-            entrarNaSalaGlobal(codigo);
-        }
-
-        async function entrarNaSalaGlobal(codigo) {
-            const statusText = document.getElementById('lobby-status');
-            
-            if (codigo.length !== 5) {
-                statusText.innerText = "O código deve ter 5 caracteres.";
-                return;
-            }
-
-            statusText.innerText = "Conectando ao éter...";
-            statusText.style.color = "#00ffcc";
-
-            try {
-                const salaRef = doc(db, "lobbies_domino", codigo);
-                const salaSnap = await getDoc(salaRef);
-
-                if (salaSnap.exists() && salaSnap.data().status === "aguardando") {
-                    await updateDoc(salaRef, {
-                        status: "iniciando",
-                        convidadoPronto: true
-                    });
-                    
-                    salaAtualID = codigo;
-                    meuPapel = 'jogador2';
-                    statusText.innerText = "Mesa encontrada! Preparando...";
-                    
-                    // Se conectou com sucesso, desliga a escuta da lista para não gastar banda
-                    if(unscribeListaSalas) unscribeListaSalas();
-                    
-                    ouvirMudancasDaSala(codigo);
-                } else {
-                    statusText.innerText = "Mesa ocupada ou inexistente.";
-                    statusText.style.color = "#ff4444";
-                }
-            } catch (error) {
-                console.error("Erro:", error);
-                statusText.innerText = "Erro de conexão.";
-            }
-        }
-
-        // --- SISTEMA DE RADAR DE SALAS (LISTA PÚBLICA) ---
-        function ligarRadarDeSalas() {
-            const q = query(collection(db, "lobbies_domino"), where("status", "==", "aguardando"), where("publica", "==", true));
-            const listaDiv = document.getElementById('lista-salas-abertas');
-
-            unscribeListaSalas = onSnapshot(q, (snapshot) => {
-                listaDiv.innerHTML = ''; // Limpa a lista
-                
-                if (snapshot.empty) {
-                    listaDiv.innerHTML = '<p style="color: #666; font-size: 0.9rem; text-align: center;">Nenhuma mesa pública no momento.</p>';
-                    return;
-                }
-
-                snapshot.forEach((docSnap) => {
-                    const sala = docSnap.data();
-                    const id = docSnap.id;
-                    
-                    listaDiv.innerHTML += `
-                        <div class="sala-item">
-                            <span style="color: #a855f7; font-family: 'Cinzel', serif; font-weight: bold;">Mesa de ${sala.criador}</span>
-                            <button onclick="entrarNaSalaLista('${id}')" class="btn-entrar-lista">Entrar</button>
-                        </div>
-                    `;
-                });
-            });
-        }
-
-        // Liga o radar automaticamente ao abrir o Playland
-        window.onload = ligarRadarDeSalas;
-
-        function ouvirMudancasDaSala(codigoSala) {
-            const salaRef = doc(db, "lobbies_domino", codigoSala);
-            
-            unscribeSala = onSnapshot(salaRef, async (docSnap) => {
-                if (docSnap.exists()) {
-                    const dados = docSnap.data();
-                    
-                    // 1. O HOST CRIA A PARTIDA E JOGA PRO BANCO
-                    if (dados.status === "iniciando" && meuPapel === 'jogador1') {
-                        let todas = embaralharMultiplayer(gerarPecasMultiplayer());
-                        let mao1 = todas.slice(0, 7);
-                        let mao2 = todas.slice(7, 14);
-                        let monte = todas.slice(14, 28);
-                        
-                        let quemInicia = quemComecaMultiplayer(mao1, mao2);
-
-                        await updateDoc(salaRef, {
-                            status: "jogando",
-                            maoJogador1: mao1,
-                            maoJogador2: mao2,
-                            monte: monte,
-                            turnoAtual: quemInicia
-                        });
-                    }
-
-                    // 2. A PARTIDA COMEÇA PARA OS DOIS (TRANSFORMA A TELA)
-                    if (dados.status === "jogando") {
-                        // Esconde o Lobby e Mostra a Mesa
-                        document.getElementById('lobby-screen').style.display = 'none';
-                        document.getElementById('domino-arena').style.display = 'flex';
-                        
-                        // Troca a identidade da Oráculo para um "Adversário" humano
-                        document.querySelector('.oraculo-foto').src = "https://ui-avatars.com/api/?name=Oponente&background=111&color=00ffcc&rounded=true";
-                        document.querySelector('.oraculo-header h3').innerText = "Adversário (Online)";
-                        document.querySelector('.oraculo-header h3').style.color = "#00ffcc";
-                        document.getElementById('fala-oraculo').innerText = `"Mesa sincronizada! Que vença o melhor."`;
-                        
-                        // Renderiza quem joga agora
-                        const statusTurno = document.getElementById('status-turno');
-                        if (dados.turnoAtual === meuPapel) {
-                            statusTurno.innerText = "Sua Vez!";
-                            statusTurno.style.color = "#00ffcc";
-                        } else {
-                            statusTurno.innerText = "Turno do Adversário...";
-                            statusTurno.style.color = "#ff4444";
-                        }
-
-                        // AQUI VAMOS RENDERIZAR AS PEÇAS NO PRÓXIMO PASSO!
-                        console.log("Mesa aberta! Meu papel é: " + meuPapel);
-                        console.log("Minha mão: ", meuPapel === 'jogador1' ? dados.maoJogador1 : dados.maoJogador2);
-                    }
-                }
-            });
-        }
-    </script>
-
-    <script>
-        let pontaEsquerdaMesa = null;
-        let pontaDireitaMesa = null;
-        let mesaVazia = true;
-        let turnoDoJogador = true;
-        let monteDeCompras = []; 
-        
-        // Variáveis para detectar Mesa Trancada
-        let jogadorPassouTurno = false;
-        let botPassouTurno = false;
-
-        // Falas da Oráculo (Agora em PT-BR raiz)
-        const falas = {
-            inicio: ["Tente a sorte, mortal.", "Você não pode ver o futuro, mas eu posso.", "As peças já foram lançadas."],
-            botJoga: ["Muito fácil.", "Previsível demais.", "Uma jogada óbvia.", "Tente acompanhar o meu ritmo."],
-            botCompra: ["Hmpf... O universo está contra mim hoje.", "Um mero contratempo.", "Preciso de mais peças."],
-            jogadorBate: ["O quê?! Como você conseguiu?", "Trapaça! Eu vi o futuro e você perdia!", "Sorte de principiante..."],
-            botBate: ["Eu avisei. Seu destino já estava selado.", "Curve-se perante a minha sabedoria.", "Foi patético assistir sua derrota."],
-            mesaTrancadaJogador: ["A mesa fechou! Maldição, suas peças valem menos que as minhas!", "Trancado... e você venceu por pontos? Impossível."],
-            mesaTrancadaBot: ["Mesa trancada! E como eu previ, você tem mais pontos e perdeu.", "Ninguém joga, mas eu venço na contagem!"]
+        const falasOraculo = {
+            inicio: ["Tente a sorte, mortal.", "Você não pode ver o futuro, mas eu posso."],
+            botJoga: ["Muito fácil.", "Previsível demais."],
+            botCompra: ["Hmpf... O universo está contra mim hoje.", "Preciso de mais peças."],
+            jogadorBate: ["O quê?! Como você conseguiu?", "Sorte de principiante..."],
+            botBate: ["Eu avisei. Seu destino já estava selado.", "Curve-se perante a minha sabedoria."],
+            mesaTrancadaJogador: ["A mesa fechou! Maldição, suas peças valem menos que as minhas!"],
+            mesaTrancadaBot: ["Mesa trancada! E como eu previ, você tem mais pontos e perdeu."]
         };
 
         function atualizarFala(tipo) {
-            const arrayFalas = falas[tipo];
-            const falaSorteada = arrayFalas[Math.floor(Math.random() * arrayFalas.length)];
-            document.getElementById('fala-oraculo').innerText = `"${falaSorteada}"`;
+            if (modoJogo === 'online') return; 
+            const arrayFalas = falasOraculo[tipo];
+            document.getElementById('fala-oraculo').innerText = `"${arrayFalas[Math.floor(Math.random() * arrayFalas.length)]}"`;
         }
 
         function gerarPecas() {
@@ -654,6 +440,19 @@
             }
             return array;
         }
+        
+        function descobrirQuemComeca(maoJogador, maoAdversario) {
+            let maiorDuploJogador = -1;
+            let maiorDuploAdv = -1;
+            for (let peca of maoJogador) { if (peca[0] === peca[1] && peca[0] > maiorDuploJogador) maiorDuploJogador = peca[0]; }
+            for (let peca of maoAdversario) { if (peca[0] === peca[1] && peca[0] > maiorDuploAdv) maiorDuploAdv = peca[0]; }
+            if (maiorDuploJogador > maiorDuploAdv) return 'jogador1';
+            if (maiorDuploAdv > maiorDuploJogador) return 'jogador2';
+            let maiorSomaJogador = 0, maiorSomaAdv = 0;
+            for (let peca of maoJogador) { if (peca[0] + peca[1] > maiorSomaJogador) maiorSomaJogador = peca[0] + peca[1]; }
+            for (let peca of maoAdversario) { if (peca[0] + peca[1] > maiorSomaAdv) maiorSomaAdv = peca[0] + peca[1]; }
+            return maiorSomaJogador >= maiorSomaAdv ? 'jogador1' : 'jogador2';
+        }
 
         function criarElementoPeca(valores, dono) {
             const peca = document.createElement('div');
@@ -661,7 +460,7 @@
             peca.dataset.valor1 = valores[0];
             peca.dataset.valor2 = valores[1];
             
-            if (dono === 'bot') {
+            if (dono === 'bot' || dono === 'adversarioOnline') {
                 peca.classList.add('costas');
             } else {
                 const top = document.createElement('div');
@@ -671,19 +470,70 @@
                 const bottom = document.createElement('div');
                 bottom.className = 'peca-metade';
                 bottom.innerText = valores[1] === 0 ? '' : valores[1];
-
                 peca.appendChild(top);
                 peca.appendChild(bottom);
             }
 
             if (dono === 'jogador') {
                 peca.classList.add('jogavel');
-                peca.onclick = () => tentarJogarPeca(peca, valores, 'jogador');
+                peca.onclick = () => {
+                    if (modoJogo === 'offline') tentarJogarPecaOffline(peca, valores, 'jogador');
+                    else if (modoJogo === 'online') tentarJogarPecaOnline(valores);
+                };
             }
             return peca;
         }
 
-        function tentarJogarPeca(elementoPeca, valores, quemJogou) {
+        // =========================================
+        // LÓGICA: SINGLE PLAYER (OFFLINE VS ORÁCULO)
+        // =========================================
+        
+        window.iniciarJogoOffline = function() {
+            modoJogo = 'offline';
+            
+            document.getElementById('lobby-screen').style.display = 'none';
+            document.getElementById('domino-arena').style.display = 'flex';
+            document.querySelector('.oraculo-foto').src = "https://ui-avatars.com/api/?name=Oráculo&background=111&color=a855f7&rounded=true&bold=true";
+            document.querySelector('.oraculo-header h3').innerText = "Oráculo";
+            document.querySelector('.oraculo-header h3').style.color = "#a855f7";
+            
+            document.getElementById('mao-jogador-1').innerHTML = ''; 
+            document.getElementById('mao-bot').innerHTML = ''; 
+            document.getElementById('mesa-domino').innerHTML = '<p style="color: #888; font-style: italic;" id="aviso-mesa-vazia">A mesa está vazia.</p>';
+            
+            pontaEsquerdaMesa = null;
+            pontaDireitaMesa = null;
+            mesaVazia = true;
+            jogadorPassouTurno = false;
+            botPassouTurno = false;
+            
+            let todasAsPecas = embaralhar(gerarPecas());
+            let maoDoJogador = todasAsPecas.slice(0, 7);
+            let maoBot = todasAsPecas.slice(7, 14);
+            monteDeCompras = todasAsPecas.slice(14, 28); 
+            
+            atualizarBotaoCompra();
+
+            maoDoJogador.forEach(valores => { document.getElementById('mao-jogador-1').appendChild(criarElementoPeca(valores, 'jogador')); });
+            maoBot.forEach(valores => { document.getElementById('mao-bot').appendChild(criarElementoPeca(valores, 'bot')); });
+
+            const quemInicia = descobrirQuemComeca(maoDoJogador, maoBot);
+
+            if (quemInicia === 'jogador1') {
+                turnoDoJogador = true;
+                document.getElementById('status-turno').innerText = "Você tem a maior peça. Sua Vez!";
+                document.getElementById('status-turno').style.color = "#00ffcc";
+                atualizarFala('inicio');
+            } else {
+                turnoDoJogador = false;
+                document.getElementById('status-turno').innerText = "Oráculo tem a maior peça e começa!";
+                document.getElementById('status-turno').style.color = "#a855f7";
+                document.getElementById('fala-oraculo').innerText = '"Os Ecos favorecem-me. Eu abro o jogo."';
+                setTimeout(jogadaDoBot, 2000); 
+            }
+        };
+
+        function tentarJogarPecaOffline(elementoPeca, valores, quemJogou) {
             if (quemJogou === 'jogador' && !turnoDoJogador) {
                 elementoPeca.style.borderColor = "#ff4444";
                 setTimeout(() => elementoPeca.style.borderColor = "#111", 300);
@@ -692,56 +542,37 @@
 
             const mesaDiv = document.getElementById('mesa-domino');
             const aviso = document.getElementById('aviso-mesa-vazia');
-            let v1 = valores[0];
-            let v2 = valores[1];
-            let jogadaFeita = false;
+            let v1 = valores[0], v2 = valores[1], jogadaFeita = false;
 
             if (mesaVazia) {
                 if (aviso) aviso.remove(); 
-                pontaEsquerdaMesa = v1;
-                pontaDireitaMesa = v2;
-                mesaVazia = false;
-                
+                pontaEsquerdaMesa = v1; pontaDireitaMesa = v2; mesaVazia = false;
                 let novaPecaNaMesa = criarElementoPeca(valores, 'mesa');
                 if (v1 !== v2) novaPecaNaMesa.classList.add('horizontal');
                 mesaDiv.appendChild(novaPecaNaMesa);
-                jogadaFeita = true;
-                
-                // Centraliza a tela na primeira peça do jogo
                 novaPecaNaMesa.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-                
+                jogadaFeita = true;
             } else if (v1 === pontaDireitaMesa || v2 === pontaDireitaMesa) {
                 if (v2 === pontaDireitaMesa && v1 !== pontaDireitaMesa) { valores = [v2, v1]; }
                 let novaPecaNaMesa = criarElementoPeca(valores, 'mesa');
                 if (valores[0] !== valores[1]) novaPecaNaMesa.classList.add('horizontal');
-                mesaDiv.appendChild(novaPecaNaMesa); 
-                pontaDireitaMesa = valores[1]; 
-                jogadaFeita = true;
-                
-                // MÁGICA AQUI: Rola a câmera suavemente para a peça que acabou de ser jogada na DIREITA
+                mesaDiv.appendChild(novaPecaNaMesa); pontaDireitaMesa = valores[1];
                 novaPecaNaMesa.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-                
+                jogadaFeita = true;
             } else if (v1 === pontaEsquerdaMesa || v2 === pontaEsquerdaMesa) {
                 if (v1 === pontaEsquerdaMesa && v2 !== pontaEsquerdaMesa) { valores = [v2, v1]; }
                 let novaPecaNaMesa = criarElementoPeca(valores, 'mesa');
                 if (valores[0] !== valores[1]) novaPecaNaMesa.classList.add('horizontal');
-                mesaDiv.prepend(novaPecaNaMesa); 
-                pontaEsquerdaMesa = valores[0]; 
-                jogadaFeita = true;
-                
-                // MÁGICA AQUI: Rola a câmera suavemente para a peça que acabou de ser jogada na ESQUERDA
+                mesaDiv.prepend(novaPecaNaMesa); pontaEsquerdaMesa = valores[0];
                 novaPecaNaMesa.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                jogadaFeita = true;
             }
 
             if (jogadaFeita) {
                 elementoPeca.remove();
-                
-                jogadorPassouTurno = false;
-                botPassouTurno = false;
-
+                jogadorPassouTurno = false; botPassouTurno = false;
                 if (quemJogou === 'bot') atualizarFala('botJoga');
-                if (verificarVitoria(quemJogou)) return; 
-                
+                if (verificarVitoriaOffline(quemJogou)) return; 
                 if (quemJogou === 'jogador') {
                     turnoDoJogador = false;
                     document.getElementById('status-turno').innerText = "Oráculo analisando a mesa...";
@@ -760,58 +591,40 @@
             }
         }
 
-        // --- SISTEMA DE COMPRA E MESA TRANCADA ---
+        window.comprarPecaGlobal = function() {
+            if (modoJogo === 'offline') {
+                if (!turnoDoJogador) return;
+                if (monteDeCompras.length > 0) {
+                    let pecaComprada = monteDeCompras.pop();
+                    document.getElementById('mao-jogador-1').appendChild(criarElementoPeca(pecaComprada, 'jogador'));
+                    atualizarBotaoCompra();
+                } else {
+                    jogadorPassouTurno = true; turnoDoJogador = false;
+                    document.getElementById('status-turno').innerText = "Você passou. Oráculo jogando...";
+                    document.getElementById('status-turno').style.color = "#a855f7";
+                    if (verificarMesaTrancadaOffline()) return;
+                    setTimeout(jogadaDoBot, 1500);
+                }
+            } else if (modoJogo === 'online') {
+                comprarPecaOnline();
+            }
+        };
+        
+        document.getElementById('btn-comprar').onclick = window.comprarPecaGlobal;
+
         function atualizarBotaoCompra() {
             const btn = document.getElementById('btn-comprar');
             if (monteDeCompras.length === 0) {
                 btn.innerText = "Passar a Vez (Monte Vazio)";
-                btn.style.background = "#555";
-                btn.style.color = "#fff";
+                btn.style.background = "#555"; btn.style.color = "#fff";
             } else {
                 btn.innerHTML = `Comprar do Monte (<span id="qtd-monte">${monteDeCompras.length}</span>)`;
-                btn.style.background = "#d4af37";
-                btn.style.color = "#000";
-            }
-        }
-
-        window.comprarPeca = function() {
-            if (!turnoDoJogador) return;
-
-            if (monteDeCompras.length > 0) {
-                let pecaComprada = monteDeCompras.pop();
-                document.getElementById('mao-jogador-1').appendChild(criarElementoPeca(pecaComprada, 'jogador'));
-                atualizarBotaoCompra();
-            } else {
-                // Jogador passa a vez
-                jogadorPassouTurno = true;
-                turnoDoJogador = false;
-                document.getElementById('status-turno').innerText = "Você passou. Oráculo jogando...";
-                document.getElementById('status-turno').style.color = "#a855f7";
-                
-                if (verificarMesaTrancada()) return;
-                setTimeout(jogadaDoBot, 1500);
-            }
-        };
-
-        function botComprarPeca() {
-            if (monteDeCompras.length > 0) {
-                atualizarFala('botCompra');
-                let pecaComprada = monteDeCompras.pop();
-                document.getElementById('mao-bot').appendChild(criarElementoPeca(pecaComprada, 'bot'));
-                atualizarBotaoCompra();
-                setTimeout(jogadaDoBot, 1000); 
-            } else {
-                // Bot passa a vez
-                botPassouTurno = true;
-                if (verificarMesaTrancada()) return;
-
-                document.getElementById('status-turno').innerText = "Oráculo passou a vez! Sua Vez!";
-                document.getElementById('status-turno').style.color = "#00ffcc";
-                turnoDoJogador = true;
+                btn.style.background = "#d4af37"; btn.style.color = "#000";
             }
         }
 
         function jogadaDoBot() {
+            if (modoJogo !== 'offline') return; 
             const botDiv = document.getElementById('mao-bot');
             let pecasBot = Array.from(botDiv.children);
             let conseguiuJogar = false;
@@ -819,74 +632,57 @@
             for (let peca of pecasBot) {
                 let v1 = parseInt(peca.dataset.valor1);
                 let v2 = parseInt(peca.dataset.valor2);
-
                 if (mesaVazia || v1 === pontaEsquerdaMesa || v2 === pontaEsquerdaMesa || v1 === pontaDireitaMesa || v2 === pontaDireitaMesa) {
-                    tentarJogarPeca(peca, [v1, v2], 'bot');
-                    conseguiuJogar = true;
-                    break; 
+                    tentarJogarPecaOffline(peca, [v1, v2], 'bot'); conseguiuJogar = true; break; 
                 }
             }
-
             if (!conseguiuJogar) {
-                botComprarPeca();
+                if (monteDeCompras.length > 0) {
+                    atualizarFala('botCompra');
+                    let pecaComprada = monteDeCompras.pop();
+                    document.getElementById('mao-bot').appendChild(criarElementoPeca(pecaComprada, 'bot'));
+                    atualizarBotaoCompra();
+                    setTimeout(jogadaDoBot, 1000); 
+                } else {
+                    botPassouTurno = true;
+                    if (verificarMesaTrancadaOffline()) return;
+                    document.getElementById('status-turno').innerText = "Oráculo passou a vez! Sua Vez!";
+                    document.getElementById('status-turno').style.color = "#00ffcc";
+                    turnoDoJogador = true;
+                }
             }
         }
 
-        // --- SISTEMA DE PONTUAÇÃO E FINALIZAÇÃO ---
         function somarPontosMao(idMao) {
             let soma = 0;
             const pecas = document.getElementById(idMao).children;
-            for (let peca of pecas) {
-                soma += parseInt(peca.dataset.valor1) + parseInt(peca.dataset.valor2);
-            }
+            for (let peca of pecas) { soma += parseInt(peca.dataset.valor1) + parseInt(peca.dataset.valor2); }
             return soma;
         }
 
-        function verificarMesaTrancada() {
+        function verificarMesaTrancadaOffline() {
             if (jogadorPassouTurno && botPassouTurno) {
                 const ptsJogador = somarPontosMao('mao-jogador-1');
                 const ptsBot = somarPontosMao('mao-bot');
                 const telaFim = document.getElementById('tela-fim');
                 const titulo = document.getElementById('titulo-fim');
-                const falaFim = document.getElementById('fala-fim');
-
-                if (ptsJogador < ptsBot) {
-                    titulo.innerText = "MESA TRANCADA! VOCÊ VENCEU!";
-                    titulo.style.color = "#00ffcc";
-                    atualizarFala('mesaTrancadaJogador');
-                } else if (ptsBot < ptsJogador) {
-                    titulo.innerText = "MESA TRANCADA! ORÁCULO VENCEU!";
-                    titulo.style.color = "#ff4444";
-                    atualizarFala('mesaTrancadaBot');
-                } else {
-                    titulo.innerText = "EMPATE!";
-                    titulo.style.color = "#d4af37";
-                    document.getElementById('fala-oraculo').innerText = '"Um empate? Isso não estava nas minhas visões..."';
-                }
-
-                falaFim.innerHTML = `${document.getElementById('fala-oraculo').innerText}<br><br><span style="font-size: 1.1rem; color: #aaa;">Seus Pontos: ${ptsJogador} | Pontos da Oráculo: ${ptsBot}</span>`;
+                if (ptsJogador < ptsBot) { titulo.innerText = "MESA TRANCADA! VOCÊ VENCEU!"; titulo.style.color = "#00ffcc"; } 
+                else if (ptsBot < ptsJogador) { titulo.innerText = "MESA TRANCADA! ORÁCULO VENCEU!"; titulo.style.color = "#ff4444"; } 
+                else { titulo.innerText = "EMPATE!"; titulo.style.color = "#d4af37"; }
+                document.getElementById('fala-fim').innerHTML = `${document.getElementById('fala-oraculo').innerText}<br><br><span style="font-size: 1.1rem; color: #aaa;">Seus Pontos: ${ptsJogador} | Pontos da Oráculo: ${ptsBot}</span>`;
                 telaFim.style.display = 'flex';
                 return true;
             }
             return false;
         }
 
-        function verificarVitoria(quemJogou) {
+        function verificarVitoriaOffline(quemJogou) {
             const idMao = quemJogou === 'jogador' ? 'mao-jogador-1' : 'mao-bot';
             if (document.getElementById(idMao).children.length === 0) {
                 const telaFim = document.getElementById('tela-fim');
                 const titulo = document.getElementById('titulo-fim');
-                
-                if (quemJogou === 'jogador') {
-                    titulo.innerText = "VOCÊ BATEU!";
-                    titulo.style.color = "#00ffcc";
-                    atualizarFala('jogadorBate');
-                } else {
-                    titulo.innerText = "ORÁCULO BATEU!";
-                    titulo.style.color = "#ff4444";
-                    atualizarFala('botBate');
-                }
-                
+                if (quemJogou === 'jogador') { titulo.innerText = "VOCÊ BATEU!"; titulo.style.color = "#00ffcc"; } 
+                else { titulo.innerText = "ORÁCULO BATEU!"; titulo.style.color = "#ff4444"; }
                 document.getElementById('fala-fim').innerText = document.getElementById('fala-oraculo').innerText;
                 telaFim.style.display = 'flex';
                 return true;
@@ -894,92 +690,123 @@
             return false;
         }
 
-        // ----------------------------------------------------
-        // NOVA REGRA OFICIAL: QUEM COMEÇA O JOGO? (Regra do 6-6)
-        // ----------------------------------------------------
-        function descobrirQuemComeca(maoJogador, maoBot) {
-            let maiorDuploJogador = -1;
-            let maiorDuploBot = -1;
-            
-            // 1. Procura as peças duplas (carroças) nas mãos
-            for (let peca of maoJogador) {
-                if (peca[0] === peca[1] && peca[0] > maiorDuploJogador) maiorDuploJogador = peca[0];
-            }
-            for (let peca of maoBot) {
-                if (peca[0] === peca[1] && peca[0] > maiorDuploBot) maiorDuploBot = peca[0];
-            }
+        // =========================================
+        // LÓGICA: MULTIPLAYER (ONLINE VIA FIRESTORE)
+        // =========================================
 
-            // 2. Compara quem tem a maior carroça
-            if (maiorDuploJogador > maiorDuploBot) {
-                return 'jogador'; // O jogador tem a maior carroça
-            } else if (maiorDuploBot > maiorDuploJogador) {
-                return 'bot'; // A Oráculo tem a maior carroça
-            } else {
-                // 3. Caso raríssimo: Nenhum dos dois tem carroça. 
-                // Vence quem tiver a peça com a maior soma (ex: 6-5 = 11 pontos)
-                let maiorSomaJogador = 0;
-                let maiorSomaBot = 0;
-                
-                for (let peca of maoJogador) {
-                    let soma = peca[0] + peca[1];
-                    if (soma > maiorSomaJogador) maiorSomaJogador = soma;
-                }
-                for (let peca of maoBot) {
-                    let soma = peca[0] + peca[1];
-                    if (soma > maiorSomaBot) maiorSomaBot = soma;
-                }
-                
-                return maiorSomaJogador >= maiorSomaBot ? 'jogador' : 'bot';
-            }
+        function gerarCodigoSala() {
+            const caracteres = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            let resultado = '';
+            for (let i = 0; i < 5; i++) { resultado += caracteres.charAt(Math.floor(Math.random() * caracteres.length)); }
+            return resultado;
         }
 
-        window.iniciarJogo = function() {
-            document.getElementById('mao-jogador-1').innerHTML = ''; 
-            document.getElementById('mao-bot').innerHTML = ''; 
-            document.getElementById('mesa-domino').innerHTML = '<p style="color: #888; font-style: italic;" id="aviso-mesa-vazia">A mesa está vazia.</p>';
-            
-            pontaEsquerdaMesa = null;
-            pontaDireitaMesa = null;
-            mesaVazia = true;
-            jogadorPassouTurno = false;
-            botPassouTurno = false;
-            
-            let todasAsPecas = embaralhar(gerarPecas());
-            
-            let maoDoJogador = todasAsPecas.slice(0, 7);
-            let maoBot = todasAsPecas.slice(7, 14);
-            monteDeCompras = todasAsPecas.slice(14, 28); 
-            
-            atualizarBotaoCompra();
-
-            maoDoJogador.forEach(valores => {
-                document.getElementById('mao-jogador-1').appendChild(criarElementoPeca(valores, 'jogador'));
-            });
-
-            maoBot.forEach(valores => {
-                document.getElementById('mao-bot').appendChild(criarElementoPeca(valores, 'bot'));
-            });
-
-            // Aplica a nova regra para decidir o turno inicial
-            const quemInicia = descobrirQuemComeca(maoDoJogador, maoBot);
-
-            if (quemInicia === 'jogador') {
-                turnoDoJogador = true;
-                document.getElementById('status-turno').innerText = "Você tem a maior peça. Sua Vez!";
-                document.getElementById('status-turno').style.color = "#00ffcc";
-                atualizarFala('inicio'); // Fala padrão
-            } else {
-                turnoDoJogador = false;
-                document.getElementById('status-turno').innerText = "Oráculo tem a maior peça e começa!";
-                document.getElementById('status-turno').style.color = "#a855f7";
-                document.getElementById('fala-oraculo').innerText = '"Os Ecos favorecem-me. Eu abro o jogo."';
-                
-                // Manda a Oráculo jogar a primeira peça após 2 segundos de suspense
-                setTimeout(jogadaDoBot, 2000); 
-            }
+        window.criarSala = async function(isPublica) {
+            modoJogo = 'online'; 
+            const statusText = document.getElementById('lobby-status');
+            statusText.innerText = "Forjando mesa..."; statusText.style.color = "#a855f7";
+            const novoCodigo = gerarCodigoSala();
+            try {
+                await setDoc(doc(db, "lobbies_domino", novoCodigo), {
+                    criador: "Anônimo", publica: isPublica, status: "aguardando", hostPronto: true, convidadoPronto: false,
+                    turnoAtual: "", pontaEsquerda: null, pontaDireita: null, mesaVazia: true, mesaPecas: [], monte: [], maoJogador1: [], maoJogador2: [], timestamp: new Date() 
+                });
+                salaAtualID = novoCodigo; meuPapel = 'jogador1';
+                statusText.innerHTML = isPublica ? `Mesa Pública forjada! Aguardando oponentes...` : `Sala Privada! O código secreto é: <span style="color: #fff; font-size: 1.5rem;">${novoCodigo}</span><br>Envie para um aliado.`;
+                ouvirMudancasDaSala(novoCodigo);
+            } catch (error) { statusText.innerText = "Erro ao forjar a mesa."; }
         };
 
-        window.onload = iniciarJogo;
+        window.entrarNaSalaPeloCodigo = function() {
+            const codigo = document.getElementById('codigo-sala').value.toUpperCase().trim();
+            entrarNaSalaGlobal(codigo);
+        }
+        
+        window.entrarNaSalaLista = function(codigo) { entrarNaSalaGlobal(codigo); }
+
+        async function entrarNaSalaGlobal(codigo) {
+            modoJogo = 'online';
+            const statusText = document.getElementById('lobby-status');
+            if (codigo.length !== 5) { statusText.innerText = "O código deve ter 5 caracteres."; return; }
+            statusText.innerText = "Conectando ao éter..."; statusText.style.color = "#00ffcc";
+            try {
+                const salaRef = doc(db, "lobbies_domino", codigo);
+                const salaSnap = await getDoc(salaRef);
+                if (salaSnap.exists() && salaSnap.data().status === "aguardando") {
+                    await updateDoc(salaRef, { status: "iniciando", convidadoPronto: true });
+                    salaAtualID = codigo; meuPapel = 'jogador2';
+                    statusText.innerText = "Mesa encontrada! Sincronizando com Host...";
+                    if(unscribeListaSalas) unscribeListaSalas();
+                    ouvirMudancasDaSala(codigo);
+                } else { statusText.innerText = "Mesa ocupada ou inexistente."; }
+            } catch (error) { statusText.innerText = "Erro de conexão."; }
+        }
+
+        function ligarRadarDeSalas() {
+            const q = query(collection(db, "lobbies_domino"), where("status", "==", "aguardando"), where("publica", "==", true));
+            const listaDiv = document.getElementById('lista-salas-abertas');
+            unscribeListaSalas = onSnapshot(q, (snapshot) => {
+                listaDiv.innerHTML = ''; 
+                if (snapshot.empty) { listaDiv.innerHTML = '<p style="color: #666; font-size: 0.9rem; text-align: center;">Nenhuma mesa pública no momento.</p>'; return; }
+                snapshot.forEach((docSnap) => {
+                    const sala = docSnap.data(), id = docSnap.id;
+                    listaDiv.innerHTML += `<div class="sala-item"><span style="color: #a855f7; font-weight: bold;">Mesa de ${sala.criador}</span><button onclick="entrarNaSalaLista('${id}')" class="btn-entrar-lista">Entrar</button></div>`;
+                });
+            });
+        }
+        window.onload = ligarRadarDeSalas;
+
+        function ouvirMudancasDaSala(codigoSala) {
+            const salaRef = doc(db, "lobbies_domino", codigoSala);
+            unscribeSala = onSnapshot(salaRef, async (docSnap) => {
+                if (docSnap.exists()) {
+                    const dados = docSnap.data();
+                    if (dados.status === "iniciando" && meuPapel === 'jogador1') {
+                        let todasAsPecas = embaralhar(gerarPecas());
+                        let mao1 = todasAsPecas.slice(0, 7), mao2 = todasAsPecas.slice(7, 14), monte = todasAsPecas.slice(14, 28);
+                        let quemInicia = descobrirQuemComeca(mao1, mao2);
+                        await updateDoc(salaRef, { status: "jogando", maoJogador1: mao1, maoJogador2: mao2, monte: monte, turnoAtual: quemInicia });
+                    }
+                    if (dados.status === "jogando") {
+                        document.getElementById('lobby-screen').style.display = 'none';
+                        document.getElementById('domino-arena').style.display = 'flex';
+                        document.querySelector('.oraculo-foto').src = "https://ui-avatars.com/api/?name=Oponente&background=111&color=00ffcc&rounded=true";
+                        document.querySelector('.oraculo-header h3').innerText = "Adversário (Online)";
+                        document.querySelector('.oraculo-header h3').style.color = "#00ffcc";
+                        document.getElementById('fala-oraculo').innerText = `"Mesa sincronizada!"`;
+                        turnoDoJogador = (dados.turnoAtual === meuPapel);
+                        const statusTurno = document.getElementById('status-turno');
+                        if (turnoDoJogador) { statusTurno.innerText = "Sua Vez!"; statusTurno.style.color = "#00ffcc"; } 
+                        else { statusTurno.innerText = "Aguardando Oponente..."; statusTurno.style.color = "#ff4444"; }
+                        renderizarMesaOnline(dados);
+                    }
+                }
+            });
+        }
+
+        function renderizarMesaOnline(dados) {
+            const maoMinha = document.getElementById('mao-jogador-1'), maoDele = document.getElementById('mao-bot'), mesa = document.getElementById('mesa-domino');
+            maoMinha.innerHTML = ''; maoDele.innerHTML = ''; mesa.innerHTML = '';
+            monteDeCompras = dados.monte; atualizarBotaoCompra(); 
+            const arrayMinhaMao = meuPapel === 'jogador1' ? dados.maoJogador1 : dados.maoJogador2;
+            arrayMinhaMao.forEach(valores => { maoMinha.appendChild(criarElementoPeca(valores, 'jogador')); });
+            const arrayMaoDele = meuPapel === 'jogador1' ? dados.maoJogador2 : dados.maoJogador1;
+            arrayMaoDele.forEach(() => { maoDele.appendChild(criarElementoPeca([0,0], 'adversarioOnline')); });
+            if (dados.mesaVazia) {
+                mesa.innerHTML = '<p style="color: #888; font-style: italic;" id="aviso-mesa-vazia">A mesa está vazia.</p>';
+            } else {
+                dados.mesaPecas.forEach(infoPeca => {
+                    let elemento = criarElementoPeca(infoPeca.valores, 'mesa');
+                    if (infoPeca.horizontal) elemento.classList.add('horizontal');
+                    mesa.appendChild(elemento);
+                });
+                if (mesa.lastChild) mesa.lastChild.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+            pontaEsquerdaMesa = dados.pontaEsquerda; pontaDireitaMesa = dados.pontaDireita; mesaVazia = dados.mesaVazia;
+        }
+
+        async function tentarJogarPecaOnline(valores) { console.log("Tentando jogar online: ", valores); }
+        async function comprarPecaOnline() { console.log("Tentando comprar online..."); }
     </script>
 </body>
 </html>
