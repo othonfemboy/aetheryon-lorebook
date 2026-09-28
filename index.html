@@ -719,36 +719,58 @@
         </div>
     </div>
 
-    <!-- TELA DE PREENCHER O PERFIL ONLINE -->
+    <!-- ========================================== -->
+    <!-- TELA DE PERFIL E IDENTIDADE DO JOGADOR     -->
+    <!-- ========================================== -->
     <div id="profileCreatorScreen" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 10000001; justify-content: center; align-items: center; flex-direction: column; backdrop-filter: blur(10px); padding: 20px; box-sizing: border-box; font-family: 'Cinzel', serif;">
-        <div style="background: #111; border: 2px solid #00ffcc; padding: 30px; border-radius: 10px; width: 100%; max-width: 400px; box-shadow: 0 0 30px rgba(0, 255, 204, 0.3);">
-            <h2 style="color: #00ffcc; text-align: center; margin-top: 0;">Sua Identidade</h2>
+        
+        <div style="background: #111; border: 2px solid #00ffcc; padding: 30px; border-radius: 10px; width: 100%; max-width: 400px; box-shadow: 0 0 30px rgba(0, 255, 204, 0.3); position: relative;">
             
-            <!-- FOTO DE PERFIL -->
-            <div style="text-align: center; margin-bottom: 20px;">
-                <img id="previewAvatarVisitante" src="https://via.placeholder.com/100/333/00ffcc?text=U" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 2px solid #00ffcc; margin-bottom: 10px;">
-                <input type="file" accept="image/*" onchange="previewAvatar(event)" style="display: block; margin: 0 auto; color: #aaa; font-family: 'Roboto', sans-serif; font-size: 0.8rem;">
+            <!-- Botão Fechar (X) - AGORA FUNCIONA -->
+            <button onclick="document.getElementById('profileCreatorScreen').style.display='none'" style="position: absolute; top: 15px; right: 15px; background: transparent; border: none; color: #888; font-size: 1.5rem; cursor: pointer;">✖</button>
+
+            <!-- LADO A: VISUALIZAR PERFIL ATUAL (O PASSAPORTE) -->
+            <div id="viewProfileMode" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+                <h2 style="color: #00ffcc; margin-top: 0; margin-bottom: 20px;">Passaporte Aetheryon</h2>
+                
+                <img id="displayAvatarVisitante" src="https://ui-avatars.com/api/?name=V&background=111&color=00ffcc" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #00ffcc; margin-bottom: 15px; box-shadow: 0 0 15px rgba(0,255,204,0.4);">
+                
+                <h3 id="displayNomeVisitante" style="color: #fff; margin: 0; font-size: 1.5rem;">Viajante</h3>
+                <p id="displayPersonalidadeVisitante" style="color: #aaa; font-family: 'Roboto', sans-serif; font-size: 1rem; margin-top: 5px; margin-bottom: 30px; font-style: italic;">Silencioso</p>
+                
+                <div style="display: flex; gap: 10px; width: 100%;">
+                    <button onclick="alternarModoEdicao(true)" style="flex: 1; padding: 12px; background: #222; color: #00ffcc; border: 1px solid #00ffcc; cursor: pointer; border-radius: 5px; font-family: 'Cinzel', serif; font-weight: bold; transition: 0.3s;">Editar Identidade</button>
+                    <!-- AQUI ESTÁ O BOTÃO DE FICAR OFFLINE -->
+                    <button onclick="voltarModoFantasma()" style="flex: 1; padding: 12px; background: #222; color: #aaa; border: 1px solid #555; cursor: pointer; border-radius: 5px; font-family: 'Roboto', sans-serif; font-size: 0.9rem; transition: 0.3s;" title="Apaga seu perfil e vira anônimo">👻 Ficar Offline</button>
+                </div>
             </div>
 
-            <!-- NOME -->
-            <input type="text" id="inputNomeVisitante" placeholder="Seu Nome de Viajante..." style="width: 100%; padding: 12px; margin-bottom: 15px; background: #222; border: 1px solid #444; color: #fff; border-radius: 5px; font-family: 'Roboto', sans-serif; box-sizing: border-box; outline: none;">
-            
-            <!-- PERSONALIDADE -->
-            <p style="color: #aaa; font-size: 0.9rem; margin-bottom: 5px; font-family: 'Roboto', sans-serif;">Qual é a sua Personalidade?</p>
-            <select id="inputPersonalidadeVisitante" style="width: 100%; padding: 12px; margin-bottom: 25px; background: #222; border: 1px solid #444; color: #fff; border-radius: 5px; font-family: 'Roboto', sans-serif; box-sizing: border-box; outline: none;">
-                <option value="Aventureiro Corajoso">Aventureiro Corajoso</option>
-                <option value="Sábio e Calmo">Sábio e Calmo</option>
-                <option value="Arrogante e Provocador">Arrogante e Provocador</option>
-                <option value="Tímido e Dócil">Tímido e Dócil</option>
-                <option value="Caótico e Piadista">Caótico e Piadista</option>
-            </select>
+            <!-- LADO B: EDITAR PERFIL (O ANTIGO "FORJAR IDENTIDADE") -->
+            <div id="editProfileMode" style="display: none; flex-direction: column;">
+                <h2 style="color: #d4af37; text-align: center; margin-top: 0;">Forjar Identidade</h2>
+                
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <img id="previewAvatarVisitante" src="https://ui-avatars.com/api/?name=V&background=111&color=d4af37" style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 2px dashed #d4af37; margin-bottom: 10px; cursor: pointer;" onclick="document.getElementById('fileUploadAvatar').click()" title="Clique para mudar a foto">
+                    <input type="file" id="fileUploadAvatar" accept="image/*" onchange="previewAvatar(event)" style="display: none;">
+                    <p style="color: #888; font-family: 'Roboto', sans-serif; font-size: 0.8rem; margin: 0;">Clique na foto para alterar</p>
+                </div>
 
-            <!-- BOTÕES DA TELA DE PERFIL -->
-            <button onclick="salvarPerfilOnline()" style="width: 100%; padding: 12px; background: #00ffcc; color: #000; border: none; font-weight: bold; cursor: pointer; border-radius: 5px; font-family: 'Cinzel', serif; font-size: 1.1rem; box-shadow: 0 0 15px rgba(0,255,204,0.4);">Salvar Identidade</button>
-            
-            <button onclick="voltarModoFantasma()" style="width: 100%; margin-top: 10px; padding: 12px; background: #222; color: #aaa; border: 1px solid #555; cursor: pointer; border-radius: 5px; font-family: 'Roboto', sans-serif; font-size: 0.9rem; transition: 0.3s;" onmouseover="this.style.background='#333'" onmouseout="this.style.background='#222'">👻 Quero ser Anônimo (Offline)</button>
-            
-            <button onclick="document.getElementById('profileCreatorScreen').style.display='none'" style="width: 100%; margin-top: 10px; padding: 10px; background: transparent; color: #666; border: 1px dashed #444; cursor: pointer; border-radius: 5px; font-family: 'Roboto', sans-serif; font-size: 0.8rem;">Fechar sem salvar</button>
+                <input type="text" id="inputNomeVisitante" placeholder="Seu Nome de Viajante..." style="width: 100%; padding: 12px; margin-bottom: 15px; background: #222; border: 1px solid #444; color: #fff; border-radius: 5px; font-family: 'Roboto', sans-serif; box-sizing: border-box; outline: none;">
+                
+                <p style="color: #aaa; font-size: 0.9rem; margin-bottom: 5px; font-family: 'Roboto', sans-serif;">Traço Dominante:</p>
+                <select id="inputPersonalidadeVisitante" style="width: 100%; padding: 12px; margin-bottom: 25px; background: #222; border: 1px solid #444; color: #fff; border-radius: 5px; font-family: 'Roboto', sans-serif; box-sizing: border-box; outline: none;">
+                    <option value="Aventureiro Corajoso">Aventureiro Corajoso</option>
+                    <option value="Sábio e Calmo">Sábio e Calmo</option>
+                    <option value="Arrogante e Provocador">Arrogante e Provocador</option>
+                    <option value="Tímido e Dócil">Tímido e Dócil</option>
+                    <option value="Caótico e Piadista">Caótico e Piadista</option>
+                </select>
+
+                <button onclick="salvarPerfilOnline()" style="width: 100%; padding: 12px; background: #d4af37; color: #000; border: none; font-weight: bold; cursor: pointer; border-radius: 5px; font-family: 'Cinzel', serif; font-size: 1.1rem; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);">Salvar Mudanças</button>
+                <button onclick="alternarModoEdicao(false)" style="width: 100%; margin-top: 10px; padding: 10px; background: transparent; color: #888; border: 1px dashed #555; cursor: pointer; border-radius: 5px; font-family: 'Roboto', sans-serif;">Cancelar</button>
+                <button onclick="voltarModoFantasma()" style="width: 100%; margin-top: 10px; padding: 10px; background: transparent; color: #ff4444; border: 1px solid #ff4444; cursor: pointer; border-radius: 5px; font-family: 'Roboto', sans-serif;">👻 Ficar Offline</button>
+            </div>
+
         </div>
     </div>
 
@@ -1064,7 +1086,7 @@
                     <img src="rosalind_face.png" onerror="this.src='https://ui-avatars.com/api/?name=L&background=111&color=32cd32'" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid #32cd32; margin-right: 12px; flex-shrink:0;">
                     <div style="display: flex; flex-direction: column;">
                         <span style="color: #32cd32; font-weight: bold; font-size: 0.9rem; margin-bottom: 3px;">Rosalind Mercer</span>
-                        <span style="color: #aaa; font-size: 0.9rem; line-height: 1.4;">Por quê você não me ajuda aqui no meu laborátior, hmm?</span>
+                        <span style="color: #aaa; font-size: 0.9rem; line-height: 1.4;">Por quê você não me ajuda aqui no meu laboratório, hmm?</span>
                     </div>
                 </div>
                 <div style="display: flex; align-items: flex-start;">
@@ -10391,13 +10413,26 @@ function finalizarJogo(vitória, msg) {
                 const areaComentarios = containerPost.querySelector('.post-comments');
                 const donoDoPost = containerPost.dataset.personagem || "Herói de Aetheryon";
                 
-                // Mudei o avatar padrão para um que não quebra no seu navegador
+                // ==========================================
+                // DICIONÁRIO DE PERSONALIDADES DOS HERÓIS
+                // ==========================================
+                const personalidadesHerois = {
+                    "Byakuya": "Você é uma guerreira implacável, arrogante e incrivelmente superior. Despreza os fracos e os chama de 'mortais', 'tolos' ou 'herbívoros'. Seja dura, fria e cortante. Jamais demonstre afeto.",
+                    "Byakuya 白夜": "Você é uma guerreira implacável, arrogante e incrivelmente superior. Despreza os fracos e os chama de 'mortais', 'tolos' ou 'herbívoros'. Seja dura, fria e cortante. Jamais demonstre afeto.",
+                    "Ranny": "Você é uma pesquisadora de laboratório obcecada por ciência, anatomia e experimentos bizarros. Fale com um tom analítico, curioso, hiperativo e levemente sádico sobre corpos e medicina.",
+                    "Lilia": "Você é uma garota extremamente doce, fofa, protetora da natureza e dos animais. Detesta violência, é compassiva e tenta sempre apaziguar as coisas. Fale com gentileza e inocência.",
+                    "Ashlan": "Você é um cavaleiro nobre, estoico e disciplinado. Valoriza a honra, o dever e a justiça acima de tudo. Fale com extrema formalidade militar, sabedoria e respeito."
+                };
+
+                // Puxa a personalidade certa ou usa uma padrão se o herói for novo
+                const diretrizPersonalidade = personalidadesHerois[donoDoPost] || "Você é um habitante de Aetheryon. Fale de forma enigmática e reaja ao comentário.";
+
                 let perfilJogador = JSON.parse(localStorage.getItem('aetheryonVisitorProfile')) || { nome: "Visitante", avatar: "https://ui-avatars.com/api/?name=V&background=111&color=00ffcc", personalidade: "Silencioso" };
                 let modoJogador = localStorage.getItem('aetheryonVisitorMode') || 'offline';
                 const comentarioId = "msg_" + Date.now();
 
-                // --- 1. AVISO DE CARREGAMENTO TEMPORÁRIO ---
-                // Adicionamos a etiqueta 'comentario-de-jogador-online' para o Firebase saber apagar isto quando trouxer o real!
+                // ... (código do aviso de carregamento temporário continua igual aqui) ...
+                
                 const divTemporaria = document.createElement('div');
                 divTemporaria.className = 'comentario-de-jogador-online'; 
                 divTemporaria.style.cssText = "display: flex; margin-top: 15px; align-items: flex-start; opacity: 0.6;";
@@ -10414,8 +10449,18 @@ function finalizarJogo(vitória, msg) {
                 inputElement.value = '';
                 inputElement.disabled = true;
 
-                // --- 2. CHAMA A IA ---
-                const promptSecreto = `Aja EXATAMENTE como a personagem ${donoDoPost} do universo Aetheryon. O mortal que comentou se chama "${perfilJogador.nome}" e tem a personalidade "${perfilJogador.personalidade}". Ele fez o seguinte comentário: "${textoJogador}". Responda em até duas frases. Reaja à atitude dele. NÃO use asteriscos.`;
+                // --- 2. CHAMA A IA COM A PERSONALIDADE INJETADA ---
+                const promptSecreto = `
+                    O seu nome é ${donoDoPost} do universo Aetheryon. 
+                    A SUA PERSONALIDADE: ${diretrizPersonalidade}
+                    
+                    O jogador humano que comentou se chama "${perfilJogador.nome}" e tem a atitude "${perfilJogador.personalidade}".
+                    Ele acabou de comentar isso no seu post da rede social: "${textoJogador}".
+                    
+                    REGRA 1: Responda diretamente a ele em até duas frases.
+                    REGRA 2: Seja extremamente fiel à SUA PERSONALIDADE e reaja à atitude do jogador.
+                    REGRA 3: NÃO use asteriscos (ex: *sorri*) ou narrações. Escreva apenas o que você falaria digitando.
+                `;
                 let respostaFinalIA = "";
 
                 try {
@@ -10468,8 +10513,15 @@ function finalizarJogo(vitória, msg) {
             }
         }
  
-        // 6. Função Mestra para Desenhar Comentários (Agora envia o ID da Nuvem)
+        // 6. Função Mestra para Desenhar Comentários (Correção da Lixeira Universal)
         window.desenharComentarioNaTela = function(dados, areaComentarios) {
+            
+            // Puxa o perfil de quem está a usar o site NESTE EXATO MOMENTO
+            let perfilLocal = JSON.parse(localStorage.getItem('aetheryonVisitorProfile')) || { nome: "Visitante" };
+            
+            // Verifica se o dono do comentário tem o mesmo nome do visitante atual
+            let ehMeuComentario = (dados.jogadorNome === perfilLocal.nome);
+
             const divGrupo = document.createElement('div');
             divGrupo.className = 'comentario-de-jogador-online';
             divGrupo.id = dados.id; 
@@ -10482,7 +10534,7 @@ function finalizarJogo(vitória, msg) {
                     <div style="display: flex; flex-direction: column; flex: 1;">
                         <span style="color: #00ffcc; font-weight: bold; font-size: 0.9rem; margin-bottom: 3px;">
                             ${dados.jogadorNome}
-                            ${dados.meuComentario ? `<span onclick="apagarComentario('${dados.id}', '${dados.idFirebase || ''}')" style="cursor: pointer; float: right; font-size: 0.9rem;" title="Apagar meu eco">🗑️</span>` : ''}
+                            ${ehMeuComentario ? `<span onclick="apagarComentario('${dados.id}', '${dados.idFirebase || ''}')" style="cursor: pointer; float: right; font-size: 0.9rem;" title="Apagar meu eco">🗑️</span>` : ''}
                         </span>
                         <span style="color: #ccc; font-size: 0.9rem; line-height: 1.4;">${dados.comentarioTexto}</span>
                     </div>
@@ -10616,6 +10668,94 @@ function finalizarJogo(vitória, msg) {
             
             if (typeof speakOracle === 'function') speakOracle(["Voltando para a escuridão. Ninguém sentirá sua falta."]);
         }
+
+        // Abre o menu de perfil e carrega os dados atuais
+        window.abrirMenuPerfil = function() {
+            let perfil = JSON.parse(localStorage.getItem('aetheryonVisitorProfile')) || { nome: "Visitante Anônimo", avatar: "https://ui-avatars.com/api/?name=V&background=111&color=00ffcc", personalidade: "Silencioso" };
+            
+            // Preenche o Lado de Visualização
+            document.getElementById('displayAvatarVisitante').src = perfil.avatar;
+            document.getElementById('displayNomeVisitante').innerText = perfil.nome;
+            document.getElementById('displayPersonalidadeVisitante').innerText = perfil.personalidade;
+
+            // Preenche os campos do Lado de Edição (para se ele quiser mudar)
+            document.getElementById('previewAvatarVisitante').src = perfil.avatar;
+            document.getElementById('inputNomeVisitante').value = perfil.nome;
+            document.getElementById('inputPersonalidadeVisitante').value = perfil.personalidade;
+
+            // Garante que abre no modo Visualização
+            alternarModoEdicao(false);
+            
+            document.getElementById('profileCreatorScreen').style.display = 'flex';
+        };
+
+        // Alterna entre ver o passaporte ou editar o formulário
+        window.alternarModoEdicao = function(modoEdicao) {
+            if (modoEdicao) {
+                document.getElementById('viewProfileMode').style.display = 'none';
+                document.getElementById('editProfileMode').style.display = 'flex';
+            } else {
+                document.getElementById('viewProfileMode').style.display = 'flex';
+                document.getElementById('editProfileMode').style.display = 'none';
+            }
+        };
+
+        window.mostrarAvisoSistema = function(mensagem, corBorda = '#d4af37', corSombra = 'rgba(212, 175, 55, 0.4)') {
+    // 1. Se já tiver uma barrinha na tela, apaga ela pra não encavalar
+    let toastExistente = document.getElementById('aetheryonToast');
+    if (toastExistente) toastExistente.remove();
+
+    // 2. Cria a barrinha do zero e injeta no corpo do site (impossível ficar escondida)
+    const toast = document.createElement('div');
+    toast.id = 'aetheryonToast';
+    toast.style.cssText = `
+        position: fixed;
+        bottom: -100px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #111;
+        border: 1px solid ${corBorda};
+        color: #fff;
+        padding: 15px 25px;
+        border-radius: 8px;
+        font-family: 'Cinzel', serif;
+        box-shadow: 0 0 20px ${corSombra};
+        z-index: 2147483647; /* Z-index MÁXIMO do navegador, fica em cima de TUDO */
+        transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        text-align: center;
+        pointer-events: none;
+        white-space: nowrap;
+    `;
+    toast.innerText = mensagem;
+    document.body.appendChild(toast);
+
+    // 3. Dá 10 milissegundos pro navegador "respirar" e manda subir
+    setTimeout(() => {
+        toast.style.bottom = '30px'; 
+    }, 10);
+
+    // 4. Manda descer depois de 3 segundos e depois se auto-destrói
+    setTimeout(() => {
+        toast.style.bottom = '-100px';
+        setTimeout(() => toast.remove(), 500);
+    }, 3000);
+};
+
+       // 8. Função para voltar às sombras (Modo Anônimo/Offline)
+        window.voltarModoFantasma = function() {
+            const perfilAnonimo = { 
+                nome: "Visitante", 
+                avatar: "https://ui-avatars.com/api/?name=V&background=111&color=00ffcc", 
+                personalidade: "Silencioso" 
+            };
+            localStorage.setItem('aetheryonVisitorProfile', JSON.stringify(perfilAnonimo));
+            localStorage.setItem('aetheryonVisitorMode', 'offline');
+            
+            document.getElementById('profileCreatorScreen').style.display = 'none';
+            
+            // Chama a barrinha bonita (com borda vermelha/roxa pra dar um ar fantasma)
+            mostrarAvisoSistema("Você voltou para as sombras. Modo Anônimo ativado.", "#8a2be2", "rgba(138, 43, 226, 0.4)");
+        };
 
        // ===============================================
         // OUVINTE MÁGICO (AETHERNET EM TEMPO REAL)
