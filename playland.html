@@ -167,6 +167,31 @@
 </head>
 <body>
 
+    <!-- ========================================= -->
+    <!-- BOTÃO E MODAL DE NOVIDADES (PATCH NOTES)  -->
+    <!-- ========================================= -->
+    <button onclick="document.getElementById('modal-news').style.display='flex'" style="position: fixed; bottom: 20px; right: 20px; z-index: 100; background: linear-gradient(45deg, #a855f7, #00ffcc); color: #000; border: none; padding: 10px 20px; border-radius: 50px; font-family: 'Cinzel', serif; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px rgba(0,255,204,0.4); transition: 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+        📜 Novidades
+    </button>
+
+    <div id="modal-news" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index: 1000; justify-content: center; align-items: center;">
+        <div style="background: rgba(15, 10, 25, 0.95); border: 2px solid #00ffcc; border-radius: 15px; padding: 30px; max-width: 500px; width: 90%; color: #fff; box-shadow: 0 0 30px rgba(0,255,204,0.3);">
+            <h2 style="color: #00ffcc; font-family: 'Cinzel', serif; margin-top: 0; text-align: center;">Pergaminho de Atualizações</h2>
+            <hr style="border-color: #444; margin-bottom: 20px;">
+            
+            <h3 style="color: #a855f7; margin-bottom: 5px;">v1.1 - A Era do Multiverso</h3>
+            <ul style="color: #ddd; line-height: 1.6; font-family: 'Roboto', sans-serif;">
+                <li><strong>Conexão Astral:</strong> Multiplayer online via Firebase implementado com sucesso.</li>
+                <li><strong>Chat Dimensional:</strong> Sistema de provocações em tempo real ativo.</li>
+                <li><strong>Oráculo Aprimorada:</strong> IA lapidada com a regra oficial do Duplo-Seis.</li>
+            </ul>
+
+            <button onclick="document.getElementById('modal-news').style.display='none'" style="width: 100%; padding: 12px; background: transparent; color: #00ffcc; border: 1px solid #00ffcc; border-radius: 8px; cursor: pointer; margin-top: 25px; font-family: 'Cinzel', serif; font-weight: bold; transition: 0.3s;" onmouseover="this.style.background='rgba(0,255,204,0.1)'" onmouseout="this.style.background='transparent'">
+                Fechar Pergaminho
+            </button>
+        </div>
+    </div>
+
     <h1>Aetheryon Playland</h1>
     <p style="color: #bbb;">O Salão de Jogos Místicos</p>
  
