@@ -339,6 +339,19 @@
             </div>
         </div>
 
+        <!-- ========================================= -->
+        <!-- CHAT MULTIPLAYER (Escondido no Offline)   -->
+        <!-- ========================================= -->
+        <div id="chat-container" style="display: none; width: 100%; border-top: 1px solid #444; padding-top: 15px; margin-top: 15px;">
+            <div id="chat-messages" style="height: 120px; overflow-y: auto; background: rgba(0,0,0,0.6); padding: 10px; border-radius: 5px; margin-bottom: 10px; font-family: 'Roboto', sans-serif; font-size: 0.95rem; border: 1px solid #222; display: flex; flex-direction: column; gap: 5px; scroll-behavior: smooth;">
+                <p style="color: #555; font-style: italic; text-align: center; margin: 0;">O chat do éter está aberto...</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="chat-input" placeholder="Mande uma provocação..." style="flex: 1; padding: 10px; background: #111; color: #fff; border: 1px solid #555; border-radius: 5px; outline: none; transition: 0.3s;" onkeypress="if(event.key === 'Enter') enviarMensagem()" onfocus="this.style.borderColor='#a855f7'" onblur="this.style.borderColor='#555'">
+                <button onclick="enviarMensagem()" style="background: linear-gradient(45deg, #7e22ce, #a855f7); color: #fff; border: none; padding: 0 20px; border-radius: 5px; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif;">Enviar</button>
+            </div>
+        </div>
+
         <!-- MÃO DO ADVERSÁRIO (ORÁCULO) -->
         <div class="mao-jogador" id="mao-bot"></div>
 
@@ -357,7 +370,7 @@
         </div>
 
         <div style="display: flex; justify-content: center; gap: 15px; align-items: center;">
-            <button onclick="iniciarJogo()" style="padding: 10px; background: rgba(0,0,0,0.5); color: #fff; border: 1px solid #555; cursor: pointer; border-radius: 5px; font-family: 'Cinzel', serif; transition: 0.3s;">Recomeçar Partida</button>
+            <button id="btn-sair-partida" onclick="acaoSairPartida()" style="padding: 10px; background: rgba(0,0,0,0.5); color: #fff; border: 1px solid #555; cursor: pointer; border-radius: 5px; font-family: 'Cinzel', serif; transition: 0.3s;">Recomeçar Partida</button>
             <div style="color: #555; font-family: 'Cinzel', serif;">|</div>
             <button onclick="comprarPeca()" id="btn-comprar" style="padding: 12px; background: #d4af37; color: #000; border: none; font-weight: bold; cursor: pointer; border-radius: 5px; font-family: 'Cinzel', serif; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); transition: 0.3s;">Comprar do Monte (<span id="qtd-monte">14</span>)</button>
         </div>
@@ -368,15 +381,15 @@
     <div id="tela-fim" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(5px);">
         <h1 id="titulo-fim" style="font-size: 4rem; text-shadow: 0 0 20px #00ffcc; text-align: center;">VITÓRIA!</h1>
         <p id="fala-fim" style="font-family: 'Cinzel', serif; font-size: 1.5rem; color: #fff; margin-bottom: 30px; font-style: italic; text-align: center; max-width: 80%;">"Mensagem da oráculo aqui"</p>
-        <button onclick="iniciarJogo(); document.getElementById('tela-fim').style.display = 'none';" style="padding: 15px 30px; background: transparent; color: #d4af37; border: 2px solid #d4af37; font-size: 1.2rem; cursor: pointer; font-family: 'Cinzel', serif; transition: 0.3s; border-radius: 8px;">Desafiar Novamente</button>
+        <button onclick="fecharTelaFim()" style="padding: 15px 30px; background: transparent; color: #d4af37; border: 2px solid #d4af37; font-size: 1.2rem; cursor: pointer; font-family: 'Cinzel', serif; transition: 0.3s; border-radius: 8px;">Continuar</button>
     </div>
 
-    <!-- ========================================= -->
+   <!-- ========================================= -->
     <!-- FIREBASE E MOTOR UNIFICADO DO DOMINÓ      -->
     <!-- ========================================= -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, setDoc, getDoc, updateDoc, onSnapshot, collection, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDoc, updateDoc, onSnapshot, collection, query, where, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCmAkdBLKuoegQOpILl7isbmblPZMQ6huk",
@@ -393,8 +406,7 @@
         // =========================================
         // ESTADO GLOBAL DO JOGO
         // =========================================
-        let modoJogo = null; // 'offline' (contra Oráculo) ou 'online'
-        
+        let modoJogo = null; 
         let pontaEsquerdaMesa = null;
         let pontaDireitaMesa = null;
         let mesaVazia = true;
@@ -409,9 +421,8 @@
         let unscribeListaSalas = null;
 
         // =========================================
-        // MOTOR LÓGICO E VISUAL BASE
+        // UTILITÁRIOS E MOTOR BASE
         // =========================================
-        
         const falasOraculo = {
             inicio: ["Tente a sorte, mortal.", "Você não pode ver o futuro, mas eu posso."],
             botJoga: ["Muito fácil.", "Previsível demais."],
@@ -445,8 +456,7 @@
         }
         
         function descobrirQuemComeca(maoJogador, maoAdversario) {
-            let maiorDuploJogador = -1;
-            let maiorDuploAdv = -1;
+            let maiorDuploJogador = -1, maiorDuploAdv = -1;
             for (let peca of maoJogador) { if (peca[0] === peca[1] && peca[0] > maiorDuploJogador) maiorDuploJogador = peca[0]; }
             for (let peca of maoAdversario) { if (peca[0] === peca[1] && peca[0] > maiorDuploAdv) maiorDuploAdv = peca[0]; }
             if (maiorDuploJogador > maiorDuploAdv) return 'jogador1';
@@ -466,15 +476,9 @@
             if (dono === 'bot' || dono === 'adversarioOnline') {
                 peca.classList.add('costas');
             } else {
-                const top = document.createElement('div');
-                top.className = 'peca-metade peca-linha';
-                top.innerText = valores[0] === 0 ? '' : valores[0]; 
-                
-                const bottom = document.createElement('div');
-                bottom.className = 'peca-metade';
-                bottom.innerText = valores[1] === 0 ? '' : valores[1];
-                peca.appendChild(top);
-                peca.appendChild(bottom);
+                const top = document.createElement('div'); top.className = 'peca-metade peca-linha'; top.innerText = valores[0] === 0 ? '' : valores[0]; 
+                const bottom = document.createElement('div'); bottom.className = 'peca-metade'; bottom.innerText = valores[1] === 0 ? '' : valores[1];
+                peca.appendChild(top); peca.appendChild(bottom);
             }
 
             if (dono === 'jogador') {
@@ -487,134 +491,6 @@
             return peca;
         }
 
-        // =========================================
-        // LÓGICA: SINGLE PLAYER (OFFLINE VS ORÁCULO)
-        // =========================================
-        
-        window.iniciarJogoOffline = function() {
-            modoJogo = 'offline';
-            
-            document.getElementById('lobby-screen').style.display = 'none';
-            document.getElementById('domino-arena').style.display = 'flex';
-            document.querySelector('.oraculo-foto').src = "https://ui-avatars.com/api/?name=Oráculo&background=111&color=a855f7&rounded=true&bold=true";
-            document.querySelector('.oraculo-header h3').innerText = "Oráculo";
-            document.querySelector('.oraculo-header h3').style.color = "#a855f7";
-            
-            document.getElementById('mao-jogador-1').innerHTML = ''; 
-            document.getElementById('mao-bot').innerHTML = ''; 
-            document.getElementById('mesa-domino').innerHTML = '<p style="color: #888; font-style: italic;" id="aviso-mesa-vazia">A mesa está vazia.</p>';
-            
-            pontaEsquerdaMesa = null;
-            pontaDireitaMesa = null;
-            mesaVazia = true;
-            jogadorPassouTurno = false;
-            botPassouTurno = false;
-            
-            let todasAsPecas = embaralhar(gerarPecas());
-            let maoDoJogador = todasAsPecas.slice(0, 7);
-            let maoBot = todasAsPecas.slice(7, 14);
-            monteDeCompras = todasAsPecas.slice(14, 28); 
-            
-            atualizarBotaoCompra();
-
-            maoDoJogador.forEach(valores => { document.getElementById('mao-jogador-1').appendChild(criarElementoPeca(valores, 'jogador')); });
-            maoBot.forEach(valores => { document.getElementById('mao-bot').appendChild(criarElementoPeca(valores, 'bot')); });
-
-            const quemInicia = descobrirQuemComeca(maoDoJogador, maoBot);
-
-            if (quemInicia === 'jogador1') {
-                turnoDoJogador = true;
-                document.getElementById('status-turno').innerText = "Você tem a maior peça. Sua Vez!";
-                document.getElementById('status-turno').style.color = "#00ffcc";
-                atualizarFala('inicio');
-            } else {
-                turnoDoJogador = false;
-                document.getElementById('status-turno').innerText = "Oráculo tem a maior peça e começa!";
-                document.getElementById('status-turno').style.color = "#a855f7";
-                document.getElementById('fala-oraculo').innerText = '"Os Ecos favorecem-me. Eu abro o jogo."';
-                setTimeout(jogadaDoBot, 2000); 
-            }
-        };
-
-        function tentarJogarPecaOffline(elementoPeca, valores, quemJogou) {
-            if (quemJogou === 'jogador' && !turnoDoJogador) {
-                elementoPeca.style.borderColor = "#ff4444";
-                setTimeout(() => elementoPeca.style.borderColor = "#111", 300);
-                return;
-            }
-
-            const mesaDiv = document.getElementById('mesa-domino');
-            const aviso = document.getElementById('aviso-mesa-vazia');
-            let v1 = valores[0], v2 = valores[1], jogadaFeita = false;
-
-            if (mesaVazia) {
-                if (aviso) aviso.remove(); 
-                pontaEsquerdaMesa = v1; pontaDireitaMesa = v2; mesaVazia = false;
-                let novaPecaNaMesa = criarElementoPeca(valores, 'mesa');
-                if (v1 !== v2) novaPecaNaMesa.classList.add('horizontal');
-                mesaDiv.appendChild(novaPecaNaMesa);
-                novaPecaNaMesa.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-                jogadaFeita = true;
-            } else if (v1 === pontaDireitaMesa || v2 === pontaDireitaMesa) {
-                if (v2 === pontaDireitaMesa && v1 !== pontaDireitaMesa) { valores = [v2, v1]; }
-                let novaPecaNaMesa = criarElementoPeca(valores, 'mesa');
-                if (valores[0] !== valores[1]) novaPecaNaMesa.classList.add('horizontal');
-                mesaDiv.appendChild(novaPecaNaMesa); pontaDireitaMesa = valores[1];
-                novaPecaNaMesa.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-                jogadaFeita = true;
-            } else if (v1 === pontaEsquerdaMesa || v2 === pontaEsquerdaMesa) {
-                if (v1 === pontaEsquerdaMesa && v2 !== pontaEsquerdaMesa) { valores = [v2, v1]; }
-                let novaPecaNaMesa = criarElementoPeca(valores, 'mesa');
-                if (valores[0] !== valores[1]) novaPecaNaMesa.classList.add('horizontal');
-                mesaDiv.prepend(novaPecaNaMesa); pontaEsquerdaMesa = valores[0];
-                novaPecaNaMesa.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-                jogadaFeita = true;
-            }
-
-            if (jogadaFeita) {
-                elementoPeca.remove();
-                jogadorPassouTurno = false; botPassouTurno = false;
-                if (quemJogou === 'bot') atualizarFala('botJoga');
-                if (verificarVitoriaOffline(quemJogou)) return; 
-                if (quemJogou === 'jogador') {
-                    turnoDoJogador = false;
-                    document.getElementById('status-turno').innerText = "Oráculo analisando a mesa...";
-                    document.getElementById('status-turno').style.color = "#a855f7";
-                    atualizarBotaoCompra();
-                    setTimeout(jogadaDoBot, 1500); 
-                } else {
-                    turnoDoJogador = true;
-                    document.getElementById('status-turno').innerText = "Sua Vez!";
-                    document.getElementById('status-turno').style.color = "#00ffcc";
-                    atualizarBotaoCompra();
-                }
-            } else if (quemJogou === 'jogador') {
-                elementoPeca.style.borderColor = "#ff4444";
-                setTimeout(() => elementoPeca.style.borderColor = "#111", 500);
-            }
-        }
-
-        window.comprarPecaGlobal = function() {
-            if (modoJogo === 'offline') {
-                if (!turnoDoJogador) return;
-                if (monteDeCompras.length > 0) {
-                    let pecaComprada = monteDeCompras.pop();
-                    document.getElementById('mao-jogador-1').appendChild(criarElementoPeca(pecaComprada, 'jogador'));
-                    atualizarBotaoCompra();
-                } else {
-                    jogadorPassouTurno = true; turnoDoJogador = false;
-                    document.getElementById('status-turno').innerText = "Você passou. Oráculo jogando...";
-                    document.getElementById('status-turno').style.color = "#a855f7";
-                    if (verificarMesaTrancadaOffline()) return;
-                    setTimeout(jogadaDoBot, 1500);
-                }
-            } else if (modoJogo === 'online') {
-                comprarPecaOnline();
-            }
-        };
-        
-        document.getElementById('btn-comprar').onclick = window.comprarPecaGlobal;
-
         function atualizarBotaoCompra() {
             const btn = document.getElementById('btn-comprar');
             if (monteDeCompras.length === 0) {
@@ -626,55 +502,125 @@
             }
         }
 
+        // =========================================
+        // LÓGICA: SINGLE PLAYER (OFFLINE VS ORÁCULO)
+        // =========================================
+        window.iniciarJogoOffline = function() {
+            modoJogo = 'offline';
+            document.getElementById('lobby-screen').style.display = 'none';
+            document.getElementById('domino-arena').style.display = 'flex';
+            document.getElementById('chat-container').style.display = 'none';
+            
+            document.querySelector('.oraculo-foto').src = "https://ui-avatars.com/api/?name=Oráculo&background=111&color=a855f7&rounded=true&bold=true";
+            document.querySelector('.oraculo-header h3').innerText = "Oráculo";
+            document.querySelector('.oraculo-header h3').style.color = "#a855f7";
+            
+            const btnSair = document.getElementById('btn-sair-partida');
+            if(btnSair) { btnSair.innerText = "Recomeçar Partida"; btnSair.style.borderColor = "#555"; btnSair.style.color = "#fff"; }
+            
+            document.getElementById('mao-jogador-1').innerHTML = ''; document.getElementById('mao-bot').innerHTML = ''; 
+            document.getElementById('mesa-domino').innerHTML = '<p style="color: #888; font-style: italic;" id="aviso-mesa-vazia">A mesa está vazia.</p>';
+            
+            pontaEsquerdaMesa = null; pontaDireitaMesa = null; mesaVazia = true;
+            jogadorPassouTurno = false; botPassouTurno = false;
+            
+            let todas = embaralhar(gerarPecas());
+            let maoDoJogador = todas.slice(0, 7), maoBot = todas.slice(7, 14);
+            monteDeCompras = todas.slice(14, 28); 
+            
+            atualizarBotaoCompra();
+            maoDoJogador.forEach(v => { document.getElementById('mao-jogador-1').appendChild(criarElementoPeca(v, 'jogador')); });
+            maoBot.forEach(v => { document.getElementById('mao-bot').appendChild(criarElementoPeca(v, 'bot')); });
+
+            const quemInicia = descobrirQuemComeca(maoDoJogador, maoBot);
+            if (quemInicia === 'jogador1') {
+                turnoDoJogador = true; document.getElementById('status-turno').innerText = "Você tem a maior peça. Sua Vez!"; document.getElementById('status-turno').style.color = "#00ffcc"; atualizarFala('inicio');
+            } else {
+                turnoDoJogador = false; document.getElementById('status-turno').innerText = "Oráculo tem a maior peça e começa!"; document.getElementById('status-turno').style.color = "#a855f7";
+                document.getElementById('fala-oraculo').innerText = '"Os Ecos favorecem-me. Eu abro o jogo."'; setTimeout(jogadaDoBot, 2000); 
+            }
+        };
+
+        function tentarJogarPecaOffline(elementoPeca, valores, quemJogou) {
+            if (quemJogou === 'jogador' && !turnoDoJogador) { elementoPeca.style.borderColor = "#ff4444"; setTimeout(() => elementoPeca.style.borderColor = "#111", 300); return; }
+            const mesaDiv = document.getElementById('mesa-domino'); const aviso = document.getElementById('aviso-mesa-vazia');
+            let v1 = valores[0], v2 = valores[1], jogadaFeita = false;
+
+            if (mesaVazia) {
+                if (aviso) aviso.remove(); 
+                pontaEsquerdaMesa = v1; pontaDireitaMesa = v2; mesaVazia = false;
+                let novaPeca = criarElementoPeca(valores, 'mesa'); if (v1 !== v2) novaPeca.classList.add('horizontal');
+                mesaDiv.appendChild(novaPeca); novaPeca.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); jogadaFeita = true;
+            } else if (v1 === pontaDireitaMesa || v2 === pontaDireitaMesa) {
+                if (v2 === pontaDireitaMesa && v1 !== pontaDireitaMesa) { valores = [v2, v1]; }
+                let novaPeca = criarElementoPeca(valores, 'mesa'); if (valores[0] !== valores[1]) novaPeca.classList.add('horizontal');
+                mesaDiv.appendChild(novaPeca); pontaDireitaMesa = valores[1]; novaPeca.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); jogadaFeita = true;
+            } else if (v1 === pontaEsquerdaMesa || v2 === pontaEsquerdaMesa) {
+                if (v1 === pontaEsquerdaMesa && v2 !== pontaEsquerdaMesa) { valores = [v2, v1]; }
+                let novaPeca = criarElementoPeca(valores, 'mesa'); if (valores[0] !== valores[1]) novaPeca.classList.add('horizontal');
+                mesaDiv.prepend(novaPeca); pontaEsquerdaMesa = valores[0]; novaPeca.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); jogadaFeita = true;
+            }
+
+            if (jogadaFeita) {
+                elementoPeca.remove(); jogadorPassouTurno = false; botPassouTurno = false;
+                if (quemJogou === 'bot') atualizarFala('botJoga');
+                if (verificarVitoriaOffline(quemJogou)) return; 
+                if (quemJogou === 'jogador') {
+                    turnoDoJogador = false; document.getElementById('status-turno').innerText = "Oráculo analisando a mesa..."; document.getElementById('status-turno').style.color = "#a855f7"; atualizarBotaoCompra(); setTimeout(jogadaDoBot, 1500); 
+                } else {
+                    turnoDoJogador = true; document.getElementById('status-turno').innerText = "Sua Vez!"; document.getElementById('status-turno').style.color = "#00ffcc"; atualizarBotaoCompra();
+                }
+            } else if (quemJogou === 'jogador') {
+                elementoPeca.style.borderColor = "#ff4444"; setTimeout(() => elementoPeca.style.borderColor = "#111", 500);
+            }
+        }
+
+        window.comprarPecaGlobal = function() {
+            if (modoJogo === 'offline') {
+                if (!turnoDoJogador) return;
+                if (monteDeCompras.length > 0) {
+                    let pecaComprada = monteDeCompras.pop(); document.getElementById('mao-jogador-1').appendChild(criarElementoPeca(pecaComprada, 'jogador')); atualizarBotaoCompra();
+                } else {
+                    jogadorPassouTurno = true; turnoDoJogador = false; document.getElementById('status-turno').innerText = "Você passou. Oráculo jogando..."; document.getElementById('status-turno').style.color = "#a855f7";
+                    if (verificarMesaTrancadaOffline()) return; setTimeout(jogadaDoBot, 1500);
+                }
+            } else if (modoJogo === 'online') { comprarPecaOnline(); }
+        };
+        // Suporte a cliques antigos
+        window.comprarPeca = window.comprarPecaGlobal; 
+
         function jogadaDoBot() {
             if (modoJogo !== 'offline') return; 
-            const botDiv = document.getElementById('mao-bot');
-            let pecasBot = Array.from(botDiv.children);
-            let conseguiuJogar = false;
-
+            const botDiv = document.getElementById('mao-bot'); let pecasBot = Array.from(botDiv.children); let conseguiuJogar = false;
             for (let peca of pecasBot) {
-                let v1 = parseInt(peca.dataset.valor1);
-                let v2 = parseInt(peca.dataset.valor2);
+                let v1 = parseInt(peca.dataset.valor1), v2 = parseInt(peca.dataset.valor2);
                 if (mesaVazia || v1 === pontaEsquerdaMesa || v2 === pontaEsquerdaMesa || v1 === pontaDireitaMesa || v2 === pontaDireitaMesa) {
                     tentarJogarPecaOffline(peca, [v1, v2], 'bot'); conseguiuJogar = true; break; 
                 }
             }
             if (!conseguiuJogar) {
                 if (monteDeCompras.length > 0) {
-                    atualizarFala('botCompra');
-                    let pecaComprada = monteDeCompras.pop();
-                    document.getElementById('mao-bot').appendChild(criarElementoPeca(pecaComprada, 'bot'));
-                    atualizarBotaoCompra();
-                    setTimeout(jogadaDoBot, 1000); 
+                    atualizarFala('botCompra'); let pecaComprada = monteDeCompras.pop(); document.getElementById('mao-bot').appendChild(criarElementoPeca(pecaComprada, 'bot')); atualizarBotaoCompra(); setTimeout(jogadaDoBot, 1000); 
                 } else {
-                    botPassouTurno = true;
-                    if (verificarMesaTrancadaOffline()) return;
-                    document.getElementById('status-turno').innerText = "Oráculo passou a vez! Sua Vez!";
-                    document.getElementById('status-turno').style.color = "#00ffcc";
-                    turnoDoJogador = true;
+                    botPassouTurno = true; if (verificarMesaTrancadaOffline()) return;
+                    document.getElementById('status-turno').innerText = "Oráculo passou a vez! Sua Vez!"; document.getElementById('status-turno').style.color = "#00ffcc"; turnoDoJogador = true;
                 }
             }
         }
 
-        function somarPontosMao(idMao) {
-            let soma = 0;
-            const pecas = document.getElementById(idMao).children;
-            for (let peca of pecas) { soma += parseInt(peca.dataset.valor1) + parseInt(peca.dataset.valor2); }
-            return soma;
-        }
-
         function verificarMesaTrancadaOffline() {
             if (jogadorPassouTurno && botPassouTurno) {
-                const ptsJogador = somarPontosMao('mao-jogador-1');
-                const ptsBot = somarPontosMao('mao-bot');
-                const telaFim = document.getElementById('tela-fim');
-                const titulo = document.getElementById('titulo-fim');
+                let ptsJogador = 0, ptsBot = 0;
+                Array.from(document.getElementById('mao-jogador-1').children).forEach(p => ptsJogador += parseInt(p.dataset.valor1) + parseInt(p.dataset.valor2));
+                Array.from(document.getElementById('mao-bot').children).forEach(p => ptsBot += parseInt(p.dataset.valor1) + parseInt(p.dataset.valor2));
+                const telaFim = document.getElementById('tela-fim'), titulo = document.getElementById('titulo-fim');
+                
                 if (ptsJogador < ptsBot) { titulo.innerText = "MESA TRANCADA! VOCÊ VENCEU!"; titulo.style.color = "#00ffcc"; } 
                 else if (ptsBot < ptsJogador) { titulo.innerText = "MESA TRANCADA! ORÁCULO VENCEU!"; titulo.style.color = "#ff4444"; } 
                 else { titulo.innerText = "EMPATE!"; titulo.style.color = "#d4af37"; }
+                
                 document.getElementById('fala-fim').innerHTML = `${document.getElementById('fala-oraculo').innerText}<br><br><span style="font-size: 1.1rem; color: #aaa;">Seus Pontos: ${ptsJogador} | Pontos da Oráculo: ${ptsBot}</span>`;
-                telaFim.style.display = 'flex';
-                return true;
+                telaFim.style.display = 'flex'; return true;
             }
             return false;
         }
@@ -682,82 +628,65 @@
         function verificarVitoriaOffline(quemJogou) {
             const idMao = quemJogou === 'jogador' ? 'mao-jogador-1' : 'mao-bot';
             if (document.getElementById(idMao).children.length === 0) {
-                const telaFim = document.getElementById('tela-fim');
-                const titulo = document.getElementById('titulo-fim');
+                const telaFim = document.getElementById('tela-fim'), titulo = document.getElementById('titulo-fim');
                 if (quemJogou === 'jogador') { titulo.innerText = "VOCÊ BATEU!"; titulo.style.color = "#00ffcc"; } 
                 else { titulo.innerText = "ORÁCULO BATEU!"; titulo.style.color = "#ff4444"; }
                 document.getElementById('fala-fim').innerText = document.getElementById('fala-oraculo').innerText;
-                telaFim.style.display = 'flex';
-                return true;
+                telaFim.style.display = 'flex'; return true;
             }
             return false;
         }
 
         // =========================================
-        // LÓGICA: MULTIPLAYER (ONLINE VIA FIRESTORE)
+        // LÓGICA: MULTIPLAYER (ONLINE)
         // =========================================
-
-        function gerarCodigoSala() {
-            const caracteres = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-            let resultado = '';
-            for (let i = 0; i < 5; i++) { resultado += caracteres.charAt(Math.floor(Math.random() * caracteres.length)); }
-            return resultado;
-        }
-
         window.criarSala = async function(isPublica) {
-            modoJogo = 'online'; 
-            const statusText = document.getElementById('lobby-status');
-            statusText.innerText = "Forjando mesa..."; statusText.style.color = "#a855f7";
-            const novoCodigo = gerarCodigoSala();
+            modoJogo = 'online'; const statusText = document.getElementById('lobby-status'); statusText.innerText = "Forjando mesa..."; statusText.style.color = "#a855f7";
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let novoCodigo = '';
+            for (let i = 0; i < 5; i++) novoCodigo += chars.charAt(Math.floor(Math.random() * chars.length));
             try {
                 await setDoc(doc(db, "lobbies_domino", novoCodigo), {
-                    criador: "Anônimo", publica: isPublica, status: "aguardando", hostPronto: true, convidadoPronto: false,
-                    turnoAtual: "", pontaEsquerda: null, pontaDireita: null, mesaVazia: true, mesaPecas: [], monte: [], maoJogador1: [], maoJogador2: [], timestamp: new Date() 
+                    criador: "Anônimo", publica: isPublica, status: "aguardando", hostPronto: true, convidadoPronto: false, turnoAtual: "", 
+                    pontaEsquerda: null, pontaDireita: null, mesaVazia: true, mesaPecas: [], monte: [], maoJogador1: [], maoJogador2: [], chat: [], timestamp: new Date() 
                 });
                 salaAtualID = novoCodigo; meuPapel = 'jogador1';
-                statusText.innerHTML = isPublica ? `Mesa Pública forjada! Aguardando oponentes...` : `Sala Privada! O código secreto é: <span style="color: #fff; font-size: 1.5rem;">${novoCodigo}</span><br>Envie para um aliado.`;
+                statusText.innerHTML = isPublica ? `Mesa Pública forjada! Aguardando oponentes...` : `Sala Privada! Código: <span style="color: #fff; font-size: 1.5rem;">${novoCodigo}</span>`;
                 ouvirMudancasDaSala(novoCodigo);
             } catch (error) { statusText.innerText = "Erro ao forjar a mesa."; }
         };
 
-        window.entrarNaSalaPeloCodigo = function() {
-            const codigo = document.getElementById('codigo-sala').value.toUpperCase().trim();
-            entrarNaSalaGlobal(codigo);
-        }
-        
-        window.entrarNaSalaLista = function(codigo) { entrarNaSalaGlobal(codigo); }
+        window.entrarNaSalaPeloCodigo = function() { window.entrarNaSalaGlobal(document.getElementById('codigo-sala').value.toUpperCase().trim()); }
+        window.entrarNaSalaLista = function(codigo) { window.entrarNaSalaGlobal(codigo); }
 
-        async function entrarNaSalaGlobal(codigo) {
-            modoJogo = 'online';
-            const statusText = document.getElementById('lobby-status');
-            if (codigo.length !== 5) { statusText.innerText = "O código deve ter 5 caracteres."; return; }
+        window.entrarNaSalaGlobal = async function(codigo) {
+            modoJogo = 'online'; const statusText = document.getElementById('lobby-status');
+            if (codigo.length !== 5) { statusText.innerText = "Código deve ter 5 caracteres."; return; }
             statusText.innerText = "Conectando ao éter..."; statusText.style.color = "#00ffcc";
             try {
-                const salaRef = doc(db, "lobbies_domino", codigo);
-                const salaSnap = await getDoc(salaRef);
+                const salaRef = doc(db, "lobbies_domino", codigo); const salaSnap = await getDoc(salaRef);
                 if (salaSnap.exists() && salaSnap.data().status === "aguardando") {
                     await updateDoc(salaRef, { status: "iniciando", convidadoPronto: true });
                     salaAtualID = codigo; meuPapel = 'jogador2';
-                    statusText.innerText = "Mesa encontrada! Sincronizando com Host...";
+                    statusText.innerText = "Mesa encontrada! Sincronizando...";
                     if(unscribeListaSalas) unscribeListaSalas();
                     ouvirMudancasDaSala(codigo);
                 } else { statusText.innerText = "Mesa ocupada ou inexistente."; }
             } catch (error) { statusText.innerText = "Erro de conexão."; }
         }
 
-        function ligarRadarDeSalas() {
+        window.onload = function() {
             const q = query(collection(db, "lobbies_domino"), where("status", "==", "aguardando"), where("publica", "==", true));
             const listaDiv = document.getElementById('lista-salas-abertas');
             unscribeListaSalas = onSnapshot(q, (snapshot) => {
+                if(!listaDiv) return;
                 listaDiv.innerHTML = ''; 
-                if (snapshot.empty) { listaDiv.innerHTML = '<p style="color: #666; font-size: 0.9rem; text-align: center;">Nenhuma mesa pública no momento.</p>'; return; }
+                if (snapshot.empty) { listaDiv.innerHTML = '<p style="color:#666; font-size:0.9rem; text-align:center;">Nenhuma mesa pública no momento.</p>'; return; }
                 snapshot.forEach((docSnap) => {
                     const sala = docSnap.data(), id = docSnap.id;
-                    listaDiv.innerHTML += `<div class="sala-item"><span style="color: #a855f7; font-weight: bold;">Mesa de ${sala.criador}</span><button onclick="entrarNaSalaLista('${id}')" class="btn-entrar-lista">Entrar</button></div>`;
+                    listaDiv.innerHTML += `<div class="sala-item"><span style="color:#a855f7; font-weight:bold;">Mesa de ${sala.criador}</span><button onclick="entrarNaSalaLista('${id}')" class="btn-entrar-lista">Entrar</button></div>`;
                 });
             });
-        }
-        window.onload = ligarRadarDeSalas;
+        };
 
         function ouvirMudancasDaSala(codigoSala) {
             const salaRef = doc(db, "lobbies_domino", codigoSala);
@@ -766,25 +695,11 @@
                     const dados = docSnap.data();
                     
                     if (dados.status === "iniciando" && meuPapel === 'jogador1') {
-                        let todasAsPecas = embaralhar(gerarPecas());
-                        
-                        // CORREÇÃO: Transforma as peças em Objetos para o Firestore aceitar!
-                        let pecasParaNuvem = todasAsPecas.map(p => ({v1: p[0], v2: p[1]}));
-
-                        let mao1 = pecasParaNuvem.slice(0, 7);
-                        let mao2 = pecasParaNuvem.slice(7, 14);
-                        let monte = pecasParaNuvem.slice(14, 28);
-                        
-                        // A regra de quem começa usa os arrays originais
-                        let quemInicia = descobrirQuemComeca(todasAsPecas.slice(0, 7), todasAsPecas.slice(7, 14));
-                        
-                        await updateDoc(salaRef, { 
-                            status: "jogando", 
-                            maoJogador1: mao1, 
-                            maoJogador2: mao2, 
-                            monte: monte, 
-                            turnoAtual: quemInicia 
-                        });
+                        let todas = embaralhar(gerarPecas());
+                        let pecasNu = todas.map(p => ({v1: p[0], v2: p[1]}));
+                        let mao1 = pecasNu.slice(0, 7), mao2 = pecasNu.slice(7, 14), monte = pecasNu.slice(14, 28);
+                        let quemInicia = descobrirQuemComeca(todas.slice(0, 7), todas.slice(7, 14));
+                        await updateDoc(salaRef, { status: "jogando", maoJogador1: mao1, maoJogador2: mao2, monte: monte, turnoAtual: quemInicia });
                     }
 
                     if (dados.status === "jogando") {
@@ -794,247 +709,164 @@
                         document.querySelector('.oraculo-header h3').innerText = "Adversário (Online)";
                         document.querySelector('.oraculo-header h3').style.color = "#00ffcc";
                         document.getElementById('fala-oraculo').innerText = `"Mesa sincronizada!"`;
-                        
+
+                        const btnSair = document.getElementById('btn-sair-partida');
+                        if (btnSair) { btnSair.innerText = "DESISTIR"; btnSair.style.borderColor = "#ff4444"; btnSair.style.color = "#ff4444"; }
+
                         turnoDoJogador = (dados.turnoAtual === meuPapel);
                         const statusTurno = document.getElementById('status-turno');
-                        
-                        if (turnoDoJogador) { 
-                            statusTurno.innerText = "Sua Vez!"; 
-                            statusTurno.style.color = "#00ffcc"; 
-                        } else { 
-                            statusTurno.innerText = "Aguardando Oponente..."; 
-                            statusTurno.style.color = "#ff4444"; 
-                        }
+                        if (turnoDoJogador) { statusTurno.innerText = "Sua Vez!"; statusTurno.style.color = "#00ffcc"; } 
+                        else { statusTurno.innerText = "Aguardando Oponente..."; statusTurno.style.color = "#ff4444"; }
                         
                         renderizarMesaOnline(dados);
+                        atualizarChatNaTela(dados);
+                    }
+
+                    // Vitórias e Finais de Jogo
+                    if (dados.status === "jogando" && (dados.maoJogador1.length === 0 || dados.maoJogador2.length === 0)) {
+                        const telaFim = document.getElementById('tela-fim'), titulo = document.getElementById('titulo-fim');
+                        const venceuId = dados.maoJogador1.length === 0 ? 'jogador1' : 'jogador2';
+                        if (venceuId === meuPapel) { titulo.innerText = "VOCÊ VENCEU!"; titulo.style.color = "#00ffcc"; } 
+                        else { titulo.innerText = "ADVERSÁRIO VENCEU!"; titulo.style.color = "#ff4444"; }
+                        document.getElementById('fala-fim').innerText = '"A partida chegou ao fim no Multiverso."';
+                        telaFim.style.display = 'flex';
+                    }
+
+                    if (dados.status === "mesa_trancada") {
+                        let ptsJ1 = 0, ptsJ2 = 0;
+                        dados.maoJogador1.forEach(p => ptsJ1 += (p.v1 + p.v2)); dados.maoJogador2.forEach(p => ptsJ2 += (p.v1 + p.v2));
+                        let meusPts = meuPapel === 'jogador1' ? ptsJ1 : ptsJ2, advPts = meuPapel === 'jogador1' ? ptsJ2 : ptsJ1;
+                        const telaFim = document.getElementById('tela-fim'), titulo = document.getElementById('titulo-fim');
+                        if (meusPts < advPts) { titulo.innerText = "MESA TRANCADA! VOCÊ VENCEU!"; titulo.style.color = "#00ffcc"; } 
+                        else if (advPts < meusPts) { titulo.innerText = "MESA TRANCADA! ADVERSÁRIO VENCEU!"; titulo.style.color = "#ff4444"; } 
+                        else { titulo.innerText = "MESA TRANCADA - EMPATE!"; titulo.style.color = "#d4af37"; }
+                        document.getElementById('fala-fim').innerHTML = `"Jogo fechado."<br><br><span style="font-size: 1.1rem; color: #aaa;">Seus Pontos: ${meusPts} | Oponente: ${advPts}</span>`;
+                        telaFim.style.display = 'flex';
+                    }
+
+                    if (dados.status === "encerrado") {
+                        const telaFim = document.getElementById('tela-fim'), titulo = document.getElementById('titulo-fim');
+                        if (dados.desistente === meuPapel) {
+                            titulo.innerText = "VOCÊ FUGIU!"; titulo.style.color = "#ff4444"; document.getElementById('fala-fim').innerText = '"A covardia é a pior derrota."';
+                        } else {
+                            titulo.innerText = "OPONENTE FUGIU!"; titulo.style.color = "#00ffcc"; document.getElementById('fala-fim').innerText = '"O adversário arregou."';
+                        }
+                        telaFim.style.display = 'flex';
                     }
                 }
             });
         }
 
-        // --- O BLOCO A ADICIONAR FICA AQUI ---
-                    
-                    // 3. CONDIÇÃO DE VITÓRIA (Alguém ficou sem peças!)
-                    if (dados.status === "jogando" && (dados.maoJogador1.length === 0 || dados.maoJogador2.length === 0)) {
-                        const telaFim = document.getElementById('tela-fim');
-                        const titulo = document.getElementById('titulo-fim');
-                        
-                        // Quem zerou a mão?
-                        const vencedorID = dados.maoJogador1.length === 0 ? 'jogador1' : 'jogador2';
-                        
-                        if (vencedorID === meuPapel) {
-                            titulo.innerText = "VOCÊ VENCEU!";
-                            titulo.style.color = "#00ffcc";
-                        } else {
-                            titulo.innerText = "ADVERSÁRIO VENCEU!";
-                            titulo.style.color = "#ff4444";
-                        }
-                        
-                        document.getElementById('fala-fim').innerText = '"A partida chegou ao fim no Multiverso."';
-                        telaFim.style.display = 'flex';
-                    }
-
-                    // 4. MESA TRANCADA (Os dois passaram a vez seguidos sem monte)
-                    if (dados.status === "mesa_trancada") {
-                        let ptsJ1 = 0, ptsJ2 = 0;
-                        dados.maoJogador1.forEach(p => ptsJ1 += (p.v1 + p.v2));
-                        dados.maoJogador2.forEach(p => ptsJ2 += (p.v1 + p.v2));
-                        
-                        let meusPts = meuPapel === 'jogador1' ? ptsJ1 : ptsJ2;
-                        let advPts = meuPapel === 'jogador1' ? ptsJ2 : ptsJ1;
-
-                        const telaFim = document.getElementById('tela-fim');
-                        const titulo = document.getElementById('titulo-fim');
-
-                        if (meusPts < advPts) {
-                            titulo.innerText = "MESA TRANCADA! VOCÊ VENCEU!";
-                            titulo.style.color = "#00ffcc";
-                        } else if (advPts < meusPts) {
-                            titulo.innerText = "MESA TRANCADA! ADVERSÁRIO VENCEU!";
-                            titulo.style.color = "#ff4444";
-                        } else {
-                            titulo.innerText = "MESA TRANCADA - EMPATE!";
-                            titulo.style.color = "#d4af37";
-                        }
-
-                        document.getElementById('fala-fim').innerHTML = `"Jogo fechado."<br><br><span style="font-size: 1.1rem; color: #aaa;">Seus Pontos: ${meusPts} | Pontos Oponente: ${advPts}</span>`;
-                        telaFim.style.display = 'flex';
-                    }
-                    // --- FIM DO BLOCO ADICIONADO ---
-
         function renderizarMesaOnline(dados) {
             const maoMinha = document.getElementById('mao-jogador-1'), maoDele = document.getElementById('mao-bot'), mesa = document.getElementById('mesa-domino');
             maoMinha.innerHTML = ''; maoDele.innerHTML = ''; mesa.innerHTML = '';
-            
-            monteDeCompras = dados.monte; 
-            atualizarBotaoCompra(); 
-            
-            // CORREÇÃO: Transforma os Objetos da Nuvem de volta para Arrays no Visual
-            const arrayMinhaMao = meuPapel === 'jogador1' ? dados.maoJogador1 : dados.maoJogador2;
-            arrayMinhaMao.forEach(pecaObj => { 
-                maoMinha.appendChild(criarElementoPeca([pecaObj.v1, pecaObj.v2], 'jogador')); 
-            });
-            
-            const arrayMaoDele = meuPapel === 'jogador1' ? dados.maoJogador2 : dados.maoJogador1;
-            arrayMaoDele.forEach(() => { 
-                maoDele.appendChild(criarElementoPeca([0,0], 'adversarioOnline')); 
-            });
+            monteDeCompras = dados.monte; atualizarBotaoCompra(); 
+            const arrayMin = meuPapel === 'jogador1' ? dados.maoJogador1 : dados.maoJogador2;
+            arrayMin.forEach(p => { maoMinha.appendChild(criarElementoPeca([p.v1, p.v2], 'jogador')); });
+            const arrayDel = meuPapel === 'jogador1' ? dados.maoJogador2 : dados.maoJogador1;
+            arrayDel.forEach(() => { maoDele.appendChild(criarElementoPeca([0,0], 'adversarioOnline')); });
             
             if (dados.mesaVazia) {
                 mesa.innerHTML = '<p style="color: #888; font-style: italic;" id="aviso-mesa-vazia">A mesa está vazia.</p>';
             } else {
                 dados.mesaPecas.forEach(infoPeca => {
-                    let elemento = criarElementoPeca([infoPeca.v1, infoPeca.v2], 'mesa');
-                    if (infoPeca.horizontal) elemento.classList.add('horizontal');
-                    mesa.appendChild(elemento);
+                    let elem = criarElementoPeca([infoPeca.v1, infoPeca.v2], 'mesa'); if (infoPeca.horizontal) elem.classList.add('horizontal'); mesa.appendChild(elem);
                 });
                 if (mesa.lastChild) mesa.lastChild.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
             }
-            
-            pontaEsquerdaMesa = dados.pontaEsquerda; 
-            pontaDireitaMesa = dados.pontaDireita; 
-            mesaVazia = dados.mesaVazia;
+            pontaEsquerdaMesa = dados.pontaEsquerda; pontaDireitaMesa = dados.pontaDireita; mesaVazia = dados.mesaVazia;
         }
 
-        // =========================================
-        // MOTOR DE JOGADAS MULTIPLAYER (FIRESTORE)
-        // =========================================
         async function tentarJogarPecaOnline(valores) {
-            if (!turnoDoJogador) return; // Bloqueio visual rápido
-
+            if (!turnoDoJogador) return;
             const salaRef = doc(db, "lobbies_domino", salaAtualID);
-            
             try {
-                // Vai buscar o estado mais recente diretamente do banco
-                const salaSnap = await getDoc(salaRef);
-                const dados = salaSnap.data();
-
-                // Segurança: Confirma de novo se é a sua vez no banco
+                const salaSnap = await getDoc(salaRef); const dados = salaSnap.data();
                 if (dados.turnoAtual !== meuPapel) return;
+                let v1 = valores[0], v2 = valores[1], jogadaVal = false;
+                let novaPontaEsq = dados.pontaEsquerda, novaPontaDir = dados.pontaDireita, novaMesaVazia = dados.mesaVazia;
+                let novasPecas = dados.mesaPecas || []; let pecaNuvem = { v1: v1, v2: v2, horizontal: v1 !== v2 };
 
-                let v1 = valores[0], v2 = valores[1];
-                let jogadaValida = false;
-                
-                // Variáveis locais para calcular como a mesa vai ficar
-                let novaPontaEsq = dados.pontaEsquerda;
-                let novaPontaDir = dados.pontaDireita;
-                let novaMesaVazia = dados.mesaVazia;
-                let novasPecasMesa = dados.mesaPecas || [];
-                let pecaFormatadaParaNuvem = { v1: v1, v2: v2, horizontal: v1 !== v2 };
+                if (novaMesaVazia) { novaPontaEsq = v1; novaPontaDir = v2; novaMesaVazia = false; novasPecas.push(pecaNuvem); jogadaVal = true; } 
+                else if (v1 === novaPontaDir || v2 === novaPontaDir) { if (v2 === novaPontaDir && v1 !== novaPontaDir) pecaNuvem = {v1: v2, v2: v1, horizontal: true}; novasPecas.push(pecaNuvem); novaPontaDir = pecaNuvem.v2; jogadaVal = true; } 
+                else if (v1 === novaPontaEsq || v2 === novaPontaEsq) { if (v1 === novaPontaEsq && v2 !== novaPontaEsq) pecaNuvem = {v1: v2, v2: v1, horizontal: true}; novasPecas.unshift(pecaNuvem); novaPontaEsq = pecaNuvem.v1; jogadaVal = true; }
 
-                // 1. Validação de Encaixe na Mesa
-                if (novaMesaVazia) {
-                    novaPontaEsq = v1; novaPontaDir = v2; novaMesaVazia = false;
-                    novasPecasMesa.push(pecaFormatadaParaNuvem);
-                    jogadaValida = true;
-                } else if (v1 === novaPontaDir || v2 === novaPontaDir) {
-                    if (v2 === novaPontaDir && v1 !== novaPontaDir) pecaFormatadaParaNuvem = {v1: v2, v2: v1, horizontal: true};
-                    novasPecasMesa.push(pecaFormatadaParaNuvem); // Vai pro fim do Array
-                    novaPontaDir = pecaFormatadaParaNuvem.v2;
-                    jogadaValida = true;
-                } else if (v1 === novaPontaEsq || v2 === novaPontaEsq) {
-                    if (v1 === novaPontaEsq && v2 !== novaPontaEsq) pecaFormatadaParaNuvem = {v1: v2, v2: v1, horizontal: true};
-                    novasPecasMesa.unshift(pecaFormatadaParaNuvem); // Vai pro início do Array
-                    novaPontaEsq = pecaFormatadaParaNuvem.v1;
-                    jogadaValida = true;
-                }
-
-                if (jogadaValida) {
-                    // 2. Remove a peça da sua mão na nuvem
-                    let maoAtual = meuPapel === 'jogador1' ? dados.maoJogador1 : dados.maoJogador2;
-                    let novaMao = maoAtual.filter(p => !(p.v1 === v1 && p.v2 === v2) && !(p.v1 === v2 && p.v2 === v1));
-
-                    // 3. Define quem joga a seguir
-                    let proximoTurno = meuPapel === 'jogador1' ? 'jogador2' : 'jogador1';
-
-                    // 4. PREPARA O PACOTE PARA ENVIAR PRO FIREBASE
-                    let atualizacoes = {
-                        mesaVazia: novaMesaVazia,
-                        pontaEsquerda: novaPontaEsq,
-                        pontaDireita: novaPontaDir,
-                        mesaPecas: novasPecasMesa,
-                        turnoAtual: proximoTurno
-                    };
-                    
-                    // Adiciona a mão correta no pacote
-                    if (meuPapel === 'jogador1') atualizacoes.maoJogador1 = novaMao;
-                    else atualizacoes.maoJogador2 = novaMao;
-
-                    // 5. ENVIA TUDO! (O onSnapshot vai detetar e desenhar a mesa na hora pros dois)
+                if (jogadaVal) {
+                    let maoAt = meuPapel === 'jogador1' ? dados.maoJogador1 : dados.maoJogador2;
+                    let novaMao = maoAt.filter(p => !(p.v1 === v1 && p.v2 === v2) && !(p.v1 === v2 && p.v2 === v1));
+                    let atualizacoes = { mesaVazia: novaMesaVazia, pontaEsquerda: novaPontaEsq, pontaDireita: novaPontaDir, mesaPecas: novasPecas, turnoAtual: meuPapel === 'jogador1' ? 'jogador2' : 'jogador1', jogadorPassouTurno: false, botPassouTurno: false };
+                    if (meuPapel === 'jogador1') atualizacoes.maoJogador1 = novaMao; else atualizacoes.maoJogador2 = novaMao;
                     await updateDoc(salaRef, atualizacoes);
-                } else {
-                    // Efeito visual de erro local (Peça fica vermelha)
-                    console.log("Jogada Inválida");
                 }
-
-            } catch (error) {
-                console.error("Erro ao jogar online: ", error);
-            }
+            } catch (error) { console.error(error); }
         }
 
-        // =========================================
-        // MOTOR DE COMPRA E PASSAGEM DE TURNO MULTIPLAYER
-        // =========================================
-        
         async function comprarPecaOnline() {
             if (!turnoDoJogador) return;
-
             const salaRef = doc(db, "lobbies_domino", salaAtualID);
-            
             try {
-                const salaSnap = await getDoc(salaRef);
-                const dados = salaSnap.data();
-
+                const salaSnap = await getDoc(salaRef); const dados = salaSnap.data();
                 if (dados.turnoAtual !== meuPapel) return;
-
                 let novoMonte = [...dados.monte];
-
-                // 1. Se tem peça no monte, compra!
                 if (novoMonte.length > 0) {
-                    let pecaComprada = novoMonte.pop(); // Tira a última peça do monte
-                    
-                    let maoAtual = meuPapel === 'jogador1' ? [...dados.maoJogador1] : [...dados.maoJogador2];
-                    maoAtual.push(pecaComprada); // Coloca na mão do jogador
-
-                    let atualizacoes = { monte: novoMonte };
-                    if (meuPapel === 'jogador1') atualizacoes.maoJogador1 = maoAtual;
-                    else atualizacoes.maoJogador2 = maoAtual;
-
-                    // IMPORTANTE: Reseta o status de "Mesa Trancada" se alguém conseguiu comprar
-                    atualizacoes.jogadorPassouTurno = false;
-                    atualizacoes.botPassouTurno = false; // "bot" aqui representa o outro jogador na lógica legada
-
+                    let pecaComp = novoMonte.pop();
+                    let maoAt = meuPapel === 'jogador1' ? [...dados.maoJogador1] : [...dados.maoJogador2];
+                    maoAt.push(pecaComp);
+                    let atualizacoes = { monte: novoMonte, jogadorPassouTurno: false, botPassouTurno: false };
+                    if (meuPapel === 'jogador1') atualizacoes.maoJogador1 = maoAt; else atualizacoes.maoJogador2 = maoAt;
                     await updateDoc(salaRef, atualizacoes);
-                } 
-                // 2. Se o monte está vazio, PASSA A VEZ!
-                else {
-                    let proximoTurno = meuPapel === 'jogador1' ? 'jogador2' : 'jogador1';
-                    
-                    let atualizacoes = {
-                        turnoAtual: proximoTurno
-                    };
-
-                    // Lógica para detectar Mesa Trancada Online
-                    if (meuPapel === 'jogador1') atualizacoes.jogadorPassouTurno = true;
-                    if (meuPapel === 'jogador2') atualizacoes.botPassouTurno = true; // Mantive os nomes das variáveis para facilitar
-
-                    // Se OS DOIS passaram a vez seguidamente, a mesa fechou!
-                    if ((dados.jogadorPassouTurno && atualizacoes.botPassouTurno) || 
-                        (dados.botPassouTurno && atualizacoes.jogadorPassouTurno)) {
-                        atualizacoes.status = "mesa_trancada"; // Um novo status no banco de dados!
-                    }
-
+                } else {
+                    let atualizacoes = { turnoAtual: meuPapel === 'jogador1' ? 'jogador2' : 'jogador1' };
+                    if (meuPapel === 'jogador1') atualizacoes.jogadorPassouTurno = true; if (meuPapel === 'jogador2') atualizacoes.botPassouTurno = true;
+                    if ((dados.jogadorPassouTurno && atualizacoes.botPassouTurno) || (dados.botPassouTurno && atualizacoes.jogadorPassouTurno)) atualizacoes.status = "mesa_trancada";
                     await updateDoc(salaRef, atualizacoes);
                 }
-
-            } catch (error) {
-                console.error("Erro ao comprar online: ", error);
-            }
+            } catch (error) { console.error(error); }
         }
 
         // =========================================
-        // A CONDIÇÃO DE VITÓRIA ONLINE (DENTRO DO SNAPSHOT)
+        // CHAT E CONTROLES EXTRAS
         // =========================================
+        window.enviarMensagem = async function() {
+            const input = document.getElementById('chat-input'); const texto = input.value.trim();
+            if (!texto || !salaAtualID || modoJogo !== 'online') return;
+            input.value = ''; 
+            try { await updateDoc(doc(db, "lobbies_domino", salaAtualID), { chat: arrayUnion({ papel: meuPapel, texto: texto, hora: Date.now() }) }); } 
+            catch(error) { console.error(error); }
+        };
+
+        function atualizarChatNaTela(dados) {
+            const container = document.getElementById('chat-container');
+            if (modoJogo === 'offline' || !container) { if(container) container.style.display = 'none'; return; }
+            container.style.display = 'block';
+            if (dados.chat && dados.chat.length > 0) {
+                const chatBox = document.getElementById('chat-messages'); chatBox.innerHTML = ''; 
+                dados.chat.forEach(msg => {
+                    const souEu = msg.papel === meuPapel, cor = souEu ? '#00ffcc' : '#ff4444', nom = souEu ? 'Você' : 'Adversário';
+                    chatBox.innerHTML += `<div style="margin-bottom: 5px;"><strong style="color: ${cor};">${nom}:</strong> <span style="color: #ddd;">${msg.texto}</span></div>`;
+                });
+                chatBox.scrollTop = chatBox.scrollHeight; 
+            }
+        }
+
+        window.acaoSairPartida = async function() {
+            if (modoJogo === 'offline') { iniciarJogoOffline(); } 
+            else if (modoJogo === 'online') {
+                if (confirm("Tem certeza que deseja fugir?")) {
+                    try { await updateDoc(doc(db, "lobbies_domino", salaAtualID), { status: "encerrado", desistente: meuPapel }); } 
+                    catch (error) { console.error(error); }
+                }
+            }
+        };
+
+        window.fecharTelaFim = function() {
+            document.getElementById('tela-fim').style.display = 'none';
+            if (modoJogo === 'online') {
+                document.getElementById('domino-arena').style.display = 'none'; document.getElementById('lobby-screen').style.display = 'flex';
+                document.getElementById('chat-messages').innerHTML = ''; if(unscribeSala) unscribeSala(); 
+            } else { iniciarJogoOffline(); }
+        };
     </script>
+
 </body>
 </html>
