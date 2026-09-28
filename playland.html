@@ -812,6 +812,56 @@
             });
         }
 
+        // --- O BLOCO A ADICIONAR FICA AQUI ---
+                    
+                    // 3. CONDIÇÃO DE VITÓRIA (Alguém ficou sem peças!)
+                    if (dados.status === "jogando" && (dados.maoJogador1.length === 0 || dados.maoJogador2.length === 0)) {
+                        const telaFim = document.getElementById('tela-fim');
+                        const titulo = document.getElementById('titulo-fim');
+                        
+                        // Quem zerou a mão?
+                        const vencedorID = dados.maoJogador1.length === 0 ? 'jogador1' : 'jogador2';
+                        
+                        if (vencedorID === meuPapel) {
+                            titulo.innerText = "VOCÊ VENCEU!";
+                            titulo.style.color = "#00ffcc";
+                        } else {
+                            titulo.innerText = "ADVERSÁRIO VENCEU!";
+                            titulo.style.color = "#ff4444";
+                        }
+                        
+                        document.getElementById('fala-fim').innerText = '"A partida chegou ao fim no Multiverso."';
+                        telaFim.style.display = 'flex';
+                    }
+
+                    // 4. MESA TRANCADA (Os dois passaram a vez seguidos sem monte)
+                    if (dados.status === "mesa_trancada") {
+                        let ptsJ1 = 0, ptsJ2 = 0;
+                        dados.maoJogador1.forEach(p => ptsJ1 += (p.v1 + p.v2));
+                        dados.maoJogador2.forEach(p => ptsJ2 += (p.v1 + p.v2));
+                        
+                        let meusPts = meuPapel === 'jogador1' ? ptsJ1 : ptsJ2;
+                        let advPts = meuPapel === 'jogador1' ? ptsJ2 : ptsJ1;
+
+                        const telaFim = document.getElementById('tela-fim');
+                        const titulo = document.getElementById('titulo-fim');
+
+                        if (meusPts < advPts) {
+                            titulo.innerText = "MESA TRANCADA! VOCÊ VENCEU!";
+                            titulo.style.color = "#00ffcc";
+                        } else if (advPts < meusPts) {
+                            titulo.innerText = "MESA TRANCADA! ADVERSÁRIO VENCEU!";
+                            titulo.style.color = "#ff4444";
+                        } else {
+                            titulo.innerText = "MESA TRANCADA - EMPATE!";
+                            titulo.style.color = "#d4af37";
+                        }
+
+                        document.getElementById('fala-fim').innerHTML = `"Jogo fechado."<br><br><span style="font-size: 1.1rem; color: #aaa;">Seus Pontos: ${meusPts} | Pontos Oponente: ${advPts}</span>`;
+                        telaFim.style.display = 'flex';
+                    }
+                    // --- FIM DO BLOCO ADICIONADO ---
+
         function renderizarMesaOnline(dados) {
             const maoMinha = document.getElementById('mao-jogador-1'), maoDele = document.getElementById('mao-bot'), mesa = document.getElementById('mesa-domino');
             maoMinha.innerHTML = ''; maoDele.innerHTML = ''; mesa.innerHTML = '';
@@ -846,8 +896,145 @@
             mesaVazia = dados.mesaVazia;
         }
 
-        async function tentarJogarPecaOnline(valores) { console.log("Tentando jogar online: ", valores); }
-        async function comprarPecaOnline() { console.log("Tentando comprar online..."); }
+        // =========================================
+        // MOTOR DE JOGADAS MULTIPLAYER (FIRESTORE)
+        // =========================================
+        async function tentarJogarPecaOnline(valores) {
+            if (!turnoDoJogador) return; // Bloqueio visual rápido
+
+            const salaRef = doc(db, "lobbies_domino", salaAtualID);
+            
+            try {
+                // Vai buscar o estado mais recente diretamente do banco
+                const salaSnap = await getDoc(salaRef);
+                const dados = salaSnap.data();
+
+                // Segurança: Confirma de novo se é a sua vez no banco
+                if (dados.turnoAtual !== meuPapel) return;
+
+                let v1 = valores[0], v2 = valores[1];
+                let jogadaValida = false;
+                
+                // Variáveis locais para calcular como a mesa vai ficar
+                let novaPontaEsq = dados.pontaEsquerda;
+                let novaPontaDir = dados.pontaDireita;
+                let novaMesaVazia = dados.mesaVazia;
+                let novasPecasMesa = dados.mesaPecas || [];
+                let pecaFormatadaParaNuvem = { v1: v1, v2: v2, horizontal: v1 !== v2 };
+
+                // 1. Validação de Encaixe na Mesa
+                if (novaMesaVazia) {
+                    novaPontaEsq = v1; novaPontaDir = v2; novaMesaVazia = false;
+                    novasPecasMesa.push(pecaFormatadaParaNuvem);
+                    jogadaValida = true;
+                } else if (v1 === novaPontaDir || v2 === novaPontaDir) {
+                    if (v2 === novaPontaDir && v1 !== novaPontaDir) pecaFormatadaParaNuvem = {v1: v2, v2: v1, horizontal: true};
+                    novasPecasMesa.push(pecaFormatadaParaNuvem); // Vai pro fim do Array
+                    novaPontaDir = pecaFormatadaParaNuvem.v2;
+                    jogadaValida = true;
+                } else if (v1 === novaPontaEsq || v2 === novaPontaEsq) {
+                    if (v1 === novaPontaEsq && v2 !== novaPontaEsq) pecaFormatadaParaNuvem = {v1: v2, v2: v1, horizontal: true};
+                    novasPecasMesa.unshift(pecaFormatadaParaNuvem); // Vai pro início do Array
+                    novaPontaEsq = pecaFormatadaParaNuvem.v1;
+                    jogadaValida = true;
+                }
+
+                if (jogadaValida) {
+                    // 2. Remove a peça da sua mão na nuvem
+                    let maoAtual = meuPapel === 'jogador1' ? dados.maoJogador1 : dados.maoJogador2;
+                    let novaMao = maoAtual.filter(p => !(p.v1 === v1 && p.v2 === v2) && !(p.v1 === v2 && p.v2 === v1));
+
+                    // 3. Define quem joga a seguir
+                    let proximoTurno = meuPapel === 'jogador1' ? 'jogador2' : 'jogador1';
+
+                    // 4. PREPARA O PACOTE PARA ENVIAR PRO FIREBASE
+                    let atualizacoes = {
+                        mesaVazia: novaMesaVazia,
+                        pontaEsquerda: novaPontaEsq,
+                        pontaDireita: novaPontaDir,
+                        mesaPecas: novasPecasMesa,
+                        turnoAtual: proximoTurno
+                    };
+                    
+                    // Adiciona a mão correta no pacote
+                    if (meuPapel === 'jogador1') atualizacoes.maoJogador1 = novaMao;
+                    else atualizacoes.maoJogador2 = novaMao;
+
+                    // 5. ENVIA TUDO! (O onSnapshot vai detetar e desenhar a mesa na hora pros dois)
+                    await updateDoc(salaRef, atualizacoes);
+                } else {
+                    // Efeito visual de erro local (Peça fica vermelha)
+                    console.log("Jogada Inválida");
+                }
+
+            } catch (error) {
+                console.error("Erro ao jogar online: ", error);
+            }
+        }
+
+        // =========================================
+        // MOTOR DE COMPRA E PASSAGEM DE TURNO MULTIPLAYER
+        // =========================================
+        
+        async function comprarPecaOnline() {
+            if (!turnoDoJogador) return;
+
+            const salaRef = doc(db, "lobbies_domino", salaAtualID);
+            
+            try {
+                const salaSnap = await getDoc(salaRef);
+                const dados = salaSnap.data();
+
+                if (dados.turnoAtual !== meuPapel) return;
+
+                let novoMonte = [...dados.monte];
+
+                // 1. Se tem peça no monte, compra!
+                if (novoMonte.length > 0) {
+                    let pecaComprada = novoMonte.pop(); // Tira a última peça do monte
+                    
+                    let maoAtual = meuPapel === 'jogador1' ? [...dados.maoJogador1] : [...dados.maoJogador2];
+                    maoAtual.push(pecaComprada); // Coloca na mão do jogador
+
+                    let atualizacoes = { monte: novoMonte };
+                    if (meuPapel === 'jogador1') atualizacoes.maoJogador1 = maoAtual;
+                    else atualizacoes.maoJogador2 = maoAtual;
+
+                    // IMPORTANTE: Reseta o status de "Mesa Trancada" se alguém conseguiu comprar
+                    atualizacoes.jogadorPassouTurno = false;
+                    atualizacoes.botPassouTurno = false; // "bot" aqui representa o outro jogador na lógica legada
+
+                    await updateDoc(salaRef, atualizacoes);
+                } 
+                // 2. Se o monte está vazio, PASSA A VEZ!
+                else {
+                    let proximoTurno = meuPapel === 'jogador1' ? 'jogador2' : 'jogador1';
+                    
+                    let atualizacoes = {
+                        turnoAtual: proximoTurno
+                    };
+
+                    // Lógica para detectar Mesa Trancada Online
+                    if (meuPapel === 'jogador1') atualizacoes.jogadorPassouTurno = true;
+                    if (meuPapel === 'jogador2') atualizacoes.botPassouTurno = true; // Mantive os nomes das variáveis para facilitar
+
+                    // Se OS DOIS passaram a vez seguidamente, a mesa fechou!
+                    if ((dados.jogadorPassouTurno && atualizacoes.botPassouTurno) || 
+                        (dados.botPassouTurno && atualizacoes.jogadorPassouTurno)) {
+                        atualizacoes.status = "mesa_trancada"; // Um novo status no banco de dados!
+                    }
+
+                    await updateDoc(salaRef, atualizacoes);
+                }
+
+            } catch (error) {
+                console.error("Erro ao comprar online: ", error);
+            }
+        }
+
+        // =========================================
+        // A CONDIÇÃO DE VITÓRIA ONLINE (DENTRO DO SNAPSHOT)
+        // =========================================
     </script>
 </body>
 </html>
