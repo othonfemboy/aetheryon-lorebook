@@ -295,15 +295,18 @@
    
     </style>
 
-    <div id="lobby-screen">
+   <div id="lobby-screen">
         <h2 style="color: #00ffcc; font-family: 'Cinzel', serif; margin: 0; font-size: 2rem; text-shadow: 0 0 15px rgba(0,255,204,0.5);">Salão Multiverso</h2>
         <p style="color: #bbb; margin: 0 0 10px 0; font-size: 0.9rem;">Forje uma mesa, encontre um aliado nas sombras ou use um código secreto.</p>
         
-        <div style="display: flex; gap: 10px; width: 100%;">
+        <!-- Botões Online Lado a Lado -->
+        <div style="display: flex; gap: 10px; width: 100%; margin-bottom: 10px;">
             <button onclick="criarSala(true)" class="btn-criar" style="flex: 1; font-size: 0.9rem; padding: 10px;">Forjar Mesa Pública</button>
             <button onclick="criarSala(false)" class="btn-criar" style="flex: 1; font-size: 0.9rem; padding: 10px; background: #333; border-color: #555;">Forjar Sala Fechada</button>
-            <button onclick="iniciarJogoOffline()" class="btn-criar" style="background: linear-gradient(45deg, #0055ff, #00aaff); margin-top: 15px;">Treinar contra a Oráculo (Offline)</button>
         </div>
+
+        <!-- Botão Offline (Na Linha de Baixo) -->
+        <button onclick="iniciarJogoOffline()" class="btn-criar" style="width: 100%; background: linear-gradient(45deg, #0055ff, #00aaff); font-size: 0.9rem; padding: 10px; margin-bottom: 15px;">Treinar contra Oráculo (Offline)</button>
         
         <div class="divisor">Mesas Abertas</div>
         
@@ -761,12 +764,29 @@
             unscribeSala = onSnapshot(salaRef, async (docSnap) => {
                 if (docSnap.exists()) {
                     const dados = docSnap.data();
+                    
                     if (dados.status === "iniciando" && meuPapel === 'jogador1') {
                         let todasAsPecas = embaralhar(gerarPecas());
-                        let mao1 = todasAsPecas.slice(0, 7), mao2 = todasAsPecas.slice(7, 14), monte = todasAsPecas.slice(14, 28);
-                        let quemInicia = descobrirQuemComeca(mao1, mao2);
-                        await updateDoc(salaRef, { status: "jogando", maoJogador1: mao1, maoJogador2: mao2, monte: monte, turnoAtual: quemInicia });
+                        
+                        // CORREÇÃO: Transforma as peças em Objetos para o Firestore aceitar!
+                        let pecasParaNuvem = todasAsPecas.map(p => ({v1: p[0], v2: p[1]}));
+
+                        let mao1 = pecasParaNuvem.slice(0, 7);
+                        let mao2 = pecasParaNuvem.slice(7, 14);
+                        let monte = pecasParaNuvem.slice(14, 28);
+                        
+                        // A regra de quem começa usa os arrays originais
+                        let quemInicia = descobrirQuemComeca(todasAsPecas.slice(0, 7), todasAsPecas.slice(7, 14));
+                        
+                        await updateDoc(salaRef, { 
+                            status: "jogando", 
+                            maoJogador1: mao1, 
+                            maoJogador2: mao2, 
+                            monte: monte, 
+                            turnoAtual: quemInicia 
+                        });
                     }
+
                     if (dados.status === "jogando") {
                         document.getElementById('lobby-screen').style.display = 'none';
                         document.getElementById('domino-arena').style.display = 'flex';
@@ -774,10 +794,18 @@
                         document.querySelector('.oraculo-header h3').innerText = "Adversário (Online)";
                         document.querySelector('.oraculo-header h3').style.color = "#00ffcc";
                         document.getElementById('fala-oraculo').innerText = `"Mesa sincronizada!"`;
+                        
                         turnoDoJogador = (dados.turnoAtual === meuPapel);
                         const statusTurno = document.getElementById('status-turno');
-                        if (turnoDoJogador) { statusTurno.innerText = "Sua Vez!"; statusTurno.style.color = "#00ffcc"; } 
-                        else { statusTurno.innerText = "Aguardando Oponente..."; statusTurno.style.color = "#ff4444"; }
+                        
+                        if (turnoDoJogador) { 
+                            statusTurno.innerText = "Sua Vez!"; 
+                            statusTurno.style.color = "#00ffcc"; 
+                        } else { 
+                            statusTurno.innerText = "Aguardando Oponente..."; 
+                            statusTurno.style.color = "#ff4444"; 
+                        }
+                        
                         renderizarMesaOnline(dados);
                     }
                 }
@@ -787,22 +815,35 @@
         function renderizarMesaOnline(dados) {
             const maoMinha = document.getElementById('mao-jogador-1'), maoDele = document.getElementById('mao-bot'), mesa = document.getElementById('mesa-domino');
             maoMinha.innerHTML = ''; maoDele.innerHTML = ''; mesa.innerHTML = '';
-            monteDeCompras = dados.monte; atualizarBotaoCompra(); 
+            
+            monteDeCompras = dados.monte; 
+            atualizarBotaoCompra(); 
+            
+            // CORREÇÃO: Transforma os Objetos da Nuvem de volta para Arrays no Visual
             const arrayMinhaMao = meuPapel === 'jogador1' ? dados.maoJogador1 : dados.maoJogador2;
-            arrayMinhaMao.forEach(valores => { maoMinha.appendChild(criarElementoPeca(valores, 'jogador')); });
+            arrayMinhaMao.forEach(pecaObj => { 
+                maoMinha.appendChild(criarElementoPeca([pecaObj.v1, pecaObj.v2], 'jogador')); 
+            });
+            
             const arrayMaoDele = meuPapel === 'jogador1' ? dados.maoJogador2 : dados.maoJogador1;
-            arrayMaoDele.forEach(() => { maoDele.appendChild(criarElementoPeca([0,0], 'adversarioOnline')); });
+            arrayMaoDele.forEach(() => { 
+                maoDele.appendChild(criarElementoPeca([0,0], 'adversarioOnline')); 
+            });
+            
             if (dados.mesaVazia) {
                 mesa.innerHTML = '<p style="color: #888; font-style: italic;" id="aviso-mesa-vazia">A mesa está vazia.</p>';
             } else {
                 dados.mesaPecas.forEach(infoPeca => {
-                    let elemento = criarElementoPeca(infoPeca.valores, 'mesa');
+                    let elemento = criarElementoPeca([infoPeca.v1, infoPeca.v2], 'mesa');
                     if (infoPeca.horizontal) elemento.classList.add('horizontal');
                     mesa.appendChild(elemento);
                 });
                 if (mesa.lastChild) mesa.lastChild.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
             }
-            pontaEsquerdaMesa = dados.pontaEsquerda; pontaDireitaMesa = dados.pontaDireita; mesaVazia = dados.mesaVazia;
+            
+            pontaEsquerdaMesa = dados.pontaEsquerda; 
+            pontaDireitaMesa = dados.pontaDireita; 
+            mesaVazia = dados.mesaVazia;
         }
 
         async function tentarJogarPecaOnline(valores) { console.log("Tentando jogar online: ", valores); }
