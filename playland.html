@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aetheryon Playland</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            /* Fundo Místico da Taverna */
+            background: radial-gradient(circle at top, #2a0845 0%, #050505 80%);
+            background-attachment: fixed;
+            color: #fff;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            color: #00ffcc;
+            text-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        #domino-arena {
+            width: 100%;
+            max-width: 900px;
+            /* Arena com efeito de vidro esfumaçado */
+            background: rgba(20, 20, 20, 0.6);
+            backdrop-filter: blur(10px);
+            border: 2px solid #444;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+        }
+
+        .mesa {
+            min-height: 250px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            /* Flex-start garante que a corrente cresça para a direita e permita scroll */
+            justify-content: flex-start; 
+            /* Nowrap impede que as peças pulem para a linha de baixo */
+            flex-wrap: nowrap; 
+            /* Ativa o scroll horizontal quando a mesa lotar */
+            overflow-x: auto; 
+            padding: 20px 40px;
+            gap: 2px; /* Dá um espacinho milimétrico entre as peças para não virar uma massa branca */
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
+            scroll-behavior: smooth; /* Deixa o deslizar macio */
+        }
+
+        /* Molas invisíveis que empurram as peças para o centro quando a mesa está vazia */
+        .mesa::before, .mesa::after {
+            content: '';
+            margin: auto;
+        }
+
+        /* Estilizando a barra de rolagem da Mesa com o tema Aetheryon */
+        .mesa::-webkit-scrollbar {
+            height: 12px;
+        }
+        .mesa::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 0 0 5px 5px;
+        }
+        .mesa::-webkit-scrollbar-thumb {
+            background: #00ffcc;
+            border-radius: 10px;
+            border: 2px solid #111;
+        }
+        .mesa::-webkit-scrollbar-thumb:hover {
+            background: #d4af37; /* Fica dourada ao passar o mouse */
+        }
+
+        .mao-jogador {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            min-height: 100px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            border: 1px solid #333;
+        }
+
+        /* Foto e Cabeçalho da Oráculo */
+        .oraculo-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 5px;
+        }
+
+        .oraculo-foto {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid #a855f7;
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.6);
+            object-fit: cover;
+        }
+
+        /* O Visual da Peça de Dominó */
+        .peca {
+            width: 40px;
+            height: 80px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            border: 2px solid #111;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            cursor: pointer;
+            transition: transform 0.2s;
+            box-sizing: border-box;
+
+            flex-shrink: 0;
+        }
+        .peca.jogavel:hover { transform: translateY(-10px); }
+        
+        .peca-metade {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #000;
+            font-weight: bold;
+        }
+        .peca-linha { border-bottom: 2px solid #111; }
+
+        .peca.horizontal {
+            width: 80px;
+            height: 40px;
+            flex-direction: row;
+        }
+        .peca.horizontal .peca-linha {
+            border-bottom: none;
+            border-right: 2px solid #111;
+        }
+
+        /* Costas da Peça (Mão da Oráculo) */
+        .peca.costas {
+            background: #111;
+            border-color: #a855f7;
+            background-image: repeating-linear-gradient(45deg, #2a0845 25%, transparent 25%, transparent 75%, #2a0845 75%, #2a0845), repeating-linear-gradient(45deg, #2a0845 25%, #111 25%, #111 75%, #2a0845 75%, #2a0845);
+            background-position: 0 0, 10px 10px;
+            background-size: 20px 20px;
+            cursor: default;
+        }
+        .peca.costas .peca-metade { display: none; }
+    </style>
+</head>
+<body>
+
+    <h1>Aetheryon Playland</h1>
+    <p style="color: #bbb;">O Salão de Jogos Místicos</p>
+ 
+    <!-- ========================================= -->
+    <!-- TELA DE LOBBY MULTIPLAYER (ESTILIZADA)    -->
+    <!-- ========================================= -->
+    <style>
+        /* Animação de pulso para a borda do Lobby */
+        @keyframes pulsoNeon {
+            0% { box-shadow: 0 0 10px rgba(168, 85, 247, 0.4), inset 0 0 10px rgba(168, 85, 247, 0.2); }
+            50% { box-shadow: 0 0 25px rgba(168, 85, 247, 0.8), inset 0 0 20px rgba(168, 85, 247, 0.4); }
+            100% { box-shadow: 0 0 10px rgba(168, 85, 247, 0.4), inset 0 0 10px rgba(168, 85, 247, 0.2); }
+        }
+
+        #lobby-screen {
+            width: 100%;
+            max-width: 450px;
+            background: rgba(15, 10, 25, 0.75);
+            backdrop-filter: blur(15px);
+            border: 2px solid #a855f7;
+            border-radius: 15px;
+            padding: 40px 30px;
+            text-align: center;
+            margin-top: 10vh;
+            animation: pulsoNeon 3s infinite alternate;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .lobby-input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.6);
+            color: #00ffcc;
+            border: 1px solid #555;
+            border-radius: 8px;
+            text-align: center;
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.3s;
+        }
+        .lobby-input:focus { border-color: #00ffcc; box-shadow: 0 0 15px rgba(0, 255, 204, 0.3); }
+
+        .btn-criar {
+            background: linear-gradient(45deg, #7e22ce, #a855f7);
+            color: #fff;
+            border: 1px solid #d8b4fe;
+            padding: 15px;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(168, 85, 247, 0.4);
+        }
+        .btn-criar:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(168, 85, 247, 0.6); }
+
+        .btn-entrar {
+            background: transparent;
+            color: #00ffcc;
+            border: 2px solid #00ffcc;
+            padding: 15px;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+        .btn-entrar:hover { background: rgba(0, 255, 204, 0.1); box-shadow: 0 0 15px rgba(0, 255, 204, 0.4); }
+
+        .divisor {
+            display: flex;
+            align-items: center;
+            color: #666;
+            font-family: 'Roboto', sans-serif;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .divisor::before, .divisor::after { content: ''; flex: 1; height: 1px; background: #444; margin: 0 10px; }
+
+        .lista-salas {
+            width: 100%;
+            max-height: 150px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 15px;
+        }
+
+        .sala-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #333;
+            transition: 0.2s;
+        }
+        .sala-item:last-child { border-bottom: none; }
+        .sala-item:hover { background: rgba(168, 85, 247, 0.2); }
+
+        .btn-entrar-lista {
+            background: #00ffcc;
+            color: #000;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-family: 'Cinzel', serif;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-entrar-lista:hover { box-shadow: 0 0 10px rgba(0, 255, 204, 0.5); }
+   
+    </style>
+
+    <div id="lobby-screen">
+        <h2 style="color: #00ffcc; font-family: 'Cinzel', serif; margin: 0; font-size: 2rem; text-shadow: 0 0 15px rgba(0,255,204,0.5);">Salão Multiverso</h2>
+        <p style="color: #bbb; margin: 0 0 10px 0; font-size: 0.9rem;">Forje uma mesa, encontre um aliado nas sombras ou use um código secreto.</p>
+        
+        <div style="display: flex; gap: 10px; width: 100%;">
+            <button onclick="criarSala(true)" class="btn-criar" style="flex: 1; font-size: 0.9rem; padding: 10px;">Forjar Mesa Pública</button>
+            <button onclick="criarSala(false)" class="btn-criar" style="flex: 1; font-size: 0.9rem; padding: 10px; background: #333; border-color: #555;">Forjar Sala Fechada</button>
+        </div>
+        
+        <div class="divisor">Mesas Abertas</div>
+        
+        <!-- Lista de salas puxadas do Firebase -->
+        <div class="lista-salas" id="lista-salas-abertas">
+            <p style="color: #666; font-size: 0.9rem; font-style: italic; text-align: center; margin-top: 10px;">Buscando mesas no éter...</p>
+        </div>
+
+        <div class="divisor">ou Código Secreto</div>
+        
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            <input type="text" id="codigo-sala" class="lobby-input" placeholder="CÓDIGO (EX: AETH7)" maxlength="5">
+            <button onclick="entrarNaSalaPeloCodigo()" class="btn-entrar">Entrar na Mesa</button>
+        </div>
+
+        <p id="lobby-status" style="color: #ffaa00; font-style: italic; margin-top: 10px; min-height: 20px;"></p>
+    </div>
+
+    <div id="domino-arena" style="display: none;">
+        
+        <!-- CABEÇALHO ORÁCULO COM FOTO -->
+        <div class="oraculo-header">
+            <!-- Troque esse link pela imagem real dela se tiver uma específica! -->
+            <img src="oraculo.gif" class="oraculo-foto" alt="Oráculo">
+            <div style="display: flex; flex-direction: column;">
+                <h3 style="color: #a855f7; margin: 0; font-family: 'Cinzel', serif; text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);">Oráculo</h3>
+                <div id="fala-oraculo" style="color: #d8b4fe; font-size: 0.95rem; font-style: italic;">
+                    "Acha que pode me derrotar nesse joguinho?"
+                </div>
+            </div>
+        </div>
+
+        <!-- MÃO DO ADVERSÁRIO (ORÁCULO) -->
+        <div class="mao-jogador" id="mao-bot"></div>
+
+        <!-- INDICADOR DE TURNO -->
+        <h3 id="status-turno" style="color: #00ffcc; text-align: center; font-family: 'Cinzel', serif;">Sua Vez!</h3>
+        
+        <!-- MESA CENTRAL -->
+        <div class="mesa" id="mesa-domino">
+            <p style="color: #888; font-style: italic;" id="aviso-mesa-vazia">A mesa está vazia.</p>
+        </div>
+
+        <!-- SUA MÃO -->
+        <div>
+            <h3 style="color: #d4af37; text-align: center; font-family: 'Cinzel', serif;">Sua Mão</h3>
+            <div class="mao-jogador" id="mao-jogador-1"></div>
+        </div>
+
+        <div style="display: flex; justify-content: center; gap: 15px; align-items: center;">
+            <button onclick="iniciarJogo()" style="padding: 10px; background: rgba(0,0,0,0.5); color: #fff; border: 1px solid #555; cursor: pointer; border-radius: 5px; font-family: 'Cinzel', serif; transition: 0.3s;">Recomeçar Partida</button>
+            <div style="color: #555; font-family: 'Cinzel', serif;">|</div>
+            <button onclick="comprarPeca()" id="btn-comprar" style="padding: 12px; background: #d4af37; color: #000; border: none; font-weight: bold; cursor: pointer; border-radius: 5px; font-family: 'Cinzel', serif; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); transition: 0.3s;">Comprar do Monte (<span id="qtd-monte">14</span>)</button>
+        </div>
+
+    </div>
+
+    <!-- TELA DE VITÓRIA / DERROTA / MESA TRANCADA -->
+    <div id="tela-fim" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(5px);">
+        <h1 id="titulo-fim" style="font-size: 4rem; text-shadow: 0 0 20px #00ffcc; text-align: center;">VITÓRIA!</h1>
+        <p id="fala-fim" style="font-family: 'Cinzel', serif; font-size: 1.5rem; color: #fff; margin-bottom: 30px; font-style: italic; text-align: center; max-width: 80%;">"Mensagem da oráculo aqui"</p>
+        <button onclick="iniciarJogo(); document.getElementById('tela-fim').style.display = 'none';" style="padding: 15px 30px; background: transparent; color: #d4af37; border: 2px solid #d4af37; font-size: 1.2rem; cursor: pointer; font-family: 'Cinzel', serif; transition: 0.3s; border-radius: 8px;">Desafiar Novamente</button>
+    </div>
+
+    <!-- ========================================= -->
+    <!-- FIREBASE MULTIPLAYER COM LISTA PÚBLICA    -->
+    <!-- ========================================= -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, setDoc, getDoc, updateDoc, onSnapshot, collection, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCmAkdBLKuoegQOpILl7isbmblPZMQ6huk",
+            authDomain: "aetheryon-lore.firebaseapp.com",
+            projectId: "aetheryon-lore",
+            storageBucket: "aetheryon-lore.firebasestorage.app",
+            messagingSenderId: "581206693394",
+            appId: "1:581206693394:web:85fcb86ea7aa3457742acb"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let salaAtualID = null;
+        let meuPapel = null;
+        let unscribeSala = null;
+        let unscribeListaSalas = null;
+
+        function gerarCodigoSala() {
+            const caracteres = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            let resultado = '';
+            for (let i = 0; i < 5; i++) {
+                resultado += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+            }
+            return resultado;
+        }
+
+        // Função principal para criar sala (Pública ou Privada)
+        window.criarSala = async function(isPublica) {
+            const statusText = document.getElementById('lobby-status');
+            statusText.innerText = "Forjando mesa...";
+            statusText.style.color = "#a855f7";
+            
+            const novoCodigo = gerarCodigoSala();
+            const nomeCriador = "Anônimo"; // Podemos puxar o nome do jogador da AetherNet depois!
+            
+            try {
+                await setDoc(doc(db, "lobbies_domino", novoCodigo), {
+                    criador: nomeCriador,
+                    publica: isPublica, // true = aparece na lista, false = precisa de código
+                    status: "aguardando", 
+                    hostPronto: true,
+                    convidadoPronto: false,
+                    turnoAtual: "", 
+                    pontaEsquerda: null,
+                    pontaDireita: null,
+                    mesaVazia: true,
+                    mesaPecas: [], 
+                    monte: [],
+                    maoJogador1: [],
+                    maoJogador2: [],
+                    timestamp: new Date() // Para limpar salas antigas no futuro
+                });
+
+                salaAtualID = novoCodigo;
+                meuPapel = 'jogador1';
+                
+                let msg = isPublica ? `Mesa Pública forjada! Aguardando oponentes...` : `Sala Privada! O código secreto é: <span style="color: #fff; font-size: 1.5rem;">${novoCodigo}</span><br>Envie para um aliado.`;
+                statusText.innerHTML = msg;
+                
+                ouvirMudancasDaSala(novoCodigo);
+
+            } catch (error) {
+                console.error("Erro ao criar:", error);
+                statusText.innerText = "Erro ao forjar a mesa.";
+                statusText.style.color = "#ff4444";
+            }
+        };
+
+        // Entrar clicando na lista ou digitando código usa a mesma base
+        window.entrarNaSalaPeloCodigo = function() {
+            const codigo = document.getElementById('codigo-sala').value.toUpperCase().trim();
+            entrarNaSalaGlobal(codigo);
+        }
+        
+        window.entrarNaSalaLista = function(codigo) {
+            entrarNaSalaGlobal(codigo);
+        }
+
+        async function entrarNaSalaGlobal(codigo) {
+            const statusText = document.getElementById('lobby-status');
+            
+            if (codigo.length !== 5) {
+                statusText.innerText = "O código deve ter 5 caracteres.";
+                return;
+            }
+
+            statusText.innerText = "Conectando ao éter...";
+            statusText.style.color = "#00ffcc";
+
+            try {
+                const salaRef = doc(db, "lobbies_domino", codigo);
+                const salaSnap = await getDoc(salaRef);
+
+                if (salaSnap.exists() && salaSnap.data().status === "aguardando") {
+                    await updateDoc(salaRef, {
+                        status: "iniciando",
+                        convidadoPronto: true
+                    });
+                    
+                    salaAtualID = codigo;
+                    meuPapel = 'jogador2';
+                    statusText.innerText = "Mesa encontrada! Preparando...";
+                    
+                    // Se conectou com sucesso, desliga a escuta da lista para não gastar banda
+                    if(unscribeListaSalas) unscribeListaSalas();
+                    
+                    ouvirMudancasDaSala(codigo);
+                } else {
+                    statusText.innerText = "Mesa ocupada ou inexistente.";
+                    statusText.style.color = "#ff4444";
+                }
+            } catch (error) {
+                console.error("Erro:", error);
+                statusText.innerText = "Erro de conexão.";
+            }
+        }
+
+        // --- SISTEMA DE RADAR DE SALAS (LISTA PÚBLICA) ---
+        function ligarRadarDeSalas() {
+            const q = query(collection(db, "lobbies_domino"), where("status", "==", "aguardando"), where("publica", "==", true));
+            const listaDiv = document.getElementById('lista-salas-abertas');
+
+            unscribeListaSalas = onSnapshot(q, (snapshot) => {
+                listaDiv.innerHTML = ''; // Limpa a lista
+                
+                if (snapshot.empty) {
+                    listaDiv.innerHTML = '<p style="color: #666; font-size: 0.9rem; text-align: center;">Nenhuma mesa pública no momento.</p>';
+                    return;
+                }
+
+                snapshot.forEach((docSnap) => {
+                    const sala = docSnap.data();
+                    const id = docSnap.id;
+                    
+                    listaDiv.innerHTML += `
+                        <div class="sala-item">
+                            <span style="color: #a855f7; font-family: 'Cinzel', serif; font-weight: bold;">Mesa de ${sala.criador}</span>
+                            <button onclick="entrarNaSalaLista('${id}')" class="btn-entrar-lista">Entrar</button>
+                        </div>
+                    `;
+                });
+            });
+        }
+
+        // Liga o radar automaticamente ao abrir o Playland
+        window.onload = ligarRadarDeSalas;
+
+        function ouvirMudancasDaSala(codigoSala) {
+            const salaRef = doc(db, "lobbies_domino", codigoSala);
+            
+            unscribeSala = onSnapshot(salaRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const dados = docSnap.data();
+                    if (dados.status === "iniciando" && meuPapel === 'jogador1') {
+                         console.log("Iniciando distribuição de peças via Host!");
+                    }
+                }
+            });
+        }
+    </script>
+
+    <script>
+        let pontaEsquerdaMesa = null;
+        let pontaDireitaMesa = null;
+        let mesaVazia = true;
+        let turnoDoJogador = true;
+        let monteDeCompras = []; 
+        
+        // Variáveis para detectar Mesa Trancada
+        let jogadorPassouTurno = false;
+        let botPassouTurno = false;
+
+        // Falas da Oráculo (Agora em PT-BR raiz)
+        const falas = {
+            inicio: ["Tente a sorte, mortal.", "Você não pode ver o futuro, mas eu posso.", "As peças já foram lançadas."],
+            botJoga: ["Muito fácil.", "Previsível demais.", "Uma jogada óbvia.", "Tente acompanhar o meu ritmo."],
+            botCompra: ["Hmpf... O universo está contra mim hoje.", "Um mero contratempo.", "Preciso de mais peças."],
+            jogadorBate: ["O quê?! Como você conseguiu?", "Trapaça! Eu vi o futuro e você perdia!", "Sorte de principiante..."],
+            botBate: ["Eu avisei. Seu destino já estava selado.", "Curve-se perante a minha sabedoria.", "Foi patético assistir sua derrota."],
+            mesaTrancadaJogador: ["A mesa fechou! Maldição, suas peças valem menos que as minhas!", "Trancado... e você venceu por pontos? Impossível."],
+            mesaTrancadaBot: ["Mesa trancada! E como eu previ, você tem mais pontos e perdeu.", "Ninguém joga, mas eu venço na contagem!"]
+        };
+
+        function atualizarFala(tipo) {
+            const arrayFalas = falas[tipo];
+            const falaSorteada = arrayFalas[Math.floor(Math.random() * arrayFalas.length)];
+            document.getElementById('fala-oraculo').innerText = `"${falaSorteada}"`;
+        }
+
+        function gerarPecas() {
+            let monte = [];
+            for (let i = 0; i <= 6; i++) {
+                for (let j = i; j <= 6; j++) { monte.push([i, j]); }
+            }
+            return monte;
+        }
+
+        function embaralhar(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function criarElementoPeca(valores, dono) {
+            const peca = document.createElement('div');
+            peca.className = 'peca';
+            peca.dataset.valor1 = valores[0];
+            peca.dataset.valor2 = valores[1];
+            
+            if (dono === 'bot') {
+                peca.classList.add('costas');
+            } else {
+                const top = document.createElement('div');
+                top.className = 'peca-metade peca-linha';
+                top.innerText = valores[0] === 0 ? '' : valores[0]; 
+                
+                const bottom = document.createElement('div');
+                bottom.className = 'peca-metade';
+                bottom.innerText = valores[1] === 0 ? '' : valores[1];
+
+                peca.appendChild(top);
+                peca.appendChild(bottom);
+            }
+
+            if (dono === 'jogador') {
+                peca.classList.add('jogavel');
+                peca.onclick = () => tentarJogarPeca(peca, valores, 'jogador');
+            }
+            return peca;
+        }
+
+        function tentarJogarPeca(elementoPeca, valores, quemJogou) {
+            if (quemJogou === 'jogador' && !turnoDoJogador) {
+                elementoPeca.style.borderColor = "#ff4444";
+                setTimeout(() => elementoPeca.style.borderColor = "#111", 300);
+                return;
+            }
+
+            const mesaDiv = document.getElementById('mesa-domino');
+            const aviso = document.getElementById('aviso-mesa-vazia');
+            let v1 = valores[0];
+            let v2 = valores[1];
+            let jogadaFeita = false;
+
+            if (mesaVazia) {
+                if (aviso) aviso.remove(); 
+                pontaEsquerdaMesa = v1;
+                pontaDireitaMesa = v2;
+                mesaVazia = false;
+                
+                let novaPecaNaMesa = criarElementoPeca(valores, 'mesa');
+                if (v1 !== v2) novaPecaNaMesa.classList.add('horizontal');
+                mesaDiv.appendChild(novaPecaNaMesa);
+                jogadaFeita = true;
+                
+                // Centraliza a tela na primeira peça do jogo
+                novaPecaNaMesa.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                
+            } else if (v1 === pontaDireitaMesa || v2 === pontaDireitaMesa) {
+                if (v2 === pontaDireitaMesa && v1 !== pontaDireitaMesa) { valores = [v2, v1]; }
+                let novaPecaNaMesa = criarElementoPeca(valores, 'mesa');
+                if (valores[0] !== valores[1]) novaPecaNaMesa.classList.add('horizontal');
+                mesaDiv.appendChild(novaPecaNaMesa); 
+                pontaDireitaMesa = valores[1]; 
+                jogadaFeita = true;
+                
+                // MÁGICA AQUI: Rola a câmera suavemente para a peça que acabou de ser jogada na DIREITA
+                novaPecaNaMesa.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                
+            } else if (v1 === pontaEsquerdaMesa || v2 === pontaEsquerdaMesa) {
+                if (v1 === pontaEsquerdaMesa && v2 !== pontaEsquerdaMesa) { valores = [v2, v1]; }
+                let novaPecaNaMesa = criarElementoPeca(valores, 'mesa');
+                if (valores[0] !== valores[1]) novaPecaNaMesa.classList.add('horizontal');
+                mesaDiv.prepend(novaPecaNaMesa); 
+                pontaEsquerdaMesa = valores[0]; 
+                jogadaFeita = true;
+                
+                // MÁGICA AQUI: Rola a câmera suavemente para a peça que acabou de ser jogada na ESQUERDA
+                novaPecaNaMesa.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+
+            if (jogadaFeita) {
+                elementoPeca.remove();
+                
+                jogadorPassouTurno = false;
+                botPassouTurno = false;
+
+                if (quemJogou === 'bot') atualizarFala('botJoga');
+                if (verificarVitoria(quemJogou)) return; 
+                
+                if (quemJogou === 'jogador') {
+                    turnoDoJogador = false;
+                    document.getElementById('status-turno').innerText = "Oráculo analisando a mesa...";
+                    document.getElementById('status-turno').style.color = "#a855f7";
+                    atualizarBotaoCompra();
+                    setTimeout(jogadaDoBot, 1500); 
+                } else {
+                    turnoDoJogador = true;
+                    document.getElementById('status-turno').innerText = "Sua Vez!";
+                    document.getElementById('status-turno').style.color = "#00ffcc";
+                    atualizarBotaoCompra();
+                }
+            } else if (quemJogou === 'jogador') {
+                elementoPeca.style.borderColor = "#ff4444";
+                setTimeout(() => elementoPeca.style.borderColor = "#111", 500);
+            }
+        }
+
+        // --- SISTEMA DE COMPRA E MESA TRANCADA ---
+        function atualizarBotaoCompra() {
+            const btn = document.getElementById('btn-comprar');
+            if (monteDeCompras.length === 0) {
+                btn.innerText = "Passar a Vez (Monte Vazio)";
+                btn.style.background = "#555";
+                btn.style.color = "#fff";
+            } else {
+                btn.innerHTML = `Comprar do Monte (<span id="qtd-monte">${monteDeCompras.length}</span>)`;
+                btn.style.background = "#d4af37";
+                btn.style.color = "#000";
+            }
+        }
+
+        window.comprarPeca = function() {
+            if (!turnoDoJogador) return;
+
+            if (monteDeCompras.length > 0) {
+                let pecaComprada = monteDeCompras.pop();
+                document.getElementById('mao-jogador-1').appendChild(criarElementoPeca(pecaComprada, 'jogador'));
+                atualizarBotaoCompra();
+            } else {
+                // Jogador passa a vez
+                jogadorPassouTurno = true;
+                turnoDoJogador = false;
+                document.getElementById('status-turno').innerText = "Você passou. Oráculo jogando...";
+                document.getElementById('status-turno').style.color = "#a855f7";
+                
+                if (verificarMesaTrancada()) return;
+                setTimeout(jogadaDoBot, 1500);
+            }
+        };
+
+        function botComprarPeca() {
+            if (monteDeCompras.length > 0) {
+                atualizarFala('botCompra');
+                let pecaComprada = monteDeCompras.pop();
+                document.getElementById('mao-bot').appendChild(criarElementoPeca(pecaComprada, 'bot'));
+                atualizarBotaoCompra();
+                setTimeout(jogadaDoBot, 1000); 
+            } else {
+                // Bot passa a vez
+                botPassouTurno = true;
+                if (verificarMesaTrancada()) return;
+
+                document.getElementById('status-turno').innerText = "Oráculo passou a vez! Sua Vez!";
+                document.getElementById('status-turno').style.color = "#00ffcc";
+                turnoDoJogador = true;
+            }
+        }
+
+        function jogadaDoBot() {
+            const botDiv = document.getElementById('mao-bot');
+            let pecasBot = Array.from(botDiv.children);
+            let conseguiuJogar = false;
+
+            for (let peca of pecasBot) {
+                let v1 = parseInt(peca.dataset.valor1);
+                let v2 = parseInt(peca.dataset.valor2);
+
+                if (mesaVazia || v1 === pontaEsquerdaMesa || v2 === pontaEsquerdaMesa || v1 === pontaDireitaMesa || v2 === pontaDireitaMesa) {
+                    tentarJogarPeca(peca, [v1, v2], 'bot');
+                    conseguiuJogar = true;
+                    break; 
+                }
+            }
+
+            if (!conseguiuJogar) {
+                botComprarPeca();
+            }
+        }
+
+        // --- SISTEMA DE PONTUAÇÃO E FINALIZAÇÃO ---
+        function somarPontosMao(idMao) {
+            let soma = 0;
+            const pecas = document.getElementById(idMao).children;
+            for (let peca of pecas) {
+                soma += parseInt(peca.dataset.valor1) + parseInt(peca.dataset.valor2);
+            }
+            return soma;
+        }
+
+        function verificarMesaTrancada() {
+            if (jogadorPassouTurno && botPassouTurno) {
+                const ptsJogador = somarPontosMao('mao-jogador-1');
+                const ptsBot = somarPontosMao('mao-bot');
+                const telaFim = document.getElementById('tela-fim');
+                const titulo = document.getElementById('titulo-fim');
+                const falaFim = document.getElementById('fala-fim');
+
+                if (ptsJogador < ptsBot) {
+                    titulo.innerText = "MESA TRANCADA! VOCÊ VENCEU!";
+                    titulo.style.color = "#00ffcc";
+                    atualizarFala('mesaTrancadaJogador');
+                } else if (ptsBot < ptsJogador) {
+                    titulo.innerText = "MESA TRANCADA! ORÁCULO VENCEU!";
+                    titulo.style.color = "#ff4444";
+                    atualizarFala('mesaTrancadaBot');
+                } else {
+                    titulo.innerText = "EMPATE!";
+                    titulo.style.color = "#d4af37";
+                    document.getElementById('fala-oraculo').innerText = '"Um empate? Isso não estava nas minhas visões..."';
+                }
+
+                falaFim.innerHTML = `${document.getElementById('fala-oraculo').innerText}<br><br><span style="font-size: 1.1rem; color: #aaa;">Seus Pontos: ${ptsJogador} | Pontos da Oráculo: ${ptsBot}</span>`;
+                telaFim.style.display = 'flex';
+                return true;
+            }
+            return false;
+        }
+
+        function verificarVitoria(quemJogou) {
+            const idMao = quemJogou === 'jogador' ? 'mao-jogador-1' : 'mao-bot';
+            if (document.getElementById(idMao).children.length === 0) {
+                const telaFim = document.getElementById('tela-fim');
+                const titulo = document.getElementById('titulo-fim');
+                
+                if (quemJogou === 'jogador') {
+                    titulo.innerText = "VOCÊ BATEU!";
+                    titulo.style.color = "#00ffcc";
+                    atualizarFala('jogadorBate');
+                } else {
+                    titulo.innerText = "ORÁCULO BATEU!";
+                    titulo.style.color = "#ff4444";
+                    atualizarFala('botBate');
+                }
+                
+                document.getElementById('fala-fim').innerText = document.getElementById('fala-oraculo').innerText;
+                telaFim.style.display = 'flex';
+                return true;
+            }
+            return false;
+        }
+
+        // ----------------------------------------------------
+        // NOVA REGRA OFICIAL: QUEM COMEÇA O JOGO? (Regra do 6-6)
+        // ----------------------------------------------------
+        function descobrirQuemComeca(maoJogador, maoBot) {
+            let maiorDuploJogador = -1;
+            let maiorDuploBot = -1;
+            
+            // 1. Procura as peças duplas (carroças) nas mãos
+            for (let peca of maoJogador) {
+                if (peca[0] === peca[1] && peca[0] > maiorDuploJogador) maiorDuploJogador = peca[0];
+            }
+            for (let peca of maoBot) {
+                if (peca[0] === peca[1] && peca[0] > maiorDuploBot) maiorDuploBot = peca[0];
+            }
+
+            // 2. Compara quem tem a maior carroça
+            if (maiorDuploJogador > maiorDuploBot) {
+                return 'jogador'; // O jogador tem a maior carroça
+            } else if (maiorDuploBot > maiorDuploJogador) {
+                return 'bot'; // A Oráculo tem a maior carroça
+            } else {
+                // 3. Caso raríssimo: Nenhum dos dois tem carroça. 
+                // Vence quem tiver a peça com a maior soma (ex: 6-5 = 11 pontos)
+                let maiorSomaJogador = 0;
+                let maiorSomaBot = 0;
+                
+                for (let peca of maoJogador) {
+                    let soma = peca[0] + peca[1];
+                    if (soma > maiorSomaJogador) maiorSomaJogador = soma;
+                }
+                for (let peca of maoBot) {
+                    let soma = peca[0] + peca[1];
+                    if (soma > maiorSomaBot) maiorSomaBot = soma;
+                }
+                
+                return maiorSomaJogador >= maiorSomaBot ? 'jogador' : 'bot';
+            }
+        }
+
+        window.iniciarJogo = function() {
+            document.getElementById('mao-jogador-1').innerHTML = ''; 
+            document.getElementById('mao-bot').innerHTML = ''; 
+            document.getElementById('mesa-domino').innerHTML = '<p style="color: #888; font-style: italic;" id="aviso-mesa-vazia">A mesa está vazia.</p>';
+            
+            pontaEsquerdaMesa = null;
+            pontaDireitaMesa = null;
+            mesaVazia = true;
+            jogadorPassouTurno = false;
+            botPassouTurno = false;
+            
+            let todasAsPecas = embaralhar(gerarPecas());
+            
+            let maoDoJogador = todasAsPecas.slice(0, 7);
+            let maoBot = todasAsPecas.slice(7, 14);
+            monteDeCompras = todasAsPecas.slice(14, 28); 
+            
+            atualizarBotaoCompra();
+
+            maoDoJogador.forEach(valores => {
+                document.getElementById('mao-jogador-1').appendChild(criarElementoPeca(valores, 'jogador'));
+            });
+
+            maoBot.forEach(valores => {
+                document.getElementById('mao-bot').appendChild(criarElementoPeca(valores, 'bot'));
+            });
+
+            // Aplica a nova regra para decidir o turno inicial
+            const quemInicia = descobrirQuemComeca(maoDoJogador, maoBot);
+
+            if (quemInicia === 'jogador') {
+                turnoDoJogador = true;
+                document.getElementById('status-turno').innerText = "Você tem a maior peça. Sua Vez!";
+                document.getElementById('status-turno').style.color = "#00ffcc";
+                atualizarFala('inicio'); // Fala padrão
+            } else {
+                turnoDoJogador = false;
+                document.getElementById('status-turno').innerText = "Oráculo tem a maior peça e começa!";
+                document.getElementById('status-turno').style.color = "#a855f7";
+                document.getElementById('fala-oraculo').innerText = '"Os Ecos favorecem-me. Eu abro o jogo."';
+                
+                // Manda a Oráculo jogar a primeira peça após 2 segundos de suspense
+                setTimeout(jogadaDoBot, 2000); 
+            }
+        };
+
+        window.onload = iniciarJogo;
+    </script>
+</body>
+</html>
